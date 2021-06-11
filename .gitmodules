@@ -1,0 +1,3 @@
+[submodule "submodules/eagine-core"]
+	path = submodules/eagine-core
+	url = ssh://oglplus-playground/home/oglplus/Repo/eagine-core.git
