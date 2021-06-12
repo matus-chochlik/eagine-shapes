@@ -1,3 +1,4 @@
 [submodule "submodules/eagine-core"]
 	path = submodules/eagine-core
-	url = ssh://oglplus-playground/home/oglplus/Repo/eagine-core.git
+	url = https://github.com/matus-chochlik/eagine-core.git
+	branch = develop
