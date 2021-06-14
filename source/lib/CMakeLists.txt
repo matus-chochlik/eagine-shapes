@@ -5,19 +5,19 @@
 
 add_library(
 	eagine-shapes
-	shapes_base.cpp
-	shapes_topology.cpp
-	shapes_cube.cpp
-	shapes_round_cube.cpp
-	shapes_sphere.cpp
-	shapes_torus.cpp
-	shapes_twisted_torus.cpp
-	shapes_icosahedron.cpp
-	shapes_value_tree.cpp
-	shapes_modifiers.cpp
-	shapes_adjacency.cpp
-	shapes_to_quads.cpp
-	shapes_to_patches.cpp
+	base.cpp
+	topology.cpp
+	cube.cpp
+	round_cube.cpp
+	sphere.cpp
+	torus.cpp
+	twisted_torus.cpp
+	icosahedron.cpp
+	value_tree.cpp
+	modifiers.cpp
+	adjacency.cpp
+	to_quads.cpp
+	to_patches.cpp
 )
 eagine_add_lib_analysis(eagine-shapes)
 
