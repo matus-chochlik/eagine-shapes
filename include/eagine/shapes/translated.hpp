@@ -46,7 +46,7 @@ translate(std::shared_ptr<generator> gen, std::array<float, 3> d) noexcept {
 } // namespace shapes
 } // namespace eagine
 
-#if !EAGINE_LINK_LIBRARY || defined(EAGINE_IMPLEMENTING_LIBRARY)
+#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_LIBRARY)
 #include <eagine/shapes/translated.inl>
 #endif
 

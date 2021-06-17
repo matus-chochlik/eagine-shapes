@@ -103,7 +103,7 @@ static inline auto unit_twisted_torus(vertex_attrib_bits attr_bits) {
 } // namespace shapes
 } // namespace eagine
 
-#if !EAGINE_LINK_LIBRARY || defined(EAGINE_IMPLEMENTING_LIBRARY)
+#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_LIBRARY)
 #include <eagine/shapes/twisted_torus.inl>
 #endif
 

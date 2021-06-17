@@ -66,7 +66,7 @@ static inline auto unit_screen(vertex_attrib_bits attr_bits) {
 } // namespace shapes
 } // namespace eagine
 
-#if !EAGINE_LINK_LIBRARY || defined(EAGINE_IMPLEMENTING_LIBRARY)
+#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_LIBRARY)
 #include <eagine/shapes/screen.inl>
 #endif
 

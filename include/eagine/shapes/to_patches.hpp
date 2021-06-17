@@ -36,7 +36,7 @@ static inline auto to_patches(std::shared_ptr<generator> gen) noexcept {
 } // namespace shapes
 } // namespace eagine
 
-#if !EAGINE_LINK_LIBRARY || defined(EAGINE_IMPLEMENTING_LIBRARY)
+#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_LIBRARY)
 #include <eagine/shapes/to_patches.inl>
 #endif
 

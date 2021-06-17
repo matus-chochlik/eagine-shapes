@@ -45,7 +45,7 @@ scale(std::shared_ptr<generator> gen, std::array<float, 3> s) noexcept {
 } // namespace shapes
 } // namespace eagine
 
-#if !EAGINE_LINK_LIBRARY || defined(EAGINE_IMPLEMENTING_LIBRARY)
+#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_LIBRARY)
 #include <eagine/shapes/scaled.inl>
 #endif
 
