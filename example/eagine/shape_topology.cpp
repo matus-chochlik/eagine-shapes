@@ -8,6 +8,7 @@
 #include <eagine/program_args.hpp>
 #include <eagine/shapes/cube.hpp>
 #include <eagine/shapes/icosahedron.hpp>
+#include <eagine/shapes/round_cube.hpp>
 #include <eagine/shapes/sphere.hpp>
 #include <eagine/shapes/topology.hpp>
 #include <eagine/shapes/torus.hpp>
@@ -26,6 +27,8 @@ auto main(int argc, const char** argv) -> int {
         gen = shapes::unit_sphere(shapes::vertex_attrib_kind::position, 5, 12);
     } else if(args.find("--cube")) {
         gen = shapes::unit_cube(shapes::vertex_attrib_kind::position);
+    } else if(args.find("--round-cube")) {
+        gen = shapes::unit_round_cube(shapes::vertex_attrib_kind::position, 2);
     } else if(args.find("--icosahedron")) {
         gen = shapes::unit_icosahedron(shapes::vertex_attrib_kind::position);
     }
