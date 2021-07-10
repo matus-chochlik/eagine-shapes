@@ -51,7 +51,7 @@ void unit_twisted_torus_gen::positions(span<float> dest) noexcept {
 
     span_size_t k = 0;
 
-    const double ro = 0.50;
+    const double ro = 0.25;
     const double ri = ro * _radius_ratio;
     const double r1 = ri;
     const double r2 = ro - ri;
