@@ -52,7 +52,7 @@ void unit_torus_gen::vertex_pivots(span<float> dest) noexcept {
 
     span_size_t k = 0;
 
-    const auto ro = 0.50;
+    const auto ro = 0.25;
     const auto ri = ro * _radius_ratio;
     const auto rc = (ro + ri) / 2;
 
@@ -78,7 +78,7 @@ void unit_torus_gen::positions(
     EAGINE_ASSERT(has(vertex_attrib_kind::position));
     EAGINE_ASSERT(dest.size() >= vertex_count() * 3);
 
-    const auto ro = 0.50;
+    const auto ro = 0.25;
     const auto ri = ro * _radius_ratio;
     const auto r1 = ri;
     const auto r2 = ro - ri;
