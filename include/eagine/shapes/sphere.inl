@@ -31,9 +31,9 @@ unit_sphere_gen::unit_sphere_gen(
   vertex_attrib_bits attr_bits,
   valid_if_greater_than<int, 2> rings,
   valid_if_greater_than<int, 3> sections) noexcept
-  : _base(attr_bits & _attr_mask())
-  , _rings(span_size_t(rings.value()))
-  , _sections(span_size_t(sections.value())) {}
+  : _base{attr_bits & _attr_mask()}
+  , _rings{rings.value()}
+  , _sections{sections.value()} {}
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 auto unit_sphere_gen::vertex_count() -> span_size_t {
@@ -140,13 +140,13 @@ void unit_sphere_gen::wrap_coords(span<float> dest) noexcept {
 
     span_size_t k = 0;
 
-    const auto s_step = 1.F / _sections;
-    const auto r_step = 1.F / _rings;
+    const auto s_step = 1.0 / _sections;
+    const auto r_step = 1.0 / _rings;
 
     for(const auto s : integer_range(_sections + 1)) {
         for(const auto r : integer_range(_rings + 1)) {
-            dest[k++] = s * s_step;
-            dest[k++] = r * r_step;
+            dest[k++] = float(s * s_step);
+            dest[k++] = float(r * r_step);
         }
     }
 }

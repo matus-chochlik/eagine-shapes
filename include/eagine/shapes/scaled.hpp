@@ -37,8 +37,9 @@ private:
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of scaled_gen modifier.
 /// @ingroup shapes
-static inline auto
-scale(std::shared_ptr<generator> gen, std::array<float, 3> s) noexcept {
+static inline auto scale(
+  std::shared_ptr<generator> gen,
+  std::array<float, 3> s) noexcept {
     return std::make_unique<scaled_gen>(std::move(gen), s);
 }
 //------------------------------------------------------------------------------

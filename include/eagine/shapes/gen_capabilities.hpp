@@ -33,9 +33,9 @@ using generator_capabilities = bitfield<generator_capability>;
 //------------------------------------------------------------------------------
 /// @brief Bitwise-or operator for generator_capability enumerators.
 /// @ingroup shapes
-static constexpr auto
-operator|(generator_capability a, generator_capability b) noexcept
-  -> generator_capabilities {
+static constexpr auto operator|(
+  generator_capability a,
+  generator_capability b) noexcept -> generator_capabilities {
     return {a, b};
 }
 //------------------------------------------------------------------------------

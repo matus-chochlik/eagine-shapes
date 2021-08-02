@@ -135,8 +135,8 @@ auto topology::print_dot(std::ostream& out) const -> std::ostream& {
         out << "et" << lidx << "t" << ridx << ";\n";
 
         for(const auto t : integer_range(std_size(2))) {
-            auto [bi, ei] = edg.edge_vertices(t);
-            auto& tri = edg.triangle(t);
+            auto [bi, ei] = edg.edge_vertices(signedness_cast(t));
+            auto& tri = edg.triangle(signedness_cast(t));
             out << "et" << lidx << "t" << ridx << " -- "
                 << "t" << tri.index() << "[label=\"<" << bi << "," << ei
                 << ">\\n[" << tri.vertex_index(bi) << ","

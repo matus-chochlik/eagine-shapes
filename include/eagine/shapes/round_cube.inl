@@ -185,8 +185,9 @@ auto unit_round_cube_gen::index_type(drawing_variant var) -> index_data_type {
 }
 //------------------------------------------------------------------------------
 template <typename T>
-inline void
-unit_round_cube_gen::_indices(drawing_variant var, span<T> dest) noexcept {
+inline void unit_round_cube_gen::_indices(
+  drawing_variant var,
+  span<T> dest) noexcept {
     EAGINE_ASSERT(var == 0);
     EAGINE_ASSERT(dest.size() >= index_count(var));
     EAGINE_MAYBE_UNUSED(var);

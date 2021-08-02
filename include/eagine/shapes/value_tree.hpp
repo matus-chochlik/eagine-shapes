@@ -84,8 +84,9 @@ private:
 /// @see unit_screen
 /// @see unit_torus
 /// @see unit_twisted_torus
-static inline auto
-from_value_tree(valtree::compound source, main_ctx_parent parent) {
+static inline auto from_value_tree(
+  valtree::compound source,
+  main_ctx_parent parent) {
     return std::make_unique<value_tree_loader>(std::move(source), parent);
 }
 //------------------------------------------------------------------------------

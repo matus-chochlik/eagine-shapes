@@ -36,8 +36,8 @@ unit_torus_gen::unit_torus_gen(
   valid_if_greater_than<int, 3> sections,
   valid_if_ge0_lt1<float> radius_ratio) noexcept
   : _base(attr_bits & _attr_mask())
-  , _rings(span_size_t(rings.value()))
-  , _sections(span_size_t(sections.value()))
+  , _rings{rings.value()}
+  , _sections{sections.value()}
   , _radius_ratio(radius_ratio.value()) {}
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
@@ -241,13 +241,13 @@ void unit_torus_gen::wrap_coords(span<float> dest) noexcept {
 
     span_size_t k = 0;
 
-    const auto s_step = 1.F / _sections;
-    const auto r_step = 1.F / _rings;
+    const auto s_step = 1.0 / _sections;
+    const auto r_step = 1.0 / _rings;
 
     for(const auto s : integer_range(_sections + 1)) {
         for(const auto r : integer_range(_rings + 1)) {
-            dest[k++] = s * s_step;
-            dest[k++] = r * r_step;
+            dest[k++] = float(s * s_step);
+            dest[k++] = float(r * r_step);
         }
     }
 }
@@ -271,28 +271,28 @@ void unit_torus_gen::make_special_attrib_values(
                          rnd{std::normal_distribution<float>{0.F, 0.15F}},
                          snd{std::normal_distribution<float>{0.F, 0.15F}}](
                           span_size_t,
-                          span_size_t) mutable -> std::array<float, 3> {
-            return {{rnd(rrg), snd(srg), 0.F}};
+                          span_size_t) mutable -> std::array<double, 3> {
+            return {{rnd(rrg), snd(srg), 0.0}};
         };
         (this->*function)(dest, {construct_from, get_offs});
     } else if(variant_index == 2) {
-        auto get_offs = [](span_size_t s, span_size_t) -> std::array<float, 3> {
-            return {{float(s), 0.F, 0.F}};
+        auto get_offs = [](
+                          span_size_t s, span_size_t) -> std::array<double, 3> {
+            return {{double(s), 0.0, 0.0}};
         };
         (this->*function)(dest, {construct_from, get_offs});
     } else if(variant_index == 3) {
         auto get_offs =
-          [this](span_size_t s, span_size_t r) -> std::array<float, 3> {
+          [this](span_size_t s, span_size_t r) -> std::array<double, 3> {
             const auto x = float(s) / float(this->_sections);
             const auto y = float(r) / float(this->_rings);
-            return {
-              {float(math::sine_wave01(x)), float(math::sine_wave01(y)), 0.F}};
+            return {{math::sine_wave01(x), math::sine_wave01(y), 0.0}};
         };
         (this->*function)(dest, {construct_from, get_offs});
     } else {
         const auto no_offs =
-          [](span_size_t, span_size_t) -> std::array<float, 3> {
-            return {{0.F, 0.F, 0.F}};
+          [](span_size_t, span_size_t) -> std::array<double, 3> {
+            return {{0.0, 0.0, 0.0}};
         };
         (this->*function)(dest, offset_getter{no_offs});
     }

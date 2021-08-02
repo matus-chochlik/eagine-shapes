@@ -43,7 +43,7 @@ public:
       : unit_torus_gen(attr_bits, 24, 36) {}
 
     using offset_getter =
-      callable_ref<std::array<float, 3>(span_size_t, span_size_t)>;
+      callable_ref<std::array<double, 3>(span_size_t, span_size_t)>;
 
     auto vertex_count() -> span_size_t override;
 
@@ -95,8 +95,8 @@ private:
 
     const std::size_t _r_seed{1234};
     const std::size_t _s_seed{2345};
-    span_size_t _rings;
-    span_size_t _sections;
+    int _rings;
+    int _sections;
     float _radius_ratio;
 
     static auto _attr_mask() noexcept -> vertex_attrib_bits;

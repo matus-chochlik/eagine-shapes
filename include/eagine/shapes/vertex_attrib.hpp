@@ -59,8 +59,9 @@ enum class vertex_attrib_kind : std::uint16_t {
 };
 //------------------------------------------------------------------------------
 template <typename Selector>
-constexpr auto
-enumerator_mapping(type_identity<vertex_attrib_kind>, Selector) noexcept {
+constexpr auto enumerator_mapping(
+  type_identity<vertex_attrib_kind>,
+  Selector) noexcept {
     return enumerator_map_type<vertex_attrib_kind, 16>{
       {{"object_id", vertex_attrib_kind::object_id},
        {"position", vertex_attrib_kind::position},
@@ -92,9 +93,9 @@ static constexpr auto all_vertex_attrib_bits() noexcept -> vertex_attrib_bits {
 //------------------------------------------------------------------------------
 /// @brief Bitwise-or operator for vertex_attrib_kind bits.
 /// @ingroup shapes
-static constexpr auto
-operator|(vertex_attrib_kind a, vertex_attrib_kind b) noexcept
-  -> vertex_attrib_bits {
+static constexpr auto operator|(
+  vertex_attrib_kind a,
+  vertex_attrib_kind b) noexcept -> vertex_attrib_bits {
     return {a, b};
 }
 //------------------------------------------------------------------------------
@@ -140,8 +141,8 @@ public:
         return _index;
     }
 
-    constexpr
-    operator std::array<const vertex_attrib_variant, 1>() const noexcept {
+    constexpr operator std::array<const vertex_attrib_variant, 1>()
+      const noexcept {
         return {{*this}};
     }
 
@@ -150,32 +151,37 @@ public:
     }
 
     /// @brief Equality comparison.
-    friend constexpr auto
-    operator==(vertex_attrib_variant l, vertex_attrib_variant r) noexcept {
+    friend constexpr auto operator==(
+      vertex_attrib_variant l,
+      vertex_attrib_variant r) noexcept {
         return l.as_tuple() == r.as_tuple();
     }
 
     /// @brief Nonequality comparison.
-    friend constexpr auto
-    operator!=(vertex_attrib_variant l, vertex_attrib_variant r) noexcept {
+    friend constexpr auto operator!=(
+      vertex_attrib_variant l,
+      vertex_attrib_variant r) noexcept {
         return l.as_tuple() != r.as_tuple();
     }
 
     /// @brief Less-than comparison.
-    friend constexpr auto
-    operator<(vertex_attrib_variant l, vertex_attrib_variant r) noexcept {
+    friend constexpr auto operator<(
+      vertex_attrib_variant l,
+      vertex_attrib_variant r) noexcept {
         return l.as_tuple() < r.as_tuple();
     }
 
     /// @brief Variant and kind equality comparison.
-    friend constexpr auto
-    operator==(vertex_attrib_variant l, vertex_attrib_kind r) noexcept {
+    friend constexpr auto operator==(
+      vertex_attrib_variant l,
+      vertex_attrib_kind r) noexcept {
         return l._attrib == r;
     }
 
     /// @brief Variant and kind nonequality comparison.
-    friend constexpr auto
-    operator!=(vertex_attrib_variant l, vertex_attrib_kind r) noexcept {
+    friend constexpr auto operator!=(
+      vertex_attrib_variant l,
+      vertex_attrib_kind r) noexcept {
         return l._attrib != r;
     }
 
@@ -186,9 +192,9 @@ private:
 //------------------------------------------------------------------------------
 /// @brief Operator for constructing of vertex_attrib_variant from kind and index.
 /// @ingroup shapes
-static constexpr auto
-operator/(vertex_attrib_kind attrib, span_size_t variant_index) noexcept
-  -> vertex_attrib_variant {
+static constexpr auto operator/(
+  vertex_attrib_kind attrib,
+  span_size_t variant_index) noexcept -> vertex_attrib_variant {
     return {attrib, variant_index};
 }
 //------------------------------------------------------------------------------
@@ -211,9 +217,9 @@ static constexpr auto operator+(vertex_attrib_variant a) noexcept
 /// @ingroup shapes
 /// @see vertex_attrib_variant
 /// @see vertex_attrib_variants
-static constexpr auto
-operator+(vertex_attrib_variant a, vertex_attrib_variant b) noexcept
-  -> vertex_attrib_variants<2> {
+static constexpr auto operator+(
+  vertex_attrib_variant a,
+  vertex_attrib_variant b) noexcept -> vertex_attrib_variants<2> {
     return {{a, b}};
 }
 //------------------------------------------------------------------------------
@@ -231,9 +237,9 @@ static constexpr auto do_append_attrib(
 /// @see vertex_attrib_variant
 /// @see vertex_attrib_variants
 template <std::size_t N>
-static constexpr auto
-operator+(const vertex_attrib_variants<N>& a, vertex_attrib_variant b) noexcept
-  -> vertex_attrib_variants<N + 1> {
+static constexpr auto operator+(
+  const vertex_attrib_variants<N>& a,
+  vertex_attrib_variant b) noexcept -> vertex_attrib_variants<N + 1> {
     return do_append_attrib(a, b, std::make_index_sequence<N>());
 }
 //------------------------------------------------------------------------------
@@ -241,9 +247,8 @@ operator+(const vertex_attrib_variants<N>& a, vertex_attrib_variant b) noexcept
 /// @ingroup shapes
 /// @see vertex_attrib_bits
 template <std::size_t N>
-static inline auto
-get_attrib_bits(const vertex_attrib_variants<N>& vaals) noexcept
-  -> vertex_attrib_bits {
+static inline auto get_attrib_bits(
+  const vertex_attrib_variants<N>& vaals) noexcept -> vertex_attrib_bits {
     vertex_attrib_bits res;
 
     for(const vertex_attrib_variant& vaal : vaals) {

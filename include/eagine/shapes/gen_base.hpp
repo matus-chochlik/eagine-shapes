@@ -205,9 +205,9 @@ struct generator : interface<generator> {
     }
 
     /// @brief Returns the parameter for the nearest intersection with a ray.
-    auto
-    ray_intersection(drawing_variant var, const math::line<float, true>& ray)
-      -> optionally_valid<float> {
+    auto ray_intersection(
+      drawing_variant var,
+      const math::line<float, true>& ray) -> optionally_valid<float> {
         optionally_valid<float> result{};
         ray_intersections(var, view_one(ray), cover_one(result));
         return result;

@@ -68,8 +68,8 @@ public:
 private:
     using _base = centered_unit_shape_generator_base;
 
-    span_size_t _rings;
-    span_size_t _sections;
+    int _rings;
+    int _sections;
 
     static auto _attr_mask() noexcept -> vertex_attrib_bits;
 

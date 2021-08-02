@@ -66,8 +66,8 @@ static inline auto add_triangle_adjacency(
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of triangle_adjacency_gen modifier.
 /// @ingroup shapes
-static inline auto
-add_triangle_adjacency(std::shared_ptr<generator> gen) noexcept {
+static inline auto add_triangle_adjacency(
+  std::shared_ptr<generator> gen) noexcept {
     return std::make_unique<triangle_adjacency_gen>(std::move(gen));
 }
 //------------------------------------------------------------------------------
