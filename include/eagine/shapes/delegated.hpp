@@ -27,11 +27,12 @@ public:
         return _gen->attrib_bits();
     }
 
-    auto enable(generator_capability cap, bool value) noexcept -> bool final {
+    auto enable(const generator_capability cap, const bool value) noexcept
+      -> bool final {
         return _gen->enable(cap, value);
     }
 
-    auto is_enabled(generator_capability cap) noexcept -> bool final {
+    auto is_enabled(const generator_capability cap) noexcept -> bool final {
         return _gen->is_enabled(cap);
     }
 
@@ -39,51 +40,59 @@ public:
         return _gen->vertex_count();
     }
 
-    auto attribute_variants(vertex_attrib_kind attrib) -> span_size_t override {
+    auto attribute_variants(const vertex_attrib_kind attrib)
+      -> span_size_t override {
         return _gen->attribute_variants(attrib);
     }
 
-    auto variant_name(vertex_attrib_variant vav) -> string_view override {
+    auto variant_name(const vertex_attrib_variant vav) -> string_view override {
         return _gen->variant_name(vav);
     }
 
-    auto values_per_vertex(vertex_attrib_variant vav) -> span_size_t override {
+    auto values_per_vertex(const vertex_attrib_variant vav)
+      -> span_size_t override {
         return _gen->values_per_vertex(vav);
     }
 
-    auto attrib_type(vertex_attrib_variant vav) -> attrib_data_type override {
+    auto attrib_type(const vertex_attrib_variant vav)
+      -> attrib_data_type override {
         return _gen->attrib_type(vav);
     }
 
-    auto is_attrib_normalized(vertex_attrib_variant vav) -> bool override {
+    auto is_attrib_normalized(const vertex_attrib_variant vav)
+      -> bool override {
         return _gen->is_attrib_normalized(vav);
     }
 
-    void attrib_values(vertex_attrib_variant vav, span<byte> dest) override {
-        _gen->attrib_values(vav, dest);
-    }
-
-    void attrib_values(vertex_attrib_variant vav, span<std::int16_t> dest)
+    void attrib_values(const vertex_attrib_variant vav, span<byte> dest)
       override {
         _gen->attrib_values(vav, dest);
     }
 
-    void attrib_values(vertex_attrib_variant vav, span<std::int32_t> dest)
+    void attrib_values(const vertex_attrib_variant vav, span<std::int16_t> dest)
       override {
         _gen->attrib_values(vav, dest);
     }
 
-    void attrib_values(vertex_attrib_variant vav, span<std::uint16_t> dest)
+    void attrib_values(const vertex_attrib_variant vav, span<std::int32_t> dest)
       override {
         _gen->attrib_values(vav, dest);
     }
 
-    void attrib_values(vertex_attrib_variant vav, span<std::uint32_t> dest)
-      override {
+    void attrib_values(
+      const vertex_attrib_variant vav,
+      span<std::uint16_t> dest) override {
         _gen->attrib_values(vav, dest);
     }
 
-    void attrib_values(vertex_attrib_variant vav, span<float> dest) override {
+    void attrib_values(
+      const vertex_attrib_variant vav,
+      span<std::uint32_t> dest) override {
+        _gen->attrib_values(vav, dest);
+    }
+
+    void attrib_values(const vertex_attrib_variant vav, span<float> dest)
+      override {
         _gen->attrib_values(vav, dest);
     }
 
@@ -91,31 +100,32 @@ public:
         return _gen->draw_variant_count();
     }
 
-    auto index_type(drawing_variant var) -> index_data_type override {
+    auto index_type(const drawing_variant var) -> index_data_type override {
         return _gen->index_type(var);
     }
 
-    auto index_count(drawing_variant var) -> span_size_t override {
+    auto index_count(const drawing_variant var) -> span_size_t override {
         return _gen->index_count(var);
     }
 
-    void indices(drawing_variant var, span<std::uint8_t> dest) override {
+    void indices(const drawing_variant var, span<std::uint8_t> dest) override {
         _gen->indices(var, dest);
     }
 
-    void indices(drawing_variant var, span<std::uint16_t> dest) override {
+    void indices(const drawing_variant var, span<std::uint16_t> dest) override {
         _gen->indices(var, dest);
     }
 
-    void indices(drawing_variant var, span<std::uint32_t> dest) override {
+    void indices(const drawing_variant var, span<std::uint32_t> dest) override {
         _gen->indices(var, dest);
     }
 
-    auto operation_count(drawing_variant var) -> span_size_t override {
+    auto operation_count(const drawing_variant var) -> span_size_t override {
         return _gen->operation_count(var);
     }
 
-    void instructions(drawing_variant var, span<draw_operation> ops) override {
+    void instructions(const drawing_variant var, span<draw_operation> ops)
+      override {
         _gen->instructions(var, ops);
     }
 

@@ -27,8 +27,9 @@ auto combined_gen::attrib_bits() noexcept -> vertex_attrib_bits {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto combined_gen::enable(generator_capability cap, bool value) noexcept
-  -> bool {
+auto combined_gen::enable(
+  const generator_capability cap,
+  const bool value) noexcept -> bool {
     // TODO: some sort of transation (set all or none)?
     bool result = true;
     for(const auto& gen : _gens) {
@@ -38,7 +39,7 @@ auto combined_gen::enable(generator_capability cap, bool value) noexcept
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto combined_gen::is_enabled(generator_capability cap) noexcept -> bool {
+auto combined_gen::is_enabled(const generator_capability cap) noexcept -> bool {
     for(const auto& gen : _gens) {
         if(!gen->is_enabled(cap)) {
             return false;
@@ -57,7 +58,7 @@ auto combined_gen::vertex_count() -> span_size_t {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto combined_gen::attribute_variants(vertex_attrib_kind attrib)
+auto combined_gen::attribute_variants(const vertex_attrib_kind attrib)
   -> span_size_t {
     span_size_t result{0};
     for(auto& gen : _gens) {
@@ -67,7 +68,8 @@ auto combined_gen::attribute_variants(vertex_attrib_kind attrib)
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto combined_gen::variant_name(vertex_attrib_variant vav) -> string_view {
+auto combined_gen::variant_name(const vertex_attrib_variant vav)
+  -> string_view {
     if(!_gens.empty()) {
         return _gens.front()->variant_name(vav);
     }
@@ -75,7 +77,8 @@ auto combined_gen::variant_name(vertex_attrib_variant vav) -> string_view {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto combined_gen::values_per_vertex(vertex_attrib_variant vav) -> span_size_t {
+auto combined_gen::values_per_vertex(const vertex_attrib_variant vav)
+  -> span_size_t {
     span_size_t result{0};
     for(auto& gen : _gens) {
         result = math::maximum(result, gen->values_per_vertex(vav));
@@ -84,7 +87,8 @@ auto combined_gen::values_per_vertex(vertex_attrib_variant vav) -> span_size_t {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto combined_gen::attrib_type(vertex_attrib_variant vav) -> attrib_data_type {
+auto combined_gen::attrib_type(const vertex_attrib_variant vav)
+  -> attrib_data_type {
     auto result = attrib_data_type::none;
     for(const auto& gen : _gens) {
         auto temp = gen->attrib_type(vav);
@@ -99,7 +103,8 @@ auto combined_gen::attrib_type(vertex_attrib_variant vav) -> attrib_data_type {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto combined_gen::is_attrib_normalized(vertex_attrib_variant vav) -> bool {
+auto combined_gen::is_attrib_normalized(const vertex_attrib_variant vav)
+  -> bool {
     bool result = true;
     for(const auto& gen : _gens) {
         result &= gen->is_attrib_normalized(vav);
@@ -108,7 +113,9 @@ auto combined_gen::is_attrib_normalized(vertex_attrib_variant vav) -> bool {
 }
 //------------------------------------------------------------------------------
 template <typename T>
-void combined_gen::_attrib_values(vertex_attrib_variant vav, span<T> dest) {
+void combined_gen::_attrib_values(
+  const vertex_attrib_variant vav,
+  span<T> dest) {
     const auto vpv = values_per_vertex(vav);
     span_size_t offset{0};
     for(const auto& gen : _gens) {
@@ -122,40 +129,44 @@ void combined_gen::_attrib_values(vertex_attrib_variant vav, span<T> dest) {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void combined_gen::attrib_values(vertex_attrib_variant vav, span<byte> dest) {
+void combined_gen::attrib_values(
+  const vertex_attrib_variant vav,
+  span<byte> dest) {
     _attrib_values(vav, dest);
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void combined_gen::attrib_values(
-  vertex_attrib_variant vav,
+  const vertex_attrib_variant vav,
   span<std::int16_t> dest) {
     _attrib_values(vav, dest);
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void combined_gen::attrib_values(
-  vertex_attrib_variant vav,
+  const vertex_attrib_variant vav,
   span<std::int32_t> dest) {
     _attrib_values(vav, dest);
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void combined_gen::attrib_values(
-  vertex_attrib_variant vav,
+  const vertex_attrib_variant vav,
   span<std::uint16_t> dest) {
     _attrib_values(vav, dest);
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void combined_gen::attrib_values(
-  vertex_attrib_variant vav,
+  const vertex_attrib_variant vav,
   span<std::uint32_t> dest) {
     _attrib_values(vav, dest);
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void combined_gen::attrib_values(vertex_attrib_variant vav, span<float> dest) {
+void combined_gen::attrib_values(
+  const vertex_attrib_variant vav,
+  span<float> dest) {
     _attrib_values(vav, dest);
 }
 //------------------------------------------------------------------------------
@@ -169,7 +180,7 @@ auto combined_gen::draw_variant_count() -> span_size_t {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto combined_gen::index_type(drawing_variant var) -> index_data_type {
+auto combined_gen::index_type(const drawing_variant var) -> index_data_type {
     for(auto& gen : _gens) {
         if(gen->index_type(var) != index_data_type::none) {
             // TODO: smaller type if the indices fit
@@ -180,7 +191,7 @@ auto combined_gen::index_type(drawing_variant var) -> index_data_type {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto combined_gen::index_count(drawing_variant var) -> span_size_t {
+auto combined_gen::index_count(const drawing_variant var) -> span_size_t {
     span_size_t result{0};
     for(const auto& gen : _gens) {
         result += gen->index_count(var);
@@ -189,7 +200,7 @@ auto combined_gen::index_count(drawing_variant var) -> span_size_t {
 }
 //------------------------------------------------------------------------------
 template <typename T>
-void combined_gen::_indices(drawing_variant var, span<T> dest) {
+void combined_gen::_indices(const drawing_variant var, span<T> dest) {
     const auto npri = limit_cast<T>(vertex_count());
     span_size_t idx_offset{0};
     span_size_t spn_offset{0};
@@ -211,7 +222,7 @@ void combined_gen::_indices(drawing_variant var, span<T> dest) {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void combined_gen::indices(drawing_variant var, span<std::uint8_t> dest) {
+void combined_gen::indices(const drawing_variant var, span<std::uint8_t> dest) {
     if(index_type(var) <= index_data_type::unsigned_8) {
         _indices(var, dest);
     } else {
@@ -220,7 +231,7 @@ void combined_gen::indices(drawing_variant var, span<std::uint8_t> dest) {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void combined_gen::indices(drawing_variant var, span<std::uint16_t> dest) {
+void combined_gen::indices(const drawing_variant var, span<std::uint16_t> dest) {
     if(index_type(var) <= index_data_type::unsigned_16) {
         _indices(var, dest);
     } else {
@@ -229,7 +240,7 @@ void combined_gen::indices(drawing_variant var, span<std::uint16_t> dest) {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void combined_gen::indices(drawing_variant var, span<std::uint32_t> dest) {
+void combined_gen::indices(const drawing_variant var, span<std::uint32_t> dest) {
     if(index_type(var) <= index_data_type::unsigned_32) {
         _indices(var, dest);
     } else {
@@ -238,7 +249,7 @@ void combined_gen::indices(drawing_variant var, span<std::uint32_t> dest) {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto combined_gen::operation_count(drawing_variant var) -> span_size_t {
+auto combined_gen::operation_count(const drawing_variant var) -> span_size_t {
     span_size_t result{0};
     for(const auto& gen : _gens) {
         result += gen->operation_count(var);
@@ -247,7 +258,9 @@ auto combined_gen::operation_count(drawing_variant var) -> span_size_t {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void combined_gen::instructions(drawing_variant var, span<draw_operation> ops) {
+void combined_gen::instructions(
+  const drawing_variant var,
+  span<draw_operation> ops) {
     const auto npri = limit_cast<unsigned>(vertex_count());
     const auto it = index_type(var);
     span_size_t op_offset{0};
@@ -275,8 +288,8 @@ void combined_gen::instructions(drawing_variant var, span<draw_operation> ops) {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void combined_gen::ray_intersections(
-  drawing_variant var,
-  span<const math::line<float, true>> rays,
+  const drawing_variant var,
+  const span<const math::line<float, true>> rays,
   span<optionally_valid<float>> intersections) {
 
     for(auto& gen : _gens) {

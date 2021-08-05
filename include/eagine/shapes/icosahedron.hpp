@@ -21,28 +21,28 @@ namespace shapes {
 /// @see unit_icosahedron
 class unit_icosahedron_gen : public centered_unit_shape_generator_base {
 public:
-    unit_icosahedron_gen(vertex_attrib_bits attr_bits) noexcept;
+    unit_icosahedron_gen(const vertex_attrib_bits attr_bits) noexcept;
 
     auto vertex_count() -> span_size_t override;
 
     void positions(span<float> dest) noexcept;
     void normals(span<float> dest) noexcept;
 
-    void attrib_values(vertex_attrib_variant, span<float>) override;
+    void attrib_values(const vertex_attrib_variant, span<float>) override;
 
-    auto index_type(drawing_variant) -> index_data_type override;
+    auto index_type(const drawing_variant) -> index_data_type override;
 
-    auto index_count(drawing_variant) -> span_size_t override;
+    auto index_count(const drawing_variant) -> span_size_t override;
 
-    void indices(drawing_variant, span<std::uint8_t> dest) override;
+    void indices(const drawing_variant, span<std::uint8_t> dest) override;
 
-    void indices(drawing_variant, span<std::uint16_t> dest) override;
+    void indices(const drawing_variant, span<std::uint16_t> dest) override;
 
-    void indices(drawing_variant, span<std::uint32_t> dest) override;
+    void indices(const drawing_variant, span<std::uint32_t> dest) override;
 
-    auto operation_count(drawing_variant) -> span_size_t override;
+    auto operation_count(const drawing_variant) -> span_size_t override;
 
-    void instructions(drawing_variant, span<draw_operation> ops) override;
+    void instructions(const drawing_variant, span<draw_operation> ops) override;
 
     auto bounding_sphere() -> math::sphere<float, true> override;
 
@@ -56,7 +56,7 @@ private:
     auto _only_shared_attribs() noexcept -> bool;
 
     template <typename T>
-    void _indices(drawing_variant, span<T> dest) noexcept;
+    void _indices(const drawing_variant, span<T> dest) noexcept;
 };
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of unit_icosahedron_gen.

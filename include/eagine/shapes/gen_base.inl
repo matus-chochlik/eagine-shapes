@@ -66,8 +66,8 @@ auto generator::bounding_sphere() -> math::sphere<float, true> {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void generator::ray_intersections(
-  drawing_variant var,
-  span<const math::line<float, true>> rays,
+  const drawing_variant var,
+  const span<const math::line<float, true>> rays,
   span<optionally_valid<float>> intersections) {
 
     EAGINE_ASSERT(intersections.size() >= rays.size());
@@ -96,8 +96,8 @@ void generator::ray_intersections(
         }
     }
 
-    auto intersect = [&ray_idx, &rays, &intersections](
-                       const auto& fce, bool cw) {
+    const auto intersect = [&ray_idx, &rays, &intersections](
+                             const auto& fce, bool cw) {
         for(const auto i : ray_idx) {
             const auto& ray = rays[i];
             const auto nparam =
@@ -115,7 +115,7 @@ void generator::ray_intersections(
         }
     };
 
-    auto coord = [&pos, &idx, vpv](auto vx, auto cr, bool idxd) {
+    const auto coord = [&pos, &idx, vpv](auto vx, auto cr, bool idxd) {
         if(idxd) {
             return pos[std_size(span_size(idx[std_size(vx)]) * vpv + cr)];
         } else {
@@ -169,23 +169,25 @@ void generator::ray_intersections(
 //------------------------------------------------------------------------------
 // generator_base
 //------------------------------------------------------------------------------
-EAGINE_LIB_FUNC auto generator_base::index_type(drawing_variant)
+EAGINE_LIB_FUNC auto generator_base::index_type(const drawing_variant)
   -> index_data_type {
     return index_data_type::none;
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto generator_base::index_count(drawing_variant) -> span_size_t {
+auto generator_base::index_count(const drawing_variant) -> span_size_t {
     return 0;
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void generator_base::indices(drawing_variant, span<std::uint8_t>) {
+void generator_base::indices(const drawing_variant, span<std::uint8_t>) {
     EAGINE_UNREACHABLE("Invalid function called for this index data type");
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void generator_base::indices(drawing_variant var, span<std::uint16_t> dest) {
+void generator_base::indices(
+  const drawing_variant var,
+  span<std::uint16_t> dest) {
     if(index_type(var) == index_data_type::unsigned_8) {
         std::vector<std::uint8_t> tmp(std_size(index_count(var)));
         indices(var, cover(tmp));
@@ -194,7 +196,9 @@ void generator_base::indices(drawing_variant var, span<std::uint16_t> dest) {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void generator_base::indices(drawing_variant var, span<std::uint32_t> dest) {
+void generator_base::indices(
+  const drawing_variant var,
+  span<std::uint32_t> dest) {
     const auto ity = index_type(var);
     if(ity == index_data_type::unsigned_8) {
         std::vector<std::uint8_t> tmp(std_size(index_count(var)));
@@ -211,7 +215,7 @@ void generator_base::indices(drawing_variant var, span<std::uint32_t> dest) {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void centered_unit_shape_generator_base::attrib_values(
-  vertex_attrib_variant vav,
+  const vertex_attrib_variant vav,
   span<float> dest) {
     if(vav.attribute() == vertex_attrib_kind::box_coord) {
         this->attrib_values({vertex_attrib_kind::position, vav}, dest);

@@ -23,7 +23,7 @@ class triangle_adjacency_gen : public delegated_gen {
 public:
     triangle_adjacency_gen(
       std::shared_ptr<generator> gen,
-      drawing_variant var) noexcept
+      const drawing_variant var) noexcept
       : delegated_gen{std::move(gen)} {
         _topology(var);
     }
@@ -32,26 +32,26 @@ public:
       : triangle_adjacency_gen{std::move(gen), 0} {}
 
     auto index_type(const topology&) -> index_data_type;
-    auto index_type(drawing_variant) -> index_data_type override;
+    auto index_type(const drawing_variant) -> index_data_type override;
 
     auto index_count(const topology&) -> span_size_t;
-    auto index_count(drawing_variant) -> span_size_t override;
+    auto index_count(const drawing_variant) -> span_size_t override;
 
-    void indices(drawing_variant, span<std::uint8_t> dest) override;
+    void indices(const drawing_variant, span<std::uint8_t> dest) override;
 
-    void indices(drawing_variant, span<std::uint16_t> dest) override;
+    void indices(const drawing_variant, span<std::uint16_t> dest) override;
 
-    void indices(drawing_variant, span<std::uint32_t> dest) override;
+    void indices(const drawing_variant, span<std::uint32_t> dest) override;
 
-    auto operation_count(drawing_variant) -> span_size_t override;
+    auto operation_count(const drawing_variant) -> span_size_t override;
 
-    void instructions(drawing_variant, span<draw_operation> ops) override;
+    void instructions(const drawing_variant, span<draw_operation> ops) override;
 
 private:
-    auto _topology(drawing_variant var) noexcept -> topology&;
+    auto _topology(const drawing_variant var) noexcept -> topology&;
 
     template <typename T>
-    void _indices(drawing_variant, span<T> dest) noexcept;
+    void _indices(const drawing_variant, span<T> dest) noexcept;
 
     flat_map<drawing_variant, topology> _topologies;
 };
@@ -60,7 +60,7 @@ private:
 /// @ingroup shapes
 static inline auto add_triangle_adjacency(
   std::shared_ptr<generator> gen,
-  drawing_variant var) noexcept {
+  const drawing_variant var) noexcept {
     return std::make_unique<triangle_adjacency_gen>(std::move(gen), var);
 }
 //------------------------------------------------------------------------------

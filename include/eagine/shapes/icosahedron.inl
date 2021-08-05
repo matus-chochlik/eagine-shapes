@@ -35,7 +35,8 @@ auto unit_icosahedron_gen::_only_shared_attribs() noexcept -> bool {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-unit_icosahedron_gen::unit_icosahedron_gen(vertex_attrib_bits attr_bits) noexcept
+unit_icosahedron_gen::unit_icosahedron_gen(
+  const vertex_attrib_bits attr_bits) noexcept
   : _base(attr_bits & _attr_mask()) {}
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
@@ -93,7 +94,7 @@ void unit_icosahedron_gen::normals(span<float> dest) noexcept {
 }
 //------------------------------------------------------------------------------
 void unit_icosahedron_gen::attrib_values(
-  vertex_attrib_variant vav,
+  const vertex_attrib_variant vav,
   span<float> dest) {
     switch(vav.attribute()) {
         case vertex_attrib_kind::position:
@@ -122,17 +123,20 @@ void unit_icosahedron_gen::attrib_values(
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto unit_icosahedron_gen::index_type(drawing_variant) -> index_data_type {
+auto unit_icosahedron_gen::index_type(const drawing_variant)
+  -> index_data_type {
     return index_data_type::unsigned_8;
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto unit_icosahedron_gen::index_count(drawing_variant) -> span_size_t {
+auto unit_icosahedron_gen::index_count(const drawing_variant) -> span_size_t {
     return 20 * 3;
 }
 //------------------------------------------------------------------------------
 template <typename T>
-void unit_icosahedron_gen::_indices(drawing_variant var, span<T> dest) noexcept {
+void unit_icosahedron_gen::_indices(
+  const drawing_variant var,
+  span<T> dest) noexcept {
     EAGINE_ASSERT(dest.size() >= index_count(var));
     EAGINE_MAYBE_UNUSED(var);
 
@@ -211,33 +215,34 @@ void unit_icosahedron_gen::_indices(drawing_variant var, span<T> dest) noexcept 
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void unit_icosahedron_gen::indices(
-  drawing_variant var,
+  const drawing_variant var,
   span<std::uint8_t> dest) {
     _indices(var, dest);
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void unit_icosahedron_gen::indices(
-  drawing_variant var,
+  const drawing_variant var,
   span<std::uint16_t> dest) {
     _indices(var, dest);
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void unit_icosahedron_gen::indices(
-  drawing_variant var,
+  const drawing_variant var,
   span<std::uint32_t> dest) {
     _indices(var, dest);
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto unit_icosahedron_gen::operation_count(drawing_variant) -> span_size_t {
+auto unit_icosahedron_gen::operation_count(const drawing_variant)
+  -> span_size_t {
     return 1;
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void unit_icosahedron_gen::instructions(
-  drawing_variant var,
+  const drawing_variant var,
   span<draw_operation> ops) {
     EAGINE_ASSERT(ops.size() >= operation_count(var));
 
