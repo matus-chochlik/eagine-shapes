@@ -29,24 +29,24 @@ class mesh_edge {
 public:
     mesh_edge(
       mesh_triangle& a,
-      std::uint8_t aeb,
-      std::uint8_t aee,
+      const std::uint8_t aeb,
+      const std::uint8_t aee,
       mesh_triangle& b,
-      std::uint8_t beb,
-      std::uint8_t bee) noexcept
+      const std::uint8_t beb,
+      const std::uint8_t bee) noexcept
       : _triangles{{&a, &b}}
       , _edge_indices{{aeb, aee, beb, bee}} {}
 
     /// @brief Returns one of the two adjacent triangle faces.
     /// @pre i >= 0 && i < 2
-    auto triangle(span_size_t i) const noexcept -> const mesh_triangle& {
+    auto triangle(const span_size_t i) const noexcept -> const mesh_triangle& {
         EAGINE_ASSERT(i >= 0 && i < 2);
         return *_triangles[std_size(i)];
     }
 
     /// @brief Returns a pair of vertex indices (0,1 or 2) defining the i-th edge.
     /// @pre i >= 0 && i < 2
-    auto edge_vertices(span_size_t i) const noexcept
+    auto edge_vertices(const span_size_t i) const noexcept
       -> std::tuple<unsigned, unsigned> {
         EAGINE_ASSERT(i >= 0 && i < 2);
         return {
@@ -65,10 +65,10 @@ private:
 class mesh_triangle {
 public:
     mesh_triangle(
-      std::size_t tri_idx,
-      unsigned a,
-      unsigned b,
-      unsigned c) noexcept
+      const std::size_t tri_idx,
+      const unsigned a,
+      const unsigned b,
+      const unsigned c) noexcept
       : _tri_idx{tri_idx}
       , _indices{{a, b, c}} {}
 
@@ -85,7 +85,7 @@ public:
 
     /// @brief Returns the v-th vertex index.
     /// @pre v >= 0 && v < 3
-    auto vertex_index(span_size_t v) const noexcept {
+    auto vertex_index(const span_size_t v) const noexcept {
         EAGINE_ASSERT(v >= 0 && v < 3);
         return _indices[std_size(v)];
     }
@@ -93,7 +93,7 @@ public:
     /// @brief Returns the triangle adjacent through the v-th edge.
     /// @pre v >= 0 && v < 3
     /// @see opposite_vertex
-    auto adjacent_triangle(span_size_t v) const noexcept
+    auto adjacent_triangle(const span_size_t v) const noexcept
       -> const mesh_triangle* {
         EAGINE_ASSERT(v >= 0 && v < 3);
         return _adjacent[std_size(v)];
@@ -103,7 +103,7 @@ public:
     /// @pre v >= 0 && v < 3
     /// @see adjacent_triangle
     /// @see opposite_index
-    auto opposite_vertex(span_size_t v) const noexcept -> unsigned {
+    auto opposite_vertex(const span_size_t v) const noexcept -> unsigned {
         EAGINE_ASSERT(v >= 0 && v < 3);
         return _opposite[std_size(v)];
     }
@@ -112,7 +112,7 @@ public:
     /// @pre v >= 0 && v < 3
     /// @see opposite_vertex
     /// @see adjacent_triangle
-    auto opposite_index(span_size_t v) const noexcept -> unsigned {
+    auto opposite_index(const span_size_t v) const noexcept -> unsigned {
         if(auto tri{adjacent_triangle(v)}) {
             return extract(tri).vertex_index(opposite_vertex(v));
         }
@@ -120,27 +120,27 @@ public:
     }
 
 private:
-    auto curri(std::size_t i) const noexcept -> unsigned {
+    auto curri(const std::size_t i) const noexcept -> unsigned {
         return _indices[i];
     }
 
-    static auto prevv(std::size_t i) noexcept -> unsigned {
+    static auto prevv(const std::size_t i) noexcept -> unsigned {
         return (i + 2) % 3;
     }
 
-    auto previ(std::size_t i) const noexcept -> unsigned {
+    auto previ(const std::size_t i) const noexcept -> unsigned {
         return _indices[prevv(i)];
     }
 
-    static auto nextv(std::size_t i) noexcept -> unsigned {
+    static auto nextv(const std::size_t i) noexcept -> unsigned {
         return (i + 1) % 3;
     }
 
-    auto nexti(std::size_t i) const noexcept -> unsigned {
+    auto nexti(const std::size_t i) const noexcept -> unsigned {
         return _indices[nextv(i)];
     }
 
-    static auto narrow(std::size_t i) noexcept -> std::uint8_t {
+    static auto narrow(const std::size_t i) noexcept -> std::uint8_t {
         return limit_cast<std::uint8_t>(i);
     }
 
@@ -159,8 +159,8 @@ public:
     /// @brief Construction from a generator, drawing and attribute variant.
     topology(
       std::shared_ptr<generator> gen,
-      drawing_variant var,
-      vertex_attrib_variant vav)
+      const drawing_variant var,
+      const vertex_attrib_variant vav)
       : _gen{std::move(gen)} {
         _scan_topology(var, vav);
     }
@@ -175,7 +175,7 @@ public:
     }
 
     /// @brief Returns the i-th triangle in the mesh.
-    auto triangle(span_size_t i) const noexcept -> const mesh_triangle& {
+    auto triangle(const span_size_t i) const noexcept -> const mesh_triangle& {
         return _triangles[std_size(i)];
     }
 
@@ -183,12 +183,14 @@ public:
 
 private:
     template <typename I>
-    static auto to_index(I i) noexcept
+    static auto to_index(const I i) noexcept
       -> std::enable_if_t<std::is_integral_v<I>, unsigned> {
         return limit_cast<unsigned>(i);
     }
 
-    void _scan_topology(drawing_variant var, vertex_attrib_variant vav);
+    void _scan_topology(
+      const drawing_variant var,
+      const vertex_attrib_variant vav);
 
     std::shared_ptr<generator> _gen;
     std::vector<mesh_triangle> _triangles;

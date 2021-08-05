@@ -33,33 +33,36 @@ public:
 
     auto vertex_count() -> span_size_t override;
 
-    auto attribute_variants(vertex_attrib_kind) -> span_size_t override;
+    auto attribute_variants(const vertex_attrib_kind) -> span_size_t override;
 
-    auto variant_name(vertex_attrib_variant) -> string_view override;
+    auto variant_name(const vertex_attrib_variant) -> string_view override;
 
-    auto values_per_vertex(vertex_attrib_variant) -> span_size_t override;
+    auto values_per_vertex(const vertex_attrib_variant) -> span_size_t override;
 
-    auto attrib_type(vertex_attrib_variant vav) -> attrib_data_type override;
+    auto attrib_type(const vertex_attrib_variant vav)
+      -> attrib_data_type override;
 
-    auto is_attrib_normalized(vertex_attrib_variant) -> bool override;
+    auto is_attrib_normalized(const vertex_attrib_variant) -> bool override;
 
-    void attrib_values(vertex_attrib_variant, span<byte>) override;
-    void attrib_values(vertex_attrib_variant, span<std::int16_t>) override;
-    void attrib_values(vertex_attrib_variant, span<std::int32_t>) override;
-    void attrib_values(vertex_attrib_variant, span<std::uint16_t>) override;
-    void attrib_values(vertex_attrib_variant, span<std::uint32_t>) override;
-    void attrib_values(vertex_attrib_variant, span<float>) override;
+    void attrib_values(const vertex_attrib_variant, span<byte>) override;
+    void attrib_values(const vertex_attrib_variant, span<std::int16_t>) override;
+    void attrib_values(const vertex_attrib_variant, span<std::int32_t>) override;
+    void attrib_values(const vertex_attrib_variant, span<std::uint16_t>)
+      override;
+    void attrib_values(const vertex_attrib_variant, span<std::uint32_t>)
+      override;
+    void attrib_values(const vertex_attrib_variant, span<float>) override;
 
-    auto index_type(drawing_variant) -> index_data_type override;
+    auto index_type(const drawing_variant) -> index_data_type override;
 
-    auto index_count(drawing_variant) -> span_size_t override;
+    auto index_count(const drawing_variant) -> span_size_t override;
 
-    void indices(drawing_variant, span<std::uint16_t> dest) override;
-    void indices(drawing_variant, span<std::uint32_t> dest) override;
+    void indices(const drawing_variant, span<std::uint16_t> dest) override;
+    void indices(const drawing_variant, span<std::uint32_t> dest) override;
 
-    auto operation_count(drawing_variant) -> span_size_t override;
+    auto operation_count(const drawing_variant) -> span_size_t override;
 
-    void instructions(drawing_variant, span<draw_operation> ops) override;
+    void instructions(const drawing_variant, span<draw_operation> ops) override;
 
 private:
     using _base = centered_unit_shape_generator_base;
@@ -72,7 +75,7 @@ private:
       -> vertex_attrib_bits;
 
     template <typename T>
-    void _attrib_values(vertex_attrib_variant, span<T>);
+    void _attrib_values(const vertex_attrib_variant, span<T>);
 };
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of value_tree_loader.

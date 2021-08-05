@@ -22,11 +22,13 @@ namespace shapes {
 class occluded_gen : public delegated_gen {
 
 public:
-    occluded_gen(std::shared_ptr<generator> gen, span_size_t samples) noexcept
+    occluded_gen(
+      std::shared_ptr<generator> gen,
+      const span_size_t samples) noexcept
       : delegated_gen{std::move(gen)}
       , _samples{samples} {}
 
-    void attrib_values(vertex_attrib_variant, span<float>) override;
+    void attrib_values(const vertex_attrib_variant, span<float>) override;
 
 private:
     span_size_t _samples{64};
@@ -36,7 +38,7 @@ private:
 /// @ingroup shapes
 static inline auto occlude(
   std::shared_ptr<generator> gen,
-  span_size_t samples = 8) noexcept {
+  const span_size_t samples = 8) noexcept {
     return std::make_unique<occluded_gen>(std::move(gen), samples);
 }
 //------------------------------------------------------------------------------

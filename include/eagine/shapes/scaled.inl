@@ -11,7 +11,9 @@ namespace eagine {
 namespace shapes {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void scaled_gen::attrib_values(vertex_attrib_variant vav, span<float> dest) {
+void scaled_gen::attrib_values(
+  const vertex_attrib_variant vav,
+  span<float> dest) {
     delegated_gen::attrib_values(vav, dest);
 
     const bool is_scaled_attrib = vav == vertex_attrib_kind::position ||

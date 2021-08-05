@@ -24,7 +24,7 @@ public:
     to_patches_gen(std::shared_ptr<generator> gen) noexcept
       : delegated_gen{std::move(gen)} {}
 
-    void instructions(drawing_variant, span<draw_operation> ops) override;
+    void instructions(const drawing_variant, span<draw_operation> ops) override;
 };
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of to_patches_gen modifier.

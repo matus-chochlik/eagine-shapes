@@ -27,11 +27,11 @@ auto unit_twisted_torus_gen::_attr_mask() noexcept -> vertex_attrib_bits {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 unit_twisted_torus_gen::unit_twisted_torus_gen(
-  vertex_attrib_bits attr_bits,
-  int twist,
-  valid_if_greater_than<int, 2> rings,
-  valid_if_greater_than<int, 3> sections,
-  valid_if_ge0_lt1<float> radius_ratio) noexcept
+  const vertex_attrib_bits attr_bits,
+  const int twist,
+  const valid_if_greater_than<int, 2>& rings,
+  const valid_if_greater_than<int, 3>& sections,
+  const valid_if_ge0_lt1<float>& radius_ratio) noexcept
   : _base{attr_bits & _attr_mask()}
   , _twist{twist}
   , _rings{rings.value()}
@@ -225,7 +225,7 @@ void unit_twisted_torus_gen::wrap_coords(span<float> dest) noexcept {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void unit_twisted_torus_gen::attrib_values(
-  vertex_attrib_variant vav,
+  const vertex_attrib_variant vav,
   span<float> dest) {
     switch(vav.attribute()) {
         case vertex_attrib_kind::position:
@@ -256,13 +256,14 @@ void unit_twisted_torus_gen::attrib_values(
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto unit_twisted_torus_gen::operation_count(drawing_variant) -> span_size_t {
+auto unit_twisted_torus_gen::operation_count(const drawing_variant)
+  -> span_size_t {
     return _sections * 4;
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void unit_twisted_torus_gen::instructions(
-  drawing_variant var,
+  const drawing_variant var,
   span<draw_operation> ops) {
     if(var == 0) {
         EAGINE_ASSERT(ops.size() >= operation_count(var));
@@ -297,8 +298,8 @@ auto unit_twisted_torus_gen::bounding_sphere() -> math::sphere<float, true> {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void unit_twisted_torus_gen::ray_intersections(
-  drawing_variant,
-  span<const math::line<float, true>> rays,
+  const drawing_variant,
+  const span<const math::line<float, true>> rays,
   span<optionally_valid<float>> intersections) {
 
     EAGINE_ASSERT(intersections.size() >= rays.size());

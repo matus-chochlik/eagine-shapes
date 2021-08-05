@@ -12,7 +12,9 @@ namespace eagine {
 namespace shapes {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void reboxed_gen::attrib_values(vertex_attrib_variant vav, span<float> dest) {
+void reboxed_gen::attrib_values(
+  const vertex_attrib_variant vav,
+  span<float> dest) {
 
     if(vav == vertex_attrib_kind::box_coord) {
 

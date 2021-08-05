@@ -28,8 +28,8 @@ auto unit_round_cube_gen::_attr_mask() noexcept -> vertex_attrib_bits {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 unit_round_cube_gen::unit_round_cube_gen(
-  vertex_attrib_bits attr_bits,
-  int divisions) noexcept
+  const vertex_attrib_bits attr_bits,
+  const int divisions) noexcept
   : _base{attr_bits & _attr_mask()}
   , _divisions{divisions} {
     EAGINE_ASSERT(_divisions > 0);
@@ -40,7 +40,7 @@ auto unit_round_cube_gen::vertex_count() -> span_size_t {
     return 6 * (_divisions + 1) * (_divisions + 1);
 }
 //------------------------------------------------------------------------------
-static inline auto unit_round_cube_face_normal(span_size_t f) noexcept {
+static inline auto unit_round_cube_face_normal(const span_size_t f) noexcept {
     return std::array<math::tvec<float, 3, true>, 6>{{
       {-1.F, 0.F, 0.F},
       {+1.F, 0.F, 0.F},
@@ -51,7 +51,8 @@ static inline auto unit_round_cube_face_normal(span_size_t f) noexcept {
     }}[f];
 }
 //------------------------------------------------------------------------------
-static inline auto unit_round_cube_face_tangential(span_size_t f) noexcept {
+static inline auto unit_round_cube_face_tangential(
+  const span_size_t f) noexcept {
     return std::array<math::tvec<float, 3, true>, 6>{{
       {0.F, 0.F, +1.F},
       {0.F, 0.F, -1.F},
@@ -62,7 +63,8 @@ static inline auto unit_round_cube_face_tangential(span_size_t f) noexcept {
     }}[f];
 }
 //------------------------------------------------------------------------------
-static inline auto unit_round_cube_face_bitangential(span_size_t f) noexcept {
+static inline auto unit_round_cube_face_bitangential(
+  const span_size_t f) noexcept {
     return std::array<math::tvec<float, 3, true>, 6>{{
       {0.F, +1.F, 0.F},
       {0.F, +1.F, 0.F},
@@ -135,7 +137,7 @@ void unit_round_cube_gen::face_coords(span<float> dest) noexcept {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void unit_round_cube_gen::attrib_values(
-  vertex_attrib_variant vav,
+  const vertex_attrib_variant vav,
   span<float> dest) {
     switch(vav.attribute()) {
         case vertex_attrib_kind::position:
@@ -166,7 +168,7 @@ void unit_round_cube_gen::attrib_values(
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto unit_round_cube_gen::index_count(drawing_variant) -> span_size_t {
+auto unit_round_cube_gen::index_count(const drawing_variant) -> span_size_t {
     if(primitive_restart()) {
         return 6 * _divisions * ((_divisions + 1) * 2 + 1);
     }
@@ -174,7 +176,8 @@ auto unit_round_cube_gen::index_count(drawing_variant) -> span_size_t {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto unit_round_cube_gen::index_type(drawing_variant var) -> index_data_type {
+auto unit_round_cube_gen::index_type(const drawing_variant var)
+  -> index_data_type {
     if(index_count(var) < span_size(std::numeric_limits<std::uint8_t>::max())) {
         return index_data_type::unsigned_8;
     }
@@ -186,7 +189,7 @@ auto unit_round_cube_gen::index_type(drawing_variant var) -> index_data_type {
 //------------------------------------------------------------------------------
 template <typename T>
 inline void unit_round_cube_gen::_indices(
-  drawing_variant var,
+  const drawing_variant var,
   span<T> dest) noexcept {
     EAGINE_ASSERT(var == 0);
     EAGINE_ASSERT(dest.size() >= index_count(var));
@@ -212,26 +215,29 @@ inline void unit_round_cube_gen::_indices(
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void unit_round_cube_gen::indices(drawing_variant var, span<std::uint8_t> dest) {
+void unit_round_cube_gen::indices(
+  const drawing_variant var,
+  span<std::uint8_t> dest) {
     _indices(var, dest);
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void unit_round_cube_gen::indices(
-  drawing_variant var,
+  const drawing_variant var,
   span<std::uint16_t> dest) {
     _indices(var, dest);
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void unit_round_cube_gen::indices(
-  drawing_variant var,
+  const drawing_variant var,
   span<std::uint32_t> dest) {
     _indices(var, dest);
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto unit_round_cube_gen::operation_count(drawing_variant) -> span_size_t {
+auto unit_round_cube_gen::operation_count(const drawing_variant)
+  -> span_size_t {
     if(primitive_restart()) {
         return 1;
     }
@@ -240,7 +246,7 @@ auto unit_round_cube_gen::operation_count(drawing_variant) -> span_size_t {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void unit_round_cube_gen::instructions(
-  drawing_variant var,
+  const drawing_variant var,
   span<draw_operation> ops) {
     EAGINE_ASSERT(ops.size() >= operation_count(var));
 
@@ -279,7 +285,7 @@ void unit_round_cube_gen::instructions(
 EAGINE_LIB_FUNC
 auto unit_round_cube_gen::bounding_sphere() -> math::sphere<float, true> {
     using std::sqrt;
-    return {{0.0F}, float(1)};
+    return {{0.0F}, 1.F};
 }
 //------------------------------------------------------------------------------
 } // namespace shapes

@@ -18,18 +18,18 @@ struct topology_data {
     std::vector<unsigned> indices;
     std::vector<draw_operation> operations;
 
-    auto values_of(unsigned i) const noexcept {
+    auto values_of(const unsigned i) const noexcept {
         EAGINE_ASSERT(values_per_vertex > 0);
         return head(
           skip(view(vertex_values), span_size(values_per_vertex * i)),
           span_size(values_per_vertex));
     }
 
-    auto to_vec(span<const float> v) const noexcept {
+    auto to_vec(const span<const float> v) const noexcept {
         return math::tvec<float, 3, true>{v[0], v[1], v[2]};
     }
 
-    auto vec_of(unsigned i) const noexcept {
+    auto vec_of(const unsigned i) const noexcept {
         return to_vec(values_of(i));
     }
 
@@ -42,8 +42,10 @@ struct topology_data {
                  std::min(distance(a, b), distance(b, c)), distance(a, c));
     }
 
-    auto have_same_position(unsigned i, unsigned j, float delta) const noexcept
-      -> bool {
+    auto have_same_position(
+      const unsigned i,
+      const unsigned j,
+      const float delta) const noexcept -> bool {
         const auto p = vec_of(i);
         const auto q = vec_of(j);
         return distance(p, q) < delta;
@@ -149,7 +151,9 @@ auto topology::print_dot(std::ostream& out) const -> std::ostream& {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void topology::_scan_topology(drawing_variant var, vertex_attrib_variant vav) {
+void topology::_scan_topology(
+  const drawing_variant var,
+  const vertex_attrib_variant vav) {
     topology_data data;
     data.values_per_vertex = std_size(_gen->values_per_vertex(vav));
 
