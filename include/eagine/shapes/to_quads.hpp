@@ -23,21 +23,21 @@ public:
     to_quads_gen(std::shared_ptr<generator> gen) noexcept
       : delegated_gen{std::move(gen)} {}
 
-    auto index_count(drawing_variant) -> span_size_t override;
+    auto index_count(const drawing_variant) -> span_size_t override;
 
-    void indices(drawing_variant, span<std::uint8_t> dest) override;
+    void indices(const drawing_variant, span<std::uint8_t> dest) override;
 
-    void indices(drawing_variant, span<std::uint16_t> dest) override;
+    void indices(const drawing_variant, span<std::uint16_t> dest) override;
 
-    void indices(drawing_variant, span<std::uint32_t> dest) override;
+    void indices(const drawing_variant, span<std::uint32_t> dest) override;
 
-    auto operation_count(drawing_variant) -> span_size_t override;
+    auto operation_count(const drawing_variant) -> span_size_t override;
 
-    void instructions(drawing_variant, span<draw_operation> ops) override;
+    void instructions(const drawing_variant, span<draw_operation> ops) override;
 
 private:
     template <typename T>
-    void _indices(drawing_variant, span<T> dest) noexcept;
+    void _indices(const drawing_variant, span<T> dest) noexcept;
 };
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of to_quads_gen modifier.

@@ -23,11 +23,13 @@ namespace shapes {
 class scaled_gen : public delegated_gen {
 
 public:
-    scaled_gen(std::shared_ptr<generator> gen, std::array<float, 3> s) noexcept
+    scaled_gen(
+      std::shared_ptr<generator> gen,
+      const std::array<float, 3> s) noexcept
       : delegated_gen{std::move(gen)}
       , _s{s} {}
 
-    void attrib_values(vertex_attrib_variant, span<float>) override;
+    void attrib_values(const vertex_attrib_variant, span<float>) override;
 
     auto bounding_sphere() -> math::sphere<float, true> override;
 
@@ -37,8 +39,9 @@ private:
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of scaled_gen modifier.
 /// @ingroup shapes
-static inline auto
-scale(std::shared_ptr<generator> gen, std::array<float, 3> s) noexcept {
+static inline auto scale(
+  std::shared_ptr<generator> gen,
+  const std::array<float, 3> s) noexcept {
     return std::make_unique<scaled_gen>(std::move(gen), s);
 }
 //------------------------------------------------------------------------------

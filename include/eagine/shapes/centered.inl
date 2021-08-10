@@ -12,7 +12,9 @@ namespace eagine {
 namespace shapes {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void centered_gen::attrib_values(vertex_attrib_variant vav, span<float> dest) {
+void centered_gen::attrib_values(
+  const vertex_attrib_variant vav,
+  span<float> dest) {
 
     const bool is_centered_attrib = vav == vertex_attrib_kind::position ||
                                     vav == vertex_attrib_kind::pivot ||

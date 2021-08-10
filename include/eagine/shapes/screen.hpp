@@ -21,7 +21,7 @@ namespace shapes {
 /// @see unit_screen
 class unit_screen_gen : public centered_unit_shape_generator_base {
 public:
-    unit_screen_gen(vertex_attrib_bits attr_bits) noexcept;
+    unit_screen_gen(const vertex_attrib_bits attr_bits) noexcept;
 
     auto vertex_count() -> span_size_t override;
 
@@ -35,11 +35,11 @@ public:
 
     void face_coords(span<float> dest) noexcept;
 
-    void attrib_values(vertex_attrib_variant, span<float>) override;
+    void attrib_values(const vertex_attrib_variant, span<float>) override;
 
-    auto operation_count(drawing_variant) -> span_size_t override;
+    auto operation_count(const drawing_variant) -> span_size_t override;
 
-    void instructions(drawing_variant, span<draw_operation> ops) override;
+    void instructions(const drawing_variant, span<draw_operation> ops) override;
 
     auto bounding_sphere() -> math::sphere<float, true> override;
 
@@ -58,7 +58,7 @@ private:
 /// @see unit_icosahedron
 /// @see unit_torus
 /// @see unit_twisted_torus
-static inline auto unit_screen(vertex_attrib_bits attr_bits) {
+static inline auto unit_screen(const vertex_attrib_bits attr_bits) {
     return std::make_unique<unit_screen_gen>(attr_bits);
 }
 //------------------------------------------------------------------------------

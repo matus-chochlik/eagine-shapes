@@ -31,13 +31,13 @@ auto unit_torus_gen::_attr_mask() noexcept -> vertex_attrib_bits {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 unit_torus_gen::unit_torus_gen(
-  vertex_attrib_bits attr_bits,
-  valid_if_greater_than<int, 4> rings,
-  valid_if_greater_than<int, 3> sections,
-  valid_if_ge0_lt1<float> radius_ratio) noexcept
+  const vertex_attrib_bits attr_bits,
+  const valid_if_greater_than<int, 4>& rings,
+  const valid_if_greater_than<int, 3>& sections,
+  const valid_if_ge0_lt1<float>& radius_ratio) noexcept
   : _base(attr_bits & _attr_mask())
-  , _rings(span_size_t(rings.value()))
-  , _sections(span_size_t(sections.value()))
+  , _rings{rings.value()}
+  , _sections{sections.value()}
   , _radius_ratio(radius_ratio.value()) {}
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
@@ -74,7 +74,7 @@ void unit_torus_gen::vertex_pivots(span<float> dest) noexcept {
 EAGINE_LIB_FUNC
 void unit_torus_gen::positions(
   span<float> dest,
-  unit_torus_gen::offset_getter get_offs) noexcept {
+  const unit_torus_gen::offset_getter get_offs) noexcept {
     EAGINE_ASSERT(has(vertex_attrib_kind::position));
     EAGINE_ASSERT(dest.size() >= vertex_count() * 3);
 
@@ -118,7 +118,7 @@ void unit_torus_gen::positions(
 EAGINE_LIB_FUNC
 void unit_torus_gen::normals(
   span<float> dest,
-  unit_torus_gen::offset_getter get_offs) noexcept {
+  const unit_torus_gen::offset_getter get_offs) noexcept {
     EAGINE_ASSERT(has(vertex_attrib_kind::normal));
     EAGINE_ASSERT(dest.size() >= vertex_count() * 3);
 
@@ -157,7 +157,7 @@ void unit_torus_gen::normals(
 EAGINE_LIB_FUNC
 void unit_torus_gen::tangentials(
   span<float> dest,
-  unit_torus_gen::offset_getter get_offs) noexcept {
+  const unit_torus_gen::offset_getter get_offs) noexcept {
     EAGINE_ASSERT(has(vertex_attrib_kind::tangential));
     EAGINE_ASSERT(dest.size() >= vertex_count() * 3);
 
@@ -194,7 +194,7 @@ void unit_torus_gen::tangentials(
 EAGINE_LIB_FUNC
 void unit_torus_gen::bitangentials(
   span<float> dest,
-  unit_torus_gen::offset_getter get_offs) noexcept {
+  const unit_torus_gen::offset_getter get_offs) noexcept {
     EAGINE_ASSERT(has(vertex_attrib_kind::bitangential));
     EAGINE_ASSERT(dest.size() >= vertex_count() * 3);
 
@@ -241,13 +241,13 @@ void unit_torus_gen::wrap_coords(span<float> dest) noexcept {
 
     span_size_t k = 0;
 
-    const auto s_step = 1.F / _sections;
-    const auto r_step = 1.F / _rings;
+    const auto s_step = 1.0 / _sections;
+    const auto r_step = 1.0 / _rings;
 
     for(const auto s : integer_range(_sections + 1)) {
         for(const auto r : integer_range(_rings + 1)) {
-            dest[k++] = s * s_step;
-            dest[k++] = r * r_step;
+            dest[k++] = float(s * s_step);
+            dest[k++] = float(r * r_step);
         }
     }
 }
@@ -262,8 +262,10 @@ auto unit_torus_gen::special_variant_name(span_size_t index) -> string_view {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void unit_torus_gen::make_special_attrib_values(
-  void (unit_torus_gen::*function)(span<float>, unit_torus_gen::offset_getter),
-  span_size_t variant_index,
+  void (unit_torus_gen::*const function)(
+    span<float>,
+    unit_torus_gen::offset_getter),
+  const span_size_t variant_index,
   span<float> dest) {
     if(variant_index == 1) {
         auto get_offs = [rrg{std::mt19937{_r_seed}},
@@ -271,35 +273,35 @@ void unit_torus_gen::make_special_attrib_values(
                          rnd{std::normal_distribution<float>{0.F, 0.15F}},
                          snd{std::normal_distribution<float>{0.F, 0.15F}}](
                           span_size_t,
-                          span_size_t) mutable -> std::array<float, 3> {
-            return {{rnd(rrg), snd(srg), 0.F}};
+                          span_size_t) mutable -> std::array<double, 3> {
+            return {{rnd(rrg), snd(srg), 0.0}};
         };
         (this->*function)(dest, {construct_from, get_offs});
     } else if(variant_index == 2) {
-        auto get_offs = [](span_size_t s, span_size_t) -> std::array<float, 3> {
-            return {{float(s), 0.F, 0.F}};
+        auto get_offs = [](
+                          span_size_t s, span_size_t) -> std::array<double, 3> {
+            return {{double(s), 0.0, 0.0}};
         };
         (this->*function)(dest, {construct_from, get_offs});
     } else if(variant_index == 3) {
         auto get_offs =
-          [this](span_size_t s, span_size_t r) -> std::array<float, 3> {
+          [this](span_size_t s, span_size_t r) -> std::array<double, 3> {
             const auto x = float(s) / float(this->_sections);
             const auto y = float(r) / float(this->_rings);
-            return {
-              {float(math::sine_wave01(x)), float(math::sine_wave01(y)), 0.F}};
+            return {{math::sine_wave01(x), math::sine_wave01(y), 0.0}};
         };
         (this->*function)(dest, {construct_from, get_offs});
     } else {
         const auto no_offs =
-          [](span_size_t, span_size_t) -> std::array<float, 3> {
-            return {{0.F, 0.F, 0.F}};
+          [](span_size_t, span_size_t) -> std::array<double, 3> {
+            return {{0.0, 0.0, 0.0}};
         };
         (this->*function)(dest, offset_getter{no_offs});
     }
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto unit_torus_gen::attribute_variants(vertex_attrib_kind attrib)
+auto unit_torus_gen::attribute_variants(const vertex_attrib_kind attrib)
   -> span_size_t {
     switch(attrib) {
         case vertex_attrib_kind::pivot_pivot:
@@ -326,7 +328,8 @@ auto unit_torus_gen::attribute_variants(vertex_attrib_kind attrib)
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto unit_torus_gen::variant_name(vertex_attrib_variant vav) -> string_view {
+auto unit_torus_gen::variant_name(const vertex_attrib_variant vav)
+  -> string_view {
     switch(vav.attribute()) {
         case vertex_attrib_kind::position:
         case vertex_attrib_kind::normal:
@@ -351,7 +354,9 @@ auto unit_torus_gen::variant_name(vertex_attrib_variant vav) -> string_view {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void unit_torus_gen::attrib_values(vertex_attrib_variant vav, span<float> dest) {
+void unit_torus_gen::attrib_values(
+  const vertex_attrib_variant vav,
+  span<float> dest) {
     switch(vav.attribute()) {
         case vertex_attrib_kind::vertex_pivot:
             vertex_pivots(dest);
@@ -396,7 +401,7 @@ auto unit_torus_gen::draw_variant_count() -> span_size_t {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto unit_torus_gen::index_type(drawing_variant v) -> index_data_type {
+auto unit_torus_gen::index_type(const drawing_variant v) -> index_data_type {
     if(index_count(v) < span_size(std::numeric_limits<std::uint8_t>::max())) {
         return index_data_type::unsigned_8;
     }
@@ -407,7 +412,7 @@ auto unit_torus_gen::index_type(drawing_variant v) -> index_data_type {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto unit_torus_gen::index_count(drawing_variant var) -> span_size_t {
+auto unit_torus_gen::index_count(const drawing_variant var) -> span_size_t {
     if(var == 0) {
         return _sections * ((_rings + 1) * 2 + (primitive_restart() ? 1 : 0));
     }
@@ -419,7 +424,7 @@ auto unit_torus_gen::index_count(drawing_variant var) -> span_size_t {
 }
 //------------------------------------------------------------------------------
 template <typename T>
-void unit_torus_gen::_indices(drawing_variant var, span<T> dest) noexcept {
+void unit_torus_gen::_indices(const drawing_variant var, span<T> dest) noexcept {
     EAGINE_ASSERT(dest.size() >= index_count(var));
 
     const auto pri = limit_cast<T>(vertex_count());
@@ -461,22 +466,28 @@ void unit_torus_gen::_indices(drawing_variant var, span<T> dest) noexcept {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void unit_torus_gen::indices(drawing_variant var, span<std::uint8_t> dest) {
+void unit_torus_gen::indices(
+  const drawing_variant var,
+  span<std::uint8_t> dest) {
     _indices(var, dest);
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void unit_torus_gen::indices(drawing_variant var, span<std::uint16_t> dest) {
+void unit_torus_gen::indices(
+  const drawing_variant var,
+  span<std::uint16_t> dest) {
     _indices(var, dest);
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void unit_torus_gen::indices(drawing_variant var, span<std::uint32_t> dest) {
+void unit_torus_gen::indices(
+  const drawing_variant var,
+  span<std::uint32_t> dest) {
     _indices(var, dest);
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto unit_torus_gen::operation_count(drawing_variant var) -> span_size_t {
+auto unit_torus_gen::operation_count(const drawing_variant var) -> span_size_t {
     if(var == 0) {
         if(primitive_restart()) {
             return 1;
@@ -496,7 +507,7 @@ auto unit_torus_gen::operation_count(drawing_variant var) -> span_size_t {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void unit_torus_gen::instructions(
-  drawing_variant var,
+  const drawing_variant var,
   span<draw_operation> ops) {
     EAGINE_ASSERT(ops.size() >= operation_count(var));
 

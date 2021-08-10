@@ -14,7 +14,7 @@ namespace eagine {
 namespace shapes {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto triangle_adjacency_gen::_topology(drawing_variant var) noexcept
+auto triangle_adjacency_gen::_topology(const drawing_variant var) noexcept
   -> topology& {
     auto pos = _topologies.find(var);
     if(pos == _topologies.end()) {
@@ -29,7 +29,8 @@ auto triangle_adjacency_gen::index_count(const topology& topo) -> span_size_t {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto triangle_adjacency_gen::index_count(drawing_variant var) -> span_size_t {
+auto triangle_adjacency_gen::index_count(const drawing_variant var)
+  -> span_size_t {
     return index_count(_topology(var));
 }
 //------------------------------------------------------------------------------
@@ -46,14 +47,14 @@ auto triangle_adjacency_gen::index_type(const topology&) -> index_data_type {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto triangle_adjacency_gen::index_type(drawing_variant var)
+auto triangle_adjacency_gen::index_type(const drawing_variant var)
   -> index_data_type {
     return index_type(_topology(var));
 }
 //------------------------------------------------------------------------------
 template <typename T>
 void triangle_adjacency_gen::_indices(
-  drawing_variant var,
+  const drawing_variant var,
   span<T> dest) noexcept {
     auto& topo = _topology(var);
     EAGINE_ASSERT(index_count(topo) <= dest.size());
@@ -71,33 +72,34 @@ void triangle_adjacency_gen::_indices(
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void triangle_adjacency_gen::indices(
-  drawing_variant var,
+  const drawing_variant var,
   span<std::uint8_t> dest) {
     _indices(var, dest);
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void triangle_adjacency_gen::indices(
-  drawing_variant var,
+  const drawing_variant var,
   span<std::uint16_t> dest) {
     _indices(var, dest);
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void triangle_adjacency_gen::indices(
-  drawing_variant var,
+  const drawing_variant var,
   span<std::uint32_t> dest) {
     _indices(var, dest);
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto triangle_adjacency_gen::operation_count(drawing_variant) -> span_size_t {
+auto triangle_adjacency_gen::operation_count(const drawing_variant)
+  -> span_size_t {
     return 1;
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void triangle_adjacency_gen::instructions(
-  drawing_variant var,
+  const drawing_variant var,
   span<draw_operation> ops) {
     EAGINE_ASSERT(!ops.empty());
 

@@ -16,7 +16,9 @@ auto array_gen::vertex_count() -> span_size_t {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void array_gen::attrib_values(vertex_attrib_variant vav, span<float> dest) {
+void array_gen::attrib_values(
+  const vertex_attrib_variant vav,
+  span<float> dest) {
 
     const auto n = delegated_gen::vertex_count();
     const auto m = values_per_vertex(vav);
@@ -48,12 +50,12 @@ void array_gen::attrib_values(vertex_attrib_variant vav, span<float> dest) {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto array_gen::index_count(drawing_variant var) -> span_size_t {
+auto array_gen::index_count(const drawing_variant var) -> span_size_t {
     return delegated_gen::index_count(var) * _copies;
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto array_gen::index_type(drawing_variant var) -> index_data_type {
+auto array_gen::index_type(const drawing_variant var) -> index_data_type {
     if(delegated_gen::index_type(var) != index_data_type::none) {
         if(vertex_count() < span_size(std::numeric_limits<std::uint8_t>::max())) {
             return index_data_type::unsigned_8;
@@ -67,7 +69,7 @@ auto array_gen::index_type(drawing_variant var) -> index_data_type {
 }
 //------------------------------------------------------------------------------
 template <typename T>
-void array_gen::_indices(drawing_variant var, span<T> dest) noexcept {
+void array_gen::_indices(const drawing_variant var, span<T> dest) noexcept {
     const auto vc = delegated_gen::vertex_count();
     const auto ic = delegated_gen::index_count(var);
     const auto opri = limit_cast<T>(delegated_gen::vertex_count());
@@ -89,22 +91,22 @@ void array_gen::_indices(drawing_variant var, span<T> dest) noexcept {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void array_gen::indices(drawing_variant var, span<std::uint8_t> dest) {
+void array_gen::indices(const drawing_variant var, span<std::uint8_t> dest) {
     _indices(var, dest);
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void array_gen::indices(drawing_variant var, span<std::uint16_t> dest) {
+void array_gen::indices(const drawing_variant var, span<std::uint16_t> dest) {
     _indices(var, dest);
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void array_gen::indices(drawing_variant var, span<std::uint32_t> dest) {
+void array_gen::indices(const drawing_variant var, span<std::uint32_t> dest) {
     _indices(var, dest);
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto array_gen::operation_count(drawing_variant var) -> span_size_t {
+auto array_gen::operation_count(const drawing_variant var) -> span_size_t {
     const auto oc = delegated_gen::operation_count(var);
     if(oc == 1) {
         draw_operation op{};
@@ -119,7 +121,9 @@ auto array_gen::operation_count(drawing_variant var) -> span_size_t {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void array_gen::instructions(drawing_variant var, span<draw_operation> ops) {
+void array_gen::instructions(
+  const drawing_variant var,
+  span<draw_operation> ops) {
     const auto oc = delegated_gen::operation_count(var);
     const auto ic = delegated_gen::index_count(var);
     const auto vc = delegated_gen::vertex_count();

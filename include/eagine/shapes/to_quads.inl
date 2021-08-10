@@ -14,7 +14,7 @@ namespace eagine {
 namespace shapes {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto to_quads_gen::index_count(drawing_variant var) -> span_size_t {
+auto to_quads_gen::index_count(const drawing_variant var) -> span_size_t {
 
     span_size_t count{0};
 
@@ -61,7 +61,7 @@ auto to_quads_gen::index_count(drawing_variant var) -> span_size_t {
 }
 //------------------------------------------------------------------------------
 template <typename T>
-void to_quads_gen::_indices(drawing_variant var, span<T> dest) noexcept {
+void to_quads_gen::_indices(const drawing_variant var, span<T> dest) noexcept {
 
     EAGINE_ASSERT(dest.size() >= index_count(var));
 
@@ -130,27 +130,29 @@ void to_quads_gen::_indices(drawing_variant var, span<T> dest) noexcept {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void to_quads_gen::indices(drawing_variant var, span<std::uint8_t> dest) {
+void to_quads_gen::indices(const drawing_variant var, span<std::uint8_t> dest) {
     _indices(var, dest);
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void to_quads_gen::indices(drawing_variant var, span<std::uint16_t> dest) {
+void to_quads_gen::indices(const drawing_variant var, span<std::uint16_t> dest) {
     _indices(var, dest);
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void to_quads_gen::indices(drawing_variant var, span<std::uint32_t> dest) {
+void to_quads_gen::indices(const drawing_variant var, span<std::uint32_t> dest) {
     _indices(var, dest);
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto to_quads_gen::operation_count(drawing_variant var) -> span_size_t {
+auto to_quads_gen::operation_count(const drawing_variant var) -> span_size_t {
     return delegated_gen::operation_count(var);
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void to_quads_gen::instructions(drawing_variant var, span<draw_operation> ops) {
+void to_quads_gen::instructions(
+  const drawing_variant var,
+  span<draw_operation> ops) {
 
     delegated_gen::instructions(var, ops);
 

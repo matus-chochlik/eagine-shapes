@@ -28,12 +28,12 @@ auto unit_sphere_gen::_attr_mask() noexcept -> vertex_attrib_bits {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 unit_sphere_gen::unit_sphere_gen(
-  vertex_attrib_bits attr_bits,
-  valid_if_greater_than<int, 2> rings,
-  valid_if_greater_than<int, 3> sections) noexcept
-  : _base(attr_bits & _attr_mask())
-  , _rings(span_size_t(rings.value()))
-  , _sections(span_size_t(sections.value())) {}
+  const vertex_attrib_bits attr_bits,
+  const valid_if_greater_than<int, 2>& rings,
+  const valid_if_greater_than<int, 3>& sections) noexcept
+  : _base{attr_bits & _attr_mask()}
+  , _rings{rings.value()}
+  , _sections{sections.value()} {}
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 auto unit_sphere_gen::vertex_count() -> span_size_t {
@@ -140,20 +140,20 @@ void unit_sphere_gen::wrap_coords(span<float> dest) noexcept {
 
     span_size_t k = 0;
 
-    const auto s_step = 1.F / _sections;
-    const auto r_step = 1.F / _rings;
+    const auto s_step = 1.0 / _sections;
+    const auto r_step = 1.0 / _rings;
 
     for(const auto s : integer_range(_sections + 1)) {
         for(const auto r : integer_range(_rings + 1)) {
-            dest[k++] = s * s_step;
-            dest[k++] = r * r_step;
+            dest[k++] = float(s * s_step);
+            dest[k++] = float(r * r_step);
         }
     }
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void unit_sphere_gen::attrib_values(
-  vertex_attrib_variant vav,
+  const vertex_attrib_variant vav,
   span<float> dest) {
     switch(vav.attribute()) {
         case vertex_attrib_kind::position:
@@ -188,7 +188,7 @@ void unit_sphere_gen::attrib_values(
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto unit_sphere_gen::index_type(drawing_variant v) -> index_data_type {
+auto unit_sphere_gen::index_type(const drawing_variant v) -> index_data_type {
     if(index_count(v) < span_size(std::numeric_limits<std::uint8_t>::max())) {
         return index_data_type::unsigned_8;
     }
@@ -199,12 +199,14 @@ auto unit_sphere_gen::index_type(drawing_variant v) -> index_data_type {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto unit_sphere_gen::index_count(drawing_variant) -> span_size_t {
+auto unit_sphere_gen::index_count(const drawing_variant) -> span_size_t {
     return _sections * ((_rings + 1) * 2 + (primitive_restart() ? 1 : 0));
 }
 //------------------------------------------------------------------------------
 template <typename T>
-void unit_sphere_gen::_indices(drawing_variant var, span<T> dest) noexcept {
+void unit_sphere_gen::_indices(
+  const drawing_variant var,
+  span<T> dest) noexcept {
     EAGINE_ASSERT(dest.size() >= index_count(var));
     EAGINE_MAYBE_UNUSED(var);
 
@@ -225,22 +227,28 @@ void unit_sphere_gen::_indices(drawing_variant var, span<T> dest) noexcept {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void unit_sphere_gen::indices(drawing_variant var, span<std::uint8_t> dest) {
+void unit_sphere_gen::indices(
+  const drawing_variant var,
+  span<std::uint8_t> dest) {
     _indices(var, dest);
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void unit_sphere_gen::indices(drawing_variant var, span<std::uint16_t> dest) {
+void unit_sphere_gen::indices(
+  const drawing_variant var,
+  span<std::uint16_t> dest) {
     _indices(var, dest);
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void unit_sphere_gen::indices(drawing_variant var, span<std::uint32_t> dest) {
+void unit_sphere_gen::indices(
+  const drawing_variant var,
+  span<std::uint32_t> dest) {
     _indices(var, dest);
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto unit_sphere_gen::operation_count(drawing_variant) -> span_size_t {
+auto unit_sphere_gen::operation_count(const drawing_variant) -> span_size_t {
     if(primitive_restart()) {
         return 1;
     } else {
@@ -250,7 +258,7 @@ auto unit_sphere_gen::operation_count(drawing_variant) -> span_size_t {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void unit_sphere_gen::instructions(
-  drawing_variant var,
+  const drawing_variant var,
   span<draw_operation> ops) {
     EAGINE_ASSERT(ops.size() >= operation_count(var));
 
@@ -284,8 +292,8 @@ auto unit_sphere_gen::bounding_sphere() -> math::sphere<float, true> {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void unit_sphere_gen::ray_intersections(
-  drawing_variant,
-  span<const math::line<float, true>> rays,
+  const drawing_variant,
+  const span<const math::line<float, true>> rays,
   span<optionally_valid<float>> intersections) {
 
     EAGINE_ASSERT(intersections.size() >= rays.size());

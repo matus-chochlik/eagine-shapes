@@ -16,7 +16,9 @@ namespace eagine {
 namespace shapes {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void occluded_gen::attrib_values(vertex_attrib_variant vav, span<float> dest) {
+void occluded_gen::attrib_values(
+  const vertex_attrib_variant vav,
+  span<float> dest) {
 
     if(vav == vertex_attrib_kind::occlusion) {
         std::random_device rd;

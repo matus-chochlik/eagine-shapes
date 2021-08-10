@@ -23,11 +23,11 @@ class translated_gen : public delegated_gen {
 public:
     translated_gen(
       std::shared_ptr<generator> gen,
-      std::array<float, 3> d) noexcept
+      const std::array<float, 3> d) noexcept
       : delegated_gen{std::move(gen)}
       , _d{d} {}
 
-    void attrib_values(vertex_attrib_variant, span<float>) override;
+    void attrib_values(const vertex_attrib_variant, span<float>) override;
 
     auto bounding_sphere() -> math::sphere<float, true> override;
 
@@ -37,8 +37,9 @@ private:
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of translated_gen modifier.
 /// @ingroup shapes
-static inline auto
-translate(std::shared_ptr<generator> gen, std::array<float, 3> d) noexcept {
+static inline auto translate(
+  std::shared_ptr<generator> gen,
+  std::array<float, 3> d) noexcept {
     return std::make_unique<translated_gen>(std::move(gen), d);
 }
 //------------------------------------------------------------------------------

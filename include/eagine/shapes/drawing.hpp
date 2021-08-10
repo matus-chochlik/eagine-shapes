@@ -45,8 +45,9 @@ enum class primitive_type : std::uint8_t {
 };
 //------------------------------------------------------------------------------
 template <typename Selector>
-constexpr auto
-enumerator_mapping(type_identity<primitive_type>, Selector) noexcept {
+constexpr auto enumerator_mapping(
+  const type_identity<primitive_type>,
+  const Selector) noexcept {
     return enumerator_map_type<primitive_type, 11>{
       {{"points", primitive_type::points},
        {"lines", primitive_type::lines},
@@ -82,8 +83,9 @@ enum class attrib_data_type {
 };
 //------------------------------------------------------------------------------
 template <typename Selector>
-constexpr auto
-enumerator_mapping(type_identity<attrib_data_type>, Selector) noexcept {
+constexpr auto enumerator_mapping(
+  const type_identity<attrib_data_type>,
+  const Selector) noexcept {
     return enumerator_map_type<attrib_data_type, 7>{
       {{"none", attrib_data_type::none},
        {"ubyte", attrib_data_type::ubyte},
@@ -94,8 +96,9 @@ enumerator_mapping(type_identity<attrib_data_type>, Selector) noexcept {
        {"float_", attrib_data_type::float_}}};
 }
 //------------------------------------------------------------------------------
-constexpr auto
-enumerator_mapping(type_identity<attrib_data_type>, value_tree_tag) noexcept {
+constexpr auto enumerator_mapping(
+  const type_identity<attrib_data_type>,
+  const value_tree_tag) noexcept {
     return enumerator_map_type<attrib_data_type, 6>{
       {{"ubyte", attrib_data_type::ubyte},
        {"int_16", attrib_data_type::int_16},
@@ -120,8 +123,9 @@ enum class index_data_type : std::uint8_t {
 };
 //------------------------------------------------------------------------------
 template <typename Selector>
-constexpr auto
-enumerator_mapping(type_identity<index_data_type>, Selector) noexcept {
+constexpr auto enumerator_mapping(
+  const type_identity<index_data_type>,
+  const Selector) noexcept {
     return enumerator_map_type<index_data_type, 4>{
       {{"none", index_data_type::none},
        {"unsigned_8", index_data_type::unsigned_8},
@@ -129,30 +133,39 @@ enumerator_mapping(type_identity<index_data_type>, Selector) noexcept {
        {"unsigned_32", index_data_type::unsigned_32}}};
 }
 //------------------------------------------------------------------------------
-constexpr auto
-enumerator_mapping(type_identity<index_data_type>, value_tree_tag) noexcept {
+constexpr auto enumerator_mapping(
+  const type_identity<index_data_type>,
+  const value_tree_tag) noexcept {
     return enumerator_map_type<index_data_type, 3>{
       {{"none", index_data_type::none},
        {"unsigned_16", index_data_type::unsigned_16},
        {"unsigned_32", index_data_type::unsigned_32}}};
 }
 //------------------------------------------------------------------------------
-static inline auto operator<(index_data_type l, index_data_type r) noexcept {
+static inline auto operator<(
+  const index_data_type l,
+  const index_data_type r) noexcept {
     using UT = std::underlying_type_t<index_data_type>;
     return UT(l) < UT(r);
 }
 //------------------------------------------------------------------------------
-static inline auto operator>(index_data_type l, index_data_type r) noexcept {
+static inline auto operator>(
+  const index_data_type l,
+  const index_data_type r) noexcept {
     using UT = std::underlying_type_t<index_data_type>;
     return UT(l) > UT(r);
 }
 //------------------------------------------------------------------------------
-static inline auto operator<=(index_data_type l, index_data_type r) noexcept {
+static inline auto operator<=(
+  const index_data_type l,
+  const index_data_type r) noexcept {
     using UT = std::underlying_type_t<index_data_type>;
     return UT(l) <= UT(r);
 }
 //------------------------------------------------------------------------------
-static inline auto operator>=(index_data_type l, index_data_type r) noexcept {
+static inline auto operator>=(
+  const index_data_type l,
+  const index_data_type r) noexcept {
     using UT = std::underlying_type_t<index_data_type>;
     return UT(l) >= UT(r);
 }
@@ -189,8 +202,8 @@ struct draw_operation {
 
     /// @brief Default constructor.
     constexpr draw_operation() noexcept
-      : primitive_restart(false)
-      , cw_face_winding(false) {}
+      : primitive_restart{false}
+      , cw_face_winding{false} {}
 };
 //------------------------------------------------------------------------------
 } // namespace shapes

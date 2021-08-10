@@ -24,11 +24,11 @@ namespace shapes {
 class unit_twisted_torus_gen : public centered_unit_shape_generator_base {
 public:
     unit_twisted_torus_gen(
-      vertex_attrib_bits attr_bits,
-      int twist,
-      valid_if_greater_than<int, 2> rings,
-      valid_if_greater_than<int, 3> sections,
-      valid_if_ge0_lt1<float> radius_ratio) noexcept;
+      const vertex_attrib_bits attr_bits,
+      const int twist,
+      const valid_if_greater_than<int, 2>& rings,
+      const valid_if_greater_than<int, 3>& sections,
+      const valid_if_ge0_lt1<float>& radius_ratio) noexcept;
 
     auto vertex_count() -> span_size_t override;
 
@@ -38,17 +38,17 @@ public:
 
     void wrap_coords(span<float> dest) noexcept;
 
-    void attrib_values(vertex_attrib_variant, span<float>) override;
+    void attrib_values(const vertex_attrib_variant, span<float>) override;
 
-    auto operation_count(drawing_variant) -> span_size_t override;
+    auto operation_count(const drawing_variant) -> span_size_t override;
 
-    void instructions(drawing_variant, span<draw_operation> ops) override;
+    void instructions(const drawing_variant, span<draw_operation> ops) override;
 
     auto bounding_sphere() -> math::sphere<float, true> override;
 
     void ray_intersections(
-      drawing_variant,
-      span<const math::line<float, true>> rays,
+      const drawing_variant,
+      const span<const math::line<float, true>> rays,
       span<optionally_valid<float>> intersections) override;
 
 private:
@@ -63,7 +63,7 @@ private:
     static auto _attr_mask() noexcept -> vertex_attrib_bits;
 
     template <typename T>
-    void _indices(drawing_variant, span<T> dest) noexcept;
+    void _indices(const drawing_variant, span<T> dest) noexcept;
 };
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of unit_twisted_torus_gen.
@@ -75,17 +75,13 @@ private:
 /// @see unit_torus
 /// @see unit_screen
 static inline auto unit_twisted_torus(
-  vertex_attrib_bits attr_bits,
-  int twist,
-  valid_if_greater_than<int, 2> rings,
-  valid_if_greater_than<int, 3> sections,
-  valid_if_ge0_lt1<float> radius_ratio) {
+  const vertex_attrib_bits attr_bits,
+  const int twist,
+  const valid_if_greater_than<int, 2>& rings,
+  const valid_if_greater_than<int, 3>& sections,
+  const valid_if_ge0_lt1<float>& radius_ratio) {
     return std::make_unique<unit_twisted_torus_gen>(
-      attr_bits,
-      twist,
-      std::move(rings),
-      std::move(sections),
-      std::move(radius_ratio));
+      attr_bits, twist, rings, sections, radius_ratio);
 }
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of unit_twisted_torus_gen.
@@ -96,7 +92,7 @@ static inline auto unit_twisted_torus(
 /// @see unit_torus
 /// @see unit_icosahedron
 /// @see unit_screen
-static inline auto unit_twisted_torus(vertex_attrib_bits attr_bits) {
+static inline auto unit_twisted_torus(const vertex_attrib_bits attr_bits) {
     return unit_twisted_torus(attr_bits, 12, 38, 12, 0.5F);
 }
 //------------------------------------------------------------------------------

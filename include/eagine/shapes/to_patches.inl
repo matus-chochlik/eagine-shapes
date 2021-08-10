@@ -12,7 +12,7 @@ namespace shapes {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void to_patches_gen::instructions(
-  drawing_variant var,
+  const drawing_variant var,
   span<draw_operation> ops) {
 
     delegated_gen::instructions(var, ops);

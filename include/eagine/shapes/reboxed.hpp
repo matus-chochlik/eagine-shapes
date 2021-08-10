@@ -25,7 +25,7 @@ public:
     reboxed_gen(std::shared_ptr<generator> gen) noexcept
       : delegated_gen{std::move(gen)} {}
 
-    void attrib_values(vertex_attrib_variant, span<float>) override;
+    void attrib_values(const vertex_attrib_variant, span<float>) override;
 };
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of reboxed_gen modifier.
