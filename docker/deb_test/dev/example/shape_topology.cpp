@@ -16,7 +16,7 @@
 
 auto main(int argc, const char** argv) -> int {
     using namespace eagine;
-    const program_args args(argc, argv);
+    program_args args(argc, argv);
 
     std::shared_ptr<shapes::generator> gen;
 
