@@ -6,6 +6,7 @@
 set(HEADERS
     eagine/shapes/adjacency.hpp
     eagine/shapes/array.hpp
+    eagine/shapes/cached.hpp
     eagine/shapes/centered.hpp
     eagine/shapes/combined.hpp
     eagine/shapes/cube.hpp
@@ -36,6 +37,7 @@ set(PUB_INLS
 set(LIB_INLS
     eagine/shapes/adjacency.inl
     eagine/shapes/array.inl
+    eagine/shapes/cached.inl
     eagine/shapes/centered.inl
     eagine/shapes/combined.inl
     eagine/shapes/cube.inl
