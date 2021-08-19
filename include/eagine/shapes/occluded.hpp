@@ -28,6 +28,7 @@ public:
       : delegated_gen{cache(std::move(gen))}
       , _samples{samples} {}
 
+    void occlusions(const vertex_attrib_variant, span<float>);
     void attrib_values(const vertex_attrib_variant, span<float>) override;
 
 private:
