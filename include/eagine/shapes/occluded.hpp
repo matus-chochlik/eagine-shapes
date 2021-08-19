@@ -9,7 +9,7 @@
 #ifndef EAGINE_SHAPES_OCCLUDED_HPP
 #define EAGINE_SHAPES_OCCLUDED_HPP
 
-#include "delegated.hpp"
+#include "cached.hpp"
 #include <eagine/config/basic.hpp>
 #include <utility>
 
@@ -25,7 +25,7 @@ public:
     occluded_gen(
       std::shared_ptr<generator> gen,
       const span_size_t samples) noexcept
-      : delegated_gen{std::move(gen)}
+      : delegated_gen{cache(std::move(gen))}
       , _samples{samples} {}
 
     void attrib_values(const vertex_attrib_variant, span<float>) override;

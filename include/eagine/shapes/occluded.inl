@@ -21,11 +21,6 @@ void occluded_gen::attrib_values(
   span<float> dest) {
 
     if(vav == vertex_attrib_kind::occlusion) {
-        std::random_device rd;
-        std::mt19937 rho_re(rd());
-        std::mt19937 phi_re(rd());
-        std::uniform_real_distribution<double> dis(0.0, 1.0);
-
         const auto vc = delegated_gen::vertex_count();
         const auto pva = vertex_attrib_kind::position;
         const auto nva = vertex_attrib_kind::normal;
@@ -43,25 +38,30 @@ void occluded_gen::attrib_values(
             delegated_gen::attrib_values({pva, vav}, cover(positions));
             delegated_gen::attrib_values({nva, vav}, cover(normals));
 
-            std::vector<math::line<float, true>> rays(std_size(vc * ns));
+            std::random_device rd;
+            std::default_random_engine rho_re(rd());
+            std::default_random_engine phi_re(rd());
+            std::uniform_real_distribution<double> dis(0.0, 1.0);
+
+            std::vector<math::line<float, true>> rays(std_size(ns));
             std::vector<float> weights(rays.size());
+            std::vector<optionally_valid<float>> params(rays.size());
 
-            for(const auto v : integer_range(vc)) {
-                const auto k = std_size(v * 3);
+            const auto vertex_occlusion = [&](const auto v) -> float {
+                const auto pk = std_size(v * pvpv);
+                const auto nk = std_size(v * nvpv);
                 const math::tvec<float, 3, true> pos{
-                  positions[k + 0], positions[k + 1], positions[k + 2]};
+                  positions[pk + 0], positions[pk + 1], positions[pk + 2]};
                 const math::tvec<float, 3, true> nml{
-                  normals[k + 0], normals[k + 1], normals[k + 2]};
+                  normals[nk + 0], normals[nk + 1], normals[nk + 2]};
 
-                rays[std_size(v * ns)] = math::line<float, true>{pos, nml};
-                weights[std_size(v * ns)] = 1.F;
+                rays[0] = math::line<float, true>{pos, nml};
+                weights[0] = 1.F;
 
                 for(const auto s : integer_range(1, ns)) {
-                    using std::acos;
-
                     const math::unit_spherical_coordinate<float, true> usc{
                       turns_(float(dis(rho_re))),
-                      radians_(float(acos(2 * dis(phi_re) - 1)))};
+                      radians_(float(std::acos(2 * dis(phi_re) - 1)))};
 
                     auto dir = math::to_cartesian(usc);
                     auto wght = dot(dir, nml);
@@ -71,29 +71,26 @@ void occluded_gen::attrib_values(
                         wght = -wght;
                     }
 
-                    const auto l = std_size(v * ns + s);
-
-                    rays[l] = math::line<float, true>{pos, dir};
-                    weights[l] = wght;
+                    rays[s] = math::line<float, true>{pos, dir};
+                    weights[s] = wght;
                 }
-            }
-            std::vector<optionally_valid<float>> params(rays.size());
+                fill(cover(params), optionally_valid<float>{});
+                delegated_gen::ray_intersections(view(rays), cover(params));
 
-            delegated_gen::ray_intersections(view(rays), cover(params));
-
-            for(const auto v : integer_range(vc)) {
                 float occl = 0.F;
                 float wght = 0.F;
                 for(const auto s : integer_range(ns)) {
-                    const auto l = std_size(v * ns + s);
-                    if(params[l] > 0.0F) {
-                        using std::exp;
-                        occl +=
-                          exp(1.F - params[l].value_anyway()) * weights[l];
+                    if(params[s] > 0.0F) {
+                        const auto aip = extract(params[s]) * 2.F;
+                        occl += std::exp(-aip) * weights[s];
                     }
-                    wght += weights[l];
+                    wght += weights[s];
                 }
-                dest[v] = occl / wght;
+                return occl / wght;
+            };
+
+            for(const auto v : integer_range(vc)) {
+                dest[v] = vertex_occlusion(v);
             }
         } else {
             fill(dest, 0.F);
