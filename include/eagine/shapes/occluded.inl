@@ -95,8 +95,12 @@ void occluded_gen::occlusions(
                     float wght = 0.F;
                     for(const auto s : integer_range(ns)) {
                         if(params[s] > 0.0F) {
-                            const auto aip = extract(params[s]) * 0.125F;
-                            occl += std::exp(-aip) * weights[s];
+                            const auto aip = extract(params[s]);
+                            occl += (std::exp(-0.25F * aip) +
+                                     std::exp(-0.125F * aip) +
+                                     std::exp(-0.03125F * aip) +
+                                     std::exp(-0.0078125F * aip)) *
+                                    0.25F * weights[s];
                         }
                         wght += weights[s];
                     }
