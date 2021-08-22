@@ -9,6 +9,7 @@
 #include <eagine/math/coordinates.hpp>
 #include <eagine/math/functions.hpp>
 #include <eagine/memory/span_algo.hpp>
+#include <eagine/progress/activity.hpp>
 #include <atomic>
 #include <random>
 #include <thread>
@@ -41,7 +42,7 @@ void occluded_gen::occlusions(
         std::atomic<span_size_t> vi{0};
         std::random_device rd;
 
-        const auto make_raytracer = [&]() {
+        const auto make_raytracer = [&](auto progress_update) {
             return [this,
                     &dest,
                     &positions,
@@ -51,6 +52,7 @@ void occluded_gen::occlusions(
                     ns,
                     pvpv,
                     nvpv,
+                    progress_update{std::move(progress_update)},
                     rho_rs{rd()},
                     phi_rs{rd()}]() {
                 std::default_random_engine rho_re{rho_rs};
@@ -111,6 +113,7 @@ void occluded_gen::occlusions(
                     const auto v = vi++;
                     if(v < vc) {
                         dest[v] = vertex_occlusion(v);
+                        progress_update(v);
                     } else {
                         break;
                     }
@@ -123,15 +126,16 @@ void occluded_gen::occlusions(
         workers.reserve(worker_count);
         for(const auto t : integer_range(worker_count)) {
             EAGINE_MAYBE_UNUSED(t);
-            workers.emplace_back(make_raytracer());
+            workers.emplace_back(make_raytracer([](const auto) {}));
         }
 
-        make_raytracer()();
+        make_raytracer(
+          [raytracing{progress().activity("ray-tracing occlusions", vc)}](
+            const auto v) { raytracing.update_progress(v); })();
 
         for(auto& worker : workers) {
             worker.join();
         }
-
     } else {
         fill(dest, 0.F);
     }
