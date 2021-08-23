@@ -47,7 +47,7 @@ static inline auto translate(
 } // namespace shapes
 } // namespace eagine
 
-#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_LIBRARY)
+#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_SHAPES_LIBRARY)
 #include <eagine/shapes/translated.inl>
 #endif
 

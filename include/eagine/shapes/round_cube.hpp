@@ -85,7 +85,7 @@ static inline auto unit_round_cube(const vertex_attrib_bits attr_bits) {
 } // namespace shapes
 } // namespace eagine
 
-#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_LIBRARY)
+#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_SHAPES_LIBRARY)
 #include <eagine/shapes/round_cube.inl>
 #endif
 

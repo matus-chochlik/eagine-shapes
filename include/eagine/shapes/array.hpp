@@ -75,7 +75,7 @@ static inline auto ortho_array_xyz(
 } // namespace shapes
 } // namespace eagine
 
-#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_LIBRARY)
+#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_SHAPES_LIBRARY)
 #include <eagine/shapes/array.inl>
 #endif
 

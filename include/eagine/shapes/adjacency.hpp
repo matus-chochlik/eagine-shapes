@@ -12,6 +12,7 @@
 #include "delegated.hpp"
 #include "topology.hpp"
 #include <eagine/config/basic.hpp>
+#include <eagine/main_ctx_object.hpp>
 
 namespace eagine {
 namespace shapes {
@@ -19,17 +20,23 @@ namespace shapes {
 /// @brief Generator modifier adding triangle adjacency to drawing instructions
 /// @ingroup shapes
 /// @see triangle_adjacency
-class triangle_adjacency_gen : public delegated_gen {
+class triangle_adjacency_gen
+  : public main_ctx_object
+  , public delegated_gen {
 public:
     triangle_adjacency_gen(
+      main_ctx_parent parent,
       std::shared_ptr<generator> gen,
       const drawing_variant var) noexcept
-      : delegated_gen{std::move(gen)} {
+      : main_ctx_object{EAGINE_ID(AjcyShpGen), parent}
+      , delegated_gen{std::move(gen)} {
         _topology(var);
     }
 
-    triangle_adjacency_gen(std::shared_ptr<generator> gen) noexcept
-      : triangle_adjacency_gen{std::move(gen), 0} {}
+    triangle_adjacency_gen(
+      main_ctx_parent parent,
+      std::shared_ptr<generator> gen) noexcept
+      : triangle_adjacency_gen{parent, std::move(gen), 0} {}
 
     auto index_type(const topology&) -> index_data_type;
     auto index_type(const drawing_variant) -> index_data_type override;
@@ -59,22 +66,25 @@ private:
 /// @brief Constructs instances of triangle_adjacency_gen modifier.
 /// @ingroup shapes
 static inline auto add_triangle_adjacency(
+  main_ctx_parent parent,
   std::shared_ptr<generator> gen,
   const drawing_variant var) noexcept {
-    return std::make_unique<triangle_adjacency_gen>(std::move(gen), var);
+    return std::make_unique<triangle_adjacency_gen>(
+      parent, std::move(gen), var);
 }
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of triangle_adjacency_gen modifier.
 /// @ingroup shapes
 static inline auto add_triangle_adjacency(
+  main_ctx_parent parent,
   std::shared_ptr<generator> gen) noexcept {
-    return std::make_unique<triangle_adjacency_gen>(std::move(gen));
+    return std::make_unique<triangle_adjacency_gen>(parent, std::move(gen));
 }
 //------------------------------------------------------------------------------
 } // namespace shapes
 } // namespace eagine
 
-#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_LIBRARY)
+#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_SHAPES_LIBRARY)
 #include <eagine/shapes/adjacency.inl>
 #endif
 
