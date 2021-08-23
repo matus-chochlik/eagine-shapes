@@ -25,8 +25,7 @@
 #include <array>
 #include <memory>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 struct shape_face_info {
     std::array<span_size_t, 3> indices{};
@@ -425,8 +424,7 @@ static inline auto operator+(
       std::move(l), std::move(r), std::make_index_sequence<N>());
 }
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes
 
 #if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_SHAPES_LIBRARY)
 #include <eagine/shapes/gen_base.inl>

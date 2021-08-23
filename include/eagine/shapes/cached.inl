@@ -6,8 +6,7 @@
 ///  http://www.boost.org/LICENSE_1_0.txt
 ///
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 template <typename T>
 void cached_gen::_get_values(
@@ -100,5 +99,4 @@ void cached_gen::indices(const drawing_variant var, span<std::uint32_t> dest) {
     _get_indices(var, dest, _idx32_cache);
 }
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes

@@ -9,8 +9,7 @@
 #include <eagine/math/tvec.hpp>
 #include <iostream>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 struct topology_data {
     unsigned values_per_vertex{0U};
@@ -236,5 +235,4 @@ void topology::_scan_topology(
     }
 }
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes

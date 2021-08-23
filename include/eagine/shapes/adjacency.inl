@@ -10,8 +10,7 @@
 #include <eagine/memory/span_algo.hpp>
 #include <vector>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 auto triangle_adjacency_gen::_topology(const drawing_variant var) noexcept
@@ -115,5 +114,4 @@ void triangle_adjacency_gen::instructions(
     op.cw_face_winding = true;
 }
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes

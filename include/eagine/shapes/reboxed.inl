@@ -8,8 +8,7 @@
 #include <eagine/math/functions.hpp>
 #include <limits>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void reboxed_gen::attrib_values(
@@ -62,5 +61,4 @@ void reboxed_gen::attrib_values(
     }
 }
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes

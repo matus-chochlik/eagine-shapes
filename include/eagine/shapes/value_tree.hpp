@@ -15,8 +15,7 @@
 #include <eagine/value_tree/wrappers.hpp>
 #include <map>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Loader that fetches shape data from a value tree (JSON, YAML, etc.)
 /// @ingroup shapes
@@ -93,8 +92,7 @@ static inline auto from_value_tree(
     return std::make_unique<value_tree_loader>(std::move(source), parent);
 }
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes
 
 #if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_SHAPES_LIBRARY)
 #include <eagine/shapes/value_tree.inl>

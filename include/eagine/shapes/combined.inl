@@ -8,8 +8,7 @@
 #include <eagine/assert.hpp>
 #include <eagine/math/functions.hpp>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 auto combined_gen::add(std::unique_ptr<generator>&& gen) && -> combined_gen&& {
@@ -297,5 +296,4 @@ void combined_gen::ray_intersections(
     }
 }
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes

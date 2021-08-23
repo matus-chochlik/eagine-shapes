@@ -14,8 +14,7 @@
 #include <eagine/config/basic.hpp>
 #include <eagine/main_ctx_object.hpp>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Generator modifier adding triangle adjacency to drawing instructions
 /// @ingroup shapes
@@ -81,8 +80,7 @@ static inline auto add_triangle_adjacency(
     return std::make_unique<triangle_adjacency_gen>(parent, std::move(gen));
 }
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes
 
 #if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_SHAPES_LIBRARY)
 #include <eagine/shapes/adjacency.inl>

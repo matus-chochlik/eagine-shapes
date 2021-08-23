@@ -13,8 +13,7 @@
 #include <eagine/config/basic.hpp>
 #include <vector>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 class combined_gen : public generator {
 public:
@@ -100,8 +99,7 @@ static inline auto combine(std::array<std::unique_ptr<generator>, N>&& gens) {
     return std::make_unique<combined_gen>(std::move(v));
 }
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes
 
 #if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_SHAPES_LIBRARY)
 #include <eagine/shapes/combined.inl>

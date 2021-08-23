@@ -15,8 +15,7 @@
 #include <thread>
 #include <vector>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void occluded_gen::occlusions(
@@ -153,5 +152,4 @@ void occluded_gen::attrib_values(
     }
 }
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes

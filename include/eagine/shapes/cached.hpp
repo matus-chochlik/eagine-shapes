@@ -14,8 +14,7 @@
 #include <map>
 #include <mutex>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Generator caching the vertex attribute values, etc. if they are used.
 /// @ingroup shapes
@@ -71,9 +70,7 @@ static inline auto cache(std::shared_ptr<generator> gen) noexcept {
     return std::make_unique<cached_gen>(std::move(gen));
 }
 //------------------------------------------------------------------------------
-
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes
 
 #if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_SHAPES_LIBRARY)
 #include <eagine/shapes/cached.inl>

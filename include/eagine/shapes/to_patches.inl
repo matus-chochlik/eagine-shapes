@@ -7,8 +7,7 @@
 ///
 #include <eagine/assert.hpp>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void to_patches_gen::instructions(
@@ -28,5 +27,4 @@ void to_patches_gen::instructions(
     }
 }
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes

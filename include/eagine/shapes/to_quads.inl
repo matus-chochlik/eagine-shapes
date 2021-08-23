@@ -10,8 +10,7 @@
 #include <eagine/memory/span_algo.hpp>
 #include <vector>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 auto to_quads_gen::index_count(const drawing_variant var) -> span_size_t {
@@ -198,5 +197,4 @@ void to_quads_gen::instructions(
     }
 }
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes

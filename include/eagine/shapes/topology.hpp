@@ -15,8 +15,7 @@
 #include <iosfwd>
 #include <vector>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 struct topology_data;
 class mesh_triangle;
@@ -197,8 +196,7 @@ private:
     flat_map<std::tuple<unsigned, unsigned>, mesh_edge> _edges;
 };
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes
 
 #if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_SHAPES_LIBRARY)
 #include <eagine/shapes/topology.inl>

@@ -14,8 +14,7 @@
 #include <array>
 #include <memory>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Generator modifier scaling the generated vertices by specifed amount.
 /// @ingroup shapes
@@ -45,8 +44,7 @@ static inline auto scale(
     return std::make_unique<scaled_gen>(std::move(gen), s);
 }
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes
 
 #if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_SHAPES_LIBRARY)
 #include <eagine/shapes/scaled.inl>

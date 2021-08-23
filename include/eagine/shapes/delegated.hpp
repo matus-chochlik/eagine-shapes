@@ -13,8 +13,7 @@
 #include <eagine/config/basic.hpp>
 #include <memory>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Base class for delegating shape generators based on other generators.
 /// @ingroup shapes
@@ -143,7 +142,6 @@ private:
     std::shared_ptr<generator> _gen;
 };
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes
 
 #endif // EAGINE_SHAPES_DELEGATED_HPP

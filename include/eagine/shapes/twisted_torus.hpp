@@ -15,8 +15,7 @@
 #include <eagine/valid_if/greater_than.hpp>
 #include <cassert>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Generator of centered UV-sphere shape with unit diameter.
 /// @ingroup shapes
@@ -96,8 +95,7 @@ static inline auto unit_twisted_torus(const vertex_attrib_bits attr_bits) {
     return unit_twisted_torus(attr_bits, 12, 38, 12, 0.5F);
 }
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes
 
 #if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_SHAPES_LIBRARY)
 #include <eagine/shapes/twisted_torus.inl>

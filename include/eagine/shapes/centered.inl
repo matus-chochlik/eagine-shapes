@@ -8,8 +8,7 @@
 #include <eagine/math/functions.hpp>
 #include <limits>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void centered_gen::attrib_values(
@@ -74,5 +73,4 @@ auto centered_gen::bounding_sphere() -> math::sphere<float, true> {
     return {{0.F}, bs.radius()};
 }
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes

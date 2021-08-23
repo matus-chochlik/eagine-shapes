@@ -14,8 +14,7 @@
 #include <eagine/main_ctx_object.hpp>
 #include <utility>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Generator modifier calculating vertex occlusion weights.
 /// @ingroup shapes
@@ -49,9 +48,7 @@ static inline auto occlude(
     return std::make_unique<occluded_gen>(parent, std::move(gen), samples);
 }
 //------------------------------------------------------------------------------
-
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes
 
 #if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_SHAPES_LIBRARY)
 #include <eagine/shapes/occluded.inl>

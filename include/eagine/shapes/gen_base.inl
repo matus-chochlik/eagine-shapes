@@ -13,9 +13,7 @@
 #include <limits>
 #include <vector>
 
-#include <iostream>
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 // generator
 //------------------------------------------------------------------------------
@@ -254,5 +252,4 @@ void centered_unit_shape_generator_base::attrib_values(
     }
 }
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes

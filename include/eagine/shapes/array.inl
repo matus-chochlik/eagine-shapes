@@ -7,8 +7,7 @@
 ///
 #include <eagine/memory/span_algo.hpp>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 auto array_gen::vertex_count() -> span_size_t {
@@ -188,5 +187,4 @@ auto array_gen::bounding_sphere() -> math::sphere<float, true> {
     return {bs.center() + c * 0.5F * v, bs.radius() + c * 0.5F * l};
 }
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes
