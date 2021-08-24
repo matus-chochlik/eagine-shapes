@@ -12,8 +12,7 @@
 #include <eagine/bitfield.hpp>
 #include <eagine/types.hpp>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Shape generator capability bit enumeration.
 /// @ingroup shapes
@@ -39,7 +38,6 @@ static constexpr auto operator|(
     return {a, b};
 }
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes
 
 #endif // EAGINE_SHAPES_GEN_CAPABILITIES_HPP

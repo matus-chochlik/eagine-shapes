@@ -1,0 +1,6 @@
+version: "3.6"
+services:
+    eagine_shapes_dev_deb_test:
+        build: .
+        container_name: eagine_shapes_dev_deb_test
+

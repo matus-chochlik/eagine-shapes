@@ -13,8 +13,7 @@
 #include <eagine/config/basic.hpp>
 #include <cassert>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Generator of centered flat 2d screen shape from (-1,-1,0) to (1,1,0)
 /// @ingroup shapes
@@ -62,11 +61,9 @@ static inline auto unit_screen(const vertex_attrib_bits attr_bits) {
     return std::make_unique<unit_screen_gen>(attr_bits);
 }
 //------------------------------------------------------------------------------
+} // namespace eagine::shapes
 
-} // namespace shapes
-} // namespace eagine
-
-#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_LIBRARY)
+#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_SHAPES_LIBRARY)
 #include <eagine/shapes/screen.inl>
 #endif
 

@@ -13,8 +13,7 @@
 #include <eagine/config/basic.hpp>
 #include <cassert>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Generator of centered icosahedron shape with unit diameter.
 /// @ingroup shapes
@@ -72,10 +71,9 @@ static inline auto unit_icosahedron(vertex_attrib_bits attr_bits) {
     return std::make_unique<unit_icosahedron_gen>(attr_bits);
 }
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes
 
-#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_LIBRARY)
+#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_SHAPES_LIBRARY)
 #include <eagine/shapes/icosahedron.inl>
 #endif
 

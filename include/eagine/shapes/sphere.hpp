@@ -14,8 +14,7 @@
 #include <eagine/valid_if/greater_than.hpp>
 #include <cassert>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Generator of centered UV-sphere shape with unit diameter.
 /// @ingroup shapes
@@ -106,10 +105,9 @@ static inline auto unit_sphere(const vertex_attrib_bits attr_bits) {
     return unit_sphere(attr_bits, 18, 36);
 }
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes
 
-#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_LIBRARY)
+#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_SHAPES_LIBRARY)
 #include <eagine/shapes/sphere.inl>
 #endif
 

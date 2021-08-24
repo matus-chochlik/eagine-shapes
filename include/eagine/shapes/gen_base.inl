@@ -13,9 +13,7 @@
 #include <limits>
 #include <vector>
 
-#include <iostream>
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 // generator
 //------------------------------------------------------------------------------
@@ -65,18 +63,71 @@ auto generator::bounding_sphere() -> math::sphere<float, true> {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void generator::ray_intersections(
+void generator::for_each_triangle(
   const drawing_variant var,
-  const span<const math::line<float, true>> rays,
-  span<optionally_valid<float>> intersections) {
-
-    EAGINE_ASSERT(intersections.size() >= rays.size());
+  const callable_ref<void(const shape_face_info&)> callback) {
 
     std::vector<draw_operation> ops(std_size(operation_count(var)));
     instructions(var, cover(ops));
 
     std::vector<std::uint32_t> idx(std_size(index_count(var)));
     indices(var, cover(idx));
+
+    const auto get_index = [&idx](auto vx, bool idxd) {
+        if(idxd) {
+            return span_size(idx[std_size(vx)]);
+        } else {
+            return span_size(vx);
+        }
+    };
+
+    shape_face_info tri{};
+
+    for(const auto& op : ops) {
+        const bool indexed = op.idx_type != index_data_type::none;
+        tri.cw_face_winding = op.cw_face_winding;
+
+        if(op.mode == primitive_type::triangles) {
+            span_size_t t = 0;
+            for(const auto v : integer_range(op.count)) {
+                const auto w = v + op.first;
+                tri.indices[std_size(t)] = get_index(w, indexed);
+                if(++t >= 3) {
+                    t = 0;
+                    callback(tri);
+                }
+            }
+        } else if(op.mode == primitive_type::triangle_strip) {
+            for(const auto v : integer_range(2, op.count)) {
+                span_size_t w = v + op.first;
+                span_size_t o0 = -2, o1 = -1, o2 = 0;
+                if(v % 2 != 0) {
+                    o1 = 0;
+                    o2 = -1;
+                }
+                tri.indices = {
+                  {get_index(w + o0, indexed),
+                   get_index(w + o1, indexed),
+                   get_index(w + o2, indexed)}};
+                callback(tri);
+            }
+        }
+    }
+}
+//------------------------------------------------------------------------------
+EAGINE_LIB_FUNC
+void generator::random_surface_values(const random_attribute_values& values) {
+    EAGINE_ASSERT(are_consistent(values));
+    EAGINE_MAYBE_UNUSED(values);
+}
+//------------------------------------------------------------------------------
+EAGINE_LIB_FUNC
+void generator::ray_intersections(
+  const drawing_variant var,
+  const span<const math::line<float, true>> rays,
+  span<optionally_valid<float>> intersections) {
+
+    EAGINE_ASSERT(intersections.size() >= rays.size());
 
     const auto pvak = vertex_attrib_kind::position;
     const auto vpv = values_per_vertex(pvak);
@@ -96,74 +147,42 @@ void generator::ray_intersections(
         }
     }
 
-    const auto intersect = [&ray_idx, &rays, &intersections](
-                             const auto& fce, bool cw) {
-        for(const auto i : ray_idx) {
-            const auto& ray = rays[i];
-            const auto nparam =
-              math::line_triangle_intersection_param(ray, fce);
+    if(!ray_idx.empty()) {
+        const auto intersect = [&ray_idx, &rays, &intersections](
+                                 const auto& fce, const bool cw) {
+            for(const auto i : ray_idx) {
+                const auto& ray = rays[i];
+                const auto nparam =
+                  math::line_triangle_intersection_param(ray, fce);
 
-            if(nparam > 0.0001F) {
-                const auto fnml = fce.normal(cw);
-                if(dot(ray.direction(), fnml) < 0.F) {
-                    auto& oparam = intersections[i];
-                    if(!oparam || bool(nparam < oparam)) {
-                        oparam = nparam;
+                if(nparam > 0.0001F) {
+                    const auto fnml = fce.normal(cw);
+                    if(dot(ray.direction(), fnml) < 0.F) {
+                        auto& oparam = intersections[i];
+                        if(!oparam || bool(nparam < oparam)) {
+                            oparam = nparam;
+                        }
                     }
                 }
             }
-        }
-    };
+        };
 
-    const auto coord = [&pos, &idx, vpv](auto vx, auto cr, bool idxd) {
-        if(idxd) {
-            return pos[std_size(span_size(idx[std_size(vx)]) * vpv + cr)];
-        } else {
-            return pos[std_size(vx * vpv + cr)];
-        }
-    };
+        const auto find_intersections =
+          [&intersect, &pos, vpv](const shape_face_info& info) {
+              const math::triangle<float, true> face{
+                {pos[info.indices[0] * vpv + 0],
+                 pos[info.indices[0] * vpv + 1],
+                 pos[info.indices[0] * vpv + 2]},
+                {pos[info.indices[1] * vpv + 0],
+                 pos[info.indices[1] * vpv + 1],
+                 pos[info.indices[1] * vpv + 2]},
+                {pos[info.indices[2] * vpv + 0],
+                 pos[info.indices[2] * vpv + 1],
+                 pos[info.indices[2] * vpv + 2]}};
+              intersect(face, info.cw_face_winding);
+          };
 
-    for(const auto& op : ops) {
-        const bool indexed = op.idx_type != index_data_type::none;
-
-        if(op.mode == primitive_type::triangles) {
-            std::array<std::array<float, 4>, 3> tri{};
-            span_size_t t = 0;
-            for(const auto v : integer_range(op.count)) {
-                const auto w = v + op.first;
-                for(const auto c : integer_range(3)) {
-                    tri[std_size(t)][std_size(c)] = coord(w, c, indexed);
-                }
-                if(++t >= 3) {
-                    t = 0;
-                    math::triangle<float, true> face{
-                      {tri[0][0], tri[0][1], tri[0][2]},
-                      {tri[1][0], tri[1][1], tri[1][2]},
-                      {tri[2][0], tri[2][1], tri[2][2]}};
-                    intersect(face, op.cw_face_winding);
-                }
-            }
-        } else if(op.mode == primitive_type::triangle_strip) {
-            for(const auto v : integer_range(2, op.count)) {
-                span_size_t w = v + op.first;
-                span_size_t o0 = -2, o1 = -1, o2 = 0;
-                if(v % 2 != 0) {
-                    o1 = 0;
-                    o2 = -1;
-                }
-                math::triangle<float, true> face{
-                  {coord(w + o0, 0, indexed),
-                   coord(w + o0, 1, indexed),
-                   coord(w + o0, 2, indexed)},
-                  {coord(w + o1, 0, indexed),
-                   coord(w + o1, 1, indexed),
-                   coord(w + o1, 2, indexed)},
-                  {coord(w + o2, 0, indexed),
-                   coord(w + o2, 1, indexed),
-                   coord(w + o2, 2, indexed)}};
-                intersect(face, op.cw_face_winding);
-            }
-        }
+        for_each_triangle(var, {construct_from, find_intersections});
     }
 }
 //------------------------------------------------------------------------------
@@ -233,5 +252,4 @@ void centered_unit_shape_generator_base::attrib_values(
     }
 }
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes

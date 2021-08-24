@@ -13,8 +13,7 @@
 #include <eagine/config/basic.hpp>
 #include <utility>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Generator modifier recalculating the vertex box coords values.
 /// @ingroup shapes
@@ -34,11 +33,9 @@ static inline auto rebox(std::shared_ptr<generator> gen) noexcept {
     return std::make_unique<reboxed_gen>(std::move(gen));
 }
 //------------------------------------------------------------------------------
+} // namespace eagine::shapes
 
-} // namespace shapes
-} // namespace eagine
-
-#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_LIBRARY)
+#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_SHAPES_LIBRARY)
 #include <eagine/shapes/reboxed.inl>
 #endif
 

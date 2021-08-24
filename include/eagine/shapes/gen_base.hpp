@@ -14,7 +14,9 @@
 #include "vertex_attrib.hpp"
 #include <eagine/config/basic.hpp>
 #include <eagine/assert.hpp>
+#include <eagine/callable_ref.hpp>
 #include <eagine/compare.hpp>
+#include <eagine/flat_map.hpp>
 #include <eagine/integer_range.hpp>
 #include <eagine/interface.hpp>
 #include <eagine/math/primitives.hpp>
@@ -23,8 +25,24 @@
 #include <array>
 #include <memory>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
+//------------------------------------------------------------------------------
+struct shape_face_info {
+    std::array<span_size_t, 3> indices{};
+    bool cw_face_winding{};
+};
+//------------------------------------------------------------------------------
+/// @brief Structure used to control generation of random shape attribute values.
+/// @ingroup shapes
+/// @see vertex_attrib_variant
+/// @see generator
+struct random_attribute_values {
+    /// @brief The number of random attribute values to be generated.
+    span_size_t count{0};
+
+    /// @brief Destination spans or float values for specified attribute variants.
+    flat_map<vertex_attrib_variant, span<float>> float_values;
+};
 //------------------------------------------------------------------------------
 /// @brief Alias for shape drawing variant index type.
 /// @ingroup shapes
@@ -210,6 +228,33 @@ struct generator : interface<generator> {
     /// @brief Returns the bounding sphere for the generated shape.
     virtual auto bounding_sphere() -> math::sphere<float, true>;
 
+    /// @brief Calls a callback for each triangle in specified drawing variant.
+    virtual void for_each_triangle(
+      const drawing_variant var,
+      const callable_ref<void(const shape_face_info&)> callback);
+
+    /// @brief Calls a callback for each triangle in the default drawing variant.
+    virtual void for_each_triangle(
+      const callable_ref<void(const shape_face_info&)> callback) {
+        for_each_triangle(0, callback);
+    }
+
+    /// @brief Checks if the structure for random values is consistent.
+    /// @see random_attribute_values
+    auto are_consistent(const random_attribute_values& values) noexcept
+      -> bool {
+        for(const auto& [vav, dest] : values.float_values) {
+            if(dest.size() < values.count * values_per_vertex(vav)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /// @brief Generates attribute values at random surface points.
+    /// @see are_consistent
+    virtual void random_surface_values(const random_attribute_values&);
+
     /// @brief Calculates the intersections of the shape geometry with a ray.
     virtual void ray_intersections(
       const drawing_variant,
@@ -379,10 +424,9 @@ static inline auto operator+(
       std::move(l), std::move(r), std::make_index_sequence<N>());
 }
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes
 
-#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_LIBRARY)
+#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_SHAPES_LIBRARY)
 #include <eagine/shapes/gen_base.inl>
 #endif
 

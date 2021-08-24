@@ -14,8 +14,7 @@
 #include <cassert>
 #include <memory>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Generator of centered, subdivided and rounded cube shape with unit radius.
 /// @ingroup shapes
@@ -82,10 +81,9 @@ static inline auto unit_round_cube(const vertex_attrib_bits attr_bits) {
     return std::make_unique<unit_round_cube_gen>(attr_bits, 8);
 }
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes
 
-#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_LIBRARY)
+#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_SHAPES_LIBRARY)
 #include <eagine/shapes/round_cube.inl>
 #endif
 

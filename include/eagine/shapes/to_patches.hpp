@@ -12,8 +12,7 @@
 #include "delegated.hpp"
 #include <eagine/config/basic.hpp>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Generator modifier changing primitives in draw instructions to patches.
 /// @ingroup shapes
@@ -33,10 +32,9 @@ static inline auto to_patches(std::shared_ptr<generator> gen) noexcept {
     return std::make_unique<to_patches_gen>(std::move(gen));
 }
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes
 
-#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_LIBRARY)
+#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_SHAPES_LIBRARY)
 #include <eagine/shapes/to_patches.inl>
 #endif
 

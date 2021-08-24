@@ -16,8 +16,7 @@ EAGINE_DIAG_PUSH()
 EAGINE_DIAG_OFF(double-promotion)
 #endif
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 auto unit_twisted_torus_gen::_attr_mask() noexcept -> vertex_attrib_bits {
@@ -319,8 +318,7 @@ void unit_twisted_torus_gen::ray_intersections(
     }
 }
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes
 
 #ifdef __clang__
 EAGINE_DIAG_POP()

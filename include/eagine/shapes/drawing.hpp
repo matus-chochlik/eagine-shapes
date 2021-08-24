@@ -14,8 +14,7 @@
 #include <eagine/tags.hpp>
 #include <eagine/types.hpp>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief The shape primitive type enumeration.
 /// @ingroup shapes
@@ -206,7 +205,6 @@ struct draw_operation {
       , cw_face_winding{false} {}
 };
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes
 
 #endif // EAGINE_SHAPES_DRAWING_HPP

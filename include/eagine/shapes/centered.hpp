@@ -13,8 +13,7 @@
 #include <eagine/config/basic.hpp>
 #include <utility>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Generator modifier recalculating the shape center from vertex positions.
 /// @ingroup shapes
@@ -36,10 +35,9 @@ static inline auto center(std::shared_ptr<generator> gen) noexcept {
     return std::make_unique<centered_gen>(std::move(gen));
 }
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes
 
-#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_LIBRARY)
+#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_SHAPES_LIBRARY)
 #include <eagine/shapes/centered.inl>
 #endif
 

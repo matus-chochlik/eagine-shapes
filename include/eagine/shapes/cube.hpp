@@ -14,8 +14,7 @@
 #include <cassert>
 #include <memory>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Generator of centered cube shape with unit edge size.
 /// @ingroup shapes
@@ -100,10 +99,9 @@ static inline auto unit_cube(const vertex_attrib_bits attr_bits) {
     return std::make_unique<unit_cube_gen>(attr_bits);
 }
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes
 
-#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_LIBRARY)
+#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_SHAPES_LIBRARY)
 #include <eagine/shapes/cube.inl>
 #endif
 

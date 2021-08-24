@@ -13,8 +13,7 @@ EAGINE_DIAG_PUSH()
 EAGINE_DIAG_OFF(double-promotion)
 #endif
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 auto unit_screen_gen::_attr_mask() noexcept -> vertex_attrib_bits {
@@ -210,8 +209,7 @@ auto unit_screen_gen::bounding_sphere() -> math::sphere<float, true> {
     return {{0.0F}, float(sqrt(2.F))};
 }
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes
 
 #ifdef __clang__
 EAGINE_DIAG_POP()

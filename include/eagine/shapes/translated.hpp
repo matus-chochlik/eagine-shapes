@@ -13,8 +13,7 @@
 #include <eagine/config/basic.hpp>
 #include <array>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Generator modifier translating the generated vertices by specifed amount.
 /// @ingroup shapes
@@ -43,11 +42,9 @@ static inline auto translate(
     return std::make_unique<translated_gen>(std::move(gen), d);
 }
 //------------------------------------------------------------------------------
+} // namespace eagine::shapes
 
-} // namespace shapes
-} // namespace eagine
-
-#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_LIBRARY)
+#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_SHAPES_LIBRARY)
 #include <eagine/shapes/translated.inl>
 #endif
 

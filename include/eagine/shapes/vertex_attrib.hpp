@@ -17,8 +17,7 @@
 #include <type_traits>
 #include <utility>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Shape vertex attribute kind enumeration.
 /// @ingroup shapes
@@ -296,7 +295,6 @@ static inline auto attrib_values_per_vertex(
     return attrib_values_per_vertex(vav.attribute());
 }
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes
 
 #endif // EAGINE_SHAPES_VERTEX_ATTRIB_HPP

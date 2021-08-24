@@ -11,6 +11,7 @@
 #include <eagine/shapes/gen_base.hpp>
 #include "implement.inl"
 #include <eagine/shapes/array.hpp>
+#include <eagine/shapes/cached.hpp>
 #include <eagine/shapes/combined.hpp>
 #include <eagine/shapes/centered.hpp>
 #include <eagine/shapes/translated.hpp>

@@ -18,8 +18,7 @@
 #include <cassert>
 #include <memory>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 
 /// @brief Generator of centered torus shape with unit diameter.
 /// @ingroup shapes
@@ -130,10 +129,9 @@ static inline auto unit_torus(const vertex_attrib_bits attr_bits) {
     return unit_torus(attr_bits, 18, 36, 0.5F);
 }
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes
 
-#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_LIBRARY)
+#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_SHAPES_LIBRARY)
 #include <eagine/shapes/torus.inl>
 #include <utility>
 #endif

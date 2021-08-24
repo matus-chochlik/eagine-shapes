@@ -9,25 +9,30 @@
 #ifndef EAGINE_SHAPES_OCCLUDED_HPP
 #define EAGINE_SHAPES_OCCLUDED_HPP
 
-#include "delegated.hpp"
+#include "cached.hpp"
 #include <eagine/config/basic.hpp>
+#include <eagine/main_ctx_object.hpp>
 #include <utility>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Generator modifier calculating vertex occlusion weights.
 /// @ingroup shapes
 /// @see occlude
-class occluded_gen : public delegated_gen {
+class occluded_gen
+  : public main_ctx_object
+  , public delegated_gen {
 
 public:
     occluded_gen(
+      main_ctx_parent parent,
       std::shared_ptr<generator> gen,
       const span_size_t samples) noexcept
-      : delegated_gen{std::move(gen)}
+      : main_ctx_object{EAGINE_ID(OcclShpGen), parent}
+      , delegated_gen{cache(std::move(gen))}
       , _samples{samples} {}
 
+    void occlusions(const vertex_attrib_variant, span<float>);
     void attrib_values(const vertex_attrib_variant, span<float>) override;
 
 private:
@@ -37,16 +42,15 @@ private:
 /// @brief Constructs instances of occluded_gen modifier.
 /// @ingroup shapes
 static inline auto occlude(
+  main_ctx_parent parent,
   std::shared_ptr<generator> gen,
   const span_size_t samples = 8) noexcept {
-    return std::make_unique<occluded_gen>(std::move(gen), samples);
+    return std::make_unique<occluded_gen>(parent, std::move(gen), samples);
 }
 //------------------------------------------------------------------------------
+} // namespace eagine::shapes
 
-} // namespace shapes
-} // namespace eagine
-
-#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_LIBRARY)
+#if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_SHAPES_LIBRARY)
 #include <eagine/shapes/occluded.inl>
 #endif
 

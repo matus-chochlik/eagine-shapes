@@ -9,8 +9,7 @@
 #include <eagine/assert.hpp>
 #include <eagine/reflect/enumerators.hpp>
 
-namespace eagine {
-namespace shapes {
+namespace eagine::shapes {
 //------------------------------------------------------------------------------
 static inline auto vertex_attrib_name(const vertex_attrib_kind attrib) noexcept {
     return enumerator_name(
@@ -498,5 +497,4 @@ void value_tree_loader::instructions(
     }
 }
 //------------------------------------------------------------------------------
-} // namespace shapes
-} // namespace eagine
+} // namespace eagine::shapes
