@@ -112,7 +112,9 @@ void occluded_gen::occlusions(
                     const auto v = vi++;
                     if(v < vc) {
                         dest[v] = vertex_occlusion(v);
-                        progress_update(v);
+                        if(EAGINE_UNLIKELY(!progress_update(v))) {
+                            break;
+                        }
                     } else {
                         break;
                     }
@@ -125,12 +127,14 @@ void occluded_gen::occlusions(
         workers.reserve(worker_count);
         for(const auto t : integer_range(worker_count)) {
             EAGINE_MAYBE_UNUSED(t);
-            workers.emplace_back(make_raytracer([](const auto) {}));
+            workers.emplace_back(
+              make_raytracer([](const auto) { return true; }));
         }
 
         make_raytracer(
           [raytracing{progress().activity("ray-tracing occlusions", vc)}](
-            const auto v) { raytracing.update_progress(v); })();
+            const auto v) { return raytracing.update_progress(v); })();
+        vi = vc;
 
         for(auto& worker : workers) {
             worker.join();
