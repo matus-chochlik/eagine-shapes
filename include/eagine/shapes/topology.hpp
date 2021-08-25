@@ -12,6 +12,7 @@
 #include "gen_base.hpp"
 #include <eagine/config/basic.hpp>
 #include <eagine/flat_map.hpp>
+#include <eagine/main_ctx_object.hpp>
 #include <iosfwd>
 #include <vector>
 
@@ -153,20 +154,26 @@ private:
 /// @ingroup shapes
 /// @see mesh_edge
 /// @see mesh_triangle
-class topology {
+class topology : public main_ctx_object {
 public:
     /// @brief Construction from a generator, drawing and attribute variant.
     topology(
       std::shared_ptr<generator> gen,
       const drawing_variant var,
-      const vertex_attrib_variant vav)
-      : _gen{std::move(gen)} {
+      const vertex_attrib_variant vav,
+      main_ctx_parent parent)
+      : main_ctx_object{EAGINE_ID(ShpTopolgy), parent}
+      , _gen{std::move(gen)} {
         _scan_topology(var, vav);
     }
 
     /// @brief Construction from a shape generator.
-    topology(const std::shared_ptr<generator>& gen)
-      : topology{gen, gen->draw_variant(0), {vertex_attrib_kind::position}} {}
+    topology(const std::shared_ptr<generator>& gen, main_ctx_parent parent)
+      : topology{
+          gen,
+          gen->draw_variant(0),
+          {vertex_attrib_kind::position},
+          parent} {}
 
     /// @brief Returns the number of triangles in the mesh.
     auto triangle_count() const noexcept -> span_size_t {

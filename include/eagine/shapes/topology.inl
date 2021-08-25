@@ -7,6 +7,7 @@
 ///
 #include <eagine/assert.hpp>
 #include <eagine/math/tvec.hpp>
+#include <eagine/progress/activity.hpp>
 #include <iostream>
 
 namespace eagine::shapes {
@@ -165,6 +166,9 @@ void topology::_scan_topology(
     data.operations.resize(std_size(_gen->operation_count(var)));
     _gen->instructions(var, cover(data.operations));
 
+    auto scan_ops = progress().activity(
+      "processing shape draw operations", span_size(data.operations.size()));
+
     for(auto& operation : data.operations) {
         const bool indexed = operation.idx_type != index_data_type::none;
         span_size_t i;
@@ -213,7 +217,12 @@ void topology::_scan_topology(
                 }
             }
         }
+        scan_ops.advance_progress();
     }
+    scan_ops.finish();
+
+    const auto scan_tris = progress().activity(
+      "processing shape triangles", span_size(_triangles.size()));
 
     for(auto& ltri : _triangles) {
         const auto lidx = ltri.index();
@@ -232,6 +241,7 @@ void topology::_scan_topology(
                 }
             }
         }
+        scan_tris.advance_progress();
     }
 }
 //------------------------------------------------------------------------------
