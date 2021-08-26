@@ -155,7 +155,7 @@ void topology::_scan_topology(
   const drawing_variant var,
   const vertex_attrib_variant vav) {
     topology_data data;
-    data.values_per_vertex = std_size(_gen->values_per_vertex(vav));
+    data.values_per_vertex = limit_cast<unsigned>(_gen->values_per_vertex(vav));
 
     data.vertex_values.resize(std_size(_gen->value_count(vav)));
     _gen->attrib_values(vav, cover(data.vertex_values));

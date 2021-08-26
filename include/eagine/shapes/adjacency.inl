@@ -66,8 +66,8 @@ void triangle_adjacency_gen::_indices(
     for(const auto t : integer_range(topo.triangle_count())) {
         auto& tri = topo.triangle(t);
         for(const auto v : integer_range(3)) {
-            dest[i++] = tri.vertex_index(v);
-            dest[i++] = tri.opposite_index(v);
+            dest[i++] = limit_cast<T>(tri.vertex_index(v));
+            dest[i++] = limit_cast<T>(tri.opposite_index(v));
         }
     }
     EAGINE_ASSERT(i == index_count(topo));
