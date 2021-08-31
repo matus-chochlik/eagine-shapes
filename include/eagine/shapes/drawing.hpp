@@ -43,6 +43,7 @@ enum class primitive_type : std::uint8_t {
     patches
 };
 //------------------------------------------------------------------------------
+#if !EAGINE_CXX_REFLECTION
 template <typename Selector>
 constexpr auto enumerator_mapping(
   const type_identity<primitive_type>,
@@ -60,6 +61,7 @@ constexpr auto enumerator_mapping(
        {"tetrahedrons", primitive_type::tetrahedrons},
        {"patches", primitive_type::patches}}};
 }
+#endif
 //------------------------------------------------------------------------------
 /// @brief Shape vertex attribute data type enumeration.
 /// @ingroup shapes
@@ -81,6 +83,7 @@ enum class attrib_data_type {
     float_
 };
 //------------------------------------------------------------------------------
+#if !EAGINE_CXX_REFLECTION
 template <typename Selector>
 constexpr auto enumerator_mapping(
   const type_identity<attrib_data_type>,
@@ -94,6 +97,7 @@ constexpr auto enumerator_mapping(
        {"uint_32", attrib_data_type::uint_32},
        {"float_", attrib_data_type::float_}}};
 }
+#endif
 //------------------------------------------------------------------------------
 constexpr auto enumerator_mapping(
   const type_identity<attrib_data_type>,
@@ -121,6 +125,7 @@ enum class index_data_type : std::uint8_t {
     unsigned_32 = 32
 };
 //------------------------------------------------------------------------------
+#if !EAGINE_CXX_REFLECTION
 template <typename Selector>
 constexpr auto enumerator_mapping(
   const type_identity<index_data_type>,
@@ -131,6 +136,7 @@ constexpr auto enumerator_mapping(
        {"unsigned_16", index_data_type::unsigned_16},
        {"unsigned_32", index_data_type::unsigned_32}}};
 }
+#endif
 //------------------------------------------------------------------------------
 constexpr auto enumerator_mapping(
   const type_identity<index_data_type>,

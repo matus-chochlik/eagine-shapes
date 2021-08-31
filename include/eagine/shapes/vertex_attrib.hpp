@@ -57,6 +57,7 @@ enum class vertex_attrib_kind : std::uint16_t {
     // also fix all_vertex_attrib_bits
 };
 //------------------------------------------------------------------------------
+#if !EAGINE_CXX_REFLECTION
 template <typename Selector>
 constexpr auto enumerator_mapping(
   const type_identity<vertex_attrib_kind>,
@@ -79,6 +80,7 @@ constexpr auto enumerator_mapping(
        {"polygon_id", vertex_attrib_kind::polygon_id},
        {"material_id", vertex_attrib_kind::material_id}}};
 }
+#endif
 //------------------------------------------------------------------------------
 /// @brief Alias for vertex_attrib_kind bitfield type.
 /// @ingroup shapes
