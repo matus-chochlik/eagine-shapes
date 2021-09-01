@@ -7,6 +7,7 @@
 ///
 #include <eagine/assert.hpp>
 #include <eagine/math/tvec.hpp>
+#include <eagine/progress/activity.hpp>
 #include <iostream>
 
 namespace eagine::shapes {
@@ -154,7 +155,7 @@ void topology::_scan_topology(
   const drawing_variant var,
   const vertex_attrib_variant vav) {
     topology_data data;
-    data.values_per_vertex = std_size(_gen->values_per_vertex(vav));
+    data.values_per_vertex = limit_cast<unsigned>(_gen->values_per_vertex(vav));
 
     data.vertex_values.resize(std_size(_gen->value_count(vav)));
     _gen->attrib_values(vav, cover(data.vertex_values));
@@ -164,6 +165,9 @@ void topology::_scan_topology(
 
     data.operations.resize(std_size(_gen->operation_count(var)));
     _gen->instructions(var, cover(data.operations));
+
+    auto scan_ops = progress().activity(
+      "processing shape draw operations", span_size(data.operations.size()));
 
     for(auto& operation : data.operations) {
         const bool indexed = operation.idx_type != index_data_type::none;
@@ -213,7 +217,12 @@ void topology::_scan_topology(
                 }
             }
         }
+        scan_ops.advance_progress();
     }
+    scan_ops.finish();
+
+    const auto scan_tris = progress().activity(
+      "processing shape triangles", span_size(_triangles.size()));
 
     for(auto& ltri : _triangles) {
         const auto lidx = ltri.index();
@@ -232,6 +241,7 @@ void topology::_scan_topology(
                 }
             }
         }
+        scan_tris.advance_progress();
     }
 }
 //------------------------------------------------------------------------------

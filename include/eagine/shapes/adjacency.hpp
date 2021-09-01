@@ -13,6 +13,7 @@
 #include "topology.hpp"
 #include <eagine/config/basic.hpp>
 #include <eagine/main_ctx_object.hpp>
+#include <map>
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
@@ -24,18 +25,18 @@ class triangle_adjacency_gen
   , public delegated_gen {
 public:
     triangle_adjacency_gen(
-      main_ctx_parent parent,
       std::shared_ptr<generator> gen,
-      const drawing_variant var) noexcept
+      const drawing_variant var,
+      main_ctx_parent parent) noexcept
       : main_ctx_object{EAGINE_ID(AjcyShpGen), parent}
       , delegated_gen{std::move(gen)} {
         _topology(var);
     }
 
     triangle_adjacency_gen(
-      main_ctx_parent parent,
-      std::shared_ptr<generator> gen) noexcept
-      : triangle_adjacency_gen{parent, std::move(gen), 0} {}
+      std::shared_ptr<generator> gen,
+      main_ctx_parent parent) noexcept
+      : triangle_adjacency_gen{std::move(gen), 0, parent} {}
 
     auto index_type(const topology&) -> index_data_type;
     auto index_type(const drawing_variant) -> index_data_type override;
@@ -59,25 +60,25 @@ private:
     template <typename T>
     void _indices(const drawing_variant, span<T> dest) noexcept;
 
-    flat_map<drawing_variant, topology> _topologies;
+    std::map<drawing_variant, topology> _topologies;
 };
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of triangle_adjacency_gen modifier.
 /// @ingroup shapes
 static inline auto add_triangle_adjacency(
-  main_ctx_parent parent,
   std::shared_ptr<generator> gen,
-  const drawing_variant var) noexcept {
+  const drawing_variant var,
+  main_ctx_parent parent) noexcept {
     return std::make_unique<triangle_adjacency_gen>(
-      parent, std::move(gen), var);
+      std::move(gen), var, parent);
 }
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of triangle_adjacency_gen modifier.
 /// @ingroup shapes
 static inline auto add_triangle_adjacency(
-  main_ctx_parent parent,
-  std::shared_ptr<generator> gen) noexcept {
-    return std::make_unique<triangle_adjacency_gen>(parent, std::move(gen));
+  std::shared_ptr<generator> gen,
+  main_ctx_parent parent) noexcept {
+    return std::make_unique<triangle_adjacency_gen>(std::move(gen), parent);
 }
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes

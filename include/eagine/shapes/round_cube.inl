@@ -205,7 +205,7 @@ inline void unit_round_cube_gen::_indices(
                 }
             }
             if(primitive_restart()) {
-                dest[k++] = vertex_count();
+                dest[k++] = limit_cast<T>(vertex_count());
             }
         }
     }

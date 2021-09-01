@@ -17,7 +17,11 @@ auto triangle_adjacency_gen::_topology(const drawing_variant var) noexcept
   -> topology& {
     auto pos = _topologies.find(var);
     if(pos == _topologies.end()) {
-        pos = _topologies.emplace(var, delegated_gen::base_generator()).first;
+        pos =
+          _topologies
+            .emplace(
+              var, topology{delegated_gen::base_generator(), this->as_parent()})
+            .first;
     }
     return pos->second;
 }
@@ -62,8 +66,8 @@ void triangle_adjacency_gen::_indices(
     for(const auto t : integer_range(topo.triangle_count())) {
         auto& tri = topo.triangle(t);
         for(const auto v : integer_range(3)) {
-            dest[i++] = tri.vertex_index(v);
-            dest[i++] = tri.opposite_index(v);
+            dest[i++] = limit_cast<T>(tri.vertex_index(v));
+            dest[i++] = limit_cast<T>(tri.opposite_index(v));
         }
     }
     EAGINE_ASSERT(i == index_count(topo));
