@@ -31,6 +31,10 @@ public:
 
     void normals(span<float> dest) noexcept;
 
+    void tangentials(span<float> dest) noexcept;
+
+    void bitangentials(span<float> dest) noexcept;
+
     void face_coords(span<float> dest) noexcept;
 
     void attrib_values(const vertex_attrib_variant, span<float>) override;

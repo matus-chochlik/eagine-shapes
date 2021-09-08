@@ -113,6 +113,76 @@ void unit_round_cube_gen::normals(span<float> dest) noexcept {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
+void unit_round_cube_gen::tangentials(span<float> dest) noexcept {
+    span_size_t k = 0;
+
+    EAGINE_ASSERT(dest.size() >= vertex_count() * 3);
+
+    auto frac = [this](int q) {
+        auto adjust = [](float f) {
+            return 0.5F * std::asin(f) / std::asin(0.5F);
+        };
+        return adjust(float(q) / float(_divisions) - 0.5F);
+    };
+
+    for(const auto f : integer_range(6)) {
+        const auto vx = unit_round_cube_face_tangential(f);
+        const auto vy = unit_round_cube_face_bitangential(f);
+        const auto vz = unit_round_cube_face_normal(f);
+        for(const auto y : integer_range(_divisions + 1)) {
+            const float j = frac(y);
+            for(const auto x : integer_range(_divisions + 1)) {
+                const float i1 = frac(x);
+                const float i2 = frac(x + 1);
+                const auto vp1 = normalized((vz * 0.5F) + (vy * j) + (vx * i1));
+                const auto vp2 = normalized((vz * 0.5F) + (vy * j) + (vx * i2));
+                const auto vp = normalized(vp2 - vp1);
+                dest[k++] = vp.x();
+                dest[k++] = vp.y();
+                dest[k++] = vp.z();
+            }
+        }
+    }
+
+    EAGINE_ASSERT(k == vertex_count() * 3);
+}
+//------------------------------------------------------------------------------
+EAGINE_LIB_FUNC
+void unit_round_cube_gen::bitangentials(span<float> dest) noexcept {
+    span_size_t k = 0;
+
+    EAGINE_ASSERT(dest.size() >= vertex_count() * 3);
+
+    auto frac = [this](int q) {
+        auto adjust = [](float f) {
+            return 0.5F * std::asin(f) / std::asin(0.5F);
+        };
+        return adjust(float(q) / float(_divisions) - 0.5F);
+    };
+
+    for(const auto f : integer_range(6)) {
+        const auto vx = unit_round_cube_face_tangential(f);
+        const auto vy = unit_round_cube_face_bitangential(f);
+        const auto vz = unit_round_cube_face_normal(f);
+        for(const auto y : integer_range(_divisions + 1)) {
+            const float j1 = frac(y);
+            const float j2 = frac(y + 1);
+            for(const auto x : integer_range(_divisions + 1)) {
+                const float i = frac(x);
+                const auto vp1 = normalized((vz * 0.5F) + (vy * j1) + (vx * i));
+                const auto vp2 = normalized((vz * 0.5F) + (vy * j2) + (vx * i));
+                const auto vp = normalized(vp2 - vp1);
+                dest[k++] = vp.x();
+                dest[k++] = vp.y();
+                dest[k++] = vp.z();
+            }
+        }
+    }
+
+    EAGINE_ASSERT(k == vertex_count() * 3);
+}
+//------------------------------------------------------------------------------
+EAGINE_LIB_FUNC
 void unit_round_cube_gen::face_coords(span<float> dest) noexcept {
     EAGINE_ASSERT(has(vertex_attrib_kind::face_coord));
     EAGINE_ASSERT(dest.size() >= vertex_count() * 3);
@@ -145,11 +215,15 @@ void unit_round_cube_gen::attrib_values(
         case vertex_attrib_kind::normal:
             normals(dest);
             break;
+        case vertex_attrib_kind::tangential:
+            tangentials(dest);
+            break;
+        case vertex_attrib_kind::bitangential:
+            bitangentials(dest);
+            break;
         case vertex_attrib_kind::face_coord:
             face_coords(dest);
             break;
-        case vertex_attrib_kind::tangential:
-        case vertex_attrib_kind::bitangential:
         case vertex_attrib_kind::pivot:
         case vertex_attrib_kind::pivot_pivot:
         case vertex_attrib_kind::vertex_pivot:
