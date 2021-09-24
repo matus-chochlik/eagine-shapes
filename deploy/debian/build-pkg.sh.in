@@ -70,6 +70,10 @@ target_link_libraries(
 )
 EOD
 # ------------------------------------------------------------------------------
+cat << EOD > "${cmk_prefix}/EAGineShapesDeps.cmake"
+set(EAGineShapesDeps Core)
+EOD
+# ------------------------------------------------------------------------------
 mkdir -p "${pkg_dir}/DEBIAN"
 cat << EOD > "${pkg_dir}/DEBIAN/control"
 Package: eagine-shapes-dev
