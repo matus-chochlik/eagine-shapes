@@ -22,7 +22,8 @@ EAGINE_LIB_FUNC
 auto unit_round_cube_gen::_attr_mask() noexcept -> vertex_attrib_bits {
     return vertex_attrib_kind::position | vertex_attrib_kind::normal |
            vertex_attrib_kind::tangential | vertex_attrib_kind::bitangential |
-           vertex_attrib_kind::pivot | vertex_attrib_kind::box_coord;
+           vertex_attrib_kind::pivot | vertex_attrib_kind::face_coord |
+           vertex_attrib_kind::box_coord;
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
