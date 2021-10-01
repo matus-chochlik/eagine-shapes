@@ -129,7 +129,7 @@ auto unit_icosahedron_gen::index_type(const drawing_variant)
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 auto unit_icosahedron_gen::index_count(const drawing_variant) -> span_size_t {
-    return 20 * 3;
+    return 60;
 }
 //------------------------------------------------------------------------------
 template <typename T>
