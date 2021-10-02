@@ -6,9 +6,9 @@
 ///  http://www.boost.org/LICENSE_1_0.txt
 ///
 #include <eagine/assert.hpp>
+#include <eagine/math/primitives.hpp>
 #include <eagine/math/tvec.hpp>
 #include <eagine/progress/activity.hpp>
-#include <iostream>
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
@@ -153,7 +153,8 @@ auto topology::print_dot(std::ostream& out) const -> std::ostream& {
 EAGINE_LIB_FUNC
 void topology::_scan_topology(
   const drawing_variant var,
-  const vertex_attrib_variant vav) {
+  const vertex_attrib_variant vav,
+  const topology_feature_bits feats) {
     topology_data data;
     data.values_per_vertex = limit_cast<unsigned>(_gen->values_per_vertex(vav));
 
@@ -192,6 +193,23 @@ void topology::_scan_topology(
                   to_index(operation.first + i + b),
                   to_index(operation.first + i + c));
             }
+
+            auto& tri = _triangles.back();
+            if(feats.has(topology_feature_bit::triangle_area)) {
+                const auto vpv = data.values_per_vertex;
+                const auto& pos = data.vertex_values;
+                const auto ia = tri.vertex_index(0);
+                const auto ib = tri.vertex_index(1);
+                const auto ic = tri.vertex_index(2);
+                tri.set_area(math::triangle<float, true>{
+                  math::tvec<float, 3, true>{
+                    pos[ia * vpv + 0], pos[ia * vpv + 1], pos[ia * vpv + 2]},
+                  math::tvec<float, 3, true>{
+                    pos[ib * vpv + 0], pos[ib * vpv + 1], pos[ib * vpv + 2]},
+                  math::tvec<float, 3, true>{
+                    pos[ic * vpv + 0], pos[ic * vpv + 1], pos[ic * vpv + 2]}}
+                               .area());
+            }
         };
 
         if(operation.mode == primitive_type::triangles) {
@@ -221,33 +239,30 @@ void topology::_scan_topology(
     }
     scan_ops.finish();
 
-    const auto scan_tris = progress().activity(
-      "processing shape triangles", span_size(_triangles.size()));
+    if(feats.has(topology_feature_bit::triangle_adjacency)) {
+        const auto scan_tris = progress().activity(
+          "processing shape triangles", span_size(_triangles.size()));
 
-    for(auto& ltri : _triangles) {
-        const auto lidx = ltri.index();
-        for(auto& rtri : _triangles) {
-            const auto ridx = rtri.index();
-            if(lidx < ridx) {
-                const auto key =
-                  std::make_tuple(std::min(lidx, ridx), std::max(lidx, ridx));
-                if(_edges.find(key) == _edges.end()) {
-                    auto [should_add, leb, lee, reb, ree] =
-                      mesh_triangle::setup_adjacent(ltri, rtri, data);
-                    if(should_add) {
-                        _edges.emplace(
-                          key, mesh_edge{ltri, leb, lee, rtri, reb, ree});
+        for(auto& ltri : _triangles) {
+            const auto lidx = ltri.index();
+            for(auto& rtri : _triangles) {
+                const auto ridx = rtri.index();
+                if(lidx < ridx) {
+                    const auto key = std::make_tuple(
+                      std::min(lidx, ridx), std::max(lidx, ridx));
+                    if(_edges.find(key) == _edges.end()) {
+                        auto [should_add, leb, lee, reb, ree] =
+                          mesh_triangle::setup_adjacent(ltri, rtri, data);
+                        if(should_add) {
+                            _edges.emplace(
+                              key, mesh_edge{ltri, leb, lee, rtri, reb, ree});
+                        }
                     }
                 }
             }
+            scan_tris.advance_progress();
         }
-        scan_tris.advance_progress();
     }
-}
-//------------------------------------------------------------------------------
-auto topology::triangle_area(const mesh_triangle&) const noexcept -> float {
-    // TODO
-    return 1.F;
 }
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes

@@ -17,17 +17,20 @@ auto surface_points_gen::_topology(const drawing_variant var) noexcept
   -> ext_topology& {
     auto pos = _topologies.find(var);
     if(pos == _topologies.end()) {
+        auto gen = delegated_gen::base_generator();
         pos =
           _topologies
             .emplace(
               var,
-              ext_topology{delegated_gen::base_generator(), this->as_parent()})
+              ext_topology{
+                gen, topology_feature_bit::triangle_area, this->as_parent()})
             .first;
         auto& topo = pos->second;
+
         topo.triangle_areas.reserve(std_size(topo.triangle_count()));
         float accumulated = 0.F;
         for(const auto t : integer_range(topo.triangle_count())) {
-            accumulated += topo.triangle_area(t);
+            accumulated += topo.triangle(t).area();
             topo.triangle_areas.push_back(accumulated);
         }
     }
