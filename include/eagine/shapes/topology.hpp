@@ -185,6 +185,14 @@ public:
         return _triangles[std_size(i)];
     }
 
+    /// @brief Returns the area of the specified triangle.
+    auto triangle_area(const mesh_triangle&) const noexcept -> float;
+
+    /// @brief Returns the area of the i-th triangle.
+    auto triangle_area(const span_size_t i) const noexcept -> float {
+        return triangle_area(triangle(i));
+    }
+
     auto print_dot(std::ostream& out) const -> std::ostream&;
 
 private:

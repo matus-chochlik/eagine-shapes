@@ -173,12 +173,12 @@ void topology::_scan_topology(
         const bool indexed = operation.idx_type != index_data_type::none;
         span_size_t i;
 
-        auto is_pri = [&]() {
+        const auto is_pri = [&]() {
             return indexed &&
                    data.indices[i] == operation.primitive_restart_index;
         };
 
-        auto add_triangle = [&](int a, int b, int c) {
+        const auto add_triangle = [&](int a, int b, int c) {
             if(indexed) {
                 _triangles.emplace_back(
                   _triangles.size(),
@@ -229,7 +229,7 @@ void topology::_scan_topology(
         for(auto& rtri : _triangles) {
             const auto ridx = rtri.index();
             if(lidx < ridx) {
-                auto key =
+                const auto key =
                   std::make_tuple(std::min(lidx, ridx), std::max(lidx, ridx));
                 if(_edges.find(key) == _edges.end()) {
                     auto [should_add, leb, lee, reb, ree] =
@@ -243,6 +243,11 @@ void topology::_scan_topology(
         }
         scan_tris.advance_progress();
     }
+}
+//------------------------------------------------------------------------------
+auto topology::triangle_area(const mesh_triangle&) const noexcept -> float {
+    // TODO
+    return 1.F;
 }
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes
