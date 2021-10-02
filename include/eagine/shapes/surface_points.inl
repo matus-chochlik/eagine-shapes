@@ -7,6 +7,7 @@
 ///
 #include <eagine/math/functions.hpp>
 #include <array>
+#include <random>
 #include <vector>
 
 namespace eagine::shapes {
@@ -26,11 +27,37 @@ auto surface_points_gen::_topology(const drawing_variant var) noexcept
             .first;
         auto& topo = pos->second;
 
-        topo.triangle_areas.reserve(std_size(topo.triangle_count()));
+        std::vector<float> triangle_areas;
+        triangle_areas.reserve(std_size(topo.triangle_count()));
         float accumulated = 0.F;
         for(const auto t : integer_range(topo.triangle_count())) {
             accumulated += topo.triangle(t).area();
-            topo.triangle_areas.push_back(accumulated);
+            triangle_areas.push_back(accumulated);
+        }
+
+        std::default_random_engine rand{std::random_device{}()};
+        std::uniform_real_distribution<float> bary_dist{0.F, 1.F};
+        std::uniform_real_distribution<float> area_dist{
+          0.F, triangle_areas.back()};
+
+        topo.point_params.reserve(std_size(_point_count));
+
+        for(const auto p : integer_range(_point_count)) {
+            EAGINE_MAYBE_UNUSED(p);
+            const auto area_pick{area_dist(rand)};
+            const auto tri_pick_idx{std::distance(
+              triangle_areas.begin(),
+              std::lower_bound(
+                triangle_areas.begin(), triangle_areas.end(), area_pick))};
+
+            const auto bary_a{bary_dist(rand)};
+            const auto bary_b{bary_dist(rand)};
+            const auto bary_0{std::min(bary_a, bary_b)};
+            const auto bary_1{std::max(bary_a, bary_b) - bary_0};
+            const auto bary_2{1.F - std::max(bary_a, bary_b)};
+
+            topo.point_params.push_back(
+              {tri_pick_idx, {bary_0, bary_1, bary_2}});
         }
     }
     return pos->second;
@@ -58,25 +85,15 @@ void surface_points_gen::attrib_values(
     gen->attrib_values(vav, cover(vertex_values));
 
     auto& topo = _topology(0);
-    EAGINE_ASSERT(!topo.triangle_areas.empty());
-
-    std::uniform_real_distribution<float> bary_dist{0.F, 1.F};
-    std::uniform_real_distribution<float> area_dist{
-      0.F, topo.triangle_areas.back()};
 
     std::array<std::vector<float>, 4> tri_vert_values{};
     for(auto& vec : tri_vert_values) {
         vec.resize(vpv);
     }
 
-    for(const auto p : integer_range(_point_count)) {
-        const auto area_pick{area_dist(_rand)};
-        const auto tri_pick_idx{std::distance(
-          topo.triangle_areas.begin(),
-          std::lower_bound(
-            topo.triangle_areas.begin(), topo.triangle_areas.end(), area_pick))};
-
-        const auto& tri = topo.triangle(tri_pick_idx);
+    span_size_t k = 0;
+    for(const auto& [idx, bary] : topo.point_params) {
+        const auto& tri = topo.triangle(idx);
         for(const auto e : integer_range(3)) {
             const auto i = tri.vertex_index(e);
             for(const auto v : integer_range(vpv)) {
@@ -84,16 +101,10 @@ void surface_points_gen::attrib_values(
             }
         }
 
-        const auto bary_a{bary_dist(_rand)};
-        const auto bary_b{bary_dist(_rand)};
-        const auto bary_0{std::min(bary_a, bary_b)};
-        const auto bary_1{std::max(bary_a, bary_b) - bary_0};
-        const auto bary_2{1.F - std::max(bary_a, bary_b)};
-
         for(const auto v : integer_range(vpv)) {
-            tri_vert_values[3][v] = tri_vert_values[0][v] * bary_0 +
-                                    tri_vert_values[1][v] * bary_1 +
-                                    tri_vert_values[2][v] * bary_2;
+            tri_vert_values[3][v] = tri_vert_values[0][v] * bary[0] +
+                                    tri_vert_values[1][v] * bary[1] +
+                                    tri_vert_values[2][v] * bary[2];
         }
 
         float norm = 1.F;
@@ -108,10 +119,10 @@ void surface_points_gen::attrib_values(
         }
 
         for(const auto v : integer_range(vpv)) {
-            const auto k = p * vpv + v;
-            dest[k] = tri_vert_values[3][v] * norm;
+            dest[k++] = tri_vert_values[3][v] * norm;
         }
     }
+    EAGINE_ASSERT(k == _point_count * vpv);
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC

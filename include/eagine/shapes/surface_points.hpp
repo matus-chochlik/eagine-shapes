@@ -14,7 +14,6 @@
 #include <eagine/config/basic.hpp>
 #include <eagine/main_ctx_object.hpp>
 #include <map>
-#include <random>
 #include <utility>
 
 namespace eagine::shapes {
@@ -46,12 +45,11 @@ private:
     struct ext_topology : topology {
         using topology::topology;
 
-        std::vector<float> triangle_areas;
+        std::vector<std::tuple<span_size_t, std::array<float, 3>>> point_params;
     };
 
     auto _topology(const drawing_variant var) noexcept -> ext_topology&;
 
-    std::default_random_engine _rand{std::random_device{}()};
     const span_size_t _point_count{0};
 
     std::map<drawing_variant, ext_topology> _topologies;
