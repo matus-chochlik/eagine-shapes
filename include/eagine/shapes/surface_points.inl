@@ -9,7 +9,6 @@
 #include <array>
 #include <vector>
 
-#include <iostream>
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
@@ -97,9 +96,20 @@ void surface_points_gen::attrib_values(
                                     tri_vert_values[2][v] * bary_2;
         }
 
+        float norm = 1.F;
+        if(is_normalized_attrib) {
+            float sum = 0.F;
+            for(const auto v : integer_range(vpv)) {
+                sum += std::pow(tri_vert_values[3][v], 2.F);
+            }
+            if(sum > 0.F) {
+                norm = 1.F / std::sqrt(sum);
+            }
+        }
+
         for(const auto v : integer_range(vpv)) {
             const auto k = p * vpv + v;
-            dest[k] = is_normalized_attrib ? 1.F : tri_vert_values[3][v];
+            dest[k] = tri_vert_values[3][v] * norm;
         }
     }
 }
