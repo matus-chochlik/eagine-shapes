@@ -11,6 +11,7 @@
 
 #include "gen_base.hpp"
 #include <eagine/config/basic.hpp>
+#include <eagine/bitfield.hpp>
 #include <eagine/flat_map.hpp>
 #include <eagine/main_ctx_object.hpp>
 #include <iosfwd>
@@ -58,7 +59,7 @@ private:
     std::array<std::uint8_t, 4> _edge_indices;
 };
 //------------------------------------------------------------------------------
-/// @brief Class storing information about a mesh tirangular face.
+/// @brief Class storing information about a mesh triangular face.
 /// @ingroup  shapes
 /// @see mesh_edge
 /// @see topology
@@ -119,6 +120,16 @@ public:
         return _indices[(v + 2) % 3];
     }
 
+    auto set_area(float a) noexcept -> auto& {
+        _area = a;
+        return *this;
+    }
+
+    /// @brief Returns the area of the triangle.
+    auto area() const noexcept -> float {
+        return _area;
+    }
+
 private:
     auto curri(const std::size_t i) const noexcept -> unsigned {
         return _indices[i];
@@ -146,9 +157,31 @@ private:
 
     std::size_t _tri_idx{~0U};
     std::array<unsigned, 3> _indices{};
+    float _area{1.F}; // TODO
     std::array<mesh_triangle*, 3> _adjacent{{nullptr, nullptr, nullptr}};
     std::array<std::uint8_t, 3> _opposite{{0, 0, 0}};
 };
+//------------------------------------------------------------------------------
+/// @brief Enumeration of shape topology features that can be analysed.
+/// @ingroup shapes
+/// @see topology
+enum class topology_feature_bit {
+    /// @brief Shape triangle adjacency
+    triangle_adjacency = 1U << 0U,
+    /// @brief Shape triangle area.
+    triangle_area = 1U << 1U
+};
+//------------------------------------------------------------------------------
+/// @brief Shape topology features bitfield.
+/// @ingroup shapes
+/// @see topology
+using topology_feature_bits = bitfield<topology_feature_bit>;
+/// @brief Returns vertex_attrib_bits value with all bits set.
+/// @ingroup shapes
+static constexpr auto all_topology_features() noexcept
+  -> topology_feature_bits {
+    return topology_feature_bits{(1U << 2U) - 1U};
+}
 //------------------------------------------------------------------------------
 /// @brief Class holding information about the topology of a generated shape.
 /// @ingroup shapes
@@ -161,18 +194,23 @@ public:
       std::shared_ptr<generator> gen,
       const drawing_variant var,
       const vertex_attrib_variant vav,
+      const topology_feature_bits feats,
       main_ctx_parent parent)
       : main_ctx_object{EAGINE_ID(ShpTopolgy), parent}
       , _gen{std::move(gen)} {
-        _scan_topology(var, vav);
+        _scan_topology(var, vav, feats);
     }
 
     /// @brief Construction from a shape generator.
-    topology(const std::shared_ptr<generator>& gen, main_ctx_parent parent)
+    topology(
+      const std::shared_ptr<generator>& gen,
+      const topology_feature_bits feats,
+      main_ctx_parent parent)
       : topology{
           gen,
           gen->draw_variant(0),
           {vertex_attrib_kind::position},
+          feats,
           parent} {}
 
     /// @brief Returns the number of triangles in the mesh.
@@ -196,7 +234,8 @@ private:
 
     void _scan_topology(
       const drawing_variant var,
-      const vertex_attrib_variant vav);
+      const vertex_attrib_variant vav,
+      const topology_feature_bits feats);
 
     std::shared_ptr<generator> _gen;
     std::vector<mesh_triangle> _triangles;

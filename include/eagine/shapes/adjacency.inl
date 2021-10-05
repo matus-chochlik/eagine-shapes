@@ -17,11 +17,14 @@ auto triangle_adjacency_gen::_topology(const drawing_variant var) noexcept
   -> topology& {
     auto pos = _topologies.find(var);
     if(pos == _topologies.end()) {
-        pos =
-          _topologies
-            .emplace(
-              var, topology{delegated_gen::base_generator(), this->as_parent()})
-            .first;
+        pos = _topologies
+                .emplace(
+                  var,
+                  topology{
+                    delegated_gen::base_generator(),
+                    topology_feature_bit::triangle_adjacency,
+                    this->as_parent()})
+                .first;
     }
     return pos->second;
 }

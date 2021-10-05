@@ -200,15 +200,10 @@ struct draw_operation {
     index_data_type idx_type{index_data_type::none};
 
     /// @brief Whether primitive restart is enabled.
-    bool primitive_restart : 1;
+    bool primitive_restart : 1 {false};
 
     /// @brief Whether the shape faces have clockwise winding (or counterclockwise).
-    bool cw_face_winding : 1;
-
-    /// @brief Default constructor.
-    constexpr draw_operation() noexcept
-      : primitive_restart{false}
-      , cw_face_winding{false} {}
+    bool cw_face_winding : 1 {false};
 };
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes

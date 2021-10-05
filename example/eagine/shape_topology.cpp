@@ -40,7 +40,7 @@ auto main(main_ctx& ctx) -> int {
         gen = shapes::unit_icosahedron(shapes::vertex_attrib_kind::position);
     }
 
-    shapes::topology topo(gen, ctx);
+    shapes::topology topo(gen, shapes::all_topology_features(), ctx);
 
     topo.print_dot(std::cout) << std::endl;
     return 0;

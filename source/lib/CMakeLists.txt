@@ -16,6 +16,7 @@ add_library(
 	value_tree.cpp
 	modifiers.cpp
 	adjacency.cpp
+	surface_points.cpp
 	to_quads.cpp
 	to_patches.cpp
 )
