@@ -1,0 +1,182 @@
+/// @file
+///
+/// Copyright Matus Chochlik.
+/// Distributed under the Boost Software License, Version 1.0.
+/// See accompanying file LICENSE_1_0.txt or copy at
+///  http://www.boost.org/LICENSE_1_0.txt
+///
+#include <eagine/assert.hpp>
+#include <eagine/interleaved_call.hpp>
+#include <eagine/main_ctx.hpp>
+#include <eagine/reflect/enumerators.hpp>
+#include <iostream>
+#include <sstream>
+
+namespace eagine::shapes {
+//------------------------------------------------------------------------------
+EAGINE_LIB_FUNC
+auto parse_from(main_ctx& ctx, generator&, to_json_options& opts) noexcept
+  -> bool {
+    for(const auto arg : ctx.args()) {
+        if(arg.is_long_tag("shape-draw-variant")) {
+            if(!arg.next().parse(opts.draw_variant, ctx.log().error_stream())) {
+                return false;
+            }
+        } else {
+            for(const auto& info : enumerator_mapping(
+                  type_identity<vertex_attrib_kind>(), default_selector)) {
+                if(arg.is_prefixed_tag("--shape-attrib-", info.name)) {
+                    if(arg.next().starts_with("-")) {
+                        opts.attrib_variants[info.enumerator][0];
+                    } else {
+                        std::int16_t var_idx{-1};
+                        std::stringstream dump;
+                        if(arg.next().parse(var_idx, dump)) {
+                            opts.attrib_variants[info.enumerator][var_idx];
+                        } else {
+                            ctx.log()
+                              .error(dump.str())
+                              .arg(EAGINE_ID(attrib), info.name)
+                              .arg(EAGINE_ID(value), arg.next().get());
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return true;
+}
+//------------------------------------------------------------------------------
+EAGINE_LIB_FUNC
+auto to_json(std::ostream& out, generator& gen, const to_json_options& opts)
+  -> std::ostream& {
+    out << R"({"vertex_count":)" << gen.vertex_count() << '\n';
+
+    for(const auto& [attr, variant] : opts.attrib_variants) {
+        out << R"(,")" << enumerator_name(attr) << '"' << ":[\n{";
+        interleaved_call separate([] {}, [&] { out << "},\n{"; });
+
+        for(const auto& [index, name] : variant) {
+            separate();
+            const vertex_attrib_variant vav{attr, index};
+            out << R"("values_per_vertex":)" << gen.values_per_vertex(vav)
+                << '\n';
+
+            const auto data_type = gen.attrib_type(vav);
+            out << R"(,"type":")"
+                << enumerator_name(
+                     data_type,
+                     type_identity<attrib_data_type>(),
+                     value_tree_tag())
+                << '"' << '\n';
+            if(!name.empty()) {
+                out << R"(,"name":")" << name << '"' << '\n';
+            }
+            out << R"(,"data":[)";
+            const auto print_data = [&out, &gen, vav](auto& data) {
+                data.resize(std_size(gen.value_count(vav)));
+                gen.attrib_values(vav, cover(data));
+
+                interleaved_call print_elem(
+                  [&out](const auto v) { out << v; }, [&out] { out << ','; });
+                for(const auto v : data) {
+                    print_elem(v);
+                }
+            };
+
+            if(data_type == attrib_data_type::float_) {
+                std::vector<float> data;
+                print_data(data);
+            }
+            out << "]\n";
+        }
+        out << "}]\n";
+    }
+
+    const auto idx_type = gen.index_type(opts.draw_variant);
+    out << R"(,"index_type":")" << enumerator_name(idx_type) << '"' << '\n';
+
+    if(idx_type != index_data_type::none) {
+        std::vector<std::uint32_t> indices;
+        indices.resize(std_size(gen.index_count(opts.draw_variant)));
+        if(!indices.empty()) {
+            gen.indices(opts.draw_variant, cover(indices));
+            out << R"(,"indices":[)";
+            interleaved_call print_idx(
+              [&out](const auto i) { out << i; }, [&out] { out << ','; });
+            for(const auto i : indices) {
+                print_idx(i);
+            }
+            out << "]\n";
+        }
+    }
+
+    std::vector<draw_operation> operations;
+    operations.resize(std_size(gen.operation_count(opts.draw_variant)));
+    if(!operations.empty()) {
+        gen.instructions(opts.draw_variant, cover(operations));
+        out << R"(,"instructions":[{)";
+
+        const draw_operation cmp{};
+        const auto should_print_phase = any_of(
+          view(operations),
+          [cmp](const auto& op) { return op.phase != cmp.phase; });
+        const auto should_print_index_type = any_of(
+          view(operations),
+          [cmp](const auto& op) { return op.idx_type != cmp.idx_type; });
+        const auto should_print_pr =
+          any_of(view(operations), [cmp](const auto& op) {
+              return op.primitive_restart != cmp.primitive_restart;
+          });
+        const auto should_print_pri =
+          any_of(view(operations), [cmp](const auto& op) {
+              return op.primitive_restart_index != cmp.primitive_restart_index;
+          });
+        const auto should_print_patch_verts =
+          any_of(view(operations), [cmp](const auto& op) {
+              return op.patch_vertices != cmp.patch_vertices;
+          });
+
+        interleaved_call print_op(
+          [&out,
+           should_print_phase,
+           should_print_index_type,
+           should_print_pr,
+           should_print_pri,
+           should_print_patch_verts](const auto& op) {
+              out << R"("mode":")" << enumerator_name(op.mode) << '"';
+              if(should_print_phase) {
+                  out << R"(,"phase":)" << op.phase;
+              }
+              out << R"(,"first":)" << op.first;
+              out << R"(,"count":)" << op.count;
+              if(should_print_index_type) {
+                  out << R"(,"index_type":")" << enumerator_name(op.idx_type)
+                      << '"';
+              }
+              if(should_print_pr) {
+                  out << R"(,"primitive_restart":)"
+                      << (op.primitive_restart ? "true" : "false");
+              }
+              if(should_print_pri) {
+                  out << R"(,"primitive_restart_index":)"
+                      << op.primitive_restart_index;
+              }
+              if(should_print_patch_verts) {
+                  out << R"(,"patch_vertices":)" << op.patch_vertices;
+              }
+              out << R"(,"cw_face_winding":)"
+                  << (op.cw_face_winding ? "true" : "false");
+          },
+          [&out] { out << "},{"; });
+        for(const auto& op : operations) {
+            print_op(op);
+        }
+        out << "}]\n";
+    }
+    out << "}";
+    return out;
+}
+//------------------------------------------------------------------------------
+} // namespace eagine::shapes

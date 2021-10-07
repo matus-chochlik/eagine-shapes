@@ -17,7 +17,6 @@
 #include <eagine/callable_ref.hpp>
 #include <eagine/compare.hpp>
 #include <eagine/flat_map.hpp>
-#include <eagine/integer_range.hpp>
 #include <eagine/interface.hpp>
 #include <eagine/math/primitives.hpp>
 #include <eagine/span.hpp>
@@ -102,17 +101,10 @@ struct generator : interface<generator> {
 
     /// @brief Finds attribute variant by kind and name.
     auto find_variant(const vertex_attrib_kind attrib, const string_view name)
-      -> vertex_attrib_variant {
-        const span_size_t n = attribute_variants(attrib);
-        span_size_t index{-1};
-        for(const auto i : integer_range(n)) {
-            if(are_equal(name, variant_name({attrib, i}))) {
-                index = i;
-                break;
-            }
-        }
-        return {attrib, index};
-    }
+      -> vertex_attrib_variant;
+
+    /// @brief Finds attribute variant by name.
+    auto find_variant(const string_view name) -> vertex_attrib_variant;
 
     /// @brief Returns the number of values per vertex for the specified variant.
     virtual auto values_per_vertex(const vertex_attrib_variant)

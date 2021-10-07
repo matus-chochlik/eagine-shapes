@@ -6,9 +6,11 @@
 ///  http://www.boost.org/LICENSE_1_0.txt
 ///
 #include <eagine/assert.hpp>
+#include <eagine/integer_range.hpp>
 #include <eagine/math/functions.hpp>
 #include <eagine/math/intersection.hpp>
 #include <eagine/memory/span_algo.hpp>
+#include <eagine/reflect/enumerators.hpp>
 #include <array>
 #include <limits>
 #include <vector>
@@ -16,6 +18,32 @@
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
 // generator
+//------------------------------------------------------------------------------
+EAGINE_LIB_FUNC
+auto generator::find_variant(
+  const vertex_attrib_kind attrib,
+  const string_view name) -> vertex_attrib_variant {
+    const span_size_t n = attribute_variants(attrib);
+    span_size_t index{-1};
+    for(const auto i : integer_range(n)) {
+        if(are_equal(name, variant_name({attrib, i}))) {
+            index = i;
+            break;
+        }
+    }
+    return {attrib, index};
+}
+//------------------------------------------------------------------------------
+EAGINE_LIB_FUNC
+auto generator::find_variant(const string_view name) -> vertex_attrib_variant {
+    for(const auto& info : enumerator_mapping(
+          type_identity<vertex_attrib_kind>(), default_selector)) {
+        if(auto found{find_variant(info.enumerator, name)}) {
+            return found;
+        }
+    }
+    return {};
+}
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 auto generator::bounding_sphere() -> math::sphere<float, true> {
