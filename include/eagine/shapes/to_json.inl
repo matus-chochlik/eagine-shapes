@@ -26,7 +26,7 @@ auto parse_from(main_ctx& ctx, generator&, to_json_options& opts) noexcept
             for(const auto& info : enumerator_mapping(
                   type_identity<vertex_attrib_kind>(), default_selector)) {
                 if(arg.is_prefixed_tag("--shape-attrib-", info.name)) {
-                    if(arg.next().starts_with("-")) {
+                    if(arg.next().starts_with("-") || !arg.next()) {
                         opts.attrib_variants[info.enumerator][0];
                     } else {
                         std::int16_t var_idx{-1};
@@ -35,7 +35,7 @@ auto parse_from(main_ctx& ctx, generator&, to_json_options& opts) noexcept
                             opts.attrib_variants[info.enumerator][var_idx];
                         } else {
                             ctx.log()
-                              .error(dump.str())
+                              .error("failed to parse attribute index")
                               .arg(EAGINE_ID(attrib), info.name)
                               .arg(EAGINE_ID(value), arg.next().get());
                             return false;

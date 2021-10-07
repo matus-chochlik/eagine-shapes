@@ -22,6 +22,7 @@ set(
 	eagine-shapes-headers
 	eagine-shapes
 	eagine-shapes-to_json
+	eagine-shapes-add_adjacency
 )
 
 install(
