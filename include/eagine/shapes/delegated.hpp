@@ -23,7 +23,7 @@ public:
       : _gen{std::move(gen)} {}
 
     auto attrib_bits() noexcept -> vertex_attrib_bits final {
-        return _gen->attrib_bits();
+        return _gen->attrib_bits() | _attr_bits;
     }
 
     auto enable(const generator_capability cap, const bool value) noexcept
@@ -41,7 +41,12 @@ public:
 
     auto attribute_variants(const vertex_attrib_kind attrib)
       -> span_size_t override {
-        return _gen->attribute_variants(attrib);
+        if(_gen->has(attrib)) {
+            if(const auto count{_gen->attribute_variants(attrib)}) {
+                return count;
+            }
+        }
+        return has(attrib) ? 1 : 0;
     }
 
     auto variant_name(const vertex_attrib_variant vav) -> string_view override {
@@ -50,7 +55,7 @@ public:
 
     auto values_per_vertex(const vertex_attrib_variant vav)
       -> span_size_t override {
-        return _gen->values_per_vertex(vav);
+        return has_variant(vav) ? attrib_values_per_vertex(vav) : 0U;
     }
 
     auto attrib_type(const vertex_attrib_variant vav)
@@ -138,8 +143,14 @@ protected:
         return _gen;
     }
 
+    auto _add(vertex_attrib_kind attr) noexcept -> auto& {
+        _attr_bits |= attr;
+        return *this;
+    }
+
 private:
     std::shared_ptr<generator> _gen;
+    vertex_attrib_bits _attr_bits;
 };
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes

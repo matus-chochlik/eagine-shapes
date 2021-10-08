@@ -95,6 +95,11 @@ struct generator : interface<generator> {
     virtual auto attribute_variants(const vertex_attrib_kind)
       -> span_size_t = 0;
 
+    auto has_variant(const vertex_attrib_variant vav) -> bool {
+        EAGINE_ASSERT(vav.has_valid_index());
+        return vav.index() < attribute_variants(vav.attribute());
+    }
+
     /// @brief Returns the name of the specified attribute variant.
     virtual auto variant_name(const vertex_attrib_variant vav)
       -> string_view = 0;
@@ -222,13 +227,14 @@ struct generator : interface<generator> {
 
     /// @brief Calls a callback for each triangle in specified drawing variant.
     virtual void for_each_triangle(
+      generator& gen,
       const drawing_variant var,
       const callable_ref<void(const shape_face_info&)> callback);
 
     /// @brief Calls a callback for each triangle in the default drawing variant.
-    virtual void for_each_triangle(
+    void for_each_triangle(
       const callable_ref<void(const shape_face_info&)> callback) {
-        for_each_triangle(0, callback);
+        for_each_triangle(*this, 0, callback);
     }
 
     /// @brief Checks if the structure for random values is consistent.
@@ -249,6 +255,7 @@ struct generator : interface<generator> {
 
     /// @brief Calculates the intersections of the shape geometry with a ray.
     virtual void ray_intersections(
+      generator&,
       const drawing_variant,
       const span<const math::line<float, true>> rays,
       span<optionally_valid<float>> intersections);
@@ -257,7 +264,7 @@ struct generator : interface<generator> {
     void ray_intersections(
       const span<const math::line<float, true>> rays,
       span<optionally_valid<float>> intersections) {
-        return ray_intersections(0, rays, intersections);
+        return ray_intersections(*this, 0, rays, intersections);
     }
 
     /// @brief Returns the parameter for the nearest intersection with a ray.
@@ -265,7 +272,7 @@ struct generator : interface<generator> {
       const drawing_variant var,
       const math::line<float, true>& ray) -> optionally_valid<float> {
         optionally_valid<float> result{};
-        ray_intersections(var, view_one(ray), cover_one(result));
+        ray_intersections(*this, var, view_one(ray), cover_one(result));
         return result;
     }
 
@@ -273,7 +280,7 @@ struct generator : interface<generator> {
     auto ray_intersection(const math::line<float, true>& ray)
       -> optionally_valid<float> {
         optionally_valid<float> result{};
-        ray_intersections(0, view_one(ray), cover_one(result));
+        ray_intersections(*this, 0, view_one(ray), cover_one(result));
         return result;
     }
 };
@@ -302,16 +309,11 @@ public:
 
     auto attribute_variants(const vertex_attrib_kind attrib)
       -> span_size_t override {
-        return has(attrib) ? 1U : 0U;
+        return has(attrib) ? 1 : 0;
     }
 
     auto variant_name(const vertex_attrib_variant) -> string_view override {
         return {};
-    }
-
-    auto has_variant(const vertex_attrib_variant vav) -> bool {
-        EAGINE_ASSERT(vav.has_valid_index());
-        return vav.index() < attribute_variants(vav.attribute());
     }
 
     auto values_per_vertex(const vertex_attrib_variant vav)

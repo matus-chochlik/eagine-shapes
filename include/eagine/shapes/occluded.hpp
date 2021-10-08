@@ -9,7 +9,7 @@
 #ifndef EAGINE_SHAPES_OCCLUDED_HPP
 #define EAGINE_SHAPES_OCCLUDED_HPP
 
-#include "cached.hpp"
+#include "delegated.hpp"
 #include <eagine/config/basic.hpp>
 #include <eagine/main_ctx_object.hpp>
 #include <utility>
@@ -25,12 +25,9 @@ class occluded_gen
 
 public:
     occluded_gen(
-      main_ctx_parent parent,
       std::shared_ptr<generator> gen,
-      const span_size_t samples) noexcept
-      : main_ctx_object{EAGINE_ID(OcclShpGen), parent}
-      , delegated_gen{cache(std::move(gen))}
-      , _samples{samples} {}
+      const span_size_t samples,
+      main_ctx_parent parent) noexcept;
 
     void occlusions(const vertex_attrib_variant, span<float>);
     void attrib_values(const vertex_attrib_variant, span<float>) override;
@@ -42,10 +39,10 @@ private:
 /// @brief Constructs instances of occluded_gen modifier.
 /// @ingroup shapes
 static inline auto occlude(
-  main_ctx_parent parent,
   std::shared_ptr<generator> gen,
-  const span_size_t samples = 8) noexcept {
-    return std::make_unique<occluded_gen>(parent, std::move(gen), samples);
+  const span_size_t samples,
+  main_ctx_parent parent) noexcept {
+    return std::make_unique<occluded_gen>(std::move(gen), samples, parent);
 }
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes

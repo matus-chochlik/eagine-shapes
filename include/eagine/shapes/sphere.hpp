@@ -60,6 +60,7 @@ public:
     auto bounding_sphere() -> math::sphere<float, true> override;
 
     void ray_intersections(
+      generator& gen,
       const drawing_variant,
       const span<const math::line<float, true>> rays,
       span<optionally_valid<float>> intersections) override;

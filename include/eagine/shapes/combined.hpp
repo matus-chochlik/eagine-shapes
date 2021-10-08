@@ -68,6 +68,7 @@ public:
     void instructions(const drawing_variant, span<draw_operation> ops) override;
 
     void ray_intersections(
+      generator&,
       const drawing_variant,
       const span<const math::line<float, true>> rays,
       span<optionally_valid<float>> intersections) override;

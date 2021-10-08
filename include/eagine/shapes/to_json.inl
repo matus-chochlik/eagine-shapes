@@ -17,6 +17,7 @@ namespace eagine::shapes {
 EAGINE_LIB_FUNC
 auto parse_from(main_ctx& ctx, generator&, to_json_options& opts) noexcept
   -> bool {
+    opts.attrib_variants[vertex_attrib_kind::position][0];
     for(const auto arg : ctx.args()) {
         if(arg.is_long_tag("shape-draw-variant")) {
             if(!arg.next().parse(opts.draw_variant, ctx.log().error_stream())) {
@@ -70,12 +71,17 @@ auto to_json(std::ostream& out, generator& gen, const to_json_options& opts)
                      type_identity<attrib_data_type>(),
                      value_tree_tag())
                 << '"' << '\n';
+
+            const auto size = gen.value_count(vav);
+            out << R"(,"size":)" << size << '\n';
+
             if(!name.empty()) {
                 out << R"(,"name":")" << name << '"' << '\n';
             }
+
             out << R"(,"data":[)";
-            const auto print_data = [&out, &gen, vav](auto& data) {
-                data.resize(std_size(gen.value_count(vav)));
+            const auto print_data = [&out, &gen, vav, size](auto& data) {
+                data.resize(std_size(size));
                 gen.attrib_values(vav, cover(data));
 
                 interleaved_call print_elem(
