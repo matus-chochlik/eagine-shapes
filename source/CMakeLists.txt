@@ -23,6 +23,7 @@ set(
 	eagine-shapes
 	eagine-shapes-to_json
 	eagine-shapes-add_adjacency
+	eagine-shapes-add_occlusion
 )
 
 install(

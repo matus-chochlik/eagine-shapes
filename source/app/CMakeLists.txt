@@ -5,3 +5,4 @@
 
 add_subdirectory(to_json)
 add_subdirectory(add_adjacency)
+add_subdirectory(add_occlusion)
