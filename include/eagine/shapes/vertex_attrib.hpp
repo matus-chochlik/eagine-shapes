@@ -105,21 +105,24 @@ static constexpr auto operator|(
 /// @see vertex_attrib_variants
 class vertex_attrib_variant {
 public:
+    /// @brief Default constructor.
+    constexpr vertex_attrib_variant() noexcept = default;
+
     /// @brief Construction from vertex attribute kind enumerator.
-    constexpr vertex_attrib_variant(const vertex_attrib_kind a)
+    constexpr vertex_attrib_variant(const vertex_attrib_kind a) noexcept
       : _attrib{a} {}
 
     /// @brief Construction from vertex attribute kind enumerator and index.
     constexpr vertex_attrib_variant(
       const vertex_attrib_kind a,
-      const span_size_t v)
+      const span_size_t v) noexcept
       : _attrib{a}
       , _index{std::int16_t(v)} {}
 
     /// @brief Construction from vertex attribute kind and another attribute variant.
     constexpr vertex_attrib_variant(
       const vertex_attrib_kind a,
-      const vertex_attrib_variant vav)
+      const vertex_attrib_variant vav) noexcept
       : _attrib{a}
       , _index{vav._index} {}
 
@@ -189,7 +192,7 @@ public:
     }
 
 private:
-    vertex_attrib_kind _attrib;
+    vertex_attrib_kind _attrib{};
     std::int16_t _index{0};
 };
 //------------------------------------------------------------------------------

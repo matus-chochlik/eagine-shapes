@@ -10,12 +10,24 @@
 #include <eagine/math/functions.hpp>
 #include <eagine/memory/span_algo.hpp>
 #include <eagine/progress/activity.hpp>
+#include <eagine/shapes/cached.hpp>
 #include <atomic>
 #include <random>
 #include <thread>
 #include <vector>
 
 namespace eagine::shapes {
+//------------------------------------------------------------------------------
+EAGINE_LIB_FUNC
+occluded_gen::occluded_gen(
+  std::shared_ptr<generator> gen,
+  const span_size_t samples,
+  main_ctx_parent parent) noexcept
+  : main_ctx_object{EAGINE_ID(OcclShpGen), parent}
+  , delegated_gen{cache(std::move(gen), this->as_parent())}
+  , _samples{samples} {
+    delegated_gen::_add(vertex_attrib_kind::occlusion);
+}
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void occluded_gen::occlusions(
@@ -90,7 +102,8 @@ void occluded_gen::occlusions(
                         weights[s] = wght;
                     }
                     fill(cover(params), optionally_valid<float>{});
-                    delegated_gen::ray_intersections(view(rays), cover(params));
+                    delegated_gen::ray_intersections(
+                      *this, 0, view(rays), cover(params));
 
                     float occl = 0.F;
                     float wght = 0.F;

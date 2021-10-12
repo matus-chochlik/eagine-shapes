@@ -6,9 +6,11 @@
 ///  http://www.boost.org/LICENSE_1_0.txt
 ///
 #include <eagine/assert.hpp>
+#include <eagine/integer_range.hpp>
 #include <eagine/math/functions.hpp>
 #include <eagine/math/intersection.hpp>
 #include <eagine/memory/span_algo.hpp>
+#include <eagine/reflect/enumerators.hpp>
 #include <array>
 #include <limits>
 #include <vector>
@@ -16,6 +18,32 @@
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
 // generator
+//------------------------------------------------------------------------------
+EAGINE_LIB_FUNC
+auto generator::find_variant(
+  const vertex_attrib_kind attrib,
+  const string_view name) -> vertex_attrib_variant {
+    const span_size_t n = attribute_variants(attrib);
+    span_size_t index{-1};
+    for(const auto i : integer_range(n)) {
+        if(are_equal(name, variant_name({attrib, i}))) {
+            index = i;
+            break;
+        }
+    }
+    return {attrib, index};
+}
+//------------------------------------------------------------------------------
+EAGINE_LIB_FUNC
+auto generator::find_variant(const string_view name) -> vertex_attrib_variant {
+    for(const auto& info : enumerator_mapping(
+          type_identity<vertex_attrib_kind>(), default_selector)) {
+        if(auto found{find_variant(info.enumerator, name)}) {
+            return found;
+        }
+    }
+    return {};
+}
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 auto generator::bounding_sphere() -> math::sphere<float, true> {
@@ -64,14 +92,15 @@ auto generator::bounding_sphere() -> math::sphere<float, true> {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void generator::for_each_triangle(
+  generator& gen,
   const drawing_variant var,
   const callable_ref<void(const shape_face_info&)> callback) {
 
-    std::vector<draw_operation> ops(std_size(operation_count(var)));
-    instructions(var, cover(ops));
+    std::vector<draw_operation> ops(std_size(gen.operation_count(var)));
+    gen.instructions(var, cover(ops));
 
-    std::vector<std::uint32_t> idx(std_size(index_count(var)));
-    indices(var, cover(idx));
+    std::vector<std::uint32_t> idx(std_size(gen.index_count(var)));
+    gen.indices(var, cover(idx));
 
     const auto get_index = [&idx](auto vx, bool idxd) {
         if(idxd) {
@@ -123,6 +152,7 @@ void generator::random_surface_values(const random_attribute_values& values) {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void generator::ray_intersections(
+  generator& gen,
   const drawing_variant var,
   const span<const math::line<float, true>> rays,
   span<optionally_valid<float>> intersections) {
@@ -130,14 +160,14 @@ void generator::ray_intersections(
     EAGINE_ASSERT(intersections.size() >= rays.size());
 
     const auto pvak = vertex_attrib_kind::position;
-    const auto vpv = values_per_vertex(pvak);
+    const auto vpv = gen.values_per_vertex(pvak);
 
-    std::vector<float> pos(std_size(vertex_count() * vpv));
-    attrib_values(pvak, cover(pos));
+    std::vector<float> pos(std_size(gen.vertex_count() * vpv));
+    gen.attrib_values(pvak, cover(pos));
 
     std::vector<std::size_t> ray_idx;
 
-    const auto bs = bounding_sphere();
+    const auto bs = gen.bounding_sphere();
 
     for(const auto i : integer_range(rays.size())) {
         const auto nparam = math::nearest_ray_param(
@@ -182,7 +212,7 @@ void generator::ray_intersections(
               intersect(face, info.cw_face_winding);
           };
 
-        for_each_triangle(var, {construct_from, find_intersections});
+        gen.for_each_triangle(gen, var, {construct_from, find_intersections});
     }
 }
 //------------------------------------------------------------------------------

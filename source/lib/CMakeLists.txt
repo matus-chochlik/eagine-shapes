@@ -19,6 +19,8 @@ add_library(
 	surface_points.cpp
 	to_quads.cpp
 	to_patches.cpp
+	to_json.cpp
+	from_json.cpp
 )
 eagine_add_lib_analysis(eagine-shapes)
 

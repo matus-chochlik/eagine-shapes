@@ -287,12 +287,13 @@ void combined_gen::instructions(
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void combined_gen::ray_intersections(
+  generator&,
   const drawing_variant var,
   const span<const math::line<float, true>> rays,
   span<optionally_valid<float>> intersections) {
 
     for(auto& gen : _gens) {
-        gen->ray_intersections(var, rays, intersections);
+        gen->ray_intersections(extract(gen), var, rays, intersections);
     }
 }
 //------------------------------------------------------------------------------

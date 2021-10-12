@@ -295,29 +295,6 @@ auto unit_twisted_torus_gen::bounding_sphere() -> math::sphere<float, true> {
     return {{0.F, 0.F, 0.F}, 0.5F};
 }
 //------------------------------------------------------------------------------
-EAGINE_LIB_FUNC
-void unit_twisted_torus_gen::ray_intersections(
-  const drawing_variant,
-  const span<const math::line<float, true>> rays,
-  span<optionally_valid<float>> intersections) {
-
-    EAGINE_ASSERT(intersections.size() >= rays.size());
-
-    const auto bs = bounding_sphere();
-
-    for(const auto i : integer_range(intersections.size())) {
-        const auto& ray = rays[i];
-        const auto nparam = math::nearest_ray_param(
-          math::line_sphere_intersection_params(ray, bs));
-        if(nparam > 0.0001F) {
-            auto& oparam = intersections[i];
-            if(!oparam || bool(nparam < oparam)) {
-                oparam = nparam;
-            }
-        }
-    }
-}
-//------------------------------------------------------------------------------
 } // namespace eagine::shapes
 
 #ifdef __clang__
