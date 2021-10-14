@@ -18,12 +18,10 @@ auto surface_points_gen::_topology(const drawing_variant var) noexcept
     auto pos = _topologies.find(var);
     if(pos == _topologies.end()) {
         auto gen = delegated_gen::base_generator();
+        topology_options opts;
+        opts.features = topology_feature_bit::triangle_area;
         pos =
-          _topologies
-            .emplace(
-              var,
-              ext_topology{
-                gen, topology_feature_bit::triangle_area, this->as_parent()})
+          _topologies.emplace(var, ext_topology{gen, opts, this->as_parent()})
             .first;
         auto& topo = pos->second;
 

@@ -154,7 +154,7 @@ EAGINE_LIB_FUNC
 void topology::_scan_topology(
   const drawing_variant var,
   const vertex_attrib_variant vav,
-  const topology_feature_bits feats) {
+  const topology_options& opts) {
     topology_data data;
     data.values_per_vertex = limit_cast<unsigned>(_gen->values_per_vertex(vav));
 
@@ -195,7 +195,7 @@ void topology::_scan_topology(
             }
 
             auto& tri = _triangles.back();
-            if(feats.has(topology_feature_bit::triangle_area)) {
+            if(opts.features.has(topology_feature_bit::triangle_area)) {
                 const auto vpv = data.values_per_vertex;
                 const auto& pos = data.vertex_values;
                 const auto ia = tri.vertex_index(0);
@@ -239,7 +239,7 @@ void topology::_scan_topology(
     }
     scan_ops.finish();
 
-    if(feats.has(topology_feature_bit::triangle_adjacency)) {
+    if(opts.features.has(topology_feature_bit::triangle_adjacency)) {
         const auto scan_tris = progress().activity(
           "processing shape triangles", span_size(_triangles.size()));
 
