@@ -163,7 +163,7 @@ void topology::_scan_topology(topology_options opts) {
       std_size(_gen->value_count(opts.position_variant)));
     _gen->attrib_values(opts.position_variant, cover(data.vertex_positions));
 
-    if(_gen->values_per_vertex(opts.weight_variant) < 1U) {
+    if(_gen->values_per_vertex(opts.weight_variant) < 1) {
         opts.features.clear(topology_feature_bit::triangle_weight);
     }
 
