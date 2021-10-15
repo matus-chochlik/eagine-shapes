@@ -13,16 +13,18 @@
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
 struct topology_data {
-    unsigned values_per_vertex{0U};
-    std::vector<float> vertex_values;
+    unsigned coords_per_vertex{0U};
+    unsigned weights_per_vertex{0U};
+    std::vector<float> vertex_positions;
+    std::vector<float> vertex_weights;
     std::vector<unsigned> indices;
     std::vector<draw_operation> operations;
 
     auto values_of(const unsigned i) const noexcept {
-        EAGINE_ASSERT(values_per_vertex > 0);
+        EAGINE_ASSERT(coords_per_vertex > 0);
         return head(
-          skip(view(vertex_values), span_size(values_per_vertex * i)),
-          span_size(values_per_vertex));
+          skip(view(vertex_positions), span_size(coords_per_vertex * i)),
+          span_size(coords_per_vertex));
     }
 
     auto to_vec(const span<const float> v) const noexcept {
@@ -151,15 +153,27 @@ auto topology::print_dot(std::ostream& out) const -> std::ostream& {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void topology::_scan_topology(
-  const drawing_variant var,
-  const vertex_attrib_variant vav,
-  const topology_options& opts) {
+void topology::_scan_topology(topology_options opts) {
+    const drawing_variant var = _gen->draw_variant(opts.draw_variant_index);
     topology_data data;
-    data.values_per_vertex = limit_cast<unsigned>(_gen->values_per_vertex(vav));
 
-    data.vertex_values.resize(std_size(_gen->value_count(vav)));
-    _gen->attrib_values(vav, cover(data.vertex_values));
+    data.coords_per_vertex =
+      limit_cast<unsigned>(_gen->values_per_vertex(opts.position_variant));
+    data.vertex_positions.resize(
+      std_size(_gen->value_count(opts.position_variant)));
+    _gen->attrib_values(opts.position_variant, cover(data.vertex_positions));
+
+    if(_gen->values_per_vertex(opts.weight_variant) < 1U) {
+        opts.features.clear(topology_feature_bit::triangle_weight);
+    }
+
+    if(opts.features.has(topology_feature_bit::triangle_weight)) {
+        data.weights_per_vertex =
+          limit_cast<unsigned>(_gen->values_per_vertex(opts.weight_variant));
+        data.vertex_weights.resize(
+          std_size(_gen->value_count(opts.weight_variant)));
+        _gen->attrib_values(opts.weight_variant, cover(data.vertex_weights));
+    }
 
     data.indices.resize(std_size(_gen->index_count(var)));
     _gen->indices(var, cover(data.indices));
@@ -196,8 +210,9 @@ void topology::_scan_topology(
 
             auto& tri = _triangles.back();
             if(opts.features.has(topology_feature_bit::triangle_area)) {
-                const auto vpv = data.values_per_vertex;
-                const auto& pos = data.vertex_values;
+                EAGINE_ASSERT(data.coords_per_vertex >= 3U);
+                const auto vpv = data.coords_per_vertex;
+                const auto& pos = data.vertex_positions;
                 const auto ia = tri.vertex_index(0);
                 const auto ib = tri.vertex_index(1);
                 const auto ic = tri.vertex_index(2);
@@ -209,6 +224,15 @@ void topology::_scan_topology(
                   math::tvec<float, 3, true>{
                     pos[ic * vpv + 0], pos[ic * vpv + 1], pos[ic * vpv + 2]}}
                                .area());
+            }
+            if(opts.features.has(topology_feature_bit::triangle_weight)) {
+                EAGINE_ASSERT(data.coords_per_vertex >= 1U);
+                const auto vpv = data.weights_per_vertex;
+                const auto& wgt = data.vertex_weights;
+                const auto ia = tri.vertex_index(0);
+                const auto ib = tri.vertex_index(1);
+                const auto ic = tri.vertex_index(2);
+                tri.set_weight(wgt[ia * vpv] + wgt[ib * vpv] + wgt[ic * vpv]);
             }
         };
 
