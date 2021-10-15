@@ -13,23 +13,44 @@
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
+surface_points_gen::surface_points_gen(
+  std::shared_ptr<generator> gen,
+  const span_size_t point_count,
+  main_ctx_parent parent) noexcept
+  : main_ctx_object{EAGINE_ID(SurfPtsGen), parent}
+  , delegated_gen{std::move(gen)}
+  , _point_count{point_count} {
+    _topo_opts.features |= topology_feature_bit::triangle_area;
+}
+//------------------------------------------------------------------------------
+EAGINE_LIB_FUNC
+surface_points_gen::surface_points_gen(
+  std::shared_ptr<generator> gen,
+  const span_size_t point_count,
+  const vertex_attrib_variant weight_variant,
+  main_ctx_parent parent) noexcept
+  : surface_points_gen{std::move(gen), point_count, parent} {
+    _topo_opts.features |= topology_feature_bit::triangle_weight;
+    _topo_opts.weight_variant = weight_variant;
+}
+//------------------------------------------------------------------------------
+EAGINE_LIB_FUNC
 auto surface_points_gen::_topology(const drawing_variant var) noexcept
   -> ext_topology& {
     auto pos = _topologies.find(var);
     if(pos == _topologies.end()) {
         auto gen = delegated_gen::base_generator();
-        topology_options opts;
-        opts.features = topology_feature_bit::triangle_area;
-        pos =
-          _topologies.emplace(var, ext_topology{gen, opts, this->as_parent()})
-            .first;
+        pos = _topologies
+                .emplace(var, ext_topology{gen, _topo_opts, this->as_parent()})
+                .first;
         auto& topo = pos->second;
 
         std::vector<float> triangle_areas;
         triangle_areas.reserve(std_size(topo.triangle_count()));
         float accumulated = 0.F;
         for(const auto t : integer_range(topo.triangle_count())) {
-            accumulated += topo.triangle(t).area();
+            const auto& tri = topo.triangle(t);
+            accumulated += tri.area() * tri.weight();
             triangle_areas.push_back(accumulated);
         }
 
