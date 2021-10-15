@@ -23,9 +23,9 @@ EAGINE_LIB_FUNC
 auto unit_torus_gen::_attr_mask() noexcept -> vertex_attrib_bits {
     return vertex_attrib_kind::position | vertex_attrib_kind::normal |
            vertex_attrib_kind::tangential | vertex_attrib_kind::bitangential |
-           vertex_attrib_kind::pivot | vertex_attrib_kind::pivot_pivot |
-           vertex_attrib_kind::vertex_pivot | vertex_attrib_kind::box_coord |
-           vertex_attrib_kind::wrap_coord;
+           vertex_attrib_kind::occlusion | vertex_attrib_kind::pivot |
+           vertex_attrib_kind::pivot_pivot | vertex_attrib_kind::vertex_pivot |
+           vertex_attrib_kind::box_coord | vertex_attrib_kind::wrap_coord;
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
@@ -252,6 +252,39 @@ void unit_torus_gen::wrap_coords(span<float> dest) noexcept {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
+void unit_torus_gen::occlusions(
+  span<float> dest,
+  const unit_torus_gen::offset_getter get_offs) noexcept {
+    EAGINE_ASSERT(has(vertex_attrib_kind::occlusion));
+    EAGINE_ASSERT(dest.size() >= vertex_count());
+
+    const auto r_step = math::pi / _rings;
+
+    auto k = [this](span_size_t s, span_size_t r) {
+        return (s * (_rings + 1) + r);
+    };
+
+    const auto blend_fact = float(std::exp(-_radius_ratio * 0.5F));
+
+    for(const auto s : integer_range(_sections)) {
+        for(const auto r : integer_range(_rings)) {
+            const auto [rd, sd, td] = get_offs(s, r);
+            EAGINE_MAYBE_UNUSED(td);
+            EAGINE_MAYBE_UNUSED(sd);
+
+            dest[k(s, r)] = math::blend(
+              math::minimum(float(std::sin((r + rd) * r_step)) * 1.7F, 1.F),
+              1.F,
+              blend_fact);
+        }
+        dest[k(s, _rings)] = dest[k(s, 0)];
+    }
+    for(const auto r : integer_range(_rings + 1)) {
+        dest[k(_sections, r)] = dest[k(0, r)];
+    }
+}
+//------------------------------------------------------------------------------
+EAGINE_LIB_FUNC
 auto unit_torus_gen::special_variant_name(span_size_t index) -> string_view {
     if(index == 1) {
         return {"random"};
@@ -311,6 +344,8 @@ auto unit_torus_gen::attribute_variants(const vertex_attrib_kind attrib)
         case vertex_attrib_kind::tangential:
         case vertex_attrib_kind::bitangential:
             return 4;
+        case vertex_attrib_kind::occlusion:
+            return 1;
         case vertex_attrib_kind::wrap_coord:
         case vertex_attrib_kind::pivot:
         case vertex_attrib_kind::box_coord:
@@ -320,7 +355,6 @@ auto unit_torus_gen::attribute_variants(const vertex_attrib_kind attrib)
         case vertex_attrib_kind::material_id:
         case vertex_attrib_kind::weight:
         case vertex_attrib_kind::color:
-        case vertex_attrib_kind::occlusion:
             break;
     }
     return _base::attribute_variants(attrib);
@@ -335,6 +369,7 @@ auto unit_torus_gen::variant_name(const vertex_attrib_variant vav)
         case vertex_attrib_kind::tangential:
         case vertex_attrib_kind::bitangential:
         case vertex_attrib_kind::wrap_coord:
+        case vertex_attrib_kind::occlusion:
             return special_variant_name(vav.index());
         case vertex_attrib_kind::vertex_pivot:
         case vertex_attrib_kind::pivot:
@@ -346,7 +381,6 @@ auto unit_torus_gen::variant_name(const vertex_attrib_variant vav)
         case vertex_attrib_kind::material_id:
         case vertex_attrib_kind::weight:
         case vertex_attrib_kind::color:
-        case vertex_attrib_kind::occlusion:
             break;
     }
     return centered_unit_shape_generator_base::variant_name(vav);
@@ -376,6 +410,10 @@ void unit_torus_gen::attrib_values(
             make_special_attrib_values(
               &unit_torus_gen::bitangentials, vav.index(), dest);
             break;
+        case vertex_attrib_kind::occlusion:
+            make_special_attrib_values(
+              &unit_torus_gen::occlusions, vav.index(), dest);
+            break;
         case vertex_attrib_kind::wrap_coord:
             wrap_coords(dest);
             break;
@@ -388,7 +426,6 @@ void unit_torus_gen::attrib_values(
         case vertex_attrib_kind::material_id:
         case vertex_attrib_kind::weight:
         case vertex_attrib_kind::color:
-        case vertex_attrib_kind::occlusion:
             centered_unit_shape_generator_base::attrib_values(vav, dest);
             break;
     }
