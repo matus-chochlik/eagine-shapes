@@ -273,8 +273,8 @@ void unit_torus_gen::occlusions(
             EAGINE_MAYBE_UNUSED(sd);
 
             dest[k(s, r)] = math::blend(
-              math::minimum(float(std::sin((r + rd) * r_step)) * 1.7F, 1.F),
               1.F,
+              math::minimum(float(std::sin((r + rd) * r_step)) * 1.7F, 1.F),
               blend_fact);
         }
         dest[k(s, _rings)] = dest[k(s, 0)];
