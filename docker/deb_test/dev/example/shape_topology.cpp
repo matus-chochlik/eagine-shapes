@@ -5,6 +5,7 @@
 /// See accompanying file LICENSE_1_0.txt or copy at
 ///  http://www.boost.org/LICENSE_1_0.txt
 ///
+#include <eagine/main.hpp>
 #include <eagine/program_args.hpp>
 #include <eagine/shapes/cube.hpp>
 #include <eagine/shapes/icosahedron.hpp>
@@ -14,9 +15,11 @@
 #include <eagine/shapes/torus.hpp>
 #include <iostream>
 
-auto main(int argc, const char** argv) -> int {
+namespace eagine {
+
+auto main(main_ctx& ctx) -> int {
     using namespace eagine;
-    program_args args(argc, argv);
+    const auto& args = ctx.args();
 
     std::shared_ptr<shapes::generator> gen;
 
@@ -37,8 +40,12 @@ auto main(int argc, const char** argv) -> int {
         gen = shapes::unit_icosahedron(shapes::vertex_attrib_kind::position);
     }
 
-    shapes::topology topo(gen);
+    shapes::topology_options opts;
+    opts.features = shapes::all_topology_features();
+    shapes::topology topo(gen, opts, ctx);
 
     topo.print_dot(std::cout) << std::endl;
     return 0;
 }
+
+} // namespace eagine

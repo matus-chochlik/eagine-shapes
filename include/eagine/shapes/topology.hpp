@@ -130,6 +130,16 @@ public:
         return _area;
     }
 
+    auto set_weight(float w) noexcept -> auto& {
+        _weight = w;
+        return *this;
+    }
+
+    /// @brief Returns the weight of the triangle.
+    auto weight() const noexcept -> float {
+        return _weight;
+    }
+
 private:
     auto curri(const std::size_t i) const noexcept -> unsigned {
         return _indices[i];
@@ -157,7 +167,8 @@ private:
 
     std::size_t _tri_idx{~0U};
     std::array<unsigned, 3> _indices{};
-    float _area{1.F}; // TODO
+    float _area{1.F};
+    float _weight{1.F};
     std::array<mesh_triangle*, 3> _adjacent{{nullptr, nullptr, nullptr}};
     std::array<std::uint8_t, 3> _opposite{{0, 0, 0}};
 };
@@ -169,7 +180,9 @@ enum class topology_feature_bit {
     /// @brief Shape triangle adjacency
     triangle_adjacency = 1U << 0U,
     /// @brief Shape triangle area.
-    triangle_area = 1U << 1U
+    triangle_area = 1U << 1U,
+    /// @brief Shape triangle weight (from vertex weight).
+    triangle_weight = 1U << 2U
 };
 //------------------------------------------------------------------------------
 /// @brief Shape topology features bitfield.
@@ -180,8 +193,17 @@ using topology_feature_bits = bitfield<topology_feature_bit>;
 /// @ingroup shapes
 static constexpr auto all_topology_features() noexcept
   -> topology_feature_bits {
-    return topology_feature_bits{(1U << 2U) - 1U};
+    return topology_feature_bits{(1U << 3U) - 1U};
 }
+//------------------------------------------------------------------------------
+struct topology_options {
+    span_size_t draw_variant_index{0};
+    vertex_attrib_variant position_variant{vertex_attrib_kind::position, 0};
+    vertex_attrib_variant weight_variant{vertex_attrib_kind::weight, 0};
+    topology_feature_bits features{};
+
+    constexpr topology_options() noexcept = default;
+};
 //------------------------------------------------------------------------------
 /// @brief Class holding information about the topology of a generated shape.
 /// @ingroup shapes
@@ -189,29 +211,15 @@ static constexpr auto all_topology_features() noexcept
 /// @see mesh_triangle
 class topology : public main_ctx_object {
 public:
-    /// @brief Construction from a generator, drawing and attribute variant.
+    /// @brief Construction from a shape generator and options.
     topology(
       std::shared_ptr<generator> gen,
-      const drawing_variant var,
-      const vertex_attrib_variant vav,
-      const topology_feature_bits feats,
+      const topology_options& opts,
       main_ctx_parent parent)
       : main_ctx_object{EAGINE_ID(ShpTopolgy), parent}
       , _gen{std::move(gen)} {
-        _scan_topology(var, vav, feats);
+        _scan_topology(opts);
     }
-
-    /// @brief Construction from a shape generator.
-    topology(
-      const std::shared_ptr<generator>& gen,
-      const topology_feature_bits feats,
-      main_ctx_parent parent)
-      : topology{
-          gen,
-          gen->draw_variant(0),
-          {vertex_attrib_kind::position},
-          feats,
-          parent} {}
 
     /// @brief Returns the number of triangles in the mesh.
     auto triangle_count() const noexcept -> span_size_t {
@@ -232,10 +240,7 @@ private:
         return limit_cast<unsigned>(i);
     }
 
-    void _scan_topology(
-      const drawing_variant var,
-      const vertex_attrib_variant vav,
-      const topology_feature_bits feats);
+    void _scan_topology(topology_options);
 
     std::shared_ptr<generator> _gen;
     std::vector<mesh_triangle> _triangles;

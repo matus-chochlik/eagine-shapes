@@ -29,10 +29,13 @@ public:
     surface_points_gen(
       std::shared_ptr<generator> gen,
       const span_size_t point_count,
-      main_ctx_parent parent) noexcept
-      : main_ctx_object{EAGINE_ID(SurfPtsGen), parent}
-      , delegated_gen{std::move(gen)}
-      , _point_count{point_count} {}
+      main_ctx_parent parent) noexcept;
+
+    surface_points_gen(
+      std::shared_ptr<generator> gen,
+      const span_size_t point_count,
+      const vertex_attrib_variant weight_variant,
+      main_ctx_parent parent) noexcept;
 
     auto vertex_count() -> span_size_t override;
     void attrib_values(const vertex_attrib_variant, span<float>) override;
@@ -51,6 +54,7 @@ private:
     auto _topology(const drawing_variant var) noexcept -> ext_topology&;
 
     const span_size_t _point_count{0};
+    topology_options _topo_opts;
 
     std::map<drawing_variant, ext_topology> _topologies;
 };

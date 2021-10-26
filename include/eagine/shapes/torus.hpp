@@ -57,6 +57,8 @@ public:
 
     void wrap_coords(span<float> dest) noexcept;
 
+    void occlusions(span<float> dest, const offset_getter) noexcept;
+
     auto attribute_variants(const vertex_attrib_kind attrib)
       -> span_size_t override;
 
