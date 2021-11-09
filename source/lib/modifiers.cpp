@@ -16,6 +16,7 @@
 #include <eagine/shapes/centered.hpp>
 #include <eagine/shapes/translated.hpp>
 #include <eagine/shapes/scaled.hpp>
+#include <eagine/shapes/scaled_wrap_coords.hpp>
 #include <eagine/shapes/reboxed.hpp>
 #include <eagine/shapes/occluded.hpp>
 #include "epilogue.inl"

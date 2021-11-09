@@ -71,7 +71,7 @@ Package: eagine-shapes-dev
 Version: @PKG_VERSION@
 Architecture: @PKG_ARCH@
 Installed-Size: $(du -k -s ${pkg_dir} | cut -f1)
-Depends: eagine-core-dev
+Depends: eagine-core-dev (>= @PKG_VERSION@)
 Maintainer: Matus Chochlik <chochlik@gmail.com>
 Description: Shape geometry generators and loaders.
 EOD

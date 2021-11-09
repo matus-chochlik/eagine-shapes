@@ -12,6 +12,7 @@ set(HEADERS
     eagine/shapes/cube.hpp
     eagine/shapes/delegated.hpp
     eagine/shapes/drawing.hpp
+    eagine/shapes/from_json.hpp
     eagine/shapes/gen_base.hpp
     eagine/shapes/gen_capabilities.hpp
     eagine/shapes/icosahedron.hpp
@@ -19,8 +20,11 @@ set(HEADERS
     eagine/shapes/reboxed.hpp
     eagine/shapes/round_cube.hpp
     eagine/shapes/scaled.hpp
+    eagine/shapes/scaled_wrap_coords.hpp
     eagine/shapes/screen.hpp
     eagine/shapes/sphere.hpp
+    eagine/shapes/surface_points.hpp
+    eagine/shapes/to_json.hpp
     eagine/shapes/to_patches.hpp
     eagine/shapes/topology.hpp
     eagine/shapes/to_quads.hpp
@@ -41,14 +45,18 @@ set(LIB_INLS
     eagine/shapes/centered.inl
     eagine/shapes/combined.inl
     eagine/shapes/cube.inl
+    eagine/shapes/from_json.inl
     eagine/shapes/gen_base.inl
     eagine/shapes/icosahedron.inl
     eagine/shapes/occluded.inl
     eagine/shapes/reboxed.inl
     eagine/shapes/round_cube.inl
     eagine/shapes/scaled.inl
+    eagine/shapes/scaled_wrap_coords.inl
     eagine/shapes/screen.inl
     eagine/shapes/sphere.inl
+    eagine/shapes/surface_points.inl
+    eagine/shapes/to_json.inl
     eagine/shapes/to_patches.inl
     eagine/shapes/topology.inl
     eagine/shapes/to_quads.inl

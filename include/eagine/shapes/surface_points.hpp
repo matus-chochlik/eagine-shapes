@@ -59,7 +59,7 @@ private:
     std::map<drawing_variant, ext_topology> _topologies;
 };
 //------------------------------------------------------------------------------
-/// @brief Constructs instances of surface_points_gen modifier.
+/// @brief Constructs instance of surface_points_gen modifier.
 /// @ingroup shapes
 static inline auto surface_points(
   std::shared_ptr<generator> gen,
@@ -67,6 +67,17 @@ static inline auto surface_points(
   main_ctx_parent parent) noexcept {
     return std::make_unique<surface_points_gen>(
       std::move(gen), point_count, parent);
+}
+//------------------------------------------------------------------------------
+/// @brief Constructs instance of surface_points_gen modifier.
+/// @ingroup shapes
+static inline auto surface_points(
+  std::shared_ptr<generator> gen,
+  const span_size_t point_count,
+  const vertex_attrib_variant weight_variant,
+  main_ctx_parent parent) noexcept {
+    return std::make_unique<surface_points_gen>(
+      std::move(gen), point_count, weight_variant, parent);
 }
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes
