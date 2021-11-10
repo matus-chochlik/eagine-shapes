@@ -9,8 +9,8 @@
 #ifndef EAGINE_SHAPES_REBOXED_HPP
 #define EAGINE_SHAPES_REBOXED_HPP
 
+#include "config/basic.hpp"
 #include "delegated.hpp"
-#include <eagine/config/basic.hpp>
 #include <utility>
 
 namespace eagine::shapes {

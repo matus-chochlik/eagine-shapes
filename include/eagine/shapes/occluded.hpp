@@ -9,8 +9,8 @@
 #ifndef EAGINE_SHAPES_OCCLUDED_HPP
 #define EAGINE_SHAPES_OCCLUDED_HPP
 
+#include "config/basic.hpp"
 #include "delegated.hpp"
-#include <eagine/config/basic.hpp>
 #include <eagine/main_ctx_object.hpp>
 #include <utility>
 

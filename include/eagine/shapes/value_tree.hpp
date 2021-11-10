@@ -9,8 +9,8 @@
 #ifndef EAGINE_SHAPES_VALUE_TREE_HPP
 #define EAGINE_SHAPES_VALUE_TREE_HPP
 
+#include "config/basic.hpp"
 #include "gen_base.hpp"
-#include <eagine/config/basic.hpp>
 #include <eagine/main_ctx_object.hpp>
 #include <eagine/value_tree/wrappers.hpp>
 #include <map>

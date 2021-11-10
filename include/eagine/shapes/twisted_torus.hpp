@@ -9,8 +9,8 @@
 #ifndef EAGINE_SHAPES_TWISTED_TORUS_HPP
 #define EAGINE_SHAPES_TWISTED_TORUS_HPP
 
+#include "config/basic.hpp"
 #include "gen_base.hpp"
-#include <eagine/config/basic.hpp>
 #include <eagine/valid_if/ge0_lt1.hpp>
 #include <eagine/valid_if/greater_than.hpp>
 #include <cassert>
