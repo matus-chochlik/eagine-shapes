@@ -14,6 +14,7 @@
 #include <eagine/bitfield.hpp>
 #include <eagine/flat_map.hpp>
 #include <eagine/main_ctx_object.hpp>
+#include <concepts>
 #include <iosfwd>
 #include <vector>
 
@@ -234,9 +235,8 @@ public:
     auto print_dot(std::ostream& out) const -> std::ostream&;
 
 private:
-    template <typename I>
-    static auto to_index(const I i) noexcept
-      -> std::enable_if_t<std::is_integral_v<I>, unsigned> {
+    template <std::integral I>
+    static auto to_index(const I i) noexcept -> unsigned {
         return limit_cast<unsigned>(i);
     }
 
