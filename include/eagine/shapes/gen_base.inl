@@ -145,9 +145,9 @@ void generator::for_each_triangle(
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void generator::random_surface_values(const random_attribute_values& values) {
+void generator::random_surface_values(
+  [[maybe_unused]] const random_attribute_values& values) {
     EAGINE_ASSERT(are_consistent(values));
-    EAGINE_MAYBE_UNUSED(values);
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC

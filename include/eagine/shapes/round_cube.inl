@@ -263,11 +263,10 @@ auto unit_round_cube_gen::index_type(const drawing_variant var)
 //------------------------------------------------------------------------------
 template <typename T>
 inline void unit_round_cube_gen::_indices(
-  const drawing_variant var,
+  [[maybe_unused]] const drawing_variant var,
   span<T> dest) noexcept {
     EAGINE_ASSERT(var == 0);
     EAGINE_ASSERT(dest.size() >= index_count(var));
-    EAGINE_MAYBE_UNUSED(var);
 
     span_size_t k = 0;
     for(const auto f : integer_range(6)) {
@@ -337,10 +336,8 @@ void unit_round_cube_gen::instructions(
         span_size_t o = 0;
         span_size_t offs = 0;
         const span_size_t len = (_divisions + 1) * 2;
-        for(const auto f : integer_range(6)) {
-            EAGINE_MAYBE_UNUSED(f);
-            for(const auto d : integer_range(_divisions)) {
-                EAGINE_MAYBE_UNUSED(d);
+        for([[maybe_unused]] const auto f : integer_range(6)) {
+            for([[maybe_unused]] const auto d : integer_range(_divisions)) {
                 draw_operation& op = ops[o++];
                 op.mode = primitive_type::triangle_strip;
                 op.idx_type = index_type(var);

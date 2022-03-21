@@ -138,8 +138,7 @@ void occluded_gen::occlusions(
         const auto worker_count = std::thread::hardware_concurrency();
         std::vector<std::thread> workers;
         workers.reserve(worker_count);
-        for(const auto t : integer_range(worker_count)) {
-            EAGINE_MAYBE_UNUSED(t);
+        for([[maybe_unused]] const auto t : integer_range(worker_count)) {
             workers.emplace_back(
               make_raytracer([](const auto) { return true; }));
         }
