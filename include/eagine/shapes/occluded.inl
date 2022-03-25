@@ -125,7 +125,7 @@ void occluded_gen::occlusions(
                     const auto v = vi++;
                     if(v < vc) {
                         dest[v] = vertex_occlusion(v);
-                        if(EAGINE_UNLIKELY(!progress_update(v))) {
+                        if(!progress_update(v)) [[unlikely]] {
                             break;
                         }
                     } else {
