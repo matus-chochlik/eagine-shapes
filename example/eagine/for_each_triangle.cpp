@@ -5,7 +5,8 @@
 /// See accompanying file LICENSE_1_0.txt or copy at
 ///  http://www.boost.org/LICENSE_1_0.txt
 ///
-#include <eagine/program_args.hpp>
+#include <eagine/console/console.hpp>
+#include <eagine/main.hpp>
 #include <eagine/shapes/cube.hpp>
 #include <eagine/shapes/icosahedron.hpp>
 #include <eagine/shapes/round_cube.hpp>
@@ -14,9 +15,11 @@
 #include <eagine/shapes/twisted_torus.hpp>
 #include <iostream>
 
-auto main(int argc, const char** argv) -> int {
+namespace eagine {
+
+auto main(main_ctx& ctx) -> int {
     using namespace eagine;
-    const program_args args(argc, argv);
+    auto& args = ctx.args();
 
     std::shared_ptr<shapes::generator> gen;
 
@@ -39,14 +42,17 @@ auto main(int argc, const char** argv) -> int {
         gen = shapes::unit_icosahedron(shapes::vertex_attrib_kind::position);
     }
 
-    const auto print_info = [](const shapes::shape_face_info& info) {
-        std::cout << '[';
-        std::cout << info.indices[0] << ", ";
-        std::cout << info.indices[1] << ", ";
-        std::cout << info.indices[2] << "]\n";
+    const auto print_info = [&](const shapes::shape_face_info& info) {
+        ctx.cio()
+          .print(EAGINE_ID(triangle), "[${a}, ${b}, ${c}]")
+          .arg(EAGINE_ID(a), info.indices[0])
+          .arg(EAGINE_ID(b), info.indices[1])
+          .arg(EAGINE_ID(c), info.indices[2]);
     };
 
     gen->for_each_triangle({construct_from, print_info});
 
     return 0;
 }
+
+} // namespace eagine
