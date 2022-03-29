@@ -9,10 +9,10 @@
 #ifndef EAGINE_SHAPES_GEN_BASE_HPP
 #define EAGINE_SHAPES_GEN_BASE_HPP
 
+#include "config/basic.hpp"
 #include "drawing.hpp"
 #include "gen_capabilities.hpp"
 #include "vertex_attrib.hpp"
-#include <eagine/config/basic.hpp>
 #include <eagine/assert.hpp>
 #include <eagine/callable_ref.hpp>
 #include <eagine/compare.hpp>

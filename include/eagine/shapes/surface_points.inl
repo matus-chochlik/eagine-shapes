@@ -61,8 +61,7 @@ auto surface_points_gen::_topology(const drawing_variant var) noexcept
 
         topo.point_params.reserve(std_size(_point_count));
 
-        for(const auto p : integer_range(_point_count)) {
-            EAGINE_MAYBE_UNUSED(p);
+        for([[maybe_unused]] const auto p : integer_range(_point_count)) {
             const auto area_pick{area_dist(rand)};
             const auto tri_pick_idx{std::distance(
               triangle_areas.begin(),
@@ -151,10 +150,9 @@ auto surface_points_gen::operation_count(const drawing_variant) -> span_size_t {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void surface_points_gen::instructions(
-  const drawing_variant var,
+  [[maybe_unused]] const drawing_variant var,
   span<draw_operation> ops) {
     EAGINE_ASSERT(ops.size() >= operation_count(var));
-    EAGINE_MAYBE_UNUSED(var);
 
     draw_operation& op = ops[0];
     op.mode = primitive_type::points;

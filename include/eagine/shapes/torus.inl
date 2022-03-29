@@ -61,8 +61,7 @@ void unit_torus_gen::vertex_pivots(span<float> dest) noexcept {
         const auto vx = std::cos(s * s_step) * rc;
         const auto vz = -std::sin(s * s_step) * rc;
 
-        for(const auto r : integer_range(_rings + 1)) {
-            EAGINE_MAYBE_UNUSED(r);
+        for([[maybe_unused]] const auto r : integer_range(_rings + 1)) {
             dest[k++] = float(vx);
             dest[k++] = float(0);
             dest[k++] = float(vz);
@@ -131,7 +130,7 @@ void unit_torus_gen::normals(
     for(const auto s : integer_range(_sections)) {
         for(const auto r : integer_range(_rings)) {
             const auto [rd, sd, td] = get_offs(s, r);
-            EAGINE_MAYBE_UNUSED(td);
+            (void)(td);
 
             const auto nr = -std::cos((r + rd) * r_step);
             const auto nx = std::cos((s + sd) * s_step);
@@ -169,8 +168,8 @@ void unit_torus_gen::tangentials(
     for(const auto s : integer_range(_sections)) {
         for(const auto r : integer_range(_rings)) {
             const auto [rd, sd, td] = get_offs(s, r);
-            EAGINE_MAYBE_UNUSED(rd);
-            EAGINE_MAYBE_UNUSED(td);
+            (void)(rd);
+            (void)(td);
 
             const auto tx = -std::sin((s + sd) * s_step);
             const auto tz = -std::cos((s + sd) * s_step);
@@ -209,7 +208,7 @@ void unit_torus_gen::bitangentials(
     for(const auto s : integer_range(_sections)) {
         for(const auto r : integer_range(_rings)) {
             const auto [rd, sd, td] = get_offs(s, r);
-            EAGINE_MAYBE_UNUSED(td);
+            (void)(td);
 
             const auto tx = -std::sin((s + sd) * s_step);
             const auto tz = -std::cos((s + sd) * s_step);
@@ -269,8 +268,8 @@ void unit_torus_gen::occlusions(
     for(const auto s : integer_range(_sections)) {
         for(const auto r : integer_range(_rings)) {
             const auto [rd, sd, td] = get_offs(s, r);
-            EAGINE_MAYBE_UNUSED(td);
-            EAGINE_MAYBE_UNUSED(sd);
+            (void)(td);
+            (void)(sd);
 
             dest[k(s, r)] = math::blend(
               1.F,

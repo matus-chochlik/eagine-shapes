@@ -9,8 +9,8 @@
 #ifndef EAGINE_SHAPES_TO_PATCHES_HPP
 #define EAGINE_SHAPES_TO_PATCHES_HPP
 
+#include "config/basic.hpp"
 #include "delegated.hpp"
-#include <eagine/config/basic.hpp>
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

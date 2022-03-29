@@ -9,8 +9,8 @@
 #ifndef EAGINE_SHAPES_ICOSAHEDRON_HPP
 #define EAGINE_SHAPES_ICOSAHEDRON_HPP
 
+#include "config/basic.hpp"
 #include "gen_base.hpp"
-#include <eagine/config/basic.hpp>
 #include <cassert>
 
 namespace eagine::shapes {

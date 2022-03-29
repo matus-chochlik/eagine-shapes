@@ -174,8 +174,7 @@ void unit_twisted_torus_gen::normals(span<float> dest) noexcept {
                 double vx = std::cos(r_angle);
                 double vz = std::sin(r_angle);
 
-                for(const auto f : integer_range(2)) {
-                    EAGINE_MAYBE_UNUSED(f);
+                for([[maybe_unused]] const auto f : integer_range(2)) {
                     dest[k++] = float(d_sign * -vx * vr);
                     dest[k++] = float(d_sign * vy);
                     dest[k++] = float(d_sign * -vz * vr);
@@ -272,9 +271,8 @@ void unit_twisted_torus_gen::instructions(
 
         auto opi = ops.begin();
         for(const auto f : integer_range(4)) {
-            for(const auto s : integer_range(_sections)) {
+            for([[maybe_unused]] const auto s : integer_range(_sections)) {
                 EAGINE_ASSERT(opi != ops.end());
-                EAGINE_MAYBE_UNUSED(s);
                 draw_operation& op = *opi++;
 
                 op.mode = primitive_type::triangle_strip;

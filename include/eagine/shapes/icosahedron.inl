@@ -134,10 +134,9 @@ auto unit_icosahedron_gen::index_count(const drawing_variant) -> span_size_t {
 //------------------------------------------------------------------------------
 template <typename T>
 void unit_icosahedron_gen::_indices(
-  const drawing_variant var,
+  [[maybe_unused]] const drawing_variant var,
   span<T> dest) noexcept {
     EAGINE_ASSERT(dest.size() >= index_count(var));
-    EAGINE_MAYBE_UNUSED(var);
 
     span_size_t k = 0;
 

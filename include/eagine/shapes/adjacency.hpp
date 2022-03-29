@@ -9,9 +9,9 @@
 #ifndef EAGINE_SHAPES_ADJACENCY_HPP
 #define EAGINE_SHAPES_ADJACENCY_HPP
 
+#include "config/basic.hpp"
 #include "delegated.hpp"
 #include "topology.hpp"
-#include <eagine/config/basic.hpp>
 #include <eagine/main_ctx_object.hpp>
 #include <map>
 

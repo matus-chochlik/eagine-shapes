@@ -4,6 +4,7 @@
 #  http://www.boost.org/LICENSE_1_0.txt
 #
 set(HEADERS
+    eagine/shapes/config/basic.hpp
     eagine/shapes/adjacency.hpp
     eagine/shapes/array.hpp
     eagine/shapes/cached.hpp

@@ -73,8 +73,7 @@ void unit_screen_gen::normals(span<float> dest) noexcept {
     EAGINE_ASSERT(dest.size() >= vertex_count() * 3);
 
     span_size_t k = 0;
-    for(const auto i : integer_range(4)) {
-        EAGINE_MAYBE_UNUSED(i);
+    for([[maybe_unused]] const auto i : integer_range(4)) {
         dest[k++] = 0.F;
         dest[k++] = 0.F;
         dest[k++] = 1.F;
@@ -89,8 +88,7 @@ void unit_screen_gen::tangentials(span<float> dest) noexcept {
     EAGINE_ASSERT(dest.size() >= vertex_count() * 3);
 
     span_size_t k = 0;
-    for(const auto i : integer_range(4)) {
-        EAGINE_MAYBE_UNUSED(i);
+    for([[maybe_unused]] const auto i : integer_range(4)) {
         dest[k++] = 1.F;
         dest[k++] = 0.F;
         dest[k++] = 0.F;
@@ -105,8 +103,7 @@ void unit_screen_gen::bitangentials(span<float> dest) noexcept {
     EAGINE_ASSERT(dest.size() >= vertex_count() * 3);
 
     span_size_t k = 0;
-    for(const auto i : integer_range(4)) {
-        EAGINE_MAYBE_UNUSED(i);
+    for([[maybe_unused]] const auto i : integer_range(4)) {
         dest[k++] = 0.F;
         dest[k++] = 1.F;
         dest[k++] = 0.F;
@@ -189,10 +186,9 @@ auto unit_screen_gen::operation_count(const drawing_variant) -> span_size_t {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void unit_screen_gen::instructions(
-  const drawing_variant var,
+  [[maybe_unused]] const drawing_variant var,
   span<draw_operation> ops) {
     EAGINE_ASSERT(ops.size() >= operation_count(var));
-    EAGINE_MAYBE_UNUSED(var);
 
     draw_operation& op = ops[0];
     op.mode = primitive_type::triangle_strip;

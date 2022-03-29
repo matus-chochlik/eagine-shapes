@@ -96,8 +96,7 @@ void unit_sphere_gen::tangentials(span<float> dest) noexcept {
         auto x = -std::sin(s * s_step);
         auto z = -std::cos(s * s_step);
 
-        for(const auto r : integer_range(_rings + 1)) {
-            EAGINE_MAYBE_UNUSED(r);
+        for([[maybe_unused]] const auto r : integer_range(_rings + 1)) {
             dest[k++] = float(x);
             dest[k++] = float(0);
             dest[k++] = float(z);
@@ -204,10 +203,9 @@ auto unit_sphere_gen::index_count(const drawing_variant) -> span_size_t {
 //------------------------------------------------------------------------------
 template <typename T>
 void unit_sphere_gen::_indices(
-  const drawing_variant var,
+  [[maybe_unused]] const drawing_variant var,
   span<T> dest) noexcept {
     EAGINE_ASSERT(dest.size() >= index_count(var));
-    EAGINE_MAYBE_UNUSED(var);
 
     const auto pri = limit_cast<T>(vertex_count());
     span_size_t k = 0;

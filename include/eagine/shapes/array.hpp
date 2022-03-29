@@ -9,8 +9,8 @@
 #ifndef EAGINE_SHAPES_ARRAY_HPP
 #define EAGINE_SHAPES_ARRAY_HPP
 
+#include "config/basic.hpp"
 #include "delegated.hpp"
-#include <eagine/config/basic.hpp>
 #include <array>
 
 namespace eagine::shapes {

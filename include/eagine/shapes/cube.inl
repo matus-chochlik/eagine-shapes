@@ -191,8 +191,7 @@ void unit_cube_gen::normals(span<float> dest) noexcept {
     span_size_t n = 2 * 3;
 
     for(const auto f : integer_range(6)) {
-        for(const auto i : integer_range(n)) {
-            EAGINE_MAYBE_UNUSED(i);
+        for([[maybe_unused]] const auto i : integer_range(n)) {
             for(const auto c : integer_range(3)) {
                 dest[k++] = float(_normal_c(f, c));
             }
@@ -235,8 +234,7 @@ void unit_cube_gen::tangentials(span<float> dest) noexcept {
     span_size_t n = 2 * 3;
 
     for(const auto f : integer_range(6)) {
-        for(const auto i : integer_range(n)) {
-            EAGINE_MAYBE_UNUSED(i);
+        for([[maybe_unused]] const auto i : integer_range(n)) {
             for(const auto c : integer_range(3)) {
                 dest[k++] = float(_tangential_c(f, c));
             }
@@ -279,8 +277,7 @@ void unit_cube_gen::bitangentials(span<float> dest) noexcept {
     span_size_t n = 2 * 3;
 
     for(const auto f : integer_range(6)) {
-        for(const auto i : integer_range(n)) {
-            EAGINE_MAYBE_UNUSED(i);
+        for([[maybe_unused]] const auto i : integer_range(n)) {
             for(const auto c : integer_range(3)) {
                 dest[k++] = float(_bitangential_c(f, c));
             }
