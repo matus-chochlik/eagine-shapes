@@ -11,5 +11,6 @@
 #include <eagine/shapes/gen_base.hpp>
 #include "implement.inl"
 #include <eagine/shapes/cube.hpp>
+#include <eagine/shapes/skybox.hpp>
 #include "epilogue.inl"
 // clang-format on
