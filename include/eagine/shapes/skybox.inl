@@ -33,7 +33,7 @@ auto skybox_gen::vertex_count() -> span_size_t {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void skybox_gen::face_coords(span<float> dest) noexcept {
+void skybox_gen::positions(span<float> dest) noexcept {
     EAGINE_ASSERT(has(vertex_attrib_kind::face_coord));
     EAGINE_ASSERT(dest.size() >= vertex_count() * 3);
 
@@ -95,9 +95,26 @@ void skybox_gen::face_coords(span<float> dest) noexcept {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void skybox_gen::positions(span<float> dest) noexcept {
-    face_coords(dest);
-    transform(dest, [rt3{std::sqrt(3.F)}](auto v) { return v / rt3; });
+void skybox_gen::face_coords(span<float> dest) noexcept {
+    span_size_t k = 0;
+    // clang-format off
+    dest[k++] = -1.F; dest[k++] = -1.F; dest[k++] =  1.F; // a
+    dest[k++] =  1.F; dest[k++] = -1.F; dest[k++] =  1.F; // b
+    dest[k++] = -1.F; dest[k++] =  1.F; dest[k++] =  1.F; // c
+    dest[k++] =  1.F; dest[k++] =  1.F; dest[k++] =  1.F; // d
+    dest[k++] = -1.F; dest[k++] = -1.F; dest[k++] = -1.F; // e
+    dest[k++] =  1.F; dest[k++] = -1.F; dest[k++] = -1.F; // f
+    dest[k++] = -1.F; dest[k++] =  1.F; dest[k++] = -1.F; // g
+    dest[k++] =  1.F; dest[k++] =  1.F; dest[k++] = -1.F; // h
+
+    dest[k++] = -1.F; dest[k++] =  0.F; dest[k++] =  0.F; // -x
+    dest[k++] =  1.F; dest[k++] =  0.F; dest[k++] =  0.F; // +x
+    dest[k++] =  0.F; dest[k++] = -1.F; dest[k++] =  0.F; // -y
+    dest[k++] =  0.F; dest[k++] =  1.F; dest[k++] =  0.F; // +y
+    dest[k++] =  0.F; dest[k++] =  0.F; dest[k++] =  1.F; // -z
+    dest[k++] =  0.F; dest[k++] =  0.F; dest[k++] = -1.F; // +z
+    // clang-format on
+    EAGINE_ASSERT(k == vertex_count() * 3);
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
@@ -147,7 +164,7 @@ auto skybox_gen::index_count(const drawing_variant) -> span_size_t {
 //------------------------------------------------------------------------------
 template <typename T>
 inline void skybox_gen::_indices(
-  const drawing_variant var,
+  [[maybe_unused]] const drawing_variant var,
   span<T> dest) noexcept {
     EAGINE_ASSERT(dest.size() >= index_count(var));
 
