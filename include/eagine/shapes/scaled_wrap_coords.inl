@@ -26,7 +26,7 @@ void scaled_wrap_coords_gen::attrib_values(
 
         for(const auto v : integer_range(vertex_count())) {
             for(const auto c : integer_range(m)) {
-                dest[v * m + c] *= _scale[std_size(c)];
+                dest[v * m + c] *= _scale[integer(c)];
             }
         }
     } else {

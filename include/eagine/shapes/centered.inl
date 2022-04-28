@@ -59,7 +59,7 @@ void centered_gen::attrib_values(
 
         for(const auto v : integer_range(vertex_count())) {
             for(const auto c : integer_range(m)) {
-                dest[v * m + c] -= offs[std_size(c)];
+                dest[v * m + c] -= offs[integer(c)];
             }
         }
     } else {

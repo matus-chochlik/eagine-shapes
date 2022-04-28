@@ -160,7 +160,7 @@ void topology::_scan_topology(topology_options opts) {
     data.coords_per_vertex =
       limit_cast<unsigned>(_gen->values_per_vertex(opts.position_variant));
     data.vertex_positions.resize(
-      std_size(_gen->value_count(opts.position_variant)));
+      integer(_gen->value_count(opts.position_variant)));
     _gen->attrib_values(opts.position_variant, cover(data.vertex_positions));
 
     if(_gen->values_per_vertex(opts.weight_variant) < 1) {
@@ -171,18 +171,18 @@ void topology::_scan_topology(topology_options opts) {
         data.weights_per_vertex =
           limit_cast<unsigned>(_gen->values_per_vertex(opts.weight_variant));
         data.vertex_weights.resize(
-          std_size(_gen->value_count(opts.weight_variant)));
+          integer(_gen->value_count(opts.weight_variant)));
         _gen->attrib_values(opts.weight_variant, cover(data.vertex_weights));
     }
 
-    data.indices.resize(std_size(_gen->index_count(var)));
+    data.indices.resize(integer(_gen->index_count(var)));
     _gen->indices(var, cover(data.indices));
 
-    data.operations.resize(std_size(_gen->operation_count(var)));
+    data.operations.resize(integer(_gen->operation_count(var)));
     _gen->instructions(var, cover(data.operations));
 
     auto scan_ops = progress().activity(
-      "processing shape draw operations", span_size(data.operations.size()));
+      "processing shape draw operations", integer(data.operations.size()));
 
     for(auto& operation : data.operations) {
         const bool indexed = operation.idx_type != index_data_type::none;
@@ -197,9 +197,9 @@ void topology::_scan_topology(topology_options opts) {
             if(indexed) {
                 _triangles.emplace_back(
                   _triangles.size(),
-                  data.indices[std_size(operation.first + i + a)],
-                  data.indices[std_size(operation.first + i + b)],
-                  data.indices[std_size(operation.first + i + c)]);
+                  data.indices[integer(operation.first + i + a)],
+                  data.indices[integer(operation.first + i + b)],
+                  data.indices[integer(operation.first + i + c)]);
             } else {
                 _triangles.emplace_back(
                   _triangles.size(),
@@ -265,7 +265,7 @@ void topology::_scan_topology(topology_options opts) {
 
     if(opts.features.has(topology_feature_bit::triangle_adjacency)) {
         const auto scan_tris = progress().activity(
-          "processing shape triangles", span_size(_triangles.size()));
+          "processing shape triangles", integer(_triangles.size()));
 
         for(auto& ltri : _triangles) {
             const auto lidx = ltri.index();

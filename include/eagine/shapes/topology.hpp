@@ -43,7 +43,7 @@ public:
     /// @pre i >= 0 && i < 2
     auto triangle(const span_size_t i) const noexcept -> const mesh_triangle& {
         EAGINE_ASSERT(i >= 0 && i < 2);
-        return *_triangles[std_size(i)];
+        return *_triangles[integer(i)];
     }
 
     /// @brief Returns a pair of vertex indices (0,1 or 2) defining the i-th edge.
@@ -52,7 +52,7 @@ public:
       -> std::tuple<unsigned, unsigned> {
         EAGINE_ASSERT(i >= 0 && i < 2);
         return {
-          _edge_indices[std_size(2 * i)], _edge_indices[std_size(2 * i + 1)]};
+          _edge_indices[integer(2 * i)], _edge_indices[integer(2 * i + 1)]};
     }
 
 private:
@@ -89,7 +89,7 @@ public:
     /// @pre v >= 0 && v < 3
     auto vertex_index(const span_size_t v) const noexcept {
         EAGINE_ASSERT(v >= 0 && v < 3);
-        return _indices[std_size(v)];
+        return _indices[integer(v)];
     }
 
     /// @brief Returns the triangle adjacent through the v-th edge.
@@ -98,7 +98,7 @@ public:
     auto adjacent_triangle(const span_size_t v) const noexcept
       -> const mesh_triangle* {
         EAGINE_ASSERT(v >= 0 && v < 3);
-        return _adjacent[std_size(v)];
+        return _adjacent[integer(v)];
     }
 
     /// @brief Returns opposite vertex index (0,1 or 2) in the v-th adjacent triangle.
@@ -107,7 +107,7 @@ public:
     /// @see opposite_index
     auto opposite_vertex(const span_size_t v) const noexcept -> unsigned {
         EAGINE_ASSERT(v >= 0 && v < 3);
-        return _opposite[std_size(v)];
+        return _opposite[integer(v)];
     }
 
     /// @brief Returns the in-mesh index of the v-th adjacent vertex.
@@ -229,7 +229,7 @@ public:
 
     /// @brief Returns the i-th triangle in the mesh.
     auto triangle(const span_size_t i) const noexcept -> const mesh_triangle& {
-        return _triangles[std_size(i)];
+        return _triangles[integer(i)];
     }
 
     auto print_dot(std::ostream& out) const -> std::ostream&;

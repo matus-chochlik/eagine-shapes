@@ -78,4 +78,4 @@ static inline auto skybox(const vertex_attrib_bits attr_bits) {
 #include <eagine/shapes/skybox.inl>
 #endif
 
-#endif // EAGINE_SHAPES_CUBE_HPP
+#endif

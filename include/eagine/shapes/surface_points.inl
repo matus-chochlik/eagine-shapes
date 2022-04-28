@@ -99,7 +99,7 @@ void surface_points_gen::attrib_values(
 
     const auto vpv = gen->values_per_vertex(vav);
     std::vector<float> vertex_values;
-    vertex_values.resize(std_size(gen->value_count(vav)));
+    vertex_values.resize(integer(gen->value_count(vav)));
     gen->attrib_values(vav, cover(vertex_values));
 
     auto& topo = _topology(0);

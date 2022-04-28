@@ -81,7 +81,7 @@ auto to_json(std::ostream& out, generator& gen, const to_json_options& opts)
 
             out << R"(,"data":[)";
             const auto print_data = [&out, &gen, vav, size](auto& data) {
-                data.resize(std_size(size));
+                data.resize(integer(size));
                 gen.attrib_values(vav, cover(data));
 
                 interleaved_call print_elem(
@@ -105,7 +105,7 @@ auto to_json(std::ostream& out, generator& gen, const to_json_options& opts)
 
     if(idx_type != index_data_type::none) {
         std::vector<std::uint32_t> indices;
-        indices.resize(std_size(gen.index_count(opts.draw_variant)));
+        indices.resize(integer(gen.index_count(opts.draw_variant)));
         if(!indices.empty()) {
             gen.indices(opts.draw_variant, cover(indices));
             out << R"(,"indices":[)";
@@ -119,7 +119,7 @@ auto to_json(std::ostream& out, generator& gen, const to_json_options& opts)
     }
 
     std::vector<draw_operation> operations;
-    operations.resize(std_size(gen.operation_count(opts.draw_variant)));
+    operations.resize(integer(gen.operation_count(opts.draw_variant)));
     if(!operations.empty()) {
         gen.instructions(opts.draw_variant, cover(operations));
         out << R"(,"instructions":[{)";

@@ -24,7 +24,7 @@ void translated_gen::attrib_values(
         const auto n = vertex_count();
         for(const auto v : integer_range(n)) {
             for(const auto c : integer_range(m)) {
-                dest[v * m + c] += _d[std_size(c)];
+                dest[v * m + c] += _d[integer(c)];
             }
         }
     }
