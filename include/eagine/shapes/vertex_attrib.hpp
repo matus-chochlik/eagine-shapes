@@ -21,6 +21,7 @@ namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Shape vertex attribute kind enumeration.
 /// @ingroup shapes
+/// @see vertex_attrib_name_and_kind
 enum class vertex_attrib_kind : std::uint16_t {
     /// @brief The object id attributes (typically unique integer).
     object_id = 1U << 0U,
@@ -56,6 +57,10 @@ enum class vertex_attrib_kind : std::uint16_t {
     material_id = 1U << 15U
     // also fix all_vertex_attrib_bits
 };
+//------------------------------------------------------------------------------
+/// @brief Alias for attribute named and kind pair.
+/// @ingroup shapes
+using vertex_attrib_name_and_kind = name_and_enumerator<vertex_attrib_kind>;
 //------------------------------------------------------------------------------
 #if !EAGINE_CXX_REFLECTION
 template <typename Selector>
