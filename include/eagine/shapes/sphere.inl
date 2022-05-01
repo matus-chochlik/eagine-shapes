@@ -19,7 +19,7 @@ EAGINE_DIAG_OFF(double-promotion)
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto unit_sphere_gen::_attr_mask() noexcept -> vertex_attrib_bits {
+auto unit_sphere_gen::_attr_mask() noexcept -> vertex_attrib_kinds {
     return vertex_attrib_kind::position | vertex_attrib_kind::normal |
            vertex_attrib_kind::tangential | vertex_attrib_kind::bitangential |
            vertex_attrib_kind::box_coord | vertex_attrib_kind::wrap_coord;
@@ -27,10 +27,10 @@ auto unit_sphere_gen::_attr_mask() noexcept -> vertex_attrib_bits {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 unit_sphere_gen::unit_sphere_gen(
-  const vertex_attrib_bits attr_bits,
+  const vertex_attrib_kinds attr_kinds,
   const valid_if_greater_than<int, 2>& rings,
   const valid_if_greater_than<int, 3>& sections) noexcept
-  : _base{attr_bits & _attr_mask()}
+  : _base{attr_kinds & _attr_mask()}
   , _rings{rings.value()}
   , _sections{sections.value()} {}
 //------------------------------------------------------------------------------

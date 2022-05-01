@@ -21,7 +21,7 @@ namespace eagine::shapes {
 /// @see unit_cube
 class unit_cube_gen : public centered_unit_shape_generator_base {
 public:
-    unit_cube_gen(const vertex_attrib_bits attr_bits) noexcept;
+    unit_cube_gen(const vertex_attrib_kinds attr_kinds) noexcept;
 
     auto vertex_count() -> span_size_t override;
 
@@ -58,9 +58,9 @@ public:
 private:
     using _base = centered_unit_shape_generator_base;
 
-    static auto _attr_mask() noexcept -> vertex_attrib_bits;
+    static auto _attr_mask() noexcept -> vertex_attrib_kinds;
 
-    static auto _shared_attrs() noexcept -> vertex_attrib_bits;
+    static auto _shared_attrs() noexcept -> vertex_attrib_kinds;
 
     auto _only_shared_attribs() noexcept -> bool;
 
@@ -95,8 +95,8 @@ private:
 /// @see unit_torus
 /// @see unit_twisted_torus
 /// @see unit_screen
-static inline auto unit_cube(const vertex_attrib_bits attr_bits) {
-    return std::make_unique<unit_cube_gen>(attr_bits);
+static inline auto unit_cube(const vertex_attrib_kinds attr_kinds) {
+    return std::make_unique<unit_cube_gen>(attr_kinds);
 }
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes

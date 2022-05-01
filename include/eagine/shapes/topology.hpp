@@ -190,7 +190,7 @@ enum class topology_feature_bit : unsigned {
 /// @ingroup shapes
 /// @see topology
 using topology_feature_bits = bitfield<topology_feature_bit>;
-/// @brief Returns vertex_attrib_bits value with all bits set.
+/// @brief Returns vertex_attrib_kinds value with all bits set.
 /// @ingroup shapes
 static constexpr auto all_topology_features() noexcept
   -> topology_feature_bits {

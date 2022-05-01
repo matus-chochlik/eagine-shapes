@@ -31,8 +31,8 @@ static inline auto index_data_type_from(const string_view str) noexcept {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 auto value_tree_loader::_attr_mask(const valtree::compound& source) noexcept
-  -> vertex_attrib_bits {
-    vertex_attrib_bits result;
+  -> vertex_attrib_kinds {
+    vertex_attrib_kinds result;
     for(const auto& info : enumerator_mapping(
           type_identity<vertex_attrib_kind>{}, value_tree_tag{})) {
         if(source.nested(info.name)) {

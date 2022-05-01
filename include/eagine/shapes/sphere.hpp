@@ -22,12 +22,12 @@ namespace eagine::shapes {
 class unit_sphere_gen : public centered_unit_shape_generator_base {
 public:
     unit_sphere_gen(
-      const vertex_attrib_bits attr_bits,
+      const vertex_attrib_kinds attr_kinds,
       const valid_if_greater_than<int, 2>& rings,
       const valid_if_greater_than<int, 3>& sections) noexcept;
 
-    unit_sphere_gen(const vertex_attrib_bits attr_bits) noexcept
-      : unit_sphere_gen(attr_bits, 12, 18) {}
+    unit_sphere_gen(const vertex_attrib_kinds attr_kinds) noexcept
+      : unit_sphere_gen(attr_kinds, 12, 18) {}
 
     auto vertex_count() -> span_size_t override;
 
@@ -71,7 +71,7 @@ private:
     int _rings;
     int _sections;
 
-    static auto _attr_mask() noexcept -> vertex_attrib_bits;
+    static auto _attr_mask() noexcept -> vertex_attrib_kinds;
 
     template <typename T>
     void _indices(drawing_variant, span<T> dest) noexcept;
@@ -87,10 +87,10 @@ private:
 /// @see unit_twisted_torus
 /// @see unit_screen
 static inline auto unit_sphere(
-  const vertex_attrib_bits attr_bits,
+  const vertex_attrib_kinds attr_kinds,
   const valid_if_greater_than<int, 2>& rings,
   const valid_if_greater_than<int, 3>& sections) {
-    return std::make_unique<unit_sphere_gen>(attr_bits, rings, sections);
+    return std::make_unique<unit_sphere_gen>(attr_kinds, rings, sections);
 }
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of unit_sphere_gen.
@@ -102,8 +102,8 @@ static inline auto unit_sphere(
 /// @see unit_twisted_torus
 /// @see unit_icosahedron
 /// @see unit_screen
-static inline auto unit_sphere(const vertex_attrib_bits attr_bits) {
-    return unit_sphere(attr_bits, 18, 36);
+static inline auto unit_sphere(const vertex_attrib_kinds attr_kinds) {
+    return unit_sphere(attr_kinds, 18, 36);
 }
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes

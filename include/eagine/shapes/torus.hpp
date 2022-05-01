@@ -26,19 +26,19 @@ namespace eagine::shapes {
 class unit_torus_gen : public centered_unit_shape_generator_base {
 public:
     unit_torus_gen(
-      const vertex_attrib_bits attr_bits,
+      const vertex_attrib_kinds attr_kinds,
       const valid_if_greater_than<int, 4>& rings,
       const valid_if_greater_than<int, 3>& sections,
       const valid_if_ge0_lt1<float>& radius_ratio) noexcept;
 
     unit_torus_gen(
-      const vertex_attrib_bits attr_bits,
+      const vertex_attrib_kinds attr_kinds,
       const valid_if_greater_than<int, 4>& rings,
       const valid_if_greater_than<int, 3>& sections) noexcept
-      : unit_torus_gen(attr_bits, rings, sections, 0.5F) {}
+      : unit_torus_gen(attr_kinds, rings, sections, 0.5F) {}
 
-    unit_torus_gen(const vertex_attrib_bits attr_bits) noexcept
-      : unit_torus_gen(attr_bits, 24, 36) {}
+    unit_torus_gen(const vertex_attrib_kinds attr_kinds) noexcept
+      : unit_torus_gen(attr_kinds, 24, 36) {}
 
     using offset_getter =
       callable_ref<std::array<double, 3>(span_size_t, span_size_t)>;
@@ -101,7 +101,7 @@ private:
     int _sections;
     float _radius_ratio;
 
-    static auto _attr_mask() noexcept -> vertex_attrib_bits;
+    static auto _attr_mask() noexcept -> vertex_attrib_kinds;
 
     template <typename T>
     void _indices(const drawing_variant, span<T> dest) noexcept;
@@ -110,12 +110,12 @@ private:
 /// @brief Constructs instances of unit_torus_gen.
 /// @ingroup shapes
 static inline auto unit_torus(
-  const vertex_attrib_bits attr_bits,
+  const vertex_attrib_kinds attr_kinds,
   const valid_if_greater_than<int, 4>& rings,
   const valid_if_greater_than<int, 3>& sections,
   const valid_if_ge0_lt1<float>& radius_ratio) {
     return std::make_unique<unit_torus_gen>(
-      attr_bits, rings, sections, radius_ratio);
+      attr_kinds, rings, sections, radius_ratio);
 }
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of unit_torus_gen.
@@ -127,8 +127,8 @@ static inline auto unit_torus(
 /// @see unit_twisted_torus
 /// @see unit_icosahedron
 /// @see unit_screen
-static inline auto unit_torus(const vertex_attrib_bits attr_bits) {
-    return unit_torus(attr_bits, 18, 36, 0.5F);
+static inline auto unit_torus(const vertex_attrib_kinds attr_kinds) {
+    return unit_torus(attr_kinds, 18, 36, 0.5F);
 }
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes

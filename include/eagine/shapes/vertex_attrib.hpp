@@ -55,7 +55,7 @@ enum class vertex_attrib_kind : std::uint16_t {
     polygon_id = 1U << 14U,
     /// @brief Face material id value.
     material_id = 1U << 15U
-    // also fix all_vertex_attrib_bits
+    // also fix all_vertex_attrib_kinds
 };
 //------------------------------------------------------------------------------
 /// @brief Alias for attribute named and kind pair.
@@ -89,19 +89,20 @@ constexpr auto enumerator_mapping(
 //------------------------------------------------------------------------------
 /// @brief Alias for vertex_attrib_kind bitfield type.
 /// @ingroup shapes
-using vertex_attrib_bits = bitfield<vertex_attrib_kind>;
+using vertex_attrib_kinds = bitfield<vertex_attrib_kind>;
 //------------------------------------------------------------------------------
-/// @brief Returns vertex_attrib_bits value with all bits set.
+/// @brief Returns vertex_attrib_kinds value with all bits set.
 /// @ingroup shapes
-static constexpr auto all_vertex_attrib_bits() noexcept -> vertex_attrib_bits {
-    return vertex_attrib_bits{(1U << 16U) - 1U};
+static constexpr auto all_vertex_attrib_kinds() noexcept
+  -> vertex_attrib_kinds {
+    return vertex_attrib_kinds{(1U << 16U) - 1U};
 }
 //------------------------------------------------------------------------------
 /// @brief Bitwise-or operator for vertex_attrib_kind bits.
 /// @ingroup shapes
 static constexpr auto operator|(
   const vertex_attrib_kind a,
-  const vertex_attrib_kind b) noexcept -> vertex_attrib_bits {
+  const vertex_attrib_kind b) noexcept -> vertex_attrib_kinds {
     return {a, b};
 }
 //------------------------------------------------------------------------------
@@ -256,11 +257,11 @@ static constexpr auto operator+(
 //------------------------------------------------------------------------------
 /// @brief Extracts vertex attribute kind bits from and vertex attribute variants array.
 /// @ingroup shapes
-/// @see vertex_attrib_bits
+/// @see vertex_attrib_kinds
 template <std::size_t N>
-static inline auto get_attrib_bits(
-  const vertex_attrib_variants<N>& vaals) noexcept -> vertex_attrib_bits {
-    vertex_attrib_bits res;
+static inline auto get_attrib_kinds(
+  const vertex_attrib_variants<N>& vaals) noexcept -> vertex_attrib_kinds {
+    vertex_attrib_kinds res;
 
     for(const vertex_attrib_variant& vaal : vaals) {
         res = res | vaal.attribute();

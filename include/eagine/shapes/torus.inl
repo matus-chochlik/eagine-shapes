@@ -20,7 +20,7 @@ EAGINE_DIAG_OFF(double-promotion)
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto unit_torus_gen::_attr_mask() noexcept -> vertex_attrib_bits {
+auto unit_torus_gen::_attr_mask() noexcept -> vertex_attrib_kinds {
     return vertex_attrib_kind::position | vertex_attrib_kind::normal |
            vertex_attrib_kind::tangential | vertex_attrib_kind::bitangential |
            vertex_attrib_kind::occlusion | vertex_attrib_kind::pivot |
@@ -30,11 +30,11 @@ auto unit_torus_gen::_attr_mask() noexcept -> vertex_attrib_bits {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 unit_torus_gen::unit_torus_gen(
-  const vertex_attrib_bits attr_bits,
+  const vertex_attrib_kinds attr_kinds,
   const valid_if_greater_than<int, 4>& rings,
   const valid_if_greater_than<int, 3>& sections,
   const valid_if_ge0_lt1<float>& radius_ratio) noexcept
-  : _base(attr_bits & _attr_mask())
+  : _base(attr_kinds & _attr_mask())
   , _rings{rings.value()}
   , _sections{sections.value()}
   , _radius_ratio(radius_ratio.value()) {}
