@@ -177,7 +177,7 @@ private:
 /// @brief Enumeration of shape topology features that can be analysed.
 /// @ingroup shapes
 /// @see topology
-enum class topology_feature_bit {
+enum class topology_feature_bit : unsigned {
     /// @brief Shape triangle adjacency
     triangle_adjacency = 1U << 0U,
     /// @brief Shape triangle area.

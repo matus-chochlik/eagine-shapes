@@ -17,13 +17,13 @@ namespace eagine::shapes {
 /// @brief Shape generator capability bit enumeration.
 /// @ingroup shapes
 /// @see generator_capabilities
-enum class generator_capability {
+enum class generator_capability : unsigned {
     /// @brief Line or triangle strips should be generated if possible.
-    element_strips,
+    element_strips = 1U << 0U,
     /// @brief Line or triangle fanst should be generated if possible.
-    element_fans,
+    element_fans = 1U << 1U,
     /// @brief Primitive restart functionality should be used if possible.
-    primitive_restart
+    primitive_restart = 1U << 2U
 };
 //------------------------------------------------------------------------------
 /// @brief Alias for generator_capability bitfield type.
