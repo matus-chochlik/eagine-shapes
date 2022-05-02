@@ -19,6 +19,7 @@
 #include <eagine/flat_map.hpp>
 #include <eagine/interface.hpp>
 #include <eagine/math/primitives.hpp>
+#include <eagine/reflect/bitfield.hpp>
 #include <eagine/span.hpp>
 #include <eagine/types.hpp>
 #include <array>
@@ -52,11 +53,29 @@ using drawing_variant = span_size_t;
 struct generator : interface<generator> {
 
     /// @brief Returns the set of vertex attributes supported by this generator.
-    virtual auto attrib_bits() noexcept -> vertex_attrib_bits = 0;
+    /// @see attrib_count
+    virtual auto attrib_kinds() noexcept -> vertex_attrib_kinds = 0;
 
     /// @brief Tests if the specified attribute is supported by this generator.
+    /// @see attrib_kinds
+    /// @see attrib_count
     auto has(const vertex_attrib_kind attrib) noexcept {
-        return bool(attrib_bits() | attrib);
+        return bool(attrib_kinds() | attrib);
+    }
+
+    /// @brief Returns the count of vertex attributes supported by this generator.
+    /// @see attrib_kinds
+    /// @see for_each_attrib
+    auto supported_attrib_count() noexcept -> span_size_t {
+        return count_set_bits(attrib_kinds());
+    }
+
+    /// @brief Calls the specified function for each attribute kind.
+    /// @see attrib_kinds
+    /// @see supported_attrib_count
+    void for_each_attrib(
+      callable_ref<void(vertex_attrib_kinds, vertex_attrib_name_and_kind)> func) {
+        for_each_bit(func, attrib_kinds());
     }
 
     /// @brief Enables or disables the specified generator capability.
@@ -289,22 +308,22 @@ struct generator : interface<generator> {
 /// @ingroup shapes
 class generator_base : public generator {
 public:
-    auto attrib_bits() noexcept -> vertex_attrib_bits final {
-        return _attr_bits;
+    auto attrib_kinds() noexcept -> vertex_attrib_kinds final {
+        return _attr_kinds;
     }
 
     auto enable(const generator_capability cap, const bool value) noexcept
       -> bool final {
         if(value) {
-            _caps |= cap;
+            _enabled_caps |= cap;
         } else {
-            _caps &= cap;
+            _enabled_caps &= cap;
         }
         return true;
     }
 
     auto is_enabled(const generator_capability cap) noexcept -> bool final {
-        return _caps.has(cap);
+        return _enabled_caps.has(cap);
     }
 
     auto attribute_variants(const vertex_attrib_kind attrib)
@@ -372,12 +391,12 @@ public:
     void indices(const drawing_variant, span<std::uint32_t> dest) override;
 
 protected:
-    generator_base(const vertex_attrib_bits attr_bits) noexcept
-      : _attr_bits{attr_bits} {}
+    generator_base(const vertex_attrib_kinds attr_kinds) noexcept
+      : _attr_kinds{attr_kinds} {}
 
 private:
-    vertex_attrib_bits _attr_bits;
-    generator_capabilities _caps;
+    vertex_attrib_kinds _attr_kinds;
+    generator_capabilities _enabled_caps;
 };
 //------------------------------------------------------------------------------
 /// @brief Base class for shape generators re-calculating the center.
@@ -389,8 +408,8 @@ public:
 
 protected:
     centered_unit_shape_generator_base(
-      const vertex_attrib_bits attr_bits) noexcept
-      : generator_base(attr_bits) {}
+      const vertex_attrib_kinds attr_kinds) noexcept
+      : generator_base(attr_kinds) {}
 };
 //------------------------------------------------------------------------------
 static inline auto operator+(

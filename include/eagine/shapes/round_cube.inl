@@ -19,7 +19,7 @@ EAGINE_DIAG_OFF(double-promotion)
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto unit_round_cube_gen::_attr_mask() noexcept -> vertex_attrib_bits {
+auto unit_round_cube_gen::_attr_mask() noexcept -> vertex_attrib_kinds {
     return vertex_attrib_kind::position | vertex_attrib_kind::normal |
            vertex_attrib_kind::tangential | vertex_attrib_kind::bitangential |
            vertex_attrib_kind::pivot | vertex_attrib_kind::face_coord |
@@ -28,9 +28,9 @@ auto unit_round_cube_gen::_attr_mask() noexcept -> vertex_attrib_bits {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 unit_round_cube_gen::unit_round_cube_gen(
-  const vertex_attrib_bits attr_bits,
+  const vertex_attrib_kinds attr_kinds,
   const int divisions) noexcept
-  : _base{attr_bits & _attr_mask()}
+  : _base{attr_kinds & _attr_mask()}
   , _divisions{divisions} {
     EAGINE_ASSERT(_divisions > 0);
 }

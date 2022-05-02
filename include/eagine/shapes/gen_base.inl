@@ -61,13 +61,14 @@ auto generator::bounding_sphere() -> math::sphere<float, true> {
     const auto n = vertex_count();
     const auto m = values_per_vertex(attrib);
 
-    std::vector<float> temp(std_size(n * m));
+    std::vector<float> temp;
+    temp.resize(integer(n * m));
     auto pos = cover(temp);
     attrib_values(attrib, pos);
 
     for(const auto v : integer_range(n)) {
         for(const auto c : integer_range(m)) {
-            const auto k = std_size(c);
+            const integer k{c};
 
             min[k] = eagine::math::minimum(min[k], pos[v * m + c]);
             max[k] = eagine::math::maximum(max[k], pos[v * m + c]);
@@ -81,7 +82,7 @@ auto generator::bounding_sphere() -> math::sphere<float, true> {
 
     float radius{0.F};
     for(const auto c : integer_range(m)) {
-        const auto k = std_size(c);
+        const integer k{c};
         const auto q = (max[k] - min[k]) * 0.5F;
         radius += q * q;
     }
@@ -96,17 +97,19 @@ void generator::for_each_triangle(
   const drawing_variant var,
   const callable_ref<void(const shape_face_info&)> callback) {
 
-    std::vector<draw_operation> ops(std_size(gen.operation_count(var)));
+    std::vector<draw_operation> ops;
+    ops.resize(integer(gen.operation_count(var)));
     gen.instructions(var, cover(ops));
 
-    std::vector<std::uint32_t> idx(std_size(gen.index_count(var)));
+    std::vector<std::uint32_t> idx;
+    idx.resize(integer(gen.index_count(var)));
     gen.indices(var, cover(idx));
 
-    const auto get_index = [&idx](auto vx, bool idxd) {
+    const auto get_index = [&idx](auto vx, bool idxd) -> span_size_t {
         if(idxd) {
-            return span_size(idx[std_size(vx)]);
+            return integer(idx[integer(vx)]);
         } else {
-            return span_size(vx);
+            return integer(vx);
         }
     };
 
@@ -120,7 +123,7 @@ void generator::for_each_triangle(
             span_size_t t = 0;
             for(const auto v : integer_range(op.count)) {
                 const auto w = v + op.first;
-                tri.indices[std_size(t)] = get_index(w, indexed);
+                tri.indices[integer(t)] = get_index(w, indexed);
                 if(++t >= 3) {
                     t = 0;
                     callback(tri);
@@ -162,7 +165,8 @@ void generator::ray_intersections(
     const auto pvak = vertex_attrib_kind::position;
     const auto vpv = gen.values_per_vertex(pvak);
 
-    std::vector<float> pos(std_size(gen.vertex_count() * vpv));
+    std::vector<float> pos;
+    pos.resize(integer(gen.vertex_count() * vpv));
     gen.attrib_values(pvak, cover(pos));
 
     std::vector<std::size_t> ray_idx;
@@ -238,7 +242,8 @@ void generator_base::indices(
   const drawing_variant var,
   span<std::uint16_t> dest) {
     if(index_type(var) == index_data_type::unsigned_8) {
-        std::vector<std::uint8_t> tmp(std_size(index_count(var)));
+        std::vector<std::uint8_t> tmp;
+        tmp.resize(integer(index_count(var)));
         indices(var, cover(tmp));
         copy(view(tmp), dest);
     }
@@ -250,11 +255,13 @@ void generator_base::indices(
   span<std::uint32_t> dest) {
     const auto ity = index_type(var);
     if(ity == index_data_type::unsigned_8) {
-        std::vector<std::uint8_t> tmp(std_size(index_count(var)));
+        std::vector<std::uint8_t> tmp;
+        tmp.resize(integer(index_count(var)));
         indices(var, cover(tmp));
         copy(view(tmp), dest);
     } else if(ity == index_data_type::unsigned_16) {
-        std::vector<std::uint16_t> tmp(std_size(index_count(var)));
+        std::vector<std::uint16_t> tmp;
+        tmp.resize(integer(index_count(var)));
         indices(var, cover(tmp));
         copy(view(tmp), dest);
     }

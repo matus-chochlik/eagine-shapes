@@ -22,7 +22,7 @@ public:
 
     auto add(std::unique_ptr<generator>&& gen) && -> combined_gen&&;
 
-    auto attrib_bits() noexcept -> vertex_attrib_bits final;
+    auto attrib_kinds() noexcept -> vertex_attrib_kinds final;
 
     auto enable(const generator_capability cap, const bool value) noexcept
       -> bool final;

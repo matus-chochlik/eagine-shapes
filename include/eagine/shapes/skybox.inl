@@ -18,14 +18,14 @@ EAGINE_DIAG_OFF(double-promotion)
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto skybox_gen::_attr_mask() noexcept -> vertex_attrib_bits {
+auto skybox_gen::_attr_mask() noexcept -> vertex_attrib_kinds {
     return vertex_attrib_kind::position | vertex_attrib_kind::pivot |
            vertex_attrib_kind::face_coord;
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-skybox_gen::skybox_gen(const vertex_attrib_bits attr_bits) noexcept
-  : _base(attr_bits & _attr_mask()) {}
+skybox_gen::skybox_gen(const vertex_attrib_kinds attr_kinds) noexcept
+  : _base(attr_kinds & _attr_mask()) {}
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 auto skybox_gen::vertex_count() -> span_size_t {

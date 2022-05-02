@@ -71,7 +71,7 @@ private:
     std::map<vertex_attrib_variant, std::string> _variant_names{};
 
     static auto _attr_mask(const valtree::compound&) noexcept
-      -> vertex_attrib_bits;
+      -> vertex_attrib_kinds;
 
     template <typename T>
     void _attrib_values(const vertex_attrib_variant, span<T>);

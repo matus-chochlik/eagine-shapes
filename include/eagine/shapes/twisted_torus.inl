@@ -19,19 +19,19 @@ EAGINE_DIAG_OFF(double-promotion)
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto unit_twisted_torus_gen::_attr_mask() noexcept -> vertex_attrib_bits {
+auto unit_twisted_torus_gen::_attr_mask() noexcept -> vertex_attrib_kinds {
     return vertex_attrib_kind::position | vertex_attrib_kind::normal |
            vertex_attrib_kind::box_coord | vertex_attrib_kind::wrap_coord;
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 unit_twisted_torus_gen::unit_twisted_torus_gen(
-  const vertex_attrib_bits attr_bits,
+  const vertex_attrib_kinds attr_kinds,
   const int twist,
   const valid_if_greater_than<int, 2>& rings,
   const valid_if_greater_than<int, 3>& sections,
   const valid_if_ge0_lt1<float>& radius_ratio) noexcept
-  : _base{attr_bits & _attr_mask()}
+  : _base{attr_kinds & _attr_mask()}
   , _twist{twist}
   , _rings{rings.value()}
   , _sections{sections.value()}

@@ -18,11 +18,11 @@ auto to_quads_gen::index_count(const drawing_variant var) -> span_size_t {
     span_size_t count{0};
 
     std::vector<draw_operation> ops;
-    ops.resize(std_size(delegated_gen::operation_count(var)));
+    ops.resize(integer(delegated_gen::operation_count(var)));
     delegated_gen::instructions(var, cover(ops));
 
     std::vector<std::uint32_t> idx;
-    idx.resize(std_size(delegated_gen::index_count(var)));
+    idx.resize(integer(delegated_gen::index_count(var)));
     delegated_gen::indices(var, cover(idx));
 
     const auto num_verts = [](auto n) {
@@ -39,7 +39,7 @@ auto to_quads_gen::index_count(const drawing_variant var) -> span_size_t {
                 if(op.primitive_restart && delegated_gen::primitive_restart()) {
                     while(curr < op.count) {
                         if(
-                          idx[std_size(op.first + curr)] ==
+                          idx[integer(op.first + curr)] ==
                           op.primitive_restart_index) {
                             count += num_verts(curr - prev);
                             prev = curr + 1;
@@ -67,11 +67,11 @@ void to_quads_gen::_indices(const drawing_variant var, span<T> dest) noexcept {
     span_size_t i = 0;
 
     std::vector<draw_operation> ops;
-    ops.resize(std_size(delegated_gen::operation_count(var)));
+    ops.resize(integer(delegated_gen::operation_count(var)));
     delegated_gen::instructions(var, cover(ops));
 
     std::vector<std::uint32_t> del_idx;
-    del_idx.resize(std_size(delegated_gen::index_count(var)));
+    del_idx.resize(integer(delegated_gen::index_count(var)));
     delegated_gen::indices(var, cover(del_idx));
 
     for(const auto& op : ops) {
@@ -91,7 +91,7 @@ void to_quads_gen::_indices(const drawing_variant var, span<T> dest) noexcept {
                         if(
                           op.primitive_restart &&
                           delegated_gen::primitive_restart() &&
-                          (del_idx[std_size(op.first + curr + t)] ==
+                          (del_idx[integer(op.first + curr + t)] ==
                            op.primitive_restart_index)) {
                             curr += t + 1;
                             break;
@@ -99,13 +99,13 @@ void to_quads_gen::_indices(const drawing_variant var, span<T> dest) noexcept {
                     }
                     if(curr + 4 <= op.count) {
                         dest[i++] =
-                          limit_cast<T>(del_idx[std_size(op.first + curr + 0)]);
+                          limit_cast<T>(del_idx[integer(op.first + curr + 0)]);
                         dest[i++] =
-                          limit_cast<T>(del_idx[std_size(op.first + curr + 1)]);
+                          limit_cast<T>(del_idx[integer(op.first + curr + 1)]);
                         dest[i++] =
-                          limit_cast<T>(del_idx[std_size(op.first + curr + 2)]);
+                          limit_cast<T>(del_idx[integer(op.first + curr + 2)]);
                         dest[i++] =
-                          limit_cast<T>(del_idx[std_size(op.first + curr + 3)]);
+                          limit_cast<T>(del_idx[integer(op.first + curr + 3)]);
                         curr += 2;
                     } else {
                         break;
@@ -156,7 +156,7 @@ void to_quads_gen::instructions(
     delegated_gen::instructions(var, ops);
 
     std::vector<std::uint32_t> idx;
-    idx.resize(std_size(delegated_gen::index_count(var)));
+    idx.resize(integer(delegated_gen::index_count(var)));
     delegated_gen::indices(var, cover(idx));
 
     const auto it = index_type(var);
@@ -175,9 +175,7 @@ void to_quads_gen::instructions(
             span_size_t curr{0};
             if(op.primitive_restart && delegated_gen::primitive_restart()) {
                 while(curr < op.count) {
-                    if(
-                      idx[std_size(op.first + curr)] ==
-                      op.primitive_restart_index) {
+                    if(idx[integer(op.first + curr)] == op.primitive_restart_index) {
                         count += num_verts(curr - prev);
                         prev = curr + 1;
                     }

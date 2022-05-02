@@ -20,7 +20,7 @@ namespace eagine {
 static auto get_base_generator(const main_ctx& ctx) {
     const auto& args = ctx.args();
 
-    const auto attrbits{shapes::all_vertex_attrib_bits()};
+    const auto attrbits{shapes::all_vertex_attrib_kinds()};
     std::shared_ptr<shapes::generator> gen;
 
     if(args.find("--twisted-torus")) {

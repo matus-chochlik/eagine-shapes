@@ -28,8 +28,8 @@ class cached_gen
 public:
     cached_gen(std::shared_ptr<generator> gen, main_ctx_parent parent) noexcept;
 
-    auto attrib_bits() noexcept -> vertex_attrib_bits final {
-        return _gen->attrib_bits();
+    auto attrib_kinds() noexcept -> vertex_attrib_kinds final {
+        return _gen->attrib_kinds();
     }
 
     auto enable(const generator_capability cap, const bool value) noexcept

@@ -17,10 +17,10 @@ auto combined_gen::add(std::unique_ptr<generator>&& gen) && -> combined_gen&& {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto combined_gen::attrib_bits() noexcept -> vertex_attrib_bits {
-    vertex_attrib_bits result{all_vertex_attrib_bits()};
+auto combined_gen::attrib_kinds() noexcept -> vertex_attrib_kinds {
+    vertex_attrib_kinds result{all_vertex_attrib_kinds()};
     for(const auto& gen : _gens) {
-        result = result & gen->attrib_bits();
+        result = result & gen->attrib_kinds();
     }
     return result;
 }

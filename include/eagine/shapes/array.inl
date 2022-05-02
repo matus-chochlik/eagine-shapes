@@ -36,7 +36,7 @@ void array_gen::attrib_values(
 
                     const auto k = v * m + c;
                     dest[(i * n * m) + k] =
-                      dest[k] + (_d[std_size(c)] * float(i));
+                      dest[k] + (_d[integer(c)] * float(i));
                 }
             }
         }

@@ -18,21 +18,21 @@ EAGINE_DIAG_OFF(double-promotion)
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto unit_cube_gen::_attr_mask() noexcept -> vertex_attrib_bits {
+auto unit_cube_gen::_attr_mask() noexcept -> vertex_attrib_kinds {
     return vertex_attrib_kind::position | vertex_attrib_kind::normal |
            vertex_attrib_kind::tangential | vertex_attrib_kind::bitangential |
-           vertex_attrib_kind::pivot | vertex_attrib_kind::box_coord;
+           vertex_attrib_kind::pivot | vertex_attrib_kind::face_coord;
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto unit_cube_gen::_shared_attrs() noexcept -> vertex_attrib_bits {
+auto unit_cube_gen::_shared_attrs() noexcept -> vertex_attrib_kinds {
     return vertex_attrib_kind::position | vertex_attrib_kind::pivot |
-           vertex_attrib_kind::box_coord;
+           vertex_attrib_kind::face_coord;
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 auto unit_cube_gen::_only_shared_attribs() noexcept -> bool {
-    return !(attrib_bits() & ~_shared_attrs());
+    return !(attrib_kinds() & ~_shared_attrs());
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
@@ -103,8 +103,8 @@ auto unit_cube_gen::_face_vert(
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-unit_cube_gen::unit_cube_gen(const vertex_attrib_bits attr_bits) noexcept
-  : _base(attr_bits & _attr_mask()) {}
+unit_cube_gen::unit_cube_gen(const vertex_attrib_kinds attr_kinds) noexcept
+  : _base(attr_kinds & _attr_mask()) {}
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 auto unit_cube_gen::vertex_count() -> span_size_t {
