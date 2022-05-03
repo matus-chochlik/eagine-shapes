@@ -10,7 +10,7 @@
 #define EAGINE_SHAPES_CACHED_HPP
 
 #include "config/basic.hpp"
-#include "gen_base.hpp"
+#include "generator.hpp"
 #include <eagine/main_ctx_object.hpp>
 #include <eagine/string_span.hpp>
 #include <map>

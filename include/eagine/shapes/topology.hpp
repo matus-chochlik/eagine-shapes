@@ -10,7 +10,7 @@
 #define EAGINE_SHAPES_TOPOLOGY_HPP
 
 #include "config/basic.hpp"
-#include "gen_base.hpp"
+#include "generator.hpp"
 #include <eagine/bitfield.hpp>
 #include <eagine/flat_map.hpp>
 #include <eagine/main_ctx_object.hpp>

@@ -10,7 +10,7 @@
 #define EAGINE_SHAPES_SPHERE_HPP
 
 #include "config/basic.hpp"
-#include "gen_base.hpp"
+#include "generator.hpp"
 #include <eagine/valid_if/greater_than.hpp>
 #include <cassert>
 

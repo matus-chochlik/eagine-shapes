@@ -14,7 +14,7 @@ set(HEADERS
     eagine/shapes/delegated.hpp
     eagine/shapes/drawing.hpp
     eagine/shapes/from_json.hpp
-    eagine/shapes/gen_base.hpp
+    eagine/shapes/generator.hpp
     eagine/shapes/gen_capabilities.hpp
     eagine/shapes/icosahedron.hpp
     eagine/shapes/occluded.hpp
@@ -47,7 +47,7 @@ set(LIB_INLS
     eagine/shapes/combined.inl
     eagine/shapes/cube.inl
     eagine/shapes/from_json.inl
-    eagine/shapes/gen_base.inl
+    eagine/shapes/generator.inl
     eagine/shapes/icosahedron.inl
     eagine/shapes/occluded.inl
     eagine/shapes/reboxed.inl

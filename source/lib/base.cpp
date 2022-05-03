@@ -10,7 +10,7 @@
 #include "prologue.inl"
 
 #include "implement.inl"
-#include <eagine/shapes/gen_base.hpp>
+#include <eagine/shapes/generator.hpp>
 #include <eagine/shapes/screen.hpp>
 #include "epilogue.inl"
 // clang-format on

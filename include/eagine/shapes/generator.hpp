@@ -6,8 +6,8 @@
 ///  http://www.boost.org/LICENSE_1_0.txt
 ///
 
-#ifndef EAGINE_SHAPES_GEN_BASE_HPP
-#define EAGINE_SHAPES_GEN_BASE_HPP
+#ifndef EAGINE_SHAPES_GENERATOR_HPP
+#define EAGINE_SHAPES_GENERATOR_HPP
 
 #include "config/basic.hpp"
 #include "drawing.hpp"
@@ -440,7 +440,7 @@ static inline auto operator+(
 } // namespace eagine::shapes
 
 #if !EAGINE_SHAPES_LIBRARY || defined(EAGINE_IMPLEMENTING_SHAPES_LIBRARY)
-#include <eagine/shapes/gen_base.inl>
+#include <eagine/shapes/generator.inl>
 #endif
 
-#endif // EAGINE_SHAPES_GEN_BASE_HPP
+#endif

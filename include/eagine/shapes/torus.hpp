@@ -10,7 +10,7 @@
 #define EAGINE_SHAPES_TORUS_HPP
 
 #include "config/basic.hpp"
-#include "gen_base.hpp"
+#include "generator.hpp"
 #include <eagine/callable_ref.hpp>
 #include <eagine/valid_if/ge0_lt1.hpp>
 #include <eagine/valid_if/greater_than.hpp>

@@ -8,7 +8,7 @@
 
 // clang-format off
 #include "prologue.inl"
-#include <eagine/shapes/gen_base.hpp>
+#include <eagine/shapes/generator.hpp>
 #include "implement.inl"
 #include <eagine/shapes/to_patches.hpp>
 #include "epilogue.inl"

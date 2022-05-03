@@ -10,7 +10,7 @@
 #define EAGINE_SHAPES_DELEGATED_HPP
 
 #include "config/basic.hpp"
-#include "gen_base.hpp"
+#include "generator.hpp"
 #include <memory>
 
 namespace eagine::shapes {

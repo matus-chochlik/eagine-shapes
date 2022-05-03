@@ -8,7 +8,7 @@
 
 // clang-format off
 #include "prologue.inl"
-#include <eagine/shapes/gen_base.hpp>
+#include <eagine/shapes/generator.hpp>
 #include <eagine/shapes/value_tree.hpp>
 #include "implement.inl"
 #include <eagine/shapes/from_json.hpp>
