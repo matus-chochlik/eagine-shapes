@@ -104,7 +104,7 @@ auto unit_cube_gen::_face_vert(
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 unit_cube_gen::unit_cube_gen(const vertex_attrib_kinds attr_kinds) noexcept
-  : _base(attr_kinds & _attr_mask(), {}) {}
+  : _base(attr_kinds & _attr_mask(), generator_capability::indexed_drawing) {}
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 auto unit_cube_gen::vertex_count() -> span_size_t {

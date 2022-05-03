@@ -98,6 +98,14 @@ struct generator : interface<generator> {
     virtual auto is_enabled(const generator_capability cap) noexcept
       -> bool = 0;
 
+    /// @brief Indicates if indexed drawing is enabled.
+    auto indexed_drawing(const drawing_variant var) noexcept -> bool {
+        if(is_enabled(generator_capability::indexed_drawing)) {
+            return index_count(var) > 0;
+        }
+        return false;
+    }
+
     /// @brief Indicates if element strips are enabled.
     auto strips_allowed() noexcept -> bool {
         return is_enabled(generator_capability::element_strips);

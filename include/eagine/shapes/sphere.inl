@@ -32,7 +32,8 @@ unit_sphere_gen::unit_sphere_gen(
   const valid_if_greater_than<int, 3>& sections) noexcept
   : _base(
       attr_kinds & _attr_mask(),
-      generator_capability::primitive_restart |
+      generator_capability::indexed_drawing |
+        generator_capability::primitive_restart |
         generator_capability::element_strips)
   , _rings{rings.value()}
   , _sections{sections.value()} {}

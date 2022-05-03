@@ -30,7 +30,10 @@ EAGINE_LIB_FUNC
 unit_round_cube_gen::unit_round_cube_gen(
   const vertex_attrib_kinds attr_kinds,
   const int divisions) noexcept
-  : _base{attr_kinds & _attr_mask(), generator_capability::primitive_restart}
+  : _base(
+      attr_kinds & _attr_mask(),
+      generator_capability::indexed_drawing |
+        generator_capability::primitive_restart)
   , _divisions{divisions} {
     EAGINE_ASSERT(_divisions > 0);
 }

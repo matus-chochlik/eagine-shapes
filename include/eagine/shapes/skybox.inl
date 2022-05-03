@@ -25,7 +25,7 @@ auto skybox_gen::_attr_mask() noexcept -> vertex_attrib_kinds {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 skybox_gen::skybox_gen(const vertex_attrib_kinds attr_kinds) noexcept
-  : _base(attr_kinds & _attr_mask(), {}) {}
+  : _base(attr_kinds & _attr_mask(), generator_capability::indexed_drawing) {}
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 auto skybox_gen::vertex_count() -> span_size_t {
