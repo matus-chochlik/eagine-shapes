@@ -36,7 +36,7 @@ auto unit_icosahedron_gen::_only_shared_attribs() noexcept -> bool {
 EAGINE_LIB_FUNC
 unit_icosahedron_gen::unit_icosahedron_gen(
   const vertex_attrib_kinds attr_kinds) noexcept
-  : _base(attr_kinds & _attr_mask()) {}
+  : _base(attr_kinds & _attr_mask(), {}) {}
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 auto unit_icosahedron_gen::vertex_count() -> span_size_t {

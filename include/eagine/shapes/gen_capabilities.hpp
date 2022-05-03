@@ -30,6 +30,13 @@ enum class generator_capability : unsigned {
 /// @ingroup shapes
 using generator_capabilities = bitfield<generator_capability>;
 //------------------------------------------------------------------------------
+/// @brief Returns vertex_attrib_kinds value with all bits set.
+/// @ingroup shapes
+static constexpr auto all_generator_capabilities() noexcept
+  -> generator_capabilities {
+    return generator_capabilities{(1U << 3U) - 1U};
+}
+//------------------------------------------------------------------------------
 /// @brief Bitwise-or operator for generator_capability enumerators.
 /// @ingroup shapes
 static constexpr auto operator|(

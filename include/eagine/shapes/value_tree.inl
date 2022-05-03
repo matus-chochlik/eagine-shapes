@@ -47,7 +47,7 @@ value_tree_loader::value_tree_loader(
   valtree::compound source,
   main_ctx_parent parent) noexcept
   : main_ctx_object{EAGINE_ID(ValTreLoad), parent}
-  , _base{_attr_mask(source)}
+  , _base{_attr_mask(source), all_generator_capabilities()}
   , _source{std::move(source)} {}
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC

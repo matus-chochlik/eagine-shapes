@@ -30,7 +30,10 @@ unit_sphere_gen::unit_sphere_gen(
   const vertex_attrib_kinds attr_kinds,
   const valid_if_greater_than<int, 2>& rings,
   const valid_if_greater_than<int, 3>& sections) noexcept
-  : _base{attr_kinds & _attr_mask()}
+  : _base(
+      attr_kinds & _attr_mask(),
+      generator_capability::primitive_restart |
+        generator_capability::element_strips)
   , _rings{rings.value()}
   , _sections{sections.value()} {}
 //------------------------------------------------------------------------------

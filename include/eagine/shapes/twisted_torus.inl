@@ -31,7 +31,7 @@ unit_twisted_torus_gen::unit_twisted_torus_gen(
   const valid_if_greater_than<int, 2>& rings,
   const valid_if_greater_than<int, 3>& sections,
   const valid_if_ge0_lt1<float>& radius_ratio) noexcept
-  : _base{attr_kinds & _attr_mask()}
+  : _base{attr_kinds & _attr_mask(), generator_capability::element_strips}
   , _twist{twist}
   , _rings{rings.value()}
   , _sections{sections.value()}

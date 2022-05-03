@@ -79,16 +79,22 @@ struct generator : interface<generator> {
     }
 
     /// @brief Enables or disables the specified generator capability.
+    /// @see disable
+    /// @see is_enabled
     virtual auto enable(
       const generator_capability cap,
       const bool value = true) noexcept -> bool = 0;
 
     /// @brief Disables the specified generator capability.
+    /// @see enable
+    /// @see is_enabled
     auto disable(const generator_capability cap) noexcept {
         return enable(cap, false);
     }
 
     /// @brief Indicates if the specified generator capability is enabled.
+    /// @see enable
+    /// @see disable
     virtual auto is_enabled(const generator_capability cap) noexcept
       -> bool = 0;
 
@@ -314,12 +320,17 @@ public:
 
     auto enable(const generator_capability cap, const bool value) noexcept
       -> bool final {
+        bool result{true};
         if(value) {
-            _enabled_caps |= cap;
+            if(_supported_caps.has(cap)) {
+                _enabled_caps.set(cap);
+            } else {
+                result = false;
+            }
         } else {
-            _enabled_caps &= cap;
+            _enabled_caps.clear(cap);
         }
-        return true;
+        return result;
     }
 
     auto is_enabled(const generator_capability cap) noexcept -> bool final {
@@ -391,12 +402,16 @@ public:
     void indices(const drawing_variant, span<std::uint32_t> dest) override;
 
 protected:
-    generator_base(const vertex_attrib_kinds attr_kinds) noexcept
-      : _attr_kinds{attr_kinds} {}
+    generator_base(
+      const vertex_attrib_kinds attr_kinds,
+      const generator_capabilities supported_caps) noexcept
+      : _attr_kinds{attr_kinds}
+      , _supported_caps{supported_caps} {}
 
 private:
     vertex_attrib_kinds _attr_kinds;
-    generator_capabilities _enabled_caps;
+    const generator_capabilities _supported_caps;
+    generator_capabilities _enabled_caps{_supported_caps};
 };
 //------------------------------------------------------------------------------
 /// @brief Base class for shape generators re-calculating the center.
@@ -408,8 +423,9 @@ public:
 
 protected:
     centered_unit_shape_generator_base(
-      const vertex_attrib_kinds attr_kinds) noexcept
-      : generator_base(attr_kinds) {}
+      const vertex_attrib_kinds attr_kinds,
+      const generator_capabilities supported_caps) noexcept
+      : generator_base(attr_kinds, supported_caps) {}
 };
 //------------------------------------------------------------------------------
 static inline auto operator+(
