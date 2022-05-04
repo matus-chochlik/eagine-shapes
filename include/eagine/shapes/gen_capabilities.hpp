@@ -18,6 +18,7 @@ namespace eagine::shapes {
 /// @ingroup shapes
 /// @see generator_capabilities
 enum class generator_capability : unsigned {
+    /// @brief Indexed drawing of elements should be used if possible.
     indexed_drawing = 1U << 0U,
     /// @brief Line or triangle strips should be generated if possible.
     element_strips = 1U << 1U,
