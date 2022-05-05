@@ -144,7 +144,7 @@ protected:
     }
 
     auto _add(vertex_attrib_kind attr) noexcept -> auto& {
-        _attr_kinds |= attr;
+        _attr_kinds.set(attr);
         return *this;
     }
 

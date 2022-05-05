@@ -36,7 +36,7 @@ auto value_tree_loader::_attr_mask(const valtree::compound& source) noexcept
     for(const auto& info : enumerator_mapping(
           type_identity<vertex_attrib_kind>{}, value_tree_tag{})) {
         if(source.nested(info.name)) {
-            result |= info.enumerator;
+            result.set(info.enumerator);
         }
     }
     return result;
