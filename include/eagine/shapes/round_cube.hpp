@@ -31,9 +31,9 @@ public:
 
     void normals(span<float> dest) noexcept;
 
-    void tangentials(span<float> dest) noexcept;
+    void tangents(span<float> dest) noexcept;
 
-    void bitangentials(span<float> dest) noexcept;
+    void bitangents(span<float> dest) noexcept;
 
     void face_coords(span<float> dest) noexcept;
 

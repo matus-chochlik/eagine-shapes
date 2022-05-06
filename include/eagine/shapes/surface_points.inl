@@ -92,8 +92,8 @@ void surface_points_gen::attrib_values(
   span<float> dest) {
 
     const auto is_normalized_attrib = vav == vertex_attrib_kind::normal ||
-                                      vav == vertex_attrib_kind::tangential ||
-                                      vav == vertex_attrib_kind::bitangential;
+                                      vav == vertex_attrib_kind::tangent ||
+                                      vav == vertex_attrib_kind::bitangent;
 
     const auto gen = delegated_gen::base_generator();
 

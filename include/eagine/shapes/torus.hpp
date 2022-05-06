@@ -51,9 +51,9 @@ public:
 
     void normals(span<float> dest, const offset_getter) noexcept;
 
-    void tangentials(span<float> dest, const offset_getter) noexcept;
+    void tangents(span<float> dest, const offset_getter) noexcept;
 
-    void bitangentials(span<float> dest, const offset_getter) noexcept;
+    void bitangents(span<float> dest, const offset_getter) noexcept;
 
     void wrap_coords(span<float> dest) noexcept;
 

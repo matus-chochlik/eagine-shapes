@@ -108,8 +108,8 @@ void unit_icosahedron_gen::attrib_values(
         case vertex_attrib_kind::object_id:
         case vertex_attrib_kind::polygon_id:
         case vertex_attrib_kind::material_id:
-        case vertex_attrib_kind::tangential:
-        case vertex_attrib_kind::bitangential:
+        case vertex_attrib_kind::tangent:
+        case vertex_attrib_kind::bitangent:
         case vertex_attrib_kind::face_coord:
         case vertex_attrib_kind::box_coord:
         case vertex_attrib_kind::wrap_coord:

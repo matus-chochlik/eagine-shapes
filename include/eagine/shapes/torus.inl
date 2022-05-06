@@ -22,7 +22,7 @@ namespace eagine::shapes {
 EAGINE_LIB_FUNC
 auto unit_torus_gen::_attr_mask() noexcept -> vertex_attrib_kinds {
     return vertex_attrib_kind::position | vertex_attrib_kind::normal |
-           vertex_attrib_kind::tangential | vertex_attrib_kind::bitangential |
+           vertex_attrib_kind::tangent | vertex_attrib_kind::bitangent |
            vertex_attrib_kind::occlusion | vertex_attrib_kind::pivot |
            vertex_attrib_kind::pivot_pivot | vertex_attrib_kind::vertex_pivot |
            vertex_attrib_kind::box_coord | vertex_attrib_kind::wrap_coord;
@@ -157,10 +157,10 @@ void unit_torus_gen::normals(
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void unit_torus_gen::tangentials(
+void unit_torus_gen::tangents(
   span<float> dest,
   const unit_torus_gen::offset_getter get_offs) noexcept {
-    EAGINE_ASSERT(has(vertex_attrib_kind::tangential));
+    EAGINE_ASSERT(has(vertex_attrib_kind::tangent));
     EAGINE_ASSERT(dest.size() >= vertex_count() * 3);
 
     auto k = [this](span_size_t s, span_size_t r, span_size_t c) {
@@ -194,10 +194,10 @@ void unit_torus_gen::tangentials(
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void unit_torus_gen::bitangentials(
+void unit_torus_gen::bitangents(
   span<float> dest,
   const unit_torus_gen::offset_getter get_offs) noexcept {
-    EAGINE_ASSERT(has(vertex_attrib_kind::bitangential));
+    EAGINE_ASSERT(has(vertex_attrib_kind::bitangent));
     EAGINE_ASSERT(dest.size() >= vertex_count() * 3);
 
     auto k = [this](span_size_t s, span_size_t r, span_size_t c) {
@@ -344,8 +344,8 @@ auto unit_torus_gen::attribute_variants(const vertex_attrib_kind attrib)
             break;
         case vertex_attrib_kind::position:
         case vertex_attrib_kind::normal:
-        case vertex_attrib_kind::tangential:
-        case vertex_attrib_kind::bitangential:
+        case vertex_attrib_kind::tangent:
+        case vertex_attrib_kind::bitangent:
             return 4;
         case vertex_attrib_kind::occlusion:
             return 1;
@@ -369,8 +369,8 @@ auto unit_torus_gen::variant_name(const vertex_attrib_variant vav)
     switch(vav.attribute()) {
         case vertex_attrib_kind::position:
         case vertex_attrib_kind::normal:
-        case vertex_attrib_kind::tangential:
-        case vertex_attrib_kind::bitangential:
+        case vertex_attrib_kind::tangent:
+        case vertex_attrib_kind::bitangent:
         case vertex_attrib_kind::wrap_coord:
         case vertex_attrib_kind::occlusion:
             return special_variant_name(vav.index());
@@ -405,13 +405,13 @@ void unit_torus_gen::attrib_values(
             make_special_attrib_values(
               &unit_torus_gen::normals, vav.index(), dest);
             break;
-        case vertex_attrib_kind::tangential:
+        case vertex_attrib_kind::tangent:
             make_special_attrib_values(
-              &unit_torus_gen::tangentials, vav.index(), dest);
+              &unit_torus_gen::tangents, vav.index(), dest);
             break;
-        case vertex_attrib_kind::bitangential:
+        case vertex_attrib_kind::bitangent:
             make_special_attrib_values(
-              &unit_torus_gen::bitangentials, vav.index(), dest);
+              &unit_torus_gen::bitangents, vav.index(), dest);
             break;
         case vertex_attrib_kind::occlusion:
             make_special_attrib_values(

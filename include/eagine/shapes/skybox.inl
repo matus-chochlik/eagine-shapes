@@ -130,8 +130,8 @@ void skybox_gen::attrib_values(
             break;
         case vertex_attrib_kind::wrap_coord:
         case vertex_attrib_kind::normal:
-        case vertex_attrib_kind::tangential:
-        case vertex_attrib_kind::bitangential:
+        case vertex_attrib_kind::tangent:
+        case vertex_attrib_kind::bitangent:
         case vertex_attrib_kind::pivot:
         case vertex_attrib_kind::pivot_pivot:
         case vertex_attrib_kind::vertex_pivot:

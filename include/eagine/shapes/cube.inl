@@ -20,7 +20,7 @@ namespace eagine::shapes {
 EAGINE_LIB_FUNC
 auto unit_cube_gen::_attr_mask() noexcept -> vertex_attrib_kinds {
     return vertex_attrib_kind::position | vertex_attrib_kind::normal |
-           vertex_attrib_kind::tangential | vertex_attrib_kind::bitangential |
+           vertex_attrib_kind::tangent | vertex_attrib_kind::bitangent |
            vertex_attrib_kind::pivot | vertex_attrib_kind::face_coord;
 }
 //------------------------------------------------------------------------------
@@ -202,9 +202,8 @@ void unit_cube_gen::normals(span<float> dest) noexcept {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto unit_cube_gen::_tangential_c(
-  const span_size_t f,
-  const span_size_t c) noexcept -> int {
+auto unit_cube_gen::_tangent_c(const span_size_t f, const span_size_t c) noexcept
+  -> int {
     EAGINE_ASSERT(f < 6);
     EAGINE_ASSERT(c < 3);
 
@@ -226,8 +225,8 @@ auto unit_cube_gen::_tangential_c(
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void unit_cube_gen::tangentials(span<float> dest) noexcept {
-    EAGINE_ASSERT(has(vertex_attrib_kind::tangential));
+void unit_cube_gen::tangents(span<float> dest) noexcept {
+    EAGINE_ASSERT(has(vertex_attrib_kind::tangent));
     EAGINE_ASSERT(dest.size() >= vertex_count() * 3);
 
     span_size_t k = 0;
@@ -236,7 +235,7 @@ void unit_cube_gen::tangentials(span<float> dest) noexcept {
     for(const auto f : integer_range(6)) {
         for([[maybe_unused]] const auto i : integer_range(n)) {
             for(const auto c : integer_range(3)) {
-                dest[k++] = float(_tangential_c(f, c));
+                dest[k++] = float(_tangent_c(f, c));
             }
         }
     }
@@ -245,7 +244,7 @@ void unit_cube_gen::tangentials(span<float> dest) noexcept {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-auto unit_cube_gen::_bitangential_c(
+auto unit_cube_gen::_bitangent_c(
   const span_size_t f,
   const span_size_t c) noexcept -> int {
     EAGINE_ASSERT(f < 6);
@@ -269,8 +268,8 @@ auto unit_cube_gen::_bitangential_c(
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void unit_cube_gen::bitangentials(span<float> dest) noexcept {
-    EAGINE_ASSERT(has(vertex_attrib_kind::bitangential));
+void unit_cube_gen::bitangents(span<float> dest) noexcept {
+    EAGINE_ASSERT(has(vertex_attrib_kind::bitangent));
     EAGINE_ASSERT(dest.size() >= vertex_count() * 3);
 
     span_size_t k = 0;
@@ -279,7 +278,7 @@ void unit_cube_gen::bitangentials(span<float> dest) noexcept {
     for(const auto f : integer_range(6)) {
         for([[maybe_unused]] const auto i : integer_range(n)) {
             for(const auto c : integer_range(3)) {
-                dest[k++] = float(_bitangential_c(f, c));
+                dest[k++] = float(_bitangent_c(f, c));
             }
         }
     }
@@ -336,11 +335,11 @@ void unit_cube_gen::attrib_values(
         case vertex_attrib_kind::normal:
             normals(dest);
             break;
-        case vertex_attrib_kind::tangential:
-            tangentials(dest);
+        case vertex_attrib_kind::tangent:
+            tangents(dest);
             break;
-        case vertex_attrib_kind::bitangential:
-            bitangentials(dest);
+        case vertex_attrib_kind::bitangent:
+            bitangents(dest);
             break;
         case vertex_attrib_kind::face_coord:
             face_coords(dest);

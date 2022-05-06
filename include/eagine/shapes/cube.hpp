@@ -29,9 +29,9 @@ public:
 
     void normals(span<float> dest) noexcept;
 
-    void tangentials(span<float> dest) noexcept;
+    void tangents(span<float> dest) noexcept;
 
-    void bitangentials(span<float> dest) noexcept;
+    void bitangents(span<float> dest) noexcept;
 
     void face_coords(span<float> dest) noexcept;
 
@@ -70,12 +70,11 @@ private:
     static auto _normal_c(const span_size_t f, const span_size_t c) noexcept
       -> int;
 
-    static auto _tangential_c(const span_size_t f, const span_size_t c) noexcept
+    static auto _tangent_c(const span_size_t f, const span_size_t c) noexcept
       -> int;
 
-    static auto _bitangential_c(
-      const span_size_t f,
-      const span_size_t c) noexcept -> int;
+    static auto _bitangent_c(const span_size_t f, const span_size_t c) noexcept
+      -> int;
 
     template <typename T>
     void _indices(const drawing_variant, span<T> dest) noexcept;

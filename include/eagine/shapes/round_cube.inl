@@ -21,7 +21,7 @@ namespace eagine::shapes {
 EAGINE_LIB_FUNC
 auto unit_round_cube_gen::_attr_mask() noexcept -> vertex_attrib_kinds {
     return vertex_attrib_kind::position | vertex_attrib_kind::normal |
-           vertex_attrib_kind::tangential | vertex_attrib_kind::bitangential |
+           vertex_attrib_kind::tangent | vertex_attrib_kind::bitangent |
            vertex_attrib_kind::pivot | vertex_attrib_kind::face_coord |
            vertex_attrib_kind::box_coord;
 }
@@ -54,8 +54,7 @@ static inline auto unit_round_cube_face_normal(const span_size_t f) noexcept {
     }}[f];
 }
 //------------------------------------------------------------------------------
-static inline auto unit_round_cube_face_tangential(
-  const span_size_t f) noexcept {
+static inline auto unit_round_cube_face_tangent(const span_size_t f) noexcept {
     return std::array<math::tvec<float, 3, true>, 6>{{
       {0.F, 0.F, +1.F},
       {0.F, 0.F, -1.F},
@@ -66,8 +65,7 @@ static inline auto unit_round_cube_face_tangential(
     }}[f];
 }
 //------------------------------------------------------------------------------
-static inline auto unit_round_cube_face_bitangential(
-  const span_size_t f) noexcept {
+static inline auto unit_round_cube_face_bitangent(const span_size_t f) noexcept {
     return std::array<math::tvec<float, 3, true>, 6>{{
       {0.F, +1.F, 0.F},
       {0.F, +1.F, 0.F},
@@ -92,8 +90,8 @@ void unit_round_cube_gen::positions(span<float> dest) noexcept {
     };
 
     for(const auto f : integer_range(6)) {
-        const auto vx = unit_round_cube_face_tangential(f);
-        const auto vy = unit_round_cube_face_bitangential(f);
+        const auto vx = unit_round_cube_face_tangent(f);
+        const auto vy = unit_round_cube_face_bitangent(f);
         const auto vz = unit_round_cube_face_normal(f);
         for(const auto y : integer_range(_divisions + 1)) {
             const float j = frac(y);
@@ -117,7 +115,7 @@ void unit_round_cube_gen::normals(span<float> dest) noexcept {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void unit_round_cube_gen::tangentials(span<float> dest) noexcept {
+void unit_round_cube_gen::tangents(span<float> dest) noexcept {
     span_size_t k = 0;
 
     EAGINE_ASSERT(dest.size() >= vertex_count() * 3);
@@ -130,8 +128,8 @@ void unit_round_cube_gen::tangentials(span<float> dest) noexcept {
     };
 
     for(const auto f : integer_range(6)) {
-        const auto vx = unit_round_cube_face_tangential(f);
-        const auto vy = unit_round_cube_face_bitangential(f);
+        const auto vx = unit_round_cube_face_tangent(f);
+        const auto vy = unit_round_cube_face_bitangent(f);
         const auto vz = unit_round_cube_face_normal(f);
         for(const auto y : integer_range(_divisions + 1)) {
             const float j = frac(y);
@@ -152,7 +150,7 @@ void unit_round_cube_gen::tangentials(span<float> dest) noexcept {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void unit_round_cube_gen::bitangentials(span<float> dest) noexcept {
+void unit_round_cube_gen::bitangents(span<float> dest) noexcept {
     span_size_t k = 0;
 
     EAGINE_ASSERT(dest.size() >= vertex_count() * 3);
@@ -165,8 +163,8 @@ void unit_round_cube_gen::bitangentials(span<float> dest) noexcept {
     };
 
     for(const auto f : integer_range(6)) {
-        const auto vx = unit_round_cube_face_tangential(f);
-        const auto vy = unit_round_cube_face_bitangential(f);
+        const auto vx = unit_round_cube_face_tangent(f);
+        const auto vy = unit_round_cube_face_bitangent(f);
         const auto vz = unit_round_cube_face_normal(f);
         for(const auto y : integer_range(_divisions + 1)) {
             const float j1 = frac(y);
@@ -219,11 +217,11 @@ void unit_round_cube_gen::attrib_values(
         case vertex_attrib_kind::normal:
             normals(dest);
             break;
-        case vertex_attrib_kind::tangential:
-            tangentials(dest);
+        case vertex_attrib_kind::tangent:
+            tangents(dest);
             break;
-        case vertex_attrib_kind::bitangential:
-            bitangentials(dest);
+        case vertex_attrib_kind::bitangent:
+            bitangents(dest);
             break;
         case vertex_attrib_kind::face_coord:
             face_coords(dest);
