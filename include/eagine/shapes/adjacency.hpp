@@ -27,16 +27,16 @@ public:
     triangle_adjacency_gen(
       std::shared_ptr<generator> gen,
       const drawing_variant var,
-      main_ctx_parent parent) noexcept
-      : main_ctx_object{EAGINE_ID(AjcyShpGen), parent}
-      , delegated_gen{std::move(gen)} {
-        _topology(var);
-    }
+      main_ctx_parent parent) noexcept;
 
     triangle_adjacency_gen(
       std::shared_ptr<generator> gen,
       main_ctx_parent parent) noexcept
       : triangle_adjacency_gen{std::move(gen), 0, parent} {}
+
+    auto enable(const generator_capability cap, const bool value) noexcept
+      -> bool override;
+    auto is_enabled(const generator_capability cap) noexcept -> bool override;
 
     auto index_type(const topology&) -> index_data_type;
     auto index_type(const drawing_variant) -> index_data_type override;

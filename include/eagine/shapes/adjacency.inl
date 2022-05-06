@@ -30,6 +30,32 @@ auto triangle_adjacency_gen::_topology(const drawing_variant var) noexcept
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
+triangle_adjacency_gen::triangle_adjacency_gen(
+  std::shared_ptr<generator> gen,
+  const drawing_variant var,
+  main_ctx_parent parent) noexcept
+  : main_ctx_object{EAGINE_ID(AjcyShpGen), parent}
+  , delegated_gen{std::move(gen)} {
+    enable(generator_capability::indexed_drawing, true);
+    _topology(var);
+}
+//------------------------------------------------------------------------------
+EAGINE_LIB_FUNC
+auto triangle_adjacency_gen::enable(
+  const generator_capability cap,
+  const bool value) noexcept -> bool {
+    return delegated_gen::enable(cap, value) ||
+           (cap == generator_capability::indexed_drawing);
+}
+//------------------------------------------------------------------------------
+EAGINE_LIB_FUNC
+auto triangle_adjacency_gen::is_enabled(const generator_capability cap) noexcept
+  -> bool {
+    return delegated_gen::is_enabled(cap) ||
+           (cap == generator_capability::indexed_drawing);
+}
+//------------------------------------------------------------------------------
+EAGINE_LIB_FUNC
 auto triangle_adjacency_gen::index_count(const topology& topo) -> span_size_t {
     return topo.triangle_count() * 6;
 }

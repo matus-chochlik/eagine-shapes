@@ -27,11 +27,11 @@ public:
     }
 
     auto enable(const generator_capability cap, const bool value) noexcept
-      -> bool final {
+      -> bool override {
         return _gen->enable(cap, value);
     }
 
-    auto is_enabled(const generator_capability cap) noexcept -> bool final {
+    auto is_enabled(const generator_capability cap) noexcept -> bool override {
         return _gen->is_enabled(cap);
     }
 
