@@ -4,18 +4,18 @@
 #  http://www.boost.org/LICENSE_1_0.txt
 #
 set(HEADERS
-    eagine/shapes/config/basic.hpp
     eagine/shapes/adjacency.hpp
     eagine/shapes/array.hpp
     eagine/shapes/cached.hpp
     eagine/shapes/centered.hpp
     eagine/shapes/combined.hpp
+    eagine/shapes/config/basic.hpp
     eagine/shapes/cube.hpp
     eagine/shapes/delegated.hpp
     eagine/shapes/drawing.hpp
     eagine/shapes/from_json.hpp
-    eagine/shapes/gen_base.hpp
     eagine/shapes/gen_capabilities.hpp
+    eagine/shapes/generator.hpp
     eagine/shapes/icosahedron.hpp
     eagine/shapes/occluded.hpp
     eagine/shapes/reboxed.hpp
@@ -23,6 +23,7 @@ set(HEADERS
     eagine/shapes/scaled.hpp
     eagine/shapes/scaled_wrap_coords.hpp
     eagine/shapes/screen.hpp
+    eagine/shapes/skybox.hpp
     eagine/shapes/sphere.hpp
     eagine/shapes/surface_points.hpp
     eagine/shapes/to_json.hpp
@@ -47,7 +48,7 @@ set(LIB_INLS
     eagine/shapes/combined.inl
     eagine/shapes/cube.inl
     eagine/shapes/from_json.inl
-    eagine/shapes/gen_base.inl
+    eagine/shapes/generator.inl
     eagine/shapes/icosahedron.inl
     eagine/shapes/occluded.inl
     eagine/shapes/reboxed.inl
@@ -55,6 +56,7 @@ set(LIB_INLS
     eagine/shapes/scaled.inl
     eagine/shapes/scaled_wrap_coords.inl
     eagine/shapes/screen.inl
+    eagine/shapes/skybox.inl
     eagine/shapes/sphere.inl
     eagine/shapes/surface_points.inl
     eagine/shapes/to_json.inl

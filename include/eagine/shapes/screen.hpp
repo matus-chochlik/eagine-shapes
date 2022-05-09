@@ -10,7 +10,7 @@
 #define EAGINE_SHAPES_SCREEN_HPP
 
 #include "config/basic.hpp"
-#include "gen_base.hpp"
+#include "generator.hpp"
 #include <cassert>
 
 namespace eagine::shapes {
@@ -28,9 +28,9 @@ public:
 
     void normals(span<float> dest) noexcept;
 
-    void tangentials(span<float> dest) noexcept;
+    void tangents(span<float> dest) noexcept;
 
-    void bitangentials(span<float> dest) noexcept;
+    void bitangents(span<float> dest) noexcept;
 
     void face_coords(span<float> dest) noexcept;
 

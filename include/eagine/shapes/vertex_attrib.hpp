@@ -30,9 +30,9 @@ enum class vertex_attrib_kind : std::uint16_t {
     /// @brief Vertex normal vector.
     normal = 1U << 2U,
     /// @brief Vertex tangential vector.
-    tangential = 1U << 3U,
+    tangent = 1U << 3U,
     /// @brief Vertex bi-tangential vector.
-    bitangential = 1U << 4U,
+    bitangent = 1U << 4U,
     /// @brief Shape pivot point.
     pivot = 1U << 5U,
     /// @brief Pivot of vertex pivot point.
@@ -71,8 +71,8 @@ constexpr auto enumerator_mapping(
       {{"object_id", vertex_attrib_kind::object_id},
        {"position", vertex_attrib_kind::position},
        {"normal", vertex_attrib_kind::normal},
-       {"tangential", vertex_attrib_kind::tangential},
-       {"bitangential", vertex_attrib_kind::bitangential},
+       {"tangent", vertex_attrib_kind::tangent},
+       {"bitangent", vertex_attrib_kind::bitangent},
        {"pivot", vertex_attrib_kind::pivot},
        {"pivot_pivot", vertex_attrib_kind::pivot_pivot},
        {"vertex_pivot", vertex_attrib_kind::vertex_pivot},
@@ -279,8 +279,8 @@ static inline auto attrib_values_per_vertex(
             return 4;
         case vertex_attrib_kind::position:
         case vertex_attrib_kind::normal:
-        case vertex_attrib_kind::tangential:
-        case vertex_attrib_kind::bitangential:
+        case vertex_attrib_kind::tangent:
+        case vertex_attrib_kind::bitangent:
         case vertex_attrib_kind::pivot:
         case vertex_attrib_kind::pivot_pivot:
         case vertex_attrib_kind::vertex_pivot:

@@ -36,7 +36,7 @@ auto unit_icosahedron_gen::_only_shared_attribs() noexcept -> bool {
 EAGINE_LIB_FUNC
 unit_icosahedron_gen::unit_icosahedron_gen(
   const vertex_attrib_kinds attr_kinds) noexcept
-  : _base(attr_kinds & _attr_mask()) {}
+  : _base(attr_kinds & _attr_mask(), generator_capability::indexed_drawing) {}
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 auto unit_icosahedron_gen::vertex_count() -> span_size_t {
@@ -108,8 +108,8 @@ void unit_icosahedron_gen::attrib_values(
         case vertex_attrib_kind::object_id:
         case vertex_attrib_kind::polygon_id:
         case vertex_attrib_kind::material_id:
-        case vertex_attrib_kind::tangential:
-        case vertex_attrib_kind::bitangential:
+        case vertex_attrib_kind::tangent:
+        case vertex_attrib_kind::bitangent:
         case vertex_attrib_kind::face_coord:
         case vertex_attrib_kind::box_coord:
         case vertex_attrib_kind::wrap_coord:

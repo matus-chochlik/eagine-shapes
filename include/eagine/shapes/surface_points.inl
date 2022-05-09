@@ -20,7 +20,7 @@ surface_points_gen::surface_points_gen(
   : main_ctx_object{EAGINE_ID(SurfPtsGen), parent}
   , delegated_gen{std::move(gen)}
   , _point_count{point_count} {
-    _topo_opts.features |= topology_feature_bit::triangle_area;
+    _topo_opts.features.set(topology_feature_bit::triangle_area);
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
@@ -30,7 +30,7 @@ surface_points_gen::surface_points_gen(
   const vertex_attrib_variant weight_variant,
   main_ctx_parent parent) noexcept
   : surface_points_gen{std::move(gen), point_count, parent} {
-    _topo_opts.features |= topology_feature_bit::triangle_weight;
+    _topo_opts.features.set(topology_feature_bit::triangle_weight);
     _topo_opts.weight_variant = weight_variant;
 }
 //------------------------------------------------------------------------------
@@ -92,8 +92,8 @@ void surface_points_gen::attrib_values(
   span<float> dest) {
 
     const auto is_normalized_attrib = vav == vertex_attrib_kind::normal ||
-                                      vav == vertex_attrib_kind::tangential ||
-                                      vav == vertex_attrib_kind::bitangential;
+                                      vav == vertex_attrib_kind::tangent ||
+                                      vav == vertex_attrib_kind::bitangent;
 
     const auto gen = delegated_gen::base_generator();
 

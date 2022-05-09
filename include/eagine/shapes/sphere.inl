@@ -21,7 +21,7 @@ namespace eagine::shapes {
 EAGINE_LIB_FUNC
 auto unit_sphere_gen::_attr_mask() noexcept -> vertex_attrib_kinds {
     return vertex_attrib_kind::position | vertex_attrib_kind::normal |
-           vertex_attrib_kind::tangential | vertex_attrib_kind::bitangential |
+           vertex_attrib_kind::tangent | vertex_attrib_kind::bitangent |
            vertex_attrib_kind::box_coord | vertex_attrib_kind::wrap_coord;
 }
 //------------------------------------------------------------------------------
@@ -30,7 +30,11 @@ unit_sphere_gen::unit_sphere_gen(
   const vertex_attrib_kinds attr_kinds,
   const valid_if_greater_than<int, 2>& rings,
   const valid_if_greater_than<int, 3>& sections) noexcept
-  : _base{attr_kinds & _attr_mask()}
+  : _base(
+      attr_kinds & _attr_mask(),
+      generator_capability::indexed_drawing |
+        generator_capability::primitive_restart |
+        generator_capability::element_strips)
   , _rings{rings.value()}
   , _sections{sections.value()} {}
 //------------------------------------------------------------------------------
@@ -84,8 +88,8 @@ void unit_sphere_gen::normals(span<float> dest) noexcept {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void unit_sphere_gen::tangentials(span<float> dest) noexcept {
-    EAGINE_ASSERT(has(vertex_attrib_kind::tangential));
+void unit_sphere_gen::tangents(span<float> dest) noexcept {
+    EAGINE_ASSERT(has(vertex_attrib_kind::tangent));
     EAGINE_ASSERT(dest.size() >= vertex_count() * 3);
 
     span_size_t k = 0;
@@ -105,8 +109,8 @@ void unit_sphere_gen::tangentials(span<float> dest) noexcept {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void unit_sphere_gen::bitangentials(span<float> dest) noexcept {
-    EAGINE_ASSERT(has(vertex_attrib_kind::bitangential));
+void unit_sphere_gen::bitangents(span<float> dest) noexcept {
+    EAGINE_ASSERT(has(vertex_attrib_kind::bitangent));
     EAGINE_ASSERT(dest.size() >= vertex_count() * 3);
 
     span_size_t k = 0;
@@ -160,11 +164,11 @@ void unit_sphere_gen::attrib_values(
         case vertex_attrib_kind::normal:
             normals(dest);
             break;
-        case vertex_attrib_kind::tangential:
-            tangentials(dest);
+        case vertex_attrib_kind::tangent:
+            tangents(dest);
             break;
-        case vertex_attrib_kind::bitangential:
-            bitangentials(dest);
+        case vertex_attrib_kind::bitangent:
+            bitangents(dest);
             break;
         case vertex_attrib_kind::wrap_coord:
             wrap_coords(dest);

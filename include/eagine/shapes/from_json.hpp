@@ -9,7 +9,7 @@
 #ifndef EAGINE_SHAPES_FROM_JSON_HPP
 #define EAGINE_SHAPES_FROM_JSON_HPP
 
-#include "gen_base.hpp"
+#include "generator.hpp"
 #include <eagine/main_ctx_fwd.hpp>
 #include <eagine/value_tree/wrappers.hpp>
 #include <iosfwd>

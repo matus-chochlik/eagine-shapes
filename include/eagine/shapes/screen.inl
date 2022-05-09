@@ -18,14 +18,14 @@ namespace eagine::shapes {
 EAGINE_LIB_FUNC
 auto unit_screen_gen::_attr_mask() noexcept -> vertex_attrib_kinds {
     return vertex_attrib_kind::position | vertex_attrib_kind::normal |
-           vertex_attrib_kind::tangential | vertex_attrib_kind::bitangential |
+           vertex_attrib_kind::tangent | vertex_attrib_kind::bitangent |
            vertex_attrib_kind::wrap_coord | vertex_attrib_kind::face_coord |
            vertex_attrib_kind::box_coord;
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 unit_screen_gen::unit_screen_gen(const vertex_attrib_kinds attr_kinds) noexcept
-  : _base(attr_kinds & _attr_mask()) {}
+  : _base(attr_kinds & _attr_mask(), generator_capability::element_strips) {}
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 auto unit_screen_gen::vertex_count() -> span_size_t {
@@ -83,8 +83,8 @@ void unit_screen_gen::normals(span<float> dest) noexcept {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void unit_screen_gen::tangentials(span<float> dest) noexcept {
-    EAGINE_ASSERT(has(vertex_attrib_kind::tangential));
+void unit_screen_gen::tangents(span<float> dest) noexcept {
+    EAGINE_ASSERT(has(vertex_attrib_kind::tangent));
     EAGINE_ASSERT(dest.size() >= vertex_count() * 3);
 
     span_size_t k = 0;
@@ -98,8 +98,8 @@ void unit_screen_gen::tangentials(span<float> dest) noexcept {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void unit_screen_gen::bitangentials(span<float> dest) noexcept {
-    EAGINE_ASSERT(has(vertex_attrib_kind::bitangential));
+void unit_screen_gen::bitangents(span<float> dest) noexcept {
+    EAGINE_ASSERT(has(vertex_attrib_kind::bitangent));
     EAGINE_ASSERT(dest.size() >= vertex_count() * 3);
 
     span_size_t k = 0;
@@ -155,11 +155,11 @@ void unit_screen_gen::attrib_values(
         case vertex_attrib_kind::normal:
             normals(dest);
             break;
-        case vertex_attrib_kind::tangential:
-            tangentials(dest);
+        case vertex_attrib_kind::tangent:
+            tangents(dest);
             break;
-        case vertex_attrib_kind::bitangential:
-            bitangentials(dest);
+        case vertex_attrib_kind::bitangent:
+            bitangents(dest);
             break;
         case vertex_attrib_kind::box_coord:
         case vertex_attrib_kind::face_coord:

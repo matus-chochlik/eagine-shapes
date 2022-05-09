@@ -10,7 +10,7 @@
 #define EAGINE_SHAPES_SPHERE_HPP
 
 #include "config/basic.hpp"
-#include "gen_base.hpp"
+#include "generator.hpp"
 #include <eagine/valid_if/greater_than.hpp>
 #include <cassert>
 
@@ -35,9 +35,9 @@ public:
 
     void normals(span<float> dest) noexcept;
 
-    void tangentials(span<float> dest) noexcept;
+    void tangents(span<float> dest) noexcept;
 
-    void bitangentials(span<float> dest) noexcept;
+    void bitangents(span<float> dest) noexcept;
 
     void wrap_coords(span<float> dest) noexcept;
 

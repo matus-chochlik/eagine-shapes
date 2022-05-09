@@ -10,7 +10,7 @@
 #define EAGINE_SHAPES_TORUS_HPP
 
 #include "config/basic.hpp"
-#include "gen_base.hpp"
+#include "generator.hpp"
 #include <eagine/callable_ref.hpp>
 #include <eagine/valid_if/ge0_lt1.hpp>
 #include <eagine/valid_if/greater_than.hpp>
@@ -51,9 +51,9 @@ public:
 
     void normals(span<float> dest, const offset_getter) noexcept;
 
-    void tangentials(span<float> dest, const offset_getter) noexcept;
+    void tangents(span<float> dest, const offset_getter) noexcept;
 
-    void bitangentials(span<float> dest, const offset_getter) noexcept;
+    void bitangents(span<float> dest, const offset_getter) noexcept;
 
     void wrap_coords(span<float> dest) noexcept;
 

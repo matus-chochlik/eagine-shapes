@@ -10,7 +10,7 @@
 #define EAGINE_SHAPES_DELEGATED_HPP
 
 #include "config/basic.hpp"
-#include "gen_base.hpp"
+#include "generator.hpp"
 #include <memory>
 
 namespace eagine::shapes {
@@ -27,11 +27,11 @@ public:
     }
 
     auto enable(const generator_capability cap, const bool value) noexcept
-      -> bool final {
+      -> bool override {
         return _gen->enable(cap, value);
     }
 
-    auto is_enabled(const generator_capability cap) noexcept -> bool final {
+    auto is_enabled(const generator_capability cap) noexcept -> bool override {
         return _gen->is_enabled(cap);
     }
 
@@ -144,7 +144,7 @@ protected:
     }
 
     auto _add(vertex_attrib_kind attr) noexcept -> auto& {
-        _attr_kinds |= attr;
+        _attr_kinds.set(attr);
         return *this;
     }
 

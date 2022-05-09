@@ -25,7 +25,7 @@ auto skybox_gen::_attr_mask() noexcept -> vertex_attrib_kinds {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 skybox_gen::skybox_gen(const vertex_attrib_kinds attr_kinds) noexcept
-  : _base(attr_kinds & _attr_mask()) {}
+  : _base(attr_kinds & _attr_mask(), generator_capability::indexed_drawing) {}
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 auto skybox_gen::vertex_count() -> span_size_t {
@@ -130,8 +130,8 @@ void skybox_gen::attrib_values(
             break;
         case vertex_attrib_kind::wrap_coord:
         case vertex_attrib_kind::normal:
-        case vertex_attrib_kind::tangential:
-        case vertex_attrib_kind::bitangential:
+        case vertex_attrib_kind::tangent:
+        case vertex_attrib_kind::bitangent:
         case vertex_attrib_kind::pivot:
         case vertex_attrib_kind::pivot_pivot:
         case vertex_attrib_kind::vertex_pivot:
