@@ -26,6 +26,7 @@ set(HEADERS
     eagine/shapes/skybox.hpp
     eagine/shapes/sphere.hpp
     eagine/shapes/surface_points.hpp
+    eagine/shapes/tetrahedrons.hpp
     eagine/shapes/to_json.hpp
     eagine/shapes/to_patches.hpp
     eagine/shapes/topology.hpp
@@ -59,6 +60,7 @@ set(LIB_INLS
     eagine/shapes/skybox.inl
     eagine/shapes/sphere.inl
     eagine/shapes/surface_points.inl
+    eagine/shapes/tetrahedrons.inl
     eagine/shapes/to_json.inl
     eagine/shapes/to_patches.inl
     eagine/shapes/topology.inl

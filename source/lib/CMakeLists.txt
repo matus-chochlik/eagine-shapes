@@ -13,6 +13,7 @@ add_library(
 	torus.cpp
 	twisted_torus.cpp
 	icosahedron.cpp
+	tetrahedrons.cpp
 	value_tree.cpp
 	modifiers.cpp
 	adjacency.cpp
