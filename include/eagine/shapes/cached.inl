@@ -65,6 +65,16 @@ auto cached_gen::attrib_type(const vertex_attrib_variant vav)
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
+auto cached_gen::is_attrib_integral(const vertex_attrib_variant vav) -> bool {
+    const std::lock_guard<std::mutex> lock{_mutex};
+    auto pos = _is_integral.find(vav);
+    if(pos == _is_integral.end()) {
+        pos = _is_integral.emplace(vav, _gen->is_attrib_integral(vav)).first;
+    }
+    return pos->second;
+}
+//------------------------------------------------------------------------------
+EAGINE_LIB_FUNC
 auto cached_gen::is_attrib_normalized(const vertex_attrib_variant vav) -> bool {
     const std::lock_guard<std::mutex> lock{_mutex};
     auto pos = _is_normalized.find(vav);

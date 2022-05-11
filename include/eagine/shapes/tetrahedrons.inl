@@ -111,6 +111,32 @@ auto marching_tetrahedrons_gen::attrib_type(const vertex_attrib_variant vav)
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
+auto marching_tetrahedrons_gen::is_attrib_integral(
+  const vertex_attrib_variant vav) -> bool {
+    switch(vav.attribute()) {
+        case vertex_attrib_kind::box_coord:
+            return true;
+        case vertex_attrib_kind::position:
+        case vertex_attrib_kind::normal:
+        case vertex_attrib_kind::pivot:
+        case vertex_attrib_kind::vertex_pivot:
+        case vertex_attrib_kind::pivot_pivot:
+        case vertex_attrib_kind::object_id:
+        case vertex_attrib_kind::polygon_id:
+        case vertex_attrib_kind::material_id:
+        case vertex_attrib_kind::tangent:
+        case vertex_attrib_kind::bitangent:
+        case vertex_attrib_kind::face_coord:
+        case vertex_attrib_kind::wrap_coord:
+        case vertex_attrib_kind::weight:
+        case vertex_attrib_kind::color:
+        case vertex_attrib_kind::occlusion:
+            break;
+    }
+    return _base::is_attrib_integral(vav);
+}
+//------------------------------------------------------------------------------
+EAGINE_LIB_FUNC
 void marching_tetrahedrons_gen::attrib_values(
   const vertex_attrib_variant vav,
   span<std::int16_t> dest) {

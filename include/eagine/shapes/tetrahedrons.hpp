@@ -28,6 +28,8 @@ public:
 
     auto attrib_type(const vertex_attrib_variant) -> attrib_data_type override;
 
+    auto is_attrib_integral(const vertex_attrib_variant) -> bool override;
+
     void attrib_values(const vertex_attrib_variant, span<std::int16_t>) override;
 
     auto index_type(const drawing_variant) -> index_data_type override;
