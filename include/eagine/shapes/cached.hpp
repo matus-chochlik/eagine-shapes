@@ -51,6 +51,7 @@ public:
 
     auto values_per_vertex(const vertex_attrib_variant) -> span_size_t final;
     auto attrib_type(const vertex_attrib_variant) -> attrib_data_type final;
+    auto is_attrib_integral(const vertex_attrib_variant) -> bool final;
     auto is_attrib_normalized(const vertex_attrib_variant) -> bool final;
 
     void attrib_values(const vertex_attrib_variant, span<byte>) final;
@@ -90,6 +91,7 @@ private:
     std::map<vertex_attrib_variant, std::string> _variant_name;
     std::map<vertex_attrib_variant, span_size_t> _values_per_vertex;
     std::map<vertex_attrib_variant, attrib_data_type> _attrib_type;
+    std::map<vertex_attrib_variant, bool> _is_integral;
     std::map<vertex_attrib_variant, bool> _is_normalized;
 
     std::map<vertex_attrib_variant, std::vector<byte>> _byte_cache;

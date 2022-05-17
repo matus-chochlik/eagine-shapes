@@ -40,6 +40,8 @@ public:
 
     auto attrib_type(const vertex_attrib_variant) -> attrib_data_type override;
 
+    auto is_attrib_integral(const vertex_attrib_variant) -> bool override;
+
     auto is_attrib_normalized(const vertex_attrib_variant) -> bool override;
 
     void attrib_values(const vertex_attrib_variant, span<byte>) override;

@@ -102,6 +102,15 @@ auto combined_gen::attrib_type(const vertex_attrib_variant vav)
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
+auto combined_gen::is_attrib_integral(const vertex_attrib_variant vav) -> bool {
+    bool result = true;
+    for(const auto& gen : _gens) {
+        result &= gen->is_attrib_integral(vav);
+    }
+    return result;
+}
+//------------------------------------------------------------------------------
+EAGINE_LIB_FUNC
 auto combined_gen::is_attrib_normalized(const vertex_attrib_variant vav)
   -> bool {
     bool result = true;

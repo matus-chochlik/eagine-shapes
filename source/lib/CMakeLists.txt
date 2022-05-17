@@ -9,10 +9,12 @@ add_library(
 	topology.cpp
 	cube.cpp
 	round_cube.cpp
+	plane.cpp
 	sphere.cpp
 	torus.cpp
 	twisted_torus.cpp
 	icosahedron.cpp
+	tetrahedrons.cpp
 	value_tree.cpp
 	modifiers.cpp
 	adjacency.cpp

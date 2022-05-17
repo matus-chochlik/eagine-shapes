@@ -157,6 +157,10 @@ struct generator : interface<generator> {
     virtual auto attrib_type(const vertex_attrib_variant vav)
       -> attrib_data_type = 0;
 
+    /// @brief Indicates if the specified variant attribute values are integral.
+    virtual auto is_attrib_integral(const vertex_attrib_variant vav)
+      -> bool = 0;
+
     /// @brief Indicates if the specified variant attribute values should be normalized.
     virtual auto is_attrib_normalized(const vertex_attrib_variant vav)
       -> bool = 0;
@@ -361,6 +365,10 @@ public:
 
     auto attrib_type(const vertex_attrib_variant) -> attrib_data_type override {
         return attrib_data_type::float_;
+    }
+
+    auto is_attrib_integral(const vertex_attrib_variant) -> bool override {
+        return false;
     }
 
     auto is_attrib_normalized(const vertex_attrib_variant) -> bool override {

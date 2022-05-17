@@ -63,6 +63,10 @@ public:
         return _gen->attrib_type(vav);
     }
 
+    auto is_attrib_integral(const vertex_attrib_variant vav) -> bool override {
+        return _gen->is_attrib_integral(vav);
+    }
+
     auto is_attrib_normalized(const vertex_attrib_variant vav)
       -> bool override {
         return _gen->is_attrib_normalized(vav);
