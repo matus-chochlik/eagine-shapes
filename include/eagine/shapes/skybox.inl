@@ -129,6 +129,7 @@ void skybox_gen::attrib_values(
             face_coords(dest);
             break;
         case vertex_attrib_kind::wrap_coord:
+        case vertex_attrib_kind::vertex_coord:
         case vertex_attrib_kind::normal:
         case vertex_attrib_kind::tangent:
         case vertex_attrib_kind::bitangent:

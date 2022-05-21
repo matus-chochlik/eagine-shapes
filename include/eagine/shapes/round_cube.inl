@@ -234,6 +234,7 @@ void unit_round_cube_gen::attrib_values(
         case vertex_attrib_kind::material_id:
         case vertex_attrib_kind::box_coord:
         case vertex_attrib_kind::wrap_coord:
+        case vertex_attrib_kind::vertex_coord:
         case vertex_attrib_kind::weight:
         case vertex_attrib_kind::color:
         case vertex_attrib_kind::occlusion:

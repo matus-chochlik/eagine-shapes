@@ -166,6 +166,7 @@ void unit_screen_gen::attrib_values(
         case vertex_attrib_kind::wrap_coord:
             face_coords(dest);
             break;
+        case vertex_attrib_kind::vertex_coord:
         case vertex_attrib_kind::pivot:
         case vertex_attrib_kind::pivot_pivot:
         case vertex_attrib_kind::vertex_pivot:

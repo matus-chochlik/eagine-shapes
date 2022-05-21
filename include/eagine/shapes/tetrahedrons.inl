@@ -18,13 +18,13 @@ namespace eagine::shapes {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 auto marching_tetrahedrons_gen::_attr_mask() noexcept -> vertex_attrib_kinds {
-    return vertex_attrib_kind::box_coord;
+    return vertex_attrib_kind::box_coord | vertex_attrib_kind::vertex_coord;
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 auto marching_tetrahedrons_gen::_shared_attrs() noexcept
   -> vertex_attrib_kinds {
-    return vertex_attrib_kind::box_coord;
+    return vertex_attrib_kind::box_coord | vertex_attrib_kind::vertex_coord;
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
@@ -89,6 +89,7 @@ auto marching_tetrahedrons_gen::attrib_type(const vertex_attrib_variant vav)
   -> attrib_data_type {
     switch(vav.attribute()) {
         case vertex_attrib_kind::box_coord:
+        case vertex_attrib_kind::vertex_coord:
             return attrib_data_type::int_16;
         case vertex_attrib_kind::position:
         case vertex_attrib_kind::normal:
@@ -115,6 +116,7 @@ auto marching_tetrahedrons_gen::is_attrib_integral(
   const vertex_attrib_variant vav) -> bool {
     switch(vav.attribute()) {
         case vertex_attrib_kind::box_coord:
+        case vertex_attrib_kind::vertex_coord:
             return true;
         case vertex_attrib_kind::position:
         case vertex_attrib_kind::normal:
@@ -156,6 +158,7 @@ void marching_tetrahedrons_gen::attrib_values(
         case vertex_attrib_kind::bitangent:
         case vertex_attrib_kind::face_coord:
         case vertex_attrib_kind::wrap_coord:
+        case vertex_attrib_kind::vertex_coord:
         case vertex_attrib_kind::weight:
         case vertex_attrib_kind::color:
         case vertex_attrib_kind::occlusion:

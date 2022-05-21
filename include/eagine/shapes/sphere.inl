@@ -178,6 +178,7 @@ void unit_sphere_gen::attrib_values(
         case vertex_attrib_kind::vertex_pivot:
         case vertex_attrib_kind::box_coord:
         case vertex_attrib_kind::face_coord:
+        case vertex_attrib_kind::vertex_coord:
         case vertex_attrib_kind::object_id:
         case vertex_attrib_kind::polygon_id:
         case vertex_attrib_kind::material_id:
