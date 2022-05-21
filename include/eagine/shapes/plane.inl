@@ -20,7 +20,7 @@ auto unit_plane_gen::_attr_mask() noexcept -> vertex_attrib_kinds {
     return vertex_attrib_kind::position | vertex_attrib_kind::normal |
            vertex_attrib_kind::tangent | vertex_attrib_kind::bitangent |
            vertex_attrib_kind::wrap_coord | vertex_attrib_kind::face_coord |
-           vertex_attrib_kind::box_coord;
+           vertex_attrib_kind::box_coord | vertex_attrib_kind::vertex_coord;
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
@@ -106,7 +106,7 @@ void unit_plane_gen::bitangents(span<float> dest) noexcept {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
-void unit_plane_gen::face_coords(span<float> dest) noexcept {
+void unit_plane_gen::box_coords(span<float> dest) noexcept {
     EAGINE_ASSERT(has(vertex_attrib_kind::face_coord));
     EAGINE_ASSERT(dest.size() >= vertex_count() * 2);
 
@@ -122,6 +122,106 @@ void unit_plane_gen::face_coords(span<float> dest) noexcept {
     }
 
     EAGINE_ASSERT(k == vertex_count() * 2);
+}
+//------------------------------------------------------------------------------
+EAGINE_LIB_FUNC
+void unit_plane_gen::vertex_coords(span<std::int32_t> dest) noexcept {
+    EAGINE_ASSERT(has(vertex_attrib_kind::face_coord));
+    EAGINE_ASSERT(dest.size() >= vertex_count() * 3);
+
+    span_size_t k = 0;
+
+    for(int y = 0; y <= _height; ++y) {
+        for(int x = 0; x <= _width; ++x) {
+            dest[k++] = limit_cast<std::int32_t>(x);
+            dest[k++] = limit_cast<std::int32_t>(y);
+            dest[k++] = 0;
+        }
+    }
+
+    EAGINE_ASSERT(k == vertex_count() * 3);
+}
+//------------------------------------------------------------------------------
+EAGINE_LIB_FUNC
+auto unit_plane_gen::attrib_type(const vertex_attrib_variant vav)
+  -> attrib_data_type {
+    switch(vav.attribute()) {
+        case vertex_attrib_kind::vertex_coord:
+            return attrib_data_type::int_32;
+        case vertex_attrib_kind::position:
+        case vertex_attrib_kind::normal:
+        case vertex_attrib_kind::pivot:
+        case vertex_attrib_kind::vertex_pivot:
+        case vertex_attrib_kind::pivot_pivot:
+        case vertex_attrib_kind::object_id:
+        case vertex_attrib_kind::polygon_id:
+        case vertex_attrib_kind::material_id:
+        case vertex_attrib_kind::tangent:
+        case vertex_attrib_kind::bitangent:
+        case vertex_attrib_kind::box_coord:
+        case vertex_attrib_kind::face_coord:
+        case vertex_attrib_kind::wrap_coord:
+        case vertex_attrib_kind::weight:
+        case vertex_attrib_kind::color:
+        case vertex_attrib_kind::occlusion:
+            break;
+    }
+    return _base::attrib_type(vav);
+}
+//------------------------------------------------------------------------------
+EAGINE_LIB_FUNC
+auto unit_plane_gen::is_attrib_integral(const vertex_attrib_variant vav)
+  -> bool {
+    switch(vav.attribute()) {
+        case vertex_attrib_kind::vertex_coord:
+            return true;
+        case vertex_attrib_kind::position:
+        case vertex_attrib_kind::normal:
+        case vertex_attrib_kind::pivot:
+        case vertex_attrib_kind::vertex_pivot:
+        case vertex_attrib_kind::pivot_pivot:
+        case vertex_attrib_kind::object_id:
+        case vertex_attrib_kind::polygon_id:
+        case vertex_attrib_kind::material_id:
+        case vertex_attrib_kind::tangent:
+        case vertex_attrib_kind::bitangent:
+        case vertex_attrib_kind::box_coord:
+        case vertex_attrib_kind::face_coord:
+        case vertex_attrib_kind::wrap_coord:
+        case vertex_attrib_kind::weight:
+        case vertex_attrib_kind::color:
+        case vertex_attrib_kind::occlusion:
+            break;
+    }
+    return _base::is_attrib_integral(vav);
+}
+//------------------------------------------------------------------------------
+EAGINE_LIB_FUNC
+void unit_plane_gen::attrib_values(
+  const vertex_attrib_variant vav,
+  span<std::int32_t> dest) {
+    switch(vav.attribute()) {
+        case vertex_attrib_kind::vertex_coord:
+            vertex_coords(dest);
+            break;
+        case vertex_attrib_kind::position:
+        case vertex_attrib_kind::normal:
+        case vertex_attrib_kind::tangent:
+        case vertex_attrib_kind::bitangent:
+        case vertex_attrib_kind::box_coord:
+        case vertex_attrib_kind::wrap_coord:
+        case vertex_attrib_kind::face_coord:
+        case vertex_attrib_kind::pivot:
+        case vertex_attrib_kind::pivot_pivot:
+        case vertex_attrib_kind::vertex_pivot:
+        case vertex_attrib_kind::object_id:
+        case vertex_attrib_kind::polygon_id:
+        case vertex_attrib_kind::material_id:
+        case vertex_attrib_kind::weight:
+        case vertex_attrib_kind::color:
+        case vertex_attrib_kind::occlusion:
+            _base::attrib_values(vav, dest);
+    }
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
@@ -142,11 +242,11 @@ void unit_plane_gen::attrib_values(
             bitangents(dest);
             break;
         case vertex_attrib_kind::box_coord:
-        case vertex_attrib_kind::face_coord:
         case vertex_attrib_kind::wrap_coord:
-            face_coords(dest);
+            box_coords(dest);
             break;
         case vertex_attrib_kind::vertex_coord:
+        case vertex_attrib_kind::face_coord:
         case vertex_attrib_kind::pivot:
         case vertex_attrib_kind::pivot_pivot:
         case vertex_attrib_kind::vertex_pivot:

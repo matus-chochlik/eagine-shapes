@@ -434,6 +434,7 @@ private:
 /// @ingroup shapes
 class centered_unit_shape_generator_base : public generator_base {
 public:
+    using generator_base::attrib_values;
     void attrib_values(const vertex_attrib_variant vav, span<float> dest)
       override;
 
