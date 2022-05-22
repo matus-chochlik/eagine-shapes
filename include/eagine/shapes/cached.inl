@@ -86,6 +86,17 @@ auto cached_gen::is_attrib_normalized(const vertex_attrib_variant vav) -> bool {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
+auto cached_gen::attrib_divisor(const vertex_attrib_variant vav)
+  -> std::uint32_t {
+    const std::lock_guard<std::mutex> lock{_mutex};
+    auto pos = _divisor.find(vav);
+    if(pos == _divisor.end()) {
+        pos = _divisor.emplace(vav, _gen->attrib_divisor(vav)).first;
+    }
+    return pos->second;
+}
+//------------------------------------------------------------------------------
+EAGINE_LIB_FUNC
 auto cached_gen::index_type(const drawing_variant var) -> index_data_type {
     const std::lock_guard<std::mutex> lock{_mutex};
     auto pos = _index_type.find(var);

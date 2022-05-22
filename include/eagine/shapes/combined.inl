@@ -120,6 +120,20 @@ auto combined_gen::is_attrib_normalized(const vertex_attrib_variant vav)
     return result;
 }
 //------------------------------------------------------------------------------
+EAGINE_LIB_FUNC
+auto combined_gen::attrib_divisor(const vertex_attrib_variant vav)
+  -> std::uint32_t {
+    std::uint32_t result{0U};
+    for(const auto& gen : _gens) {
+        if(result == 0) {
+            result = gen->is_attrib_normalized(vav);
+        } else {
+            EAGINE_ASSERT(result == gen->is_attrib_normalized(vav));
+        }
+    }
+    return result;
+}
+//------------------------------------------------------------------------------
 template <typename T>
 void combined_gen::_attrib_values(
   const vertex_attrib_variant vav,

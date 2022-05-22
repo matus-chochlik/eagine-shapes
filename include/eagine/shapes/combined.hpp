@@ -44,6 +44,8 @@ public:
 
     auto is_attrib_normalized(const vertex_attrib_variant) -> bool override;
 
+    auto attrib_divisor(const vertex_attrib_variant) -> std::uint32_t override;
+
     void attrib_values(const vertex_attrib_variant, span<byte>) override;
     void attrib_values(const vertex_attrib_variant, span<std::int16_t>) override;
     void attrib_values(const vertex_attrib_variant, span<std::int32_t>) override;

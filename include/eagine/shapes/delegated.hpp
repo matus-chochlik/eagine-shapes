@@ -72,6 +72,11 @@ public:
         return _gen->is_attrib_normalized(vav);
     }
 
+    auto attrib_divisor(const vertex_attrib_variant vav)
+      -> std::uint32_t override {
+        return _gen->attrib_divisor(vav);
+    }
+
     void attrib_values(const vertex_attrib_variant vav, span<byte> dest)
       override {
         _gen->attrib_values(vav, dest);

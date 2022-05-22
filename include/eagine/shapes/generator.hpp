@@ -121,6 +121,11 @@ struct generator : interface<generator> {
         return is_enabled(generator_capability::primitive_restart);
     }
 
+    /// @brief Indicates if vertex attribute divisors is enabled.
+    auto attrib_divisors() noexcept -> bool {
+        return is_enabled(generator_capability::attrib_divisors);
+    }
+
     /// @brief Returns the shaped vertex count.
     virtual auto vertex_count() -> span_size_t = 0;
 
@@ -149,7 +154,7 @@ struct generator : interface<generator> {
       -> span_size_t = 0;
 
     /// @brief Returns the total number of values for the specified attribute variant.
-    auto value_count(const vertex_attrib_variant vav) -> span_size_t {
+    virtual auto value_count(const vertex_attrib_variant vav) -> span_size_t {
         return vertex_count() * values_per_vertex(vav);
     }
 
@@ -164,6 +169,10 @@ struct generator : interface<generator> {
     /// @brief Indicates if the specified variant attribute values should be normalized.
     virtual auto is_attrib_normalized(const vertex_attrib_variant vav)
       -> bool = 0;
+
+    /// @brief Returns the vertex attribute divisor value.
+    virtual auto attrib_divisor(const vertex_attrib_variant vav)
+      -> std::uint32_t = 0;
 
     /// @brief Fetches the vertex attribute data for the specified variant as bytes.
     virtual void attrib_values(const vertex_attrib_variant, span<byte> dest) = 0;
@@ -373,6 +382,10 @@ public:
 
     auto is_attrib_normalized(const vertex_attrib_variant) -> bool override {
         return false;
+    }
+
+    auto attrib_divisor(const vertex_attrib_variant) -> std::uint32_t override {
+        return 0U;
     }
 
     void attrib_values(const vertex_attrib_variant, span<byte>) override {
