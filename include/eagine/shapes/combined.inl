@@ -48,6 +48,19 @@ auto combined_gen::is_enabled(const generator_capability cap) noexcept -> bool {
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
+auto combined_gen::instance_count() -> span_size_t {
+    span_size_t result{0};
+    for(const auto& gen : _gens) {
+        if(result == 0) {
+            result = gen->instance_count();
+        } else {
+            EAGINE_ASSERT(result == gen->instance_count());
+        }
+    }
+    return result;
+}
+//------------------------------------------------------------------------------
+EAGINE_LIB_FUNC
 auto combined_gen::vertex_count() -> span_size_t {
     span_size_t result{0};
     for(const auto& gen : _gens) {
@@ -126,9 +139,9 @@ auto combined_gen::attrib_divisor(const vertex_attrib_variant vav)
     std::uint32_t result{0U};
     for(const auto& gen : _gens) {
         if(result == 0) {
-            result = gen->is_attrib_normalized(vav);
+            result = gen->attrib_divisor(vav);
         } else {
-            EAGINE_ASSERT(result == gen->is_attrib_normalized(vav));
+            EAGINE_ASSERT(result == gen->attrib_divisor(vav));
         }
     }
     return result;

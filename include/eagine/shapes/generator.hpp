@@ -126,7 +126,10 @@ struct generator : interface<generator> {
         return is_enabled(generator_capability::attrib_divisors);
     }
 
-    /// @brief Returns the shaped vertex count.
+    /// @brief Returns the instance count.
+    virtual auto instance_count() -> span_size_t = 0;
+
+    /// @brief Returns the shape geometry vertex count.
     virtual auto vertex_count() -> span_size_t = 0;
 
     /// @brief Returns the count of shape attribute variants.
@@ -356,6 +359,10 @@ public:
 
     auto is_enabled(const generator_capability cap) noexcept -> bool final {
         return _enabled_caps.has(cap);
+    }
+
+    auto instance_count() -> span_size_t override {
+        return 1;
     }
 
     auto attribute_variants(const vertex_attrib_kind attrib)

@@ -14,6 +14,7 @@ cached_gen::cached_gen(
   main_ctx_parent parent) noexcept
   : main_ctx_object{EAGINE_ID(CchdShpGen), parent}
   , _gen{std::move(gen)}
+  , _instance_count{_gen->instance_count()}
   , _vertex_count{_gen->vertex_count()}
   , _draw_variant_count{_gen->draw_variant_count()}
   , _bounding_sphere{_gen->bounding_sphere()} {}

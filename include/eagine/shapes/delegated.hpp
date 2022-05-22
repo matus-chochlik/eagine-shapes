@@ -35,6 +35,10 @@ public:
         return _gen->is_enabled(cap);
     }
 
+    auto instance_count() -> span_size_t override {
+        return _gen->instance_count();
+    }
+
     auto vertex_count() -> span_size_t override {
         return _gen->vertex_count();
     }

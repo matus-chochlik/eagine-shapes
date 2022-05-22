@@ -29,6 +29,7 @@ public:
 
     auto is_enabled(const generator_capability cap) noexcept -> bool final;
 
+    auto instance_count() -> span_size_t override;
     auto vertex_count() -> span_size_t override;
 
     auto attribute_variants(const vertex_attrib_kind attrib)

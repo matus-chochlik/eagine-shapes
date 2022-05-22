@@ -41,6 +41,10 @@ public:
         return _gen->is_enabled(cap);
     }
 
+    auto instance_count() -> span_size_t final {
+        return _instance_count;
+    }
+
     auto vertex_count() -> span_size_t final {
         return _vertex_count;
     }
@@ -83,6 +87,7 @@ public:
 
 private:
     const std::shared_ptr<generator> _gen;
+    const span_size_t _instance_count;
     const span_size_t _vertex_count;
     const span_size_t _draw_variant_count;
     const math::sphere<float, true> _bounding_sphere;
