@@ -383,7 +383,17 @@ public:
         return attrib_data_type::float_;
     }
 
-    auto is_attrib_integral(const vertex_attrib_variant) -> bool override {
+    auto is_attrib_integral(const vertex_attrib_variant vav) -> bool override {
+        switch(attrib_type(vav)) {
+            case attrib_data_type::ubyte:
+            case attrib_data_type::int_16:
+            case attrib_data_type::int_32:
+            case attrib_data_type::uint_16:
+            case attrib_data_type::uint_32:
+                return true;
+            default:
+                break;
+        }
         return false;
     }
 

@@ -107,7 +107,7 @@ void unit_plane_gen::bitangents(span<float> dest) noexcept {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void unit_plane_gen::box_coords(span<float> dest) noexcept {
-    EAGINE_ASSERT(has(vertex_attrib_kind::face_coord));
+    EAGINE_ASSERT(has(vertex_attrib_kind::box_coord));
     EAGINE_ASSERT(dest.size() >= vertex_count() * 2);
 
     span_size_t k = 0;
@@ -126,7 +126,7 @@ void unit_plane_gen::box_coords(span<float> dest) noexcept {
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
 void unit_plane_gen::vertex_coords(span<std::int32_t> dest) noexcept {
-    EAGINE_ASSERT(has(vertex_attrib_kind::face_coord));
+    EAGINE_ASSERT(has(vertex_attrib_kind::vertex_coord));
     EAGINE_ASSERT(dest.size() >= vertex_count() * 3);
 
     span_size_t k = 0;
@@ -152,18 +152,6 @@ auto unit_plane_gen::attrib_type(const vertex_attrib_variant vav)
             break;
     }
     return _base::attrib_type(vav);
-}
-//------------------------------------------------------------------------------
-EAGINE_LIB_FUNC
-auto unit_plane_gen::is_attrib_integral(const vertex_attrib_variant vav)
-  -> bool {
-    switch(vav.attribute()) {
-        case vertex_attrib_kind::vertex_coord:
-            return true;
-        default:
-            break;
-    }
-    return _base::is_attrib_integral(vav);
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
