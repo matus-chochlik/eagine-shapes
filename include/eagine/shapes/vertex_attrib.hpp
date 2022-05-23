@@ -53,10 +53,16 @@ enum class vertex_attrib_kind : std::uint32_t {
     weight = 1U << 13U,
     /// @brief Vertex (ambient) light occlusion value.
     occlusion = 1U << 14U,
+    /// @brief Instance offset value
+    instance_offset = 1U << 15U,
+    /// @brief Instance scale value
+    instance_scale = 1U << 16U,
+    /// @brief Instance scale value
+    instance_transform = 1U << 17U,
     /// @brief Face polygon id value (multiple faces can belong to the same polygon)
-    polygon_id = 1U << 15U,
+    polygon_id = 1U << 18U,
     /// @brief Face material id value.
-    material_id = 1U << 16U
+    material_id = 1U << 19U
     // also fix all_vertex_attrib_kinds
 };
 //------------------------------------------------------------------------------
@@ -69,7 +75,7 @@ template <typename Selector>
 constexpr auto enumerator_mapping(
   const type_identity<vertex_attrib_kind>,
   const Selector) noexcept {
-    return enumerator_map_type<vertex_attrib_kind, 17>{
+    return enumerator_map_type<vertex_attrib_kind, 20>{
       {{"object_id", vertex_attrib_kind::object_id},
        {"position", vertex_attrib_kind::position},
        {"normal", vertex_attrib_kind::normal},
@@ -85,6 +91,9 @@ constexpr auto enumerator_mapping(
        {"color", vertex_attrib_kind::color},
        {"weight", vertex_attrib_kind::weight},
        {"occlusion", vertex_attrib_kind::occlusion},
+       {"instance_offset", vertex_attrib_kind::instance_offset},
+       {"instance_scale", vertex_attrib_kind::instance_scale},
+       {"instance_transform", vertex_attrib_kind::instance_transform},
        {"polygon_id", vertex_attrib_kind::polygon_id},
        {"material_id", vertex_attrib_kind::material_id}}};
 }
@@ -98,7 +107,7 @@ using vertex_attrib_kinds = bitfield<vertex_attrib_kind>;
 /// @ingroup shapes
 static constexpr auto all_vertex_attrib_kinds() noexcept
   -> vertex_attrib_kinds {
-    return vertex_attrib_kinds{(1U << 17U) - 1U};
+    return vertex_attrib_kinds{(1U << 20U) - 1U};
 }
 //------------------------------------------------------------------------------
 /// @brief Bitwise-or operator for vertex_attrib_kind bits.
@@ -290,6 +299,7 @@ static inline auto attrib_values_per_vertex(
         case vertex_attrib_kind::face_coord:
         case vertex_attrib_kind::vertex_coord:
         case vertex_attrib_kind::box_coord:
+        case vertex_attrib_kind::instance_offset:
             return 3;
         case vertex_attrib_kind::wrap_coord:
             return 2;
@@ -298,7 +308,10 @@ static inline auto attrib_values_per_vertex(
         case vertex_attrib_kind::object_id:
         case vertex_attrib_kind::polygon_id:
         case vertex_attrib_kind::material_id:
+        case vertex_attrib_kind::instance_scale:
             return 1;
+        case vertex_attrib_kind::instance_transform:
+            return 16;
     }
     return 0;
 }
