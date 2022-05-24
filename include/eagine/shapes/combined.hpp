@@ -29,6 +29,7 @@ public:
 
     auto is_enabled(const generator_capability cap) noexcept -> bool final;
 
+    auto instance_count() -> span_size_t override;
     auto vertex_count() -> span_size_t override;
 
     auto attribute_variants(const vertex_attrib_kind attrib)
@@ -43,6 +44,8 @@ public:
     auto is_attrib_integral(const vertex_attrib_variant) -> bool override;
 
     auto is_attrib_normalized(const vertex_attrib_variant) -> bool override;
+
+    auto attrib_divisor(const vertex_attrib_variant) -> std::uint32_t override;
 
     void attrib_values(const vertex_attrib_variant, span<byte>) override;
     void attrib_values(const vertex_attrib_variant, span<std::int16_t>) override;

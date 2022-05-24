@@ -121,7 +121,15 @@ struct generator : interface<generator> {
         return is_enabled(generator_capability::primitive_restart);
     }
 
-    /// @brief Returns the shaped vertex count.
+    /// @brief Indicates if vertex attribute divisors is enabled.
+    auto attrib_divisors() noexcept -> bool {
+        return is_enabled(generator_capability::attrib_divisors);
+    }
+
+    /// @brief Returns the instance count.
+    virtual auto instance_count() -> span_size_t = 0;
+
+    /// @brief Returns the shape geometry vertex count.
     virtual auto vertex_count() -> span_size_t = 0;
 
     /// @brief Returns the count of shape attribute variants.
@@ -149,7 +157,7 @@ struct generator : interface<generator> {
       -> span_size_t = 0;
 
     /// @brief Returns the total number of values for the specified attribute variant.
-    auto value_count(const vertex_attrib_variant vav) -> span_size_t {
+    virtual auto value_count(const vertex_attrib_variant vav) -> span_size_t {
         return vertex_count() * values_per_vertex(vav);
     }
 
@@ -164,6 +172,10 @@ struct generator : interface<generator> {
     /// @brief Indicates if the specified variant attribute values should be normalized.
     virtual auto is_attrib_normalized(const vertex_attrib_variant vav)
       -> bool = 0;
+
+    /// @brief Returns the vertex attribute divisor value.
+    virtual auto attrib_divisor(const vertex_attrib_variant vav)
+      -> std::uint32_t = 0;
 
     /// @brief Fetches the vertex attribute data for the specified variant as bytes.
     virtual void attrib_values(const vertex_attrib_variant, span<byte> dest) = 0;
@@ -349,6 +361,10 @@ public:
         return _enabled_caps.has(cap);
     }
 
+    auto instance_count() -> span_size_t override {
+        return 1;
+    }
+
     auto attribute_variants(const vertex_attrib_kind attrib)
       -> span_size_t override {
         return has(attrib) ? 1 : 0;
@@ -367,12 +383,25 @@ public:
         return attrib_data_type::float_;
     }
 
-    auto is_attrib_integral(const vertex_attrib_variant) -> bool override {
+    auto is_attrib_integral(const vertex_attrib_variant vav) -> bool override {
+        switch(attrib_type(vav)) {
+            case attrib_data_type::int_16:
+            case attrib_data_type::int_32:
+            case attrib_data_type::uint_16:
+            case attrib_data_type::uint_32:
+                return true;
+            default:
+                break;
+        }
         return false;
     }
 
     auto is_attrib_normalized(const vertex_attrib_variant) -> bool override {
         return false;
+    }
+
+    auto attrib_divisor(const vertex_attrib_variant) -> std::uint32_t override {
+        return 0U;
     }
 
     void attrib_values(const vertex_attrib_variant, span<byte>) override {
@@ -434,6 +463,7 @@ private:
 /// @ingroup shapes
 class centered_unit_shape_generator_base : public generator_base {
 public:
+    using generator_base::attrib_values;
     void attrib_values(const vertex_attrib_variant vav, span<float> dest)
       override;
 

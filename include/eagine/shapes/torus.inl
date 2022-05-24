@@ -349,15 +349,7 @@ auto unit_torus_gen::attribute_variants(const vertex_attrib_kind attrib)
             return 4;
         case vertex_attrib_kind::occlusion:
             return 1;
-        case vertex_attrib_kind::wrap_coord:
-        case vertex_attrib_kind::pivot:
-        case vertex_attrib_kind::box_coord:
-        case vertex_attrib_kind::face_coord:
-        case vertex_attrib_kind::object_id:
-        case vertex_attrib_kind::polygon_id:
-        case vertex_attrib_kind::material_id:
-        case vertex_attrib_kind::weight:
-        case vertex_attrib_kind::color:
+        default:
             break;
     }
     return _base::attribute_variants(attrib);
@@ -374,16 +366,7 @@ auto unit_torus_gen::variant_name(const vertex_attrib_variant vav)
         case vertex_attrib_kind::wrap_coord:
         case vertex_attrib_kind::occlusion:
             return special_variant_name(vav.index());
-        case vertex_attrib_kind::vertex_pivot:
-        case vertex_attrib_kind::pivot:
-        case vertex_attrib_kind::pivot_pivot:
-        case vertex_attrib_kind::box_coord:
-        case vertex_attrib_kind::face_coord:
-        case vertex_attrib_kind::object_id:
-        case vertex_attrib_kind::polygon_id:
-        case vertex_attrib_kind::material_id:
-        case vertex_attrib_kind::weight:
-        case vertex_attrib_kind::color:
+        default:
             break;
     }
     return centered_unit_shape_generator_base::variant_name(vav);
@@ -420,15 +403,7 @@ void unit_torus_gen::attrib_values(
         case vertex_attrib_kind::wrap_coord:
             wrap_coords(dest);
             break;
-        case vertex_attrib_kind::pivot:
-        case vertex_attrib_kind::pivot_pivot:
-        case vertex_attrib_kind::box_coord:
-        case vertex_attrib_kind::face_coord:
-        case vertex_attrib_kind::object_id:
-        case vertex_attrib_kind::polygon_id:
-        case vertex_attrib_kind::material_id:
-        case vertex_attrib_kind::weight:
-        case vertex_attrib_kind::color:
+        default:
             centered_unit_shape_generator_base::attrib_values(vav, dest);
             break;
     }

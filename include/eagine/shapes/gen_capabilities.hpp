@@ -17,7 +17,7 @@ namespace eagine::shapes {
 /// @brief Shape generator capability bit enumeration.
 /// @ingroup shapes
 /// @see generator_capabilities
-enum class generator_capability : unsigned {
+enum class generator_capability : std::uint16_t {
     /// @brief Indexed drawing of elements should be used if possible.
     indexed_drawing = 1U << 0U,
     /// @brief Line or triangle strips should be generated if possible.
@@ -25,7 +25,9 @@ enum class generator_capability : unsigned {
     /// @brief Line or triangle fanst should be generated if possible.
     element_fans = 1U << 2U,
     /// @brief Primitive restart functionality should be used if possible.
-    primitive_restart = 1U << 3U
+    primitive_restart = 1U << 3U,
+    /// @brief Vertex attrib divisor functionality.
+    attrib_divisors = 1U << 4U
 };
 //------------------------------------------------------------------------------
 /// @brief Alias for generator_capability bitfield type.
@@ -36,7 +38,7 @@ using generator_capabilities = bitfield<generator_capability>;
 /// @ingroup shapes
 static constexpr auto all_generator_capabilities() noexcept
   -> generator_capabilities {
-    return generator_capabilities{(1U << 4U) - 1U};
+    return generator_capabilities{(1U << 5U) - 1U};
 }
 //------------------------------------------------------------------------------
 /// @brief Bitwise-or operator for generator_capability enumerators.

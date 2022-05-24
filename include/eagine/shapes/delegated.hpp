@@ -35,6 +35,10 @@ public:
         return _gen->is_enabled(cap);
     }
 
+    auto instance_count() -> span_size_t override {
+        return _gen->instance_count();
+    }
+
     auto vertex_count() -> span_size_t override {
         return _gen->vertex_count();
     }
@@ -70,6 +74,11 @@ public:
     auto is_attrib_normalized(const vertex_attrib_variant vav)
       -> bool override {
         return _gen->is_attrib_normalized(vav);
+    }
+
+    auto attrib_divisor(const vertex_attrib_variant vav)
+      -> std::uint32_t override {
+        return _gen->attrib_divisor(vav);
     }
 
     void attrib_values(const vertex_attrib_variant vav, span<byte> dest)

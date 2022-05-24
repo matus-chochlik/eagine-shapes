@@ -24,6 +24,7 @@ public:
     centered_gen(std::shared_ptr<generator> gen) noexcept
       : delegated_gen{std::move(gen)} {}
 
+    using delegated_gen::attrib_values;
     void attrib_values(const vertex_attrib_variant, span<float>) override;
 
     auto bounding_sphere() -> math::sphere<float, true> override;

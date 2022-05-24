@@ -41,6 +41,10 @@ public:
         return _gen->is_enabled(cap);
     }
 
+    auto instance_count() -> span_size_t final {
+        return _instance_count;
+    }
+
     auto vertex_count() -> span_size_t final {
         return _vertex_count;
     }
@@ -53,6 +57,7 @@ public:
     auto attrib_type(const vertex_attrib_variant) -> attrib_data_type final;
     auto is_attrib_integral(const vertex_attrib_variant) -> bool final;
     auto is_attrib_normalized(const vertex_attrib_variant) -> bool final;
+    auto attrib_divisor(const vertex_attrib_variant) -> std::uint32_t final;
 
     void attrib_values(const vertex_attrib_variant, span<byte>) final;
     void attrib_values(const vertex_attrib_variant, span<std::int16_t>) final;
@@ -82,6 +87,7 @@ public:
 
 private:
     const std::shared_ptr<generator> _gen;
+    const span_size_t _instance_count;
     const span_size_t _vertex_count;
     const span_size_t _draw_variant_count;
     const math::sphere<float, true> _bounding_sphere;
@@ -90,6 +96,7 @@ private:
     std::map<vertex_attrib_kind, span_size_t> _attrib_variants;
     std::map<vertex_attrib_variant, std::string> _variant_name;
     std::map<vertex_attrib_variant, span_size_t> _values_per_vertex;
+    std::map<vertex_attrib_variant, std::uint32_t> _divisor;
     std::map<vertex_attrib_variant, attrib_data_type> _attrib_type;
     std::map<vertex_attrib_variant, bool> _is_integral;
     std::map<vertex_attrib_variant, bool> _is_normalized;

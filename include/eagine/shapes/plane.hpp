@@ -36,7 +36,13 @@ public:
 
     void bitangents(span<float> dest) noexcept;
 
-    void face_coords(span<float> dest) noexcept;
+    void box_coords(span<float> dest) noexcept;
+
+    void vertex_coords(span<std::int32_t> dest) noexcept;
+
+    auto attrib_type(const vertex_attrib_variant) -> attrib_data_type override;
+
+    void attrib_values(const vertex_attrib_variant, span<std::int32_t>) override;
 
     void attrib_values(const vertex_attrib_variant, span<float>) override;
 

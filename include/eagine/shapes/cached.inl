@@ -14,6 +14,7 @@ cached_gen::cached_gen(
   main_ctx_parent parent) noexcept
   : main_ctx_object{EAGINE_ID(CchdShpGen), parent}
   , _gen{std::move(gen)}
+  , _instance_count{_gen->instance_count()}
   , _vertex_count{_gen->vertex_count()}
   , _draw_variant_count{_gen->draw_variant_count()}
   , _bounding_sphere{_gen->bounding_sphere()} {}
@@ -81,6 +82,17 @@ auto cached_gen::is_attrib_normalized(const vertex_attrib_variant vav) -> bool {
     if(pos == _is_normalized.end()) {
         pos =
           _is_normalized.emplace(vav, _gen->is_attrib_normalized(vav)).first;
+    }
+    return pos->second;
+}
+//------------------------------------------------------------------------------
+EAGINE_LIB_FUNC
+auto cached_gen::attrib_divisor(const vertex_attrib_variant vav)
+  -> std::uint32_t {
+    const std::lock_guard<std::mutex> lock{_mutex};
+    auto pos = _divisor.find(vav);
+    if(pos == _divisor.end()) {
+        pos = _divisor.emplace(vav, _gen->attrib_divisor(vav)).first;
     }
     return pos->second;
 }
