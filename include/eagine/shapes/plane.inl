@@ -205,7 +205,9 @@ auto unit_plane_gen::index_count(const drawing_variant) -> span_size_t {
 }
 //------------------------------------------------------------------------------
 template <typename T>
-void unit_plane_gen::_indices(const drawing_variant var, span<T> dest) noexcept {
+void unit_plane_gen::_indices(
+  [[maybe_unused]] const drawing_variant var,
+  span<T> dest) noexcept {
     EAGINE_ASSERT(dest.size() >= index_count(var));
     span_size_t k = 0;
 
