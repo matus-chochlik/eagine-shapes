@@ -46,7 +46,7 @@ enum class primitive_type : std::uint8_t {
 #if !EAGINE_CXX_REFLECTION
 template <typename Selector>
 constexpr auto enumerator_mapping(
-  const type_identity<primitive_type>,
+  const std::type_identity<primitive_type>,
   const Selector) noexcept {
     return enumerator_map_type<primitive_type, 11>{
       {{"points", primitive_type::points},
@@ -86,7 +86,7 @@ enum class attrib_data_type {
 #if !EAGINE_CXX_REFLECTION
 template <typename Selector>
 constexpr auto enumerator_mapping(
-  const type_identity<attrib_data_type>,
+  const std::type_identity<attrib_data_type>,
   const Selector) noexcept {
     return enumerator_map_type<attrib_data_type, 7>{
       {{"none", attrib_data_type::none},
@@ -100,7 +100,7 @@ constexpr auto enumerator_mapping(
 #endif
 //------------------------------------------------------------------------------
 constexpr auto enumerator_mapping(
-  const type_identity<attrib_data_type>,
+  const std::type_identity<attrib_data_type>,
   const value_tree_tag) noexcept {
     return enumerator_map_type<attrib_data_type, 6>{
       {{"ubyte", attrib_data_type::ubyte},
@@ -128,7 +128,7 @@ enum class index_data_type : std::uint8_t {
 #if !EAGINE_CXX_REFLECTION
 template <typename Selector>
 constexpr auto enumerator_mapping(
-  const type_identity<index_data_type>,
+  const std::type_identity<index_data_type>,
   const Selector) noexcept {
     return enumerator_map_type<index_data_type, 4>{
       {{"none", index_data_type::none},
@@ -139,7 +139,7 @@ constexpr auto enumerator_mapping(
 #endif
 //------------------------------------------------------------------------------
 constexpr auto enumerator_mapping(
-  const type_identity<index_data_type>,
+  const std::type_identity<index_data_type>,
   const value_tree_tag) noexcept {
     return enumerator_map_type<index_data_type, 3>{
       {{"none", index_data_type::none},

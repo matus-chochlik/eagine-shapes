@@ -13,20 +13,22 @@ namespace eagine::shapes {
 //------------------------------------------------------------------------------
 static inline auto vertex_attrib_name(const vertex_attrib_kind attrib) noexcept {
     return enumerator_name(
-      attrib, type_identity<vertex_attrib_kind>{}, value_tree_tag{});
+      attrib, std::type_identity<vertex_attrib_kind>{}, value_tree_tag{});
 }
 //------------------------------------------------------------------------------
 static inline auto primitive_type_from(const string_view str) noexcept {
-    return from_string(str, type_identity<primitive_type>{}, value_tree_tag{});
+    return from_string(
+      str, std::type_identity<primitive_type>{}, value_tree_tag{});
 }
 //------------------------------------------------------------------------------
 static inline auto attrib_data_type_from(const string_view str) noexcept {
     return from_string(
-      str, type_identity<attrib_data_type>{}, value_tree_tag{});
+      str, std::type_identity<attrib_data_type>{}, value_tree_tag{});
 }
 //------------------------------------------------------------------------------
 static inline auto index_data_type_from(const string_view str) noexcept {
-    return from_string(str, type_identity<index_data_type>{}, value_tree_tag{});
+    return from_string(
+      str, std::type_identity<index_data_type>{}, value_tree_tag{});
 }
 //------------------------------------------------------------------------------
 EAGINE_LIB_FUNC
@@ -34,7 +36,7 @@ auto value_tree_loader::_attr_mask(const valtree::compound& source) noexcept
   -> vertex_attrib_kinds {
     vertex_attrib_kinds result;
     for(const auto& info : enumerator_mapping(
-          type_identity<vertex_attrib_kind>{}, value_tree_tag{})) {
+          std::type_identity<vertex_attrib_kind>{}, value_tree_tag{})) {
         if(source.nested(info.name)) {
             result.set(info.enumerator);
         }

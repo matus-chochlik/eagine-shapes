@@ -220,7 +220,7 @@ void unit_plane_gen::_indices(
             dest[k++] = limit_cast<T>((y + 1) * (_width + 1) + x);
         }
         if(pr) {
-            dest[k++] = pri;
+            dest[k++] = limit_cast<T>(pri);
         }
     }
 

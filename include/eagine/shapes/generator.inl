@@ -37,7 +37,7 @@ auto generator::find_variant(
 EAGINE_LIB_FUNC
 auto generator::find_variant(const string_view name) -> vertex_attrib_variant {
     for(const auto& info : enumerator_mapping(
-          type_identity<vertex_attrib_kind>(), default_selector)) {
+          std::type_identity<vertex_attrib_kind>(), default_selector)) {
         if(auto found{find_variant(info.enumerator, name)}) {
             return found;
         }

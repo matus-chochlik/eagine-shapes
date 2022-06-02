@@ -73,7 +73,7 @@ using vertex_attrib_name_and_kind = name_and_enumerator<vertex_attrib_kind>;
 #if !EAGINE_CXX_REFLECTION
 template <typename Selector>
 constexpr auto enumerator_mapping(
-  const type_identity<vertex_attrib_kind>,
+  const std::type_identity<vertex_attrib_kind>,
   const Selector) noexcept {
     return enumerator_map_type<vertex_attrib_kind, 20>{
       {{"object_id", vertex_attrib_kind::object_id},

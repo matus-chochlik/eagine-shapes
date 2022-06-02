@@ -25,7 +25,7 @@ auto parse_from(main_ctx& ctx, generator&, to_json_options& opts) noexcept
             }
         } else {
             for(const auto& info : enumerator_mapping(
-                  type_identity<vertex_attrib_kind>(), default_selector)) {
+                  std::type_identity<vertex_attrib_kind>(), default_selector)) {
                 if(arg.is_prefixed_tag("--shape-attrib-", info.name)) {
                     if(arg.next().starts_with("-") || !arg.next()) {
                         opts.attrib_variants[info.enumerator][0];
@@ -68,7 +68,7 @@ auto to_json(std::ostream& out, generator& gen, const to_json_options& opts)
             out << R"(,"type":")"
                 << enumerator_name(
                      data_type,
-                     type_identity<attrib_data_type>(),
+                     std::type_identity<attrib_data_type>(),
                      value_tree_tag())
                 << '"' << '\n';
 
