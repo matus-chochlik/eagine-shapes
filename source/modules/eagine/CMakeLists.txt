@@ -89,6 +89,33 @@ eagine_add_module(
 )
 
 eagine_add_module(
+	eagine.shapes PARTITION twisted_torus
+	IMPORTS
+		generator
+		eagine.core.types
+		eagine.core.memory
+		eagine.core.identifier
+		eagine.core.valid_if
+		eagine.core.utility
+		eagine.core.math
+)
+
+eagine_add_module(
+	eagine.shapes PARTITION value_tree
+	IMPORTS
+		generator
+		eagine.core.types
+		eagine.core.memory
+		eagine.core.identifier
+		eagine.core.reflection
+		eagine.core.valid_if
+		eagine.core.utility
+		eagine.core.math
+		eagine.core.value_tree
+		eagine.core.main_ctx
+)
+
+eagine_add_module(
 	eagine.shapes
 	PP_NAME SHAPES
 	INTERFACES shapes
@@ -102,6 +129,8 @@ eagine_add_module(
 		skybox
 		sphere
 		torus
+		twisted_torus
+		value_tree
 	SOURCES
 		generator_impl
 		cube_impl
@@ -109,11 +138,7 @@ eagine_add_module(
 		skybox_impl
 		sphere_impl
 		torus_impl
-	IMPORTS
-		eagine.core.types
-		eagine.core.memory
-		eagine.core.identifier
-		eagine.core.valid_if
-		eagine.core.math
+		twisted_torus_impl
+		value_tree_impl
 )
 
