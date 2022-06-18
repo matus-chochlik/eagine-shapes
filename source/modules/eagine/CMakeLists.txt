@@ -36,6 +36,59 @@ eagine_add_module(
 )
 
 eagine_add_module(
+	eagine.shapes PARTITION cube
+	IMPORTS
+		generator
+		eagine.core.types
+		eagine.core.memory
+		eagine.core.identifier
+		eagine.core.math
+)
+
+eagine_add_module(
+	eagine.shapes PARTITION screen
+	IMPORTS
+		generator
+		eagine.core.types
+		eagine.core.memory
+		eagine.core.identifier
+		eagine.core.math
+)
+
+eagine_add_module(
+	eagine.shapes PARTITION skybox
+	IMPORTS
+		generator
+		eagine.core.types
+		eagine.core.memory
+		eagine.core.identifier
+		eagine.core.math
+)
+
+eagine_add_module(
+	eagine.shapes PARTITION sphere
+	IMPORTS
+		generator
+		eagine.core.types
+		eagine.core.memory
+		eagine.core.identifier
+		eagine.core.valid_if
+		eagine.core.math
+)
+
+eagine_add_module(
+	eagine.shapes PARTITION torus
+	IMPORTS
+		generator
+		eagine.core.types
+		eagine.core.memory
+		eagine.core.identifier
+		eagine.core.valid_if
+		eagine.core.utility
+		eagine.core.math
+)
+
+eagine_add_module(
 	eagine.shapes
 	PP_NAME SHAPES
 	INTERFACES shapes
@@ -44,7 +97,23 @@ eagine_add_module(
 		vertex_attrib
 		drawing
 		generator
+		cube
+		screen
+		skybox
+		sphere
+		torus
 	SOURCES
 		generator_impl
+		cube_impl
+		screen_impl
+		skybox_impl
+		sphere_impl
+		torus_impl
+	IMPORTS
+		eagine.core.types
+		eagine.core.memory
+		eagine.core.identifier
+		eagine.core.valid_if
+		eagine.core.math
 )
 

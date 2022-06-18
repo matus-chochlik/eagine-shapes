@@ -11,3 +11,8 @@ export import :vertex_attrib;
 export import :generator_capabilities;
 export import :drawing;
 export import :generator;
+export import :cube;
+export import :screen;
+export import :skybox;
+export import :sphere;
+export import :torus;
