@@ -36,16 +36,6 @@ eagine_add_module(
 )
 
 eagine_add_module(
-	eagine.shapes PARTITION cube
-	IMPORTS
-		generator
-		eagine.core.types
-		eagine.core.memory
-		eagine.core.identifier
-		eagine.core.math
-)
-
-eagine_add_module(
 	eagine.shapes PARTITION screen
 	IMPORTS
 		generator
@@ -56,7 +46,37 @@ eagine_add_module(
 )
 
 eagine_add_module(
+	eagine.shapes PARTITION plane
+	IMPORTS
+		generator
+		eagine.core.types
+		eagine.core.memory
+		eagine.core.valid_if
+		eagine.core.math
+)
+
+eagine_add_module(
+	eagine.shapes PARTITION cube
+	IMPORTS
+		generator
+		eagine.core.types
+		eagine.core.memory
+		eagine.core.identifier
+		eagine.core.math
+)
+
+eagine_add_module(
 	eagine.shapes PARTITION skybox
+	IMPORTS
+		generator
+		eagine.core.types
+		eagine.core.memory
+		eagine.core.identifier
+		eagine.core.math
+)
+
+eagine_add_module(
+	eagine.shapes PARTITION icosahedron
 	IMPORTS
 		generator
 		eagine.core.types
@@ -116,6 +136,59 @@ eagine_add_module(
 )
 
 eagine_add_module(
+	eagine.shapes PARTITION delegated
+	IMPORTS
+		generator
+		eagine.core.types
+		eagine.core.memory
+		eagine.core.identifier
+		eagine.core.math
+)
+
+eagine_add_module(
+	eagine.shapes PARTITION combined
+	IMPORTS
+		generator
+		eagine.core.types
+		eagine.core.memory
+		eagine.core.identifier
+		eagine.core.utility
+		eagine.core.math
+)
+
+eagine_add_module(
+	eagine.shapes PARTITION cached
+	IMPORTS
+		generator
+		eagine.core.types
+		eagine.core.memory
+		eagine.core.identifier
+		eagine.core.math
+		eagine.core.logging
+		eagine.core.main_ctx
+)
+
+eagine_add_module(
+	eagine.shapes PARTITION array
+	IMPORTS
+		delegated
+		eagine.core.types
+		eagine.core.memory
+		eagine.core.identifier
+		eagine.core.math
+)
+
+eagine_add_module(
+	eagine.shapes PARTITION centered
+	IMPORTS
+		delegated
+		eagine.core.types
+		eagine.core.memory
+		eagine.core.identifier
+		eagine.core.math
+)
+
+eagine_add_module(
 	eagine.shapes
 	PP_NAME SHAPES
 	INTERFACES shapes
@@ -124,21 +197,34 @@ eagine_add_module(
 		vertex_attrib
 		drawing
 		generator
-		cube
 		screen
+		plane
+		cube
 		skybox
+		icosahedron
 		sphere
 		torus
 		twisted_torus
 		value_tree
+		delegated
+		combined
+		cached
+		array
+		centered
 	SOURCES
 		generator_impl
-		cube_impl
 		screen_impl
+		plane_impl
+		cube_impl
 		skybox_impl
+		icosahedron_impl
 		sphere_impl
 		torus_impl
 		twisted_torus_impl
 		value_tree_impl
+		combined_impl
+		cached_impl
+		array_impl
+		centered_impl
 )
 
