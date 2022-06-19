@@ -14,6 +14,7 @@ export import :generator;
 export import :screen;
 export import :plane;
 export import :cube;
+export import :round_cube;
 export import :skybox;
 export import :icosahedron;
 export import :sphere;
@@ -25,4 +26,6 @@ export import :combined;
 export import :cached;
 export import :array;
 export import :centered;
+export import :occluded;
+export import :reboxed;
 

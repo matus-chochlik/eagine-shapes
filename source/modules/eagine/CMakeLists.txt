@@ -41,7 +41,6 @@ eagine_add_module(
 		generator
 		eagine.core.types
 		eagine.core.memory
-		eagine.core.identifier
 		eagine.core.math
 )
 
@@ -61,7 +60,15 @@ eagine_add_module(
 		generator
 		eagine.core.types
 		eagine.core.memory
-		eagine.core.identifier
+		eagine.core.math
+)
+
+eagine_add_module(
+	eagine.shapes PARTITION round_cube
+	IMPORTS
+		generator
+		eagine.core.types
+		eagine.core.memory
 		eagine.core.math
 )
 
@@ -189,6 +196,28 @@ eagine_add_module(
 )
 
 eagine_add_module(
+	eagine.shapes PARTITION occluded
+	IMPORTS
+		delegated
+		eagine.core.types
+		eagine.core.memory
+		eagine.core.identifier
+		eagine.core.units
+		eagine.core.math
+		eagine.core.main_ctx
+)
+
+eagine_add_module(
+	eagine.shapes PARTITION reboxed
+	IMPORTS
+		delegated
+		eagine.core.types
+		eagine.core.memory
+		eagine.core.identifier
+		eagine.core.math
+)
+
+eagine_add_module(
 	eagine.shapes
 	PP_NAME SHAPES
 	INTERFACES shapes
@@ -200,6 +229,7 @@ eagine_add_module(
 		screen
 		plane
 		cube
+		round_cube
 		skybox
 		icosahedron
 		sphere
@@ -211,11 +241,14 @@ eagine_add_module(
 		cached
 		array
 		centered
+		occluded
+		reboxed
 	SOURCES
 		generator_impl
 		screen_impl
 		plane_impl
 		cube_impl
+		round_cube_impl
 		skybox_impl
 		icosahedron_impl
 		sphere_impl
@@ -226,5 +259,7 @@ eagine_add_module(
 		cached_impl
 		array_impl
 		centered_impl
+		occluded_impl
+		reboxed_impl
 )
 
