@@ -78,7 +78,6 @@ eagine_add_module(
 		generator
 		eagine.core.types
 		eagine.core.memory
-		eagine.core.identifier
 		eagine.core.math
 )
 
@@ -88,7 +87,15 @@ eagine_add_module(
 		generator
 		eagine.core.types
 		eagine.core.memory
-		eagine.core.identifier
+		eagine.core.math
+)
+
+eagine_add_module(
+	eagine.shapes PARTITION tetrahedrons
+	IMPORTS
+		generator
+		eagine.core.types
+		eagine.core.memory
 		eagine.core.math
 )
 
@@ -137,6 +144,17 @@ eagine_add_module(
 		eagine.core.reflection
 		eagine.core.valid_if
 		eagine.core.utility
+		eagine.core.math
+		eagine.core.value_tree
+		eagine.core.main_ctx
+)
+
+eagine_add_module(
+	eagine.shapes PARTITION from_json
+	IMPORTS
+		generator value_tree
+		eagine.core.types
+		eagine.core.memory
 		eagine.core.math
 		eagine.core.value_tree
 		eagine.core.main_ctx
@@ -235,6 +253,31 @@ eagine_add_module(
 )
 
 eagine_add_module(
+	eagine.shapes PARTITION translated
+	IMPORTS
+		delegated
+		eagine.core.types
+		eagine.core.memory
+		eagine.core.math
+)
+
+eagine_add_module(
+	eagine.shapes PARTITION to_patches
+	IMPORTS
+		delegated
+		eagine.core.types
+		eagine.core.memory
+)
+
+eagine_add_module(
+	eagine.shapes PARTITION to_quads
+	IMPORTS
+		delegated
+		eagine.core.types
+		eagine.core.memory
+)
+
+eagine_add_module(
 	eagine.shapes PARTITION topology
 	IMPORTS
 		generator
@@ -242,6 +285,17 @@ eagine_add_module(
 		eagine.core.memory
 		eagine.core.identifier
 		eagine.core.container
+		eagine.core.math
+		eagine.core.main_ctx
+)
+
+eagine_add_module(
+	eagine.shapes PARTITION adjacency
+	IMPORTS
+		delegated topology
+		eagine.core.types
+		eagine.core.memory
+		eagine.core.identifier
 		eagine.core.math
 		eagine.core.main_ctx
 )
@@ -255,6 +309,16 @@ eagine_add_module(
 		eagine.core.identifier
 		eagine.core.units
 		eagine.core.math
+		eagine.core.main_ctx
+)
+
+eagine_add_module(
+	eagine.shapes PARTITION to_json
+	IMPORTS
+		generator
+		eagine.core.types
+		eagine.core.memory
+		eagine.core.identifier
 		eagine.core.main_ctx
 )
 
@@ -273,10 +337,12 @@ eagine_add_module(
 		round_cube
 		skybox
 		icosahedron
+		tetrahedrons
 		sphere
 		torus
 		twisted_torus
 		value_tree
+		from_json
 		delegated
 		combined
 		cached
@@ -286,8 +352,13 @@ eagine_add_module(
 		reboxed
 		scaled
 		scaled_wrap_coords
+		translated
+		to_patches
+		to_quads
 		topology
+		adjacency
 		surface_points
+		to_json
 	SOURCES
 		generator_impl
 		screen_impl
@@ -296,10 +367,12 @@ eagine_add_module(
 		round_cube_impl
 		skybox_impl
 		icosahedron_impl
+		tetrahedrons_impl
 		sphere_impl
 		torus_impl
 		twisted_torus_impl
 		value_tree_impl
+		from_json
 		combined_impl
 		cached_impl
 		array_impl
@@ -308,7 +381,12 @@ eagine_add_module(
 		reboxed_impl
 		scaled_impl
 		scaled_wrap_coords_impl
+		translated_impl
+		to_patches_impl
+		to_quads_impl
 		topology_impl
+		adjacency_impl
 		surface_points_impl
+		to_json_impl
 )
 

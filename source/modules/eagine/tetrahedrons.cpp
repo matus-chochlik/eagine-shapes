@@ -5,7 +5,7 @@
 /// See accompanying file LICENSE_1_0.txt or copy at
 ///  http://www.boost.org/LICENSE_1_0.txt
 ///
-export module eagine.shapes:icosahedron;
+export module eagine.shapes:tetrahedrons;
 
 import eagine.core.types;
 import eagine.core.memory;
@@ -15,19 +15,22 @@ import <memory>;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
-/// @brief Generator of centered icosahedron shape with unit diameter.
+/// @brief Generator of single marching tetrahedrons cubic cell.
 /// @ingroup shapes
-/// @see unit_icosahedron
-export class unit_icosahedron_gen : public centered_unit_shape_generator_base {
+/// @see marching_tetrahedrons
+export class marching_tetrahedrons_gen : public generator_base {
 public:
-    unit_icosahedron_gen(const vertex_attrib_kinds attr_kinds) noexcept;
+    marching_tetrahedrons_gen(const vertex_attrib_kinds attr_kinds) noexcept;
 
     auto vertex_count() -> span_size_t override;
 
-    void positions(span<float> dest) noexcept;
-    void normals(span<float> dest) noexcept;
+    void coords(span<std::int16_t> dest) noexcept;
 
-    void attrib_values(const vertex_attrib_variant, span<float>) override;
+    auto attrib_type(const vertex_attrib_variant) -> attrib_data_type override;
+
+    auto is_attrib_integral(const vertex_attrib_variant) -> bool override;
+
+    void attrib_values(const vertex_attrib_variant, span<std::int16_t>) override;
 
     auto index_type(const drawing_variant) -> index_data_type override;
 
@@ -46,7 +49,7 @@ public:
     auto bounding_sphere() -> math::sphere<float, true> override;
 
 private:
-    using _base = centered_unit_shape_generator_base;
+    using _base = generator_base;
 
     static auto _attr_mask() noexcept -> vertex_attrib_kinds;
 
@@ -58,17 +61,18 @@ private:
     void _indices(const drawing_variant, span<T> dest) noexcept;
 };
 //------------------------------------------------------------------------------
-/// @brief Constructs instances of unit_icosahedron_gen.
+/// @brief Constructs instances of marching_tetrahedrons_gen.
 /// @ingroup shapes
 /// @see from_value_tree
 /// @see unit_cube
+/// @see unit_icosahedron
 /// @see unit_round_cube
 /// @see unit_sphere
 /// @see unit_torus
 /// @see unit_screen
 /// @see unit_twisted_torus
-export auto unit_icosahedron(vertex_attrib_kinds attr_kinds) {
-    return std::make_unique<unit_icosahedron_gen>(attr_kinds);
+export auto marching_tetrahedrons(vertex_attrib_kinds attr_kinds) {
+    return std::make_unique<marching_tetrahedrons_gen>(attr_kinds);
 }
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes

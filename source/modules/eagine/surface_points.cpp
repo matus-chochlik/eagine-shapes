@@ -9,7 +9,6 @@ export module eagine.shapes:surface_points;
 
 import eagine.core.types;
 import eagine.core.memory;
-import eagine.core.identifier;
 import eagine.core.math;
 import eagine.core.main_ctx;
 import :delegated;
