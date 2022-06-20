@@ -28,4 +28,7 @@ export import :array;
 export import :centered;
 export import :occluded;
 export import :reboxed;
-
+export import :scaled;
+export import :scaled_wrap_coords;
+export import :topology;
+export import :surface_points;

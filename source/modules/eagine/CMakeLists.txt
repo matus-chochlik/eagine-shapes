@@ -213,8 +213,49 @@ eagine_add_module(
 		delegated
 		eagine.core.types
 		eagine.core.memory
-		eagine.core.identifier
 		eagine.core.math
+)
+
+eagine_add_module(
+	eagine.shapes PARTITION scaled
+	IMPORTS
+		delegated
+		eagine.core.types
+		eagine.core.memory
+		eagine.core.math
+)
+
+eagine_add_module(
+	eagine.shapes PARTITION scaled_wrap_coords
+	IMPORTS
+		delegated
+		eagine.core.types
+		eagine.core.memory
+		eagine.core.math
+)
+
+eagine_add_module(
+	eagine.shapes PARTITION topology
+	IMPORTS
+		generator
+		eagine.core.types
+		eagine.core.memory
+		eagine.core.identifier
+		eagine.core.container
+		eagine.core.math
+		eagine.core.main_ctx
+)
+
+eagine_add_module(
+	eagine.shapes PARTITION surface_points
+	IMPORTS
+		delegated topology
+		eagine.core.types
+		eagine.core.memory
+		eagine.core.identifier
+		eagine.core.units
+		eagine.core.math
+		eagine.core.main_ctx
 )
 
 eagine_add_module(
@@ -243,6 +284,10 @@ eagine_add_module(
 		centered
 		occluded
 		reboxed
+		scaled
+		scaled_wrap_coords
+		topology
+		surface_points
 	SOURCES
 		generator_impl
 		screen_impl
@@ -261,5 +306,9 @@ eagine_add_module(
 		centered_impl
 		occluded_impl
 		reboxed_impl
+		scaled_impl
+		scaled_wrap_coords_impl
+		topology_impl
+		surface_points_impl
 )
 

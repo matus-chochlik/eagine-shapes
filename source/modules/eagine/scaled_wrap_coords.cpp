@@ -5,33 +5,44 @@
 /// See accompanying file LICENSE_1_0.txt or copy at
 ///  http://www.boost.org/LICENSE_1_0.txt
 ///
-export module eagine.shapes:reboxed;
+export module eagine.shapes:scaled_wrap_coords;
 
 import eagine.core.types;
 import eagine.core.memory;
 import eagine.core.math;
 import :delegated;
+import <array>;
 import <memory>;
-import <utility>;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
-/// @brief Generator modifier recalculating the vertex box coords values.
+/// @brief Generator modifier scaling the shape wrap coordinates by specified amount.
 /// @ingroup shapes
-/// @see rebox
-export class reboxed_gen : public delegated_gen {
+/// @see center
+export class scaled_wrap_coords_gen : public delegated_gen {
 
 public:
-    reboxed_gen(std::shared_ptr<generator> gen) noexcept
-      : delegated_gen{std::move(gen)} {}
+    scaled_wrap_coords_gen(
+      std::shared_ptr<generator> gen,
+      std::array<float, 3> scale) noexcept
+      : delegated_gen{std::move(gen)}
+      , _scale{scale} {}
 
     void attrib_values(const vertex_attrib_variant, span<float>) override;
+
+private:
+    std::array<float, 3> _scale{1.F, 1.F, 1.F};
 };
 //------------------------------------------------------------------------------
-/// @brief Constructs instances of reboxed_gen modifier.
+/// @brief Constructs instances of scaled_wrap_coords_gen modifier.
 /// @ingroup shapes
-export auto rebox(std::shared_ptr<generator> gen) noexcept {
-    return std::make_unique<reboxed_gen>(std::move(gen));
+export auto scale_wrap_coords(
+  std::shared_ptr<generator> gen,
+  float x,
+  float y,
+  float z) noexcept {
+    return std::make_unique<scaled_wrap_coords_gen>(
+      std::move(gen), std::array<float, 3>{x, y, z});
 }
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes
