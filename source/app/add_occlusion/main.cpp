@@ -4,7 +4,7 @@
 /// See accompanying file LICENSE_1_0.txt or copy at
 ///  http://www.boost.org/LICENSE_1_0.txt
 ///
-#include <eagine/main.hpp>
+#include <eagine/main_ctx.hpp>
 #include <eagine/shapes/from_json.hpp>
 #include <eagine/shapes/occluded.hpp>
 #include <eagine/shapes/to_json.hpp>
@@ -41,3 +41,8 @@ auto main(main_ctx& ctx) -> int {
 }
 
 } // namespace eagine
+
+auto main(int argc, const char** argv) -> int {
+    return eagine::default_main(argc, argv, eagine::main);
+}
+
