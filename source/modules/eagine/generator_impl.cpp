@@ -5,21 +5,26 @@
 /// See accompanying file LICENSE_1_0.txt or copy at
 ///  http://www.boost.org/LICENSE_1_0.txt
 ///
-#include <eagine/assert.hpp>
-#include <eagine/integer_range.hpp>
-#include <eagine/math/functions.hpp>
-#include <eagine/math/intersection.hpp>
-#include <eagine/memory/span_algo.hpp>
-#include <eagine/reflect/enumerators.hpp>
-#include <array>
-#include <limits>
-#include <vector>
+module;
+
+#include <cassert>
+
+module eagine.shapes;
+import eagine.core.types;
+import eagine.core.memory;
+import eagine.core.reflection;
+import eagine.core.math;
+import eagine.core.utility;
+import <array>;
+import <cmath>;
+import <limits>;
+import <optional>;
+import <vector>;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
 // generator
 //------------------------------------------------------------------------------
-EAGINE_LIB_FUNC
 auto generator::find_variant(
   const vertex_attrib_kind attrib,
   const string_view name) -> vertex_attrib_variant {
@@ -34,7 +39,6 @@ auto generator::find_variant(
     return {attrib, index};
 }
 //------------------------------------------------------------------------------
-EAGINE_LIB_FUNC
 auto generator::find_variant(const string_view name) -> vertex_attrib_variant {
     for(const auto& info : enumerator_mapping(
           std::type_identity<vertex_attrib_kind>(), default_selector)) {
@@ -45,7 +49,6 @@ auto generator::find_variant(const string_view name) -> vertex_attrib_variant {
     return {};
 }
 //------------------------------------------------------------------------------
-EAGINE_LIB_FUNC
 auto generator::bounding_sphere() -> math::sphere<float, true> {
     std::array<float, 3> min{
       std::numeric_limits<float>::max(),
@@ -91,7 +94,6 @@ auto generator::bounding_sphere() -> math::sphere<float, true> {
     return {center, radius};
 }
 //------------------------------------------------------------------------------
-EAGINE_LIB_FUNC
 void generator::for_each_triangle(
   generator& gen,
   const drawing_variant var,
@@ -147,20 +149,18 @@ void generator::for_each_triangle(
     }
 }
 //------------------------------------------------------------------------------
-EAGINE_LIB_FUNC
 void generator::random_surface_values(
   [[maybe_unused]] const random_attribute_values& values) {
-    EAGINE_ASSERT(are_consistent(values));
+    assert(are_consistent(values));
 }
 //------------------------------------------------------------------------------
-EAGINE_LIB_FUNC
 void generator::ray_intersections(
   generator& gen,
   const drawing_variant var,
   const span<const math::line<float, true>> rays,
-  span<optionally_valid<float>> intersections) {
+  span<std::optional<float>> intersections) {
 
-    EAGINE_ASSERT(intersections.size() >= rays.size());
+    assert(intersections.size() >= rays.size());
 
     const auto pvak = vertex_attrib_kind::position;
     const auto vpv = gen.values_per_vertex(pvak);
@@ -222,22 +222,18 @@ void generator::ray_intersections(
 //------------------------------------------------------------------------------
 // generator_base
 //------------------------------------------------------------------------------
-EAGINE_LIB_FUNC auto generator_base::index_type(const drawing_variant)
-  -> index_data_type {
+auto generator_base::index_type(const drawing_variant) -> index_data_type {
     return index_data_type::none;
 }
 //------------------------------------------------------------------------------
-EAGINE_LIB_FUNC
 auto generator_base::index_count(const drawing_variant) -> span_size_t {
     return 0;
 }
 //------------------------------------------------------------------------------
-EAGINE_LIB_FUNC
 void generator_base::indices(const drawing_variant, span<std::uint8_t>) {
-    EAGINE_UNREACHABLE("Invalid function called for this index data type");
+    unreachable();
 }
 //------------------------------------------------------------------------------
-EAGINE_LIB_FUNC
 void generator_base::indices(
   const drawing_variant var,
   span<std::uint16_t> dest) {
@@ -249,7 +245,6 @@ void generator_base::indices(
     }
 }
 //------------------------------------------------------------------------------
-EAGINE_LIB_FUNC
 void generator_base::indices(
   const drawing_variant var,
   span<std::uint32_t> dest) {
@@ -269,7 +264,6 @@ void generator_base::indices(
 //------------------------------------------------------------------------------
 // centered_unit_shape_generator_base
 //------------------------------------------------------------------------------
-EAGINE_LIB_FUNC
 void centered_unit_shape_generator_base::attrib_values(
   const vertex_attrib_variant vav,
   span<float> dest) {

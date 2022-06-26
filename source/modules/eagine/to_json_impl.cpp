@@ -5,16 +5,25 @@
 /// See accompanying file LICENSE_1_0.txt or copy at
 ///  http://www.boost.org/LICENSE_1_0.txt
 ///
-#include <eagine/assert.hpp>
-#include <eagine/interleaved_call.hpp>
-#include <eagine/main_ctx.hpp>
-#include <eagine/reflect/enumerators.hpp>
-#include <iostream>
-#include <sstream>
+module eagine.shapes;
+
+import eagine.core.types;
+import eagine.core.memory;
+import eagine.core.identifier;
+import eagine.core.reflection;
+import eagine.core.math;
+import eagine.core.utility;
+import eagine.core.runtime;
+import eagine.core.logging;
+import eagine.core.main_ctx;
+import <array>;
+import <iostream>;
+import <sstream>;
+import <map>;
+import <vector>;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
-EAGINE_LIB_FUNC
 auto parse_from(main_ctx& ctx, generator&, to_json_options& opts) noexcept
   -> bool {
     opts.attrib_variants[vertex_attrib_kind::position][0];
@@ -37,8 +46,8 @@ auto parse_from(main_ctx& ctx, generator&, to_json_options& opts) noexcept
                         } else {
                             ctx.log()
                               .error("failed to parse attribute index")
-                              .arg(EAGINE_ID(attrib), info.name)
-                              .arg(EAGINE_ID(value), arg.next().get());
+                              .arg(identifier{"attrib"}, info.name)
+                              .arg(identifier{"value"}, arg.next().get());
                             return false;
                         }
                     }
@@ -49,7 +58,6 @@ auto parse_from(main_ctx& ctx, generator&, to_json_options& opts) noexcept
     return true;
 }
 //------------------------------------------------------------------------------
-EAGINE_LIB_FUNC
 auto to_json(std::ostream& out, generator& gen, const to_json_options& opts)
   -> std::ostream& {
     out << R"({"vertex_count":)" << gen.vertex_count() << '\n';
@@ -69,7 +77,7 @@ auto to_json(std::ostream& out, generator& gen, const to_json_options& opts)
                 << enumerator_name(
                      data_type,
                      std::type_identity<attrib_data_type>(),
-                     value_tree_tag())
+                     from_value_tree)
                 << '"' << '\n';
 
             const auto size = gen.value_count(vav);

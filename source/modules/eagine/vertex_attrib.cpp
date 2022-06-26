@@ -5,24 +5,22 @@
 /// See accompanying file LICENSE_1_0.txt or copy at
 ///  http://www.boost.org/LICENSE_1_0.txt
 ///
+export module eagine.shapes:vertex_attrib;
 
-#ifndef EAGINE_SHAPES_VERTEX_ATTRIB_HPP
-#define EAGINE_SHAPES_VERTEX_ATTRIB_HPP
-
-#include <eagine/bitfield.hpp>
-#include <eagine/reflect/map_enumerators.hpp>
-#include <eagine/types.hpp>
-#include <array>
-#include <cstdint>
-#include <type_traits>
-#include <utility>
+import eagine.core.types;
+import eagine.core.reflection;
+import <array>;
+import <cstdint>;
+import <type_traits>;
+import <tuple>;
+import <utility>;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Shape vertex attribute kind enumeration.
 /// @ingroup shapes
 /// @see vertex_attrib_name_and_kind
-enum class vertex_attrib_kind : std::uint32_t {
+export enum class vertex_attrib_kind : std::uint32_t {
     /// @brief The object id attributes (typically unique integer).
     object_id = 1U << 0U,
     /// @brief Vertex position.
@@ -68,10 +66,10 @@ enum class vertex_attrib_kind : std::uint32_t {
 //------------------------------------------------------------------------------
 /// @brief Alias for attribute named and kind pair.
 /// @ingroup shapes
-using vertex_attrib_name_and_kind = name_and_enumerator<vertex_attrib_kind>;
+export using vertex_attrib_name_and_kind =
+  name_and_enumerator<vertex_attrib_kind>;
 //------------------------------------------------------------------------------
-#if !EAGINE_CXX_REFLECTION
-template <typename Selector>
+export template <typename Selector>
 constexpr auto enumerator_mapping(
   const std::type_identity<vertex_attrib_kind>,
   const Selector) noexcept {
@@ -97,22 +95,21 @@ constexpr auto enumerator_mapping(
        {"polygon_id", vertex_attrib_kind::polygon_id},
        {"material_id", vertex_attrib_kind::material_id}}};
 }
-#endif
 //------------------------------------------------------------------------------
 /// @brief Alias for vertex_attrib_kind bitfield type.
 /// @ingroup shapes
-using vertex_attrib_kinds = bitfield<vertex_attrib_kind>;
+export using vertex_attrib_kinds = bitfield<vertex_attrib_kind>;
 //------------------------------------------------------------------------------
 /// @brief Returns vertex_attrib_kinds value with all bits set.
 /// @ingroup shapes
-static constexpr auto all_vertex_attrib_kinds() noexcept
+export constexpr auto all_vertex_attrib_kinds() noexcept
   -> vertex_attrib_kinds {
     return vertex_attrib_kinds{(1U << 20U) - 1U};
 }
 //------------------------------------------------------------------------------
 /// @brief Bitwise-or operator for vertex_attrib_kind bits.
 /// @ingroup shapes
-static constexpr auto operator|(
+export constexpr auto operator|(
   const vertex_attrib_kind a,
   const vertex_attrib_kind b) noexcept -> vertex_attrib_kinds {
     return {a, b};
@@ -121,7 +118,7 @@ static constexpr auto operator|(
 /// @brief Class designating an vertex attribute variant in a shape generator.
 /// @ingroup shapes
 /// @see vertex_attrib_variants
-class vertex_attrib_variant {
+export class vertex_attrib_variant {
 public:
     /// @brief Default constructor.
     constexpr vertex_attrib_variant() noexcept = default;
@@ -216,7 +213,7 @@ private:
 //------------------------------------------------------------------------------
 /// @brief Operator for constructing of vertex_attrib_variant from kind and index.
 /// @ingroup shapes
-static constexpr auto operator/(
+export constexpr auto operator/(
   const vertex_attrib_kind attrib,
   const span_size_t variant_index) noexcept -> vertex_attrib_variant {
     return {attrib, variant_index};
@@ -225,14 +222,14 @@ static constexpr auto operator/(
 /// @brief Array of several vertex attribute variant instances.
 /// @ingroup shapes
 /// @see vertex_attrib_variant
-template <std::size_t N>
+export template <std::size_t N>
 using vertex_attrib_variants = std::array<const vertex_attrib_variant, N>;
 //------------------------------------------------------------------------------
 /// @brief Operator for creating of single element array of vertex attrib variant.
 /// @ingroup shapes
 /// @see vertex_attrib_variant
 /// @see vertex_attrib_variants
-static constexpr auto operator+(const vertex_attrib_variant a) noexcept
+export constexpr auto operator+(const vertex_attrib_variant a) noexcept
   -> vertex_attrib_variants<1> {
     return {{a}};
 }
@@ -241,15 +238,15 @@ static constexpr auto operator+(const vertex_attrib_variant a) noexcept
 /// @ingroup shapes
 /// @see vertex_attrib_variant
 /// @see vertex_attrib_variants
-static constexpr auto operator+(
+export constexpr auto operator+(
   const vertex_attrib_variant a,
   const vertex_attrib_variant b) noexcept -> vertex_attrib_variants<2> {
     return {{a, b}};
 }
 //------------------------------------------------------------------------------
 // append_attrib
-template <std::size_t N, std::size_t... I>
-static constexpr auto do_append_attrib(
+export template <std::size_t N, std::size_t... I>
+constexpr auto do_append_attrib(
   const vertex_attrib_variants<N>& a,
   const vertex_attrib_variant b,
   const std::index_sequence<I...>) noexcept {
@@ -260,8 +257,8 @@ static constexpr auto do_append_attrib(
 /// @ingroup shapes
 /// @see vertex_attrib_variant
 /// @see vertex_attrib_variants
-template <std::size_t N>
-static constexpr auto operator+(
+export template <std::size_t N>
+constexpr auto operator+(
   const vertex_attrib_variants<N>& a,
   const vertex_attrib_variant b) noexcept -> vertex_attrib_variants<N + 1> {
     return do_append_attrib(a, b, std::make_index_sequence<N>());
@@ -270,13 +267,13 @@ static constexpr auto operator+(
 /// @brief Extracts vertex attribute kind bits from and vertex attribute variants array.
 /// @ingroup shapes
 /// @see vertex_attrib_kinds
-template <std::size_t N>
-static inline auto get_attrib_kinds(
-  const vertex_attrib_variants<N>& vaals) noexcept -> vertex_attrib_kinds {
+export template <std::size_t N>
+auto get_attrib_kinds(const vertex_attrib_variants<N>& vaals) noexcept
+  -> vertex_attrib_kinds {
     vertex_attrib_kinds res;
 
     for(const vertex_attrib_variant& vaal : vaals) {
-        res = res | vaal.attribute();
+        res |= vaal.attribute();
     }
 
     return res;
@@ -284,8 +281,8 @@ static inline auto get_attrib_kinds(
 //------------------------------------------------------------------------------
 /// @brief Gets the default number of values per vertex for an attribute kind.
 /// @ingroup shapes
-static inline auto attrib_values_per_vertex(
-  const vertex_attrib_kind attr) noexcept -> span_size_t {
+export auto attrib_values_per_vertex(const vertex_attrib_kind attr) noexcept
+  -> span_size_t {
     switch(attr) {
         case vertex_attrib_kind::color:
             return 4;
@@ -318,11 +315,8 @@ static inline auto attrib_values_per_vertex(
 //------------------------------------------------------------------------------
 /// @brief Gets the default number of values per vertex for an attribute variant.
 /// @ingroup shapes
-static inline auto attrib_values_per_vertex(
-  const vertex_attrib_variant vav) noexcept {
+export auto attrib_values_per_vertex(const vertex_attrib_variant vav) noexcept {
     return attrib_values_per_vertex(vav.attribute());
 }
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes
-
-#endif // EAGINE_SHAPES_VERTEX_ATTRIB_HPP
