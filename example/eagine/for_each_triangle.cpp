@@ -5,6 +5,11 @@
 /// See accompanying file LICENSE_1_0.txt or copy at
 ///  http://www.boost.org/LICENSE_1_0.txt
 ///
+#if EAGINE_SHAPES_MODULE
+import eagine.core;
+import eagine.shapes;
+import <iostream>;
+#else
 #include <eagine/console/console.hpp>
 #include <eagine/main_ctx.hpp>
 #include <eagine/shapes/cube.hpp>
@@ -14,6 +19,7 @@
 #include <eagine/shapes/torus.hpp>
 #include <eagine/shapes/twisted_torus.hpp>
 #include <iostream>
+#endif
 
 namespace eagine {
 
@@ -44,10 +50,10 @@ auto main(main_ctx& ctx) -> int {
 
     const auto print_info = [&](const shapes::shape_face_info& info) {
         ctx.cio()
-          .print(EAGINE_ID(triangle), "[${a}, ${b}, ${c}]")
-          .arg(EAGINE_ID(a), info.indices[0])
-          .arg(EAGINE_ID(b), info.indices[1])
-          .arg(EAGINE_ID(c), info.indices[2]);
+          .print(identifier{"triangle"}, "[${a}, ${b}, ${c}]")
+          .arg(identifier{"a"}, info.indices[0])
+          .arg(identifier{"b"}, info.indices[1])
+          .arg(identifier{"c"}, info.indices[2]);
     };
 
     gen->for_each_triangle({construct_from, print_info});
