@@ -13,6 +13,7 @@ import eagine.core.identifier;
 import eagine.core.math;
 import eagine.core.logging;
 import eagine.core.main_ctx;
+import <array>;
 import <map>;
 import <memory>;
 import <mutex>;
