@@ -29,7 +29,7 @@ surface_points_gen::surface_points_gen(
   std::shared_ptr<generator> gen,
   const span_size_t point_count,
   main_ctx_parent parent) noexcept
-  : main_ctx_object{identifier{"SurfPtsGen"}, parent}
+  : main_ctx_object{"SurfPtsGen", parent}
   , delegated_gen{std::move(gen)}
   , _point_count{point_count} {
     _topo_opts.features.set(topology_feature_bit::triangle_area);

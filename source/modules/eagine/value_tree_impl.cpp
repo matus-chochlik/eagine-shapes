@@ -61,7 +61,7 @@ auto value_tree_loader::_attr_mask(const valtree::compound& source) noexcept
 value_tree_loader::value_tree_loader(
   valtree::compound source,
   main_ctx_parent parent) noexcept
-  : main_ctx_object{identifier{"ValTreLoad"}, parent}
+  : main_ctx_object{"ValTreLoad", parent}
   , _base{_attr_mask(source), all_generator_capabilities()}
   , _source{std::move(source)} {}
 //------------------------------------------------------------------------------
@@ -85,7 +85,7 @@ auto value_tree_loader::attribute_variants(const vertex_attrib_kind attrib)
         return _source.nested_count(attrib_a);
     } else {
         log_error("could not query vertex attribute variant count")
-          .arg(identifier{"attribute"}, attrib);
+          .arg("attribute", attrib);
     }
     return 0;
 }
@@ -103,24 +103,24 @@ auto value_tree_loader::variant_name(const vertex_attrib_variant vav)
                 auto& name = _variant_names[vav] = {};
                 if(_source.fetch_value(vpv_a, name)) {
                     log_debug("cached attribute variant name")
-                      .arg(identifier{"attribute"}, vav.attribute())
-                      .arg(identifier{"variant"}, vav.index())
-                      .arg(identifier{"name"}, name);
+                      .arg("attribute", vav.attribute())
+                      .arg("variant", vav.index())
+                      .arg("name", name);
                     return {name};
                 } else {
                     log_error("could not fetch attribute variant name")
-                      .arg(identifier{"attribute"}, vav.attribute())
-                      .arg(identifier{"variant"}, vav.index());
+                      .arg("attribute", vav.attribute())
+                      .arg("variant", vav.index());
                 }
             }
         } else {
             log_error("could not find vertex attribute variant")
-              .arg(identifier{"attribute"}, vav.attribute())
-              .arg(identifier{"variant"}, vav.index());
+              .arg("attribute", vav.attribute())
+              .arg("variant", vav.index());
         }
     } else {
         log_error("could not find vertex attribute")
-          .arg(identifier{"attribute"}, vav.attribute());
+          .arg("attribute", vav.attribute());
     }
     return {};
 }
@@ -137,18 +137,18 @@ auto value_tree_loader::values_per_vertex(const vertex_attrib_variant vav)
                     return result;
                 } else {
                     log_error("could not fetch attribute variant vertex count")
-                      .arg(identifier{"attribute"}, vav.attribute())
-                      .arg(identifier{"variant"}, vav.index());
+                      .arg("attribute", vav.attribute())
+                      .arg("variant", vav.index());
                 }
             }
         } else {
             log_error("could not find vertex attribute variant")
-              .arg(identifier{"attribute"}, vav.attribute())
-              .arg(identifier{"variant"}, vav.index());
+              .arg("attribute", vav.attribute())
+              .arg("variant", vav.index());
         }
     } else {
         log_error("could not find vertex attribute")
-          .arg(identifier{"attribute"}, vav.attribute());
+          .arg("attribute", vav.attribute());
     }
     return _base::values_per_vertex(vav);
 }
@@ -164,24 +164,24 @@ auto value_tree_loader::attrib_type(const vertex_attrib_variant vav)
                         return extract(type);
                     } else {
                         log_error("unknown attribute variant data type")
-                          .arg(identifier{"type"}, _temp)
-                          .arg(identifier{"attribute"}, vav.attribute())
-                          .arg(identifier{"variant"}, vav.index());
+                          .arg("type", _temp)
+                          .arg("attribute", vav.attribute())
+                          .arg("variant", vav.index());
                     }
                 } else {
                     log_error("could not fetch attribute variant data type")
-                      .arg(identifier{"attribute"}, vav.attribute())
-                      .arg(identifier{"variant"}, vav.index());
+                      .arg("attribute", vav.attribute())
+                      .arg("variant", vav.index());
                 }
             }
         } else {
             log_error("could not find vertex attribute variant")
-              .arg(identifier{"attribute"}, vav.attribute())
-              .arg(identifier{"variant"}, vav.index());
+              .arg("attribute", vav.attribute())
+              .arg("variant", vav.index());
         }
     } else {
         log_error("could not find vertex attribute")
-          .arg(identifier{"attribute"}, vav.attribute());
+          .arg("attribute", vav.attribute());
     }
     return attrib_data_type::float_;
 }
@@ -197,8 +197,8 @@ auto value_tree_loader::is_attrib_normalized(const vertex_attrib_variant vav)
                     return normalized;
                 } else {
                     log_error("could not fetch attribute variant normalized")
-                      .arg(identifier{"attribute"}, vav.attribute())
-                      .arg(identifier{"variant"}, vav.index());
+                      .arg("attribute", vav.attribute())
+                      .arg("variant", vav.index());
                 }
             } else if(const auto type_a{_source.nested(variant_a, "type")}) {
                 if(_source.fetch_value(type_a, _temp)) {
@@ -206,25 +206,25 @@ auto value_tree_loader::is_attrib_normalized(const vertex_attrib_variant vav)
                         return extract(type) != attrib_data_type::float_;
                     } else {
                         log_error("unknown attribute variant data type")
-                          .arg(identifier{"type"}, _temp)
-                          .arg(identifier{"attribute"}, vav.attribute())
-                          .arg(identifier{"variant"}, vav.index());
+                          .arg("type", _temp)
+                          .arg("attribute", vav.attribute())
+                          .arg("variant", vav.index());
                     }
                 } else {
                     log_error("could not fetch attribute variant data type")
-                      .arg(identifier{"attribute"}, vav.attribute())
-                      .arg(identifier{"variant"}, vav.index());
+                      .arg("attribute", vav.attribute())
+                      .arg("variant", vav.index());
                 }
             }
 
         } else {
             log_error("could not find vertex attribute variant")
-              .arg(identifier{"attribute"}, vav.attribute())
-              .arg(identifier{"variant"}, vav.index());
+              .arg("attribute", vav.attribute())
+              .arg("variant", vav.index());
         }
     } else {
         log_error("could not find vertex attribute")
-          .arg(identifier{"attribute"}, vav.attribute());
+          .arg("attribute", vav.attribute());
     }
     return false;
 }
@@ -239,26 +239,26 @@ void value_tree_loader::_attrib_values(
             if(const auto data_a{_source.nested(variant_a, "data")}) {
                 if(_source.fetch_values(data_a, dest)) {
                     log_debug("loaded vertex attribute data")
-                      .arg(identifier{"attribute"}, vav.attribute())
-                      .arg(identifier{"variant"}, vav.index());
+                      .arg("attribute", vav.attribute())
+                      .arg("variant", vav.index());
                 } else {
                     log_error("could not fetch vertex attribute data")
-                      .arg(identifier{"attribute"}, vav.attribute())
-                      .arg(identifier{"variant"}, vav.index());
+                      .arg("attribute", vav.attribute())
+                      .arg("variant", vav.index());
                 }
             } else {
                 log_error("could not find vertex attribute data")
-                  .arg(identifier{"attribute"}, vav.attribute())
-                  .arg(identifier{"variant"}, vav.index());
+                  .arg("attribute", vav.attribute())
+                  .arg("variant", vav.index());
             }
         } else {
             log_error("could not find vertex attribute variant")
-              .arg(identifier{"attribute"}, vav.attribute())
-              .arg(identifier{"variant"}, vav.index());
+              .arg("attribute", vav.attribute())
+              .arg("variant", vav.index());
         }
     } else {
         log_error("could not find vertex attribute")
-          .arg(identifier{"attribute"}, vav.attribute());
+          .arg("attribute", vav.attribute());
     }
 }
 //------------------------------------------------------------------------------
@@ -304,8 +304,7 @@ auto value_tree_loader::index_type(const drawing_variant) -> index_data_type {
             if(const auto type{index_data_type_from(view(_temp))}) {
                 return extract(type);
             } else {
-                log_error("unsupported index type value")
-                  .arg(identifier{"type"}, _temp);
+                log_error("unsupported index type value").arg("type", _temp);
             }
         } else {
             log_error("could not fetch index type value");
@@ -338,7 +337,7 @@ void value_tree_loader::indices(
   span<std::uint32_t> dest) {
     if(const auto indices_a{_source.nested("indices")}) {
         if(_source.fetch_values(indices_a, dest)) {
-            log_debug("loaded indices").arg(identifier{"indices"}, view(dest));
+            log_debug("loaded indices").arg("indices", view(dest));
         } else {
             log_error("could not fetch shape 32-bit indices");
         }
@@ -368,29 +367,29 @@ void value_tree_loader::instructions(
                     if(const auto first_a{_source.nested(instr_a, "first")}) {
                         if(!_source.fetch_value(first_a, op.first)) {
                             log_error("could not fetch shape draw offset")
-                              .arg(identifier{"index"}, i);
+                              .arg("index", i);
                         }
                     } else {
                         log_error("could not find shape draw offset")
-                          .arg(identifier{"index"}, i);
+                          .arg("index", i);
                     }
 
                     // count
                     if(const auto count_a{_source.nested(instr_a, "count")}) {
                         if(!_source.fetch_value(count_a, op.count)) {
                             log_error("could not fetch shape draw count")
-                              .arg(identifier{"index"}, i);
+                              .arg("index", i);
                         }
                     } else {
                         log_error("could not find shape draw count")
-                          .arg(identifier{"index"}, i);
+                          .arg("index", i);
                     }
 
                     // phase
                     if(const auto phase_a{_source.nested(instr_a, "phase")}) {
                         if(!_source.fetch_value(phase_a, op.phase)) {
                             log_error("could not fetch draw phase value")
-                              .arg(identifier{"index"}, i);
+                              .arg("index", i);
                         }
                     }
 
@@ -400,7 +399,7 @@ void value_tree_loader::instructions(
                         if(!_source.fetch_value(
                              pri_a, op.primitive_restart_index)) {
                             log_error("could not fetch restart index")
-                              .arg(identifier{"index"}, i);
+                              .arg("index", i);
                         }
                     }
 
@@ -410,7 +409,7 @@ void value_tree_loader::instructions(
                         if(!_source.fetch_value(
                              ptch_vert_a, op.patch_vertices)) {
                             log_error("could not fetch patch vertex count")
-                              .arg(identifier{"index"}, i);
+                              .arg("index", i);
                         }
                     }
 
@@ -422,16 +421,16 @@ void value_tree_loader::instructions(
                                 op.mode = extract(mode);
                             } else {
                                 log_error("unsupported shape draw mode")
-                                  .arg(identifier{"mode"}, _temp)
-                                  .arg(identifier{"index"}, i);
+                                  .arg("mode", _temp)
+                                  .arg("index", i);
                             }
                         } else {
                             log_error("could not fetch shape draw mode")
-                              .arg(identifier{"index"}, i);
+                              .arg("index", i);
                         }
                     } else {
                         log_error("could not find shape draw mode")
-                          .arg(identifier{"index"}, i);
+                          .arg("index", i);
                     }
 
                     // index type
@@ -443,7 +442,7 @@ void value_tree_loader::instructions(
                                 op.idx_type = extract(type);
                             } else {
                                 log_error("unsupported index type value")
-                                  .arg(identifier{"type"}, _temp);
+                                  .arg("type", _temp);
                             }
                         } else {
                             log_error("could not fetch index type value");
@@ -457,7 +456,7 @@ void value_tree_loader::instructions(
                             op.primitive_restart = btemp;
                         } else {
                             log_error("invalid primitive restart flag")
-                              .arg(identifier{"index"}, i);
+                              .arg("index", i);
                         }
                     }
 
@@ -468,27 +467,27 @@ void value_tree_loader::instructions(
                             op.cw_face_winding = btemp;
                         } else {
                             log_error("invalid face winding direction")
-                              .arg(identifier{"index"}, i);
+                              .arg("index", i);
                         }
                     }
                     log_debug("loaded draw operation")
-                      .arg(identifier{"first"}, op.first)
-                      .arg(identifier{"count"}, op.count)
-                      .arg(identifier{"phase"}, op.phase)
-                      .arg(identifier{"prmRstrIdx"}, op.primitive_restart_index)
-                      .arg(identifier{"mode"}, op.mode)
-                      .arg(identifier{"indexType"}, op.idx_type)
-                      .arg(identifier{"primRstrt"}, bool(op.primitive_restart))
-                      .arg(identifier{"cwFaceWndg"}, bool(op.cw_face_winding));
+                      .arg("first", op.first)
+                      .arg("count", op.count)
+                      .arg("phase", op.phase)
+                      .arg("prmRstrIdx", op.primitive_restart_index)
+                      .arg("mode", op.mode)
+                      .arg("indexType", op.idx_type)
+                      .arg("primRstrt", bool(op.primitive_restart))
+                      .arg("cwFaceWndg", bool(op.cw_face_winding));
                 } else {
                     log_error("could not get shape draw instruction")
-                      .arg(identifier{"index"}, i);
+                      .arg("index", i);
                 }
             }
         } else {
             log_error("shape draw instructions destination size mismatch")
-              .arg(identifier{"dest"}, ops.size())
-              .arg(identifier{"actual"}, _source.nested_count(instrs_a));
+              .arg("dest", ops.size())
+              .arg("actual", _source.nested_count(instrs_a));
         }
     } else {
         log_error("could not find shape draw instructions");

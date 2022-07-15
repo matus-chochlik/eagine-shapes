@@ -24,7 +24,7 @@ namespace eagine::shapes {
 cached_gen::cached_gen(
   std::shared_ptr<generator> gen,
   main_ctx_parent parent) noexcept
-  : main_ctx_object{identifier{"CchdShpGen"}, parent}
+  : main_ctx_object{"CchdShpGen", parent}
   , _gen{std::move(gen)}
   , _instance_count{_gen->instance_count()}
   , _vertex_count{_gen->vertex_count()}
@@ -142,9 +142,9 @@ void cached_gen::_get_values(
             cached.resize(size);
             _gen->attrib_values(vav, cover(cached));
             log_debug("cached attribute values")
-              .arg(identifier{"attrib"}, vav.attribute())
-              .arg(identifier{"index"}, vav.index())
-              .arg(identifier{"size"}, size);
+              .arg("attrib", vav.attribute())
+              .arg("index", vav.index())
+              .arg("size", size);
         }
         return cached;
     }();
@@ -164,8 +164,8 @@ void cached_gen::_get_indices(
             cached.resize(size);
             _gen->indices(var, cover(cached));
             log_debug("cached vertex indices")
-              .arg(identifier{"variant"}, var)
-              .arg(identifier{"size"}, size);
+              .arg("variant", var)
+              .arg("size", size);
         }
         return cached;
     }();
@@ -185,8 +185,8 @@ void cached_gen::_get_instructions(
             cached.resize(size);
             _gen->instructions(var, cover(cached));
             log_debug("cached draw instructions")
-              .arg(identifier{"variant"}, var)
-              .arg(identifier{"size"}, size);
+              .arg("variant", var)
+              .arg("size", size);
         }
         return cached;
     }();
