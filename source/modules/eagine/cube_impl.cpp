@@ -363,9 +363,7 @@ auto unit_cube_gen::index_count(const drawing_variant var) -> span_size_t {
 }
 //------------------------------------------------------------------------------
 template <typename T>
-inline void unit_cube_gen::_indices(
-  const drawing_variant var,
-  span<T> dest) noexcept {
+void unit_cube_gen::_indices(const drawing_variant var, span<T> dest) noexcept {
     assert(dest.size() >= index_count(var));
 
     span_size_t k = 0;

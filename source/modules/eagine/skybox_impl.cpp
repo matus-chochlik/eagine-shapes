@@ -143,7 +143,7 @@ auto skybox_gen::index_count(const drawing_variant) -> span_size_t {
 }
 //------------------------------------------------------------------------------
 template <typename T>
-inline void skybox_gen::_indices(
+void skybox_gen::_indices(
   [[maybe_unused]] const drawing_variant var,
   span<T> dest) noexcept {
     assert(dest.size() >= index_count(var));

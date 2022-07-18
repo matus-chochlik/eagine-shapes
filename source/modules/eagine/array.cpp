@@ -17,7 +17,7 @@ import <memory>;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
-class array_gen : public delegated_gen {
+export class array_gen : public delegated_gen {
 public:
     array_gen(
       std::shared_ptr<generator> gen,
@@ -55,14 +55,14 @@ private:
     void _indices(drawing_variant, span<T> dest) noexcept;
 };
 //------------------------------------------------------------------------------
-static inline auto array(
+export auto array(
   std::shared_ptr<generator> gen,
   const std::array<float, 3> d,
   const span_size_t count) noexcept {
     return std::make_unique<array_gen>(std::move(gen), d, count);
 }
 //------------------------------------------------------------------------------
-static inline auto ortho_array_xyz(
+export auto ortho_array_xyz(
   std::shared_ptr<generator> gen,
   const std::array<float, 3> d,
   const std::array<span_size_t, 3> n) noexcept {

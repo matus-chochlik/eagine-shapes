@@ -42,7 +42,7 @@ auto unit_round_cube_gen::vertex_count() -> span_size_t {
     return 6 * (_divisions + 1) * (_divisions + 1);
 }
 //------------------------------------------------------------------------------
-static inline auto unit_round_cube_face_normal(const span_size_t f) noexcept {
+auto unit_round_cube_face_normal(const span_size_t f) noexcept {
     return std::array<math::tvec<float, 3, true>, 6>{{
       {-1.F, 0.F, 0.F},
       {+1.F, 0.F, 0.F},
@@ -53,7 +53,7 @@ static inline auto unit_round_cube_face_normal(const span_size_t f) noexcept {
     }}[f];
 }
 //------------------------------------------------------------------------------
-static inline auto unit_round_cube_face_tangent(const span_size_t f) noexcept {
+auto unit_round_cube_face_tangent(const span_size_t f) noexcept {
     return std::array<math::tvec<float, 3, true>, 6>{{
       {0.F, 0.F, +1.F},
       {0.F, 0.F, -1.F},
@@ -64,7 +64,7 @@ static inline auto unit_round_cube_face_tangent(const span_size_t f) noexcept {
     }}[f];
 }
 //------------------------------------------------------------------------------
-static inline auto unit_round_cube_face_bitangent(const span_size_t f) noexcept {
+auto unit_round_cube_face_bitangent(const span_size_t f) noexcept {
     return std::array<math::tvec<float, 3, true>, 6>{{
       {0.F, +1.F, 0.F},
       {0.F, +1.F, 0.F},
@@ -244,7 +244,7 @@ auto unit_round_cube_gen::index_type(const drawing_variant var)
 }
 //------------------------------------------------------------------------------
 template <typename T>
-inline void unit_round_cube_gen::_indices(
+void unit_round_cube_gen::_indices(
   [[maybe_unused]] const drawing_variant var,
   span<T> dest) noexcept {
     assert(var == 0);
