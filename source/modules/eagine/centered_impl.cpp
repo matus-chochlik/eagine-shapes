@@ -16,6 +16,18 @@ import <memory>;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
+class centered_gen : public delegated_gen {
+
+public:
+    centered_gen(std::shared_ptr<generator> gen) noexcept
+      : delegated_gen{std::move(gen)} {}
+
+    using delegated_gen::attrib_values;
+    void attrib_values(const vertex_attrib_variant, span<float>) override;
+
+    auto bounding_sphere() -> math::sphere<float, true> override;
+};
+//------------------------------------------------------------------------------
 void centered_gen::attrib_values(
   const vertex_attrib_variant vav,
   span<float> dest) {
@@ -70,6 +82,11 @@ void centered_gen::attrib_values(
     } else {
         delegated_gen::attrib_values(vav, dest);
     }
+}
+//------------------------------------------------------------------------------
+auto center(std::shared_ptr<generator> gen) noexcept
+  -> std::unique_ptr<generator> {
+    return std::make_unique<centered_gen>(std::move(gen));
 }
 //------------------------------------------------------------------------------
 auto centered_gen::bounding_sphere() -> math::sphere<float, true> {
