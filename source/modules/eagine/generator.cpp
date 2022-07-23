@@ -342,99 +342,43 @@ public:
     }
 
     auto enable(const generator_capability cap, const bool value) noexcept
-      -> bool final {
-        bool result{true};
-        if(value) {
-            if(_supported_caps.has(cap)) {
-                _enabled_caps.set(cap);
-            } else {
-                result = false;
-            }
-        } else {
-            _enabled_caps.clear(cap);
-        }
-        return result;
-    }
+      -> bool final;
 
-    auto is_enabled(const generator_capability cap) noexcept -> bool final {
-        return _enabled_caps.has(cap);
-    }
+    auto is_enabled(const generator_capability cap) noexcept -> bool final;
 
-    auto instance_count() -> span_size_t override {
-        return 1;
-    }
+    auto instance_count() -> span_size_t override;
 
     auto attribute_variants(const vertex_attrib_kind attrib)
-      -> span_size_t override {
-        return has(attrib) ? 1 : 0;
-    }
+      -> span_size_t override;
 
-    auto variant_name(const vertex_attrib_variant) -> string_view override {
-        return {};
-    }
+    auto variant_name(const vertex_attrib_variant) -> string_view override;
 
     auto values_per_vertex(const vertex_attrib_variant vav)
-      -> span_size_t override {
-        return has_variant(vav) ? attrib_values_per_vertex(vav) : 0U;
-    }
+      -> span_size_t override;
 
-    auto attrib_type(const vertex_attrib_variant) -> attrib_data_type override {
-        return attrib_data_type::float_;
-    }
+    auto attrib_type(const vertex_attrib_variant) -> attrib_data_type override;
 
-    auto is_attrib_integral(const vertex_attrib_variant vav) -> bool override {
-        switch(attrib_type(vav)) {
-            case attrib_data_type::ubyte:
-            case attrib_data_type::int_16:
-            case attrib_data_type::int_32:
-            case attrib_data_type::uint_16:
-            case attrib_data_type::uint_32:
-                return true;
-            default:
-                break;
-        }
-        return false;
-    }
+    auto is_attrib_integral(const vertex_attrib_variant vav) -> bool override;
 
-    auto is_attrib_normalized(const vertex_attrib_variant) -> bool override {
-        return false;
-    }
+    auto is_attrib_normalized(const vertex_attrib_variant) -> bool override;
 
-    auto attrib_divisor(const vertex_attrib_variant) -> std::uint32_t override {
-        return 0U;
-    }
+    auto attrib_divisor(const vertex_attrib_variant) -> std::uint32_t override;
 
-    void attrib_values(const vertex_attrib_variant, span<byte>) override {
-        unreachable();
-    }
+    void attrib_values(const vertex_attrib_variant, span<byte>) override;
 
-    void attrib_values(const vertex_attrib_variant, span<std::int16_t>)
-      override {
-        unreachable();
-    }
+    void attrib_values(const vertex_attrib_variant, span<std::int16_t>) override;
 
-    void attrib_values(const vertex_attrib_variant, span<std::int32_t>)
-      override {
-        unreachable();
-    }
+    void attrib_values(const vertex_attrib_variant, span<std::int32_t>) override;
 
     void attrib_values(const vertex_attrib_variant, span<std::uint16_t>)
-      override {
-        unreachable();
-    }
+      override;
 
     void attrib_values(const vertex_attrib_variant, span<std::uint32_t>)
-      override {
-        unreachable();
-    }
+      override;
 
-    void attrib_values(const vertex_attrib_variant, span<float>) override {
-        unreachable();
-    }
+    void attrib_values(const vertex_attrib_variant, span<float>) override;
 
-    auto draw_variant_count() -> span_size_t override {
-        return 1;
-    }
+    auto draw_variant_count() -> span_size_t override;
 
     auto index_type(const drawing_variant) -> index_data_type override;
 

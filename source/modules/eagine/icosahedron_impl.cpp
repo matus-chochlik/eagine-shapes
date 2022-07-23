@@ -19,6 +19,51 @@ import <cmath>;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
+class unit_icosahedron_gen : public centered_unit_shape_generator_base {
+public:
+    unit_icosahedron_gen(const vertex_attrib_kinds attr_kinds) noexcept;
+
+    auto vertex_count() -> span_size_t override;
+
+    void positions(span<float> dest) noexcept;
+    void normals(span<float> dest) noexcept;
+
+    void attrib_values(const vertex_attrib_variant, span<float>) override;
+
+    auto index_type(const drawing_variant) -> index_data_type override;
+
+    auto index_count(const drawing_variant) -> span_size_t override;
+
+    void indices(const drawing_variant, span<std::uint8_t> dest) override;
+
+    void indices(const drawing_variant, span<std::uint16_t> dest) override;
+
+    void indices(const drawing_variant, span<std::uint32_t> dest) override;
+
+    auto operation_count(const drawing_variant) -> span_size_t override;
+
+    void instructions(const drawing_variant, span<draw_operation> ops) override;
+
+    auto bounding_sphere() -> math::sphere<float, true> override;
+
+private:
+    using _base = centered_unit_shape_generator_base;
+
+    static auto _attr_mask() noexcept -> vertex_attrib_kinds;
+
+    static auto _shared_attrs() noexcept -> vertex_attrib_kinds;
+
+    auto _only_shared_attribs() noexcept -> bool;
+
+    template <typename T>
+    void _indices(const drawing_variant, span<T> dest) noexcept;
+};
+//------------------------------------------------------------------------------
+auto unit_icosahedron(vertex_attrib_kinds attr_kinds)
+  -> std::shared_ptr<generator> {
+    return std::make_unique<unit_icosahedron_gen>(attr_kinds);
+}
+//------------------------------------------------------------------------------
 auto unit_icosahedron_gen::_attr_mask() noexcept -> vertex_attrib_kinds {
     return vertex_attrib_kind::position | vertex_attrib_kind::normal |
            vertex_attrib_kind::box_coord;
