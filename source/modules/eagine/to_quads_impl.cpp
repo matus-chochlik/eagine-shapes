@@ -19,6 +19,33 @@ import <vector>;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
+class to_quads_gen : public delegated_gen {
+public:
+    to_quads_gen(std::shared_ptr<generator> gen) noexcept
+      : delegated_gen{std::move(gen)} {}
+
+    auto index_count(const drawing_variant) -> span_size_t override;
+
+    void indices(const drawing_variant, span<std::uint8_t> dest) override;
+
+    void indices(const drawing_variant, span<std::uint16_t> dest) override;
+
+    void indices(const drawing_variant, span<std::uint32_t> dest) override;
+
+    auto operation_count(const drawing_variant) -> span_size_t override;
+
+    void instructions(const drawing_variant, span<draw_operation> ops) override;
+
+private:
+    template <typename T>
+    void _indices(const drawing_variant, span<T> dest) noexcept;
+};
+//------------------------------------------------------------------------------
+auto to_quads(std::shared_ptr<generator> gen) noexcept
+  -> std::unique_ptr<generator> {
+    return std::make_unique<to_quads_gen>(std::move(gen));
+}
+//------------------------------------------------------------------------------
 auto to_quads_gen::index_count(const drawing_variant var) -> span_size_t {
 
     span_size_t count{0};

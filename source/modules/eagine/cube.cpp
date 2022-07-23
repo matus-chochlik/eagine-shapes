@@ -7,7 +7,7 @@
 ///
 export module eagine.shapes:cube;
 
-import :generator;
+export import :generator;
 import <memory>;
 
 namespace eagine::shapes {

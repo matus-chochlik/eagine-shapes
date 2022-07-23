@@ -222,6 +222,16 @@ void generator::ray_intersections(
 //------------------------------------------------------------------------------
 // generator_base
 //------------------------------------------------------------------------------
+generator_base::generator_base(
+  const vertex_attrib_kinds attr_kinds,
+  const generator_capabilities supported_caps) noexcept
+  : _attr_kinds{attr_kinds}
+  , _supported_caps{supported_caps} {}
+//------------------------------------------------------------------------------
+auto generator_base::attrib_kinds() noexcept -> vertex_attrib_kinds {
+    return _attr_kinds;
+}
+//------------------------------------------------------------------------------
 auto generator_base::enable(
   const generator_capability cap,
   const bool value) noexcept -> bool {
@@ -367,6 +377,11 @@ void generator_base::indices(
 }
 //------------------------------------------------------------------------------
 // centered_unit_shape_generator_base
+//------------------------------------------------------------------------------
+centered_unit_shape_generator_base::centered_unit_shape_generator_base(
+  const vertex_attrib_kinds attr_kinds,
+  const generator_capabilities supported_caps) noexcept
+  : generator_base(attr_kinds, supported_caps) {}
 //------------------------------------------------------------------------------
 void centered_unit_shape_generator_base::attrib_values(
   const vertex_attrib_variant vav,

@@ -15,23 +15,10 @@ import <memory>;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
-/// @brief Generator modifier changing primitives in draw instructions to patches.
-/// @ingroup shapes
-/// @see to_patches
-export class to_patches_gen : public delegated_gen {
-
-public:
-    to_patches_gen(std::shared_ptr<generator> gen) noexcept
-      : delegated_gen{std::move(gen)} {}
-
-    void instructions(const drawing_variant, span<draw_operation> ops) override;
-};
-//------------------------------------------------------------------------------
 /// @brief Constructs instances of to_patches_gen modifier.
 /// @ingroup shapes
-export auto to_patches(std::shared_ptr<generator> gen) noexcept {
-    return std::make_unique<to_patches_gen>(std::move(gen));
-}
+export auto to_patches(std::shared_ptr<generator> gen) noexcept
+  -> std::unique_ptr<generator>;
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes
 

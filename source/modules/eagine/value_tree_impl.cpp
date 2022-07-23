@@ -26,6 +26,64 @@ import <map>;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
+class value_tree_loader
+  : public main_ctx_object
+  , public centered_unit_shape_generator_base {
+public:
+    value_tree_loader(valtree::compound source, main_ctx_parent) noexcept;
+
+    auto vertex_count() -> span_size_t override;
+
+    auto attribute_variants(const vertex_attrib_kind) -> span_size_t override;
+
+    auto variant_name(const vertex_attrib_variant) -> string_view override;
+
+    auto values_per_vertex(const vertex_attrib_variant) -> span_size_t override;
+
+    auto attrib_type(const vertex_attrib_variant vav)
+      -> attrib_data_type override;
+
+    auto is_attrib_normalized(const vertex_attrib_variant) -> bool override;
+
+    void attrib_values(const vertex_attrib_variant, span<byte>) override;
+    void attrib_values(const vertex_attrib_variant, span<std::int16_t>) override;
+    void attrib_values(const vertex_attrib_variant, span<std::int32_t>) override;
+    void attrib_values(const vertex_attrib_variant, span<std::uint16_t>)
+      override;
+    void attrib_values(const vertex_attrib_variant, span<std::uint32_t>)
+      override;
+    void attrib_values(const vertex_attrib_variant, span<float>) override;
+
+    auto index_type(const drawing_variant) -> index_data_type override;
+
+    auto index_count(const drawing_variant) -> span_size_t override;
+
+    void indices(const drawing_variant, span<std::uint16_t> dest) override;
+    void indices(const drawing_variant, span<std::uint32_t> dest) override;
+
+    auto operation_count(const drawing_variant) -> span_size_t override;
+
+    void instructions(const drawing_variant, span<draw_operation> ops) override;
+
+private:
+    using _base = centered_unit_shape_generator_base;
+
+    valtree::compound _source{};
+    std::string _temp{};
+    std::map<vertex_attrib_variant, std::string> _variant_names{};
+
+    static auto _attr_mask(const valtree::compound&) noexcept
+      -> vertex_attrib_kinds;
+
+    template <typename T>
+    void _attrib_values(const vertex_attrib_variant, span<T>);
+};
+//------------------------------------------------------------------------------
+auto from_value_tree(valtree::compound source, main_ctx_parent parent)
+  -> std::unique_ptr<generator> {
+    return std::make_unique<value_tree_loader>(std::move(source), parent);
+}
+//------------------------------------------------------------------------------
 auto vertex_attrib_name(const vertex_attrib_kind attrib) noexcept {
     return enumerator_name(
       attrib, std::type_identity<vertex_attrib_kind>{}, from_value_tree);

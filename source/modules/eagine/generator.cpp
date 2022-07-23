@@ -335,11 +335,9 @@ export struct generator : interface<generator> {
 //------------------------------------------------------------------------------
 /// @brief Common base implementation of the shape generator interface.
 /// @ingroup shapes
-export class generator_base : public generator {
+class generator_base : public generator {
 public:
-    auto attrib_kinds() noexcept -> vertex_attrib_kinds final {
-        return _attr_kinds;
-    }
+    auto attrib_kinds() noexcept -> vertex_attrib_kinds final;
 
     auto enable(const generator_capability cap, const bool value) noexcept
       -> bool final;
@@ -393,9 +391,7 @@ public:
 protected:
     generator_base(
       const vertex_attrib_kinds attr_kinds,
-      const generator_capabilities supported_caps) noexcept
-      : _attr_kinds{attr_kinds}
-      , _supported_caps{supported_caps} {}
+      const generator_capabilities supported_caps) noexcept;
 
 private:
     vertex_attrib_kinds _attr_kinds;
@@ -405,7 +401,7 @@ private:
 //------------------------------------------------------------------------------
 /// @brief Base class for shape generators re-calculating the center.
 /// @ingroup shapes
-export class centered_unit_shape_generator_base : public generator_base {
+class centered_unit_shape_generator_base : public generator_base {
 public:
     using generator_base::attrib_values;
     void attrib_values(const vertex_attrib_variant vav, span<float> dest)
@@ -414,8 +410,7 @@ public:
 protected:
     centered_unit_shape_generator_base(
       const vertex_attrib_kinds attr_kinds,
-      const generator_capabilities supported_caps) noexcept
-      : generator_base(attr_kinds, supported_caps) {}
+      const generator_capabilities supported_caps) noexcept;
 };
 //------------------------------------------------------------------------------
 export auto operator+(
