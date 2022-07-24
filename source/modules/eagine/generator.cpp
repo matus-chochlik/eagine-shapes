@@ -399,20 +399,6 @@ private:
     generator_capabilities _enabled_caps{_supported_caps};
 };
 //------------------------------------------------------------------------------
-/// @brief Base class for shape generators re-calculating the center.
-/// @ingroup shapes
-class centered_unit_shape_generator_base : public generator_base {
-public:
-    using generator_base::attrib_values;
-    void attrib_values(const vertex_attrib_variant vav, span<float> dest)
-      override;
-
-protected:
-    centered_unit_shape_generator_base(
-      const vertex_attrib_kinds attr_kinds,
-      const generator_capabilities supported_caps) noexcept;
-};
-//------------------------------------------------------------------------------
 export auto operator+(
   std::unique_ptr<generator>&& l,
   std::unique_ptr<generator>&& r) noexcept

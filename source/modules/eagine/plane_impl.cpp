@@ -20,7 +20,7 @@ import <cstdint>;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
-class unit_plane_gen : public centered_unit_shape_generator_base {
+class unit_plane_gen : public generator_base {
 public:
     unit_plane_gen(
       const vertex_attrib_kinds attr_kinds,
@@ -64,7 +64,7 @@ public:
     auto bounding_sphere() -> math::sphere<float, true> override;
 
 private:
-    using _base = centered_unit_shape_generator_base;
+    using _base = generator_base;
 
     static auto _attr_mask() noexcept -> vertex_attrib_kinds;
 

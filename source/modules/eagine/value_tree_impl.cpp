@@ -28,7 +28,7 @@ namespace eagine::shapes {
 //------------------------------------------------------------------------------
 class value_tree_loader
   : public main_ctx_object
-  , public centered_unit_shape_generator_base {
+  , public generator_base {
 public:
     value_tree_loader(valtree::compound source, main_ctx_parent) noexcept;
 
@@ -66,7 +66,7 @@ public:
     void instructions(const drawing_variant, span<draw_operation> ops) override;
 
 private:
-    using _base = centered_unit_shape_generator_base;
+    using _base = generator_base;
 
     valtree::compound _source{};
     std::string _temp{};

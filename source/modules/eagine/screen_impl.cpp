@@ -18,7 +18,7 @@ import <cmath>;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
-class unit_screen_gen : public centered_unit_shape_generator_base {
+class unit_screen_gen : public generator_base {
 public:
     unit_screen_gen(const vertex_attrib_kinds attr_kinds) noexcept;
 
@@ -43,7 +43,7 @@ public:
     auto bounding_sphere() -> math::sphere<float, true> override;
 
 private:
-    using _base = centered_unit_shape_generator_base;
+    using _base = generator_base;
 
     static auto _attr_mask() noexcept -> vertex_attrib_kinds;
 };

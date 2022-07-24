@@ -328,8 +328,23 @@ void generator_base::attrib_values(
     unreachable();
 }
 //------------------------------------------------------------------------------
-void generator_base::attrib_values(const vertex_attrib_variant, span<float>) {
-    unreachable();
+void generator_base::attrib_values(
+  const vertex_attrib_variant vav,
+  span<float> dest) {
+    if(vav.attribute() == vertex_attrib_kind::box_coord) {
+        this->attrib_values({vertex_attrib_kind::position, vav}, dest);
+        for(float& x : dest) {
+            x += 0.5F;
+        }
+    } else if(vav == vertex_attrib_kind::pivot) {
+        fill(head(dest, this->vertex_count() * 3), 0.F);
+    } else if(vav == vertex_attrib_kind::pivot_pivot) {
+        fill(head(dest, this->vertex_count() * 3), 0.F);
+    } else if(vav == vertex_attrib_kind::vertex_pivot) {
+        fill(head(dest, this->vertex_count() * 3), 0.F);
+    } else {
+        unreachable();
+    }
 }
 //------------------------------------------------------------------------------
 auto generator_base::draw_variant_count() -> span_size_t {
@@ -373,32 +388,6 @@ void generator_base::indices(
         tmp.resize(integer(index_count(var)));
         indices(var, cover(tmp));
         copy(view(tmp), dest);
-    }
-}
-//------------------------------------------------------------------------------
-// centered_unit_shape_generator_base
-//------------------------------------------------------------------------------
-centered_unit_shape_generator_base::centered_unit_shape_generator_base(
-  const vertex_attrib_kinds attr_kinds,
-  const generator_capabilities supported_caps) noexcept
-  : generator_base(attr_kinds, supported_caps) {}
-//------------------------------------------------------------------------------
-void centered_unit_shape_generator_base::attrib_values(
-  const vertex_attrib_variant vav,
-  span<float> dest) {
-    if(vav.attribute() == vertex_attrib_kind::box_coord) {
-        this->attrib_values({vertex_attrib_kind::position, vav}, dest);
-        for(float& x : dest) {
-            x += 0.5F;
-        }
-    } else if(vav == vertex_attrib_kind::pivot) {
-        fill(head(dest, this->vertex_count() * 3), 0.F);
-    } else if(vav == vertex_attrib_kind::pivot_pivot) {
-        fill(head(dest, this->vertex_count() * 3), 0.F);
-    } else if(vav == vertex_attrib_kind::vertex_pivot) {
-        fill(head(dest, this->vertex_count() * 3), 0.F);
-    } else {
-        generator_base::attrib_values(vav, dest);
     }
 }
 //------------------------------------------------------------------------------

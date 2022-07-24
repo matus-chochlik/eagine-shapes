@@ -23,7 +23,7 @@ import <random>;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
-class unit_torus_gen : public centered_unit_shape_generator_base {
+class unit_torus_gen : public generator_base {
 public:
     unit_torus_gen(
       const vertex_attrib_kinds attr_kinds,
@@ -93,7 +93,7 @@ public:
     auto bounding_sphere() -> math::sphere<float, true> override;
 
 private:
-    using _base = centered_unit_shape_generator_base;
+    using _base = generator_base;
 
     const std::size_t _r_seed{1234};
     const std::size_t _s_seed{2345};
@@ -452,7 +452,7 @@ auto unit_torus_gen::variant_name(const vertex_attrib_variant vav)
         default:
             break;
     }
-    return centered_unit_shape_generator_base::variant_name(vav);
+    return generator_base::variant_name(vav);
 }
 //------------------------------------------------------------------------------
 void unit_torus_gen::attrib_values(
@@ -486,7 +486,7 @@ void unit_torus_gen::attrib_values(
             wrap_coords(dest);
             break;
         default:
-            centered_unit_shape_generator_base::attrib_values(vav, dest);
+            generator_base::attrib_values(vav, dest);
             break;
     }
 }

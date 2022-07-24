@@ -22,7 +22,7 @@ import <utility>;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
-class unit_sphere_gen : public centered_unit_shape_generator_base {
+class unit_sphere_gen : public generator_base {
 public:
     unit_sphere_gen(
       const vertex_attrib_kinds attr_kinds,
@@ -69,7 +69,7 @@ public:
       span<std::optional<float>> intersections) override;
 
 private:
-    using _base = centered_unit_shape_generator_base;
+    using _base = generator_base;
 
     int _rings;
     int _sections;
