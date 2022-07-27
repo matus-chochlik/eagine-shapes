@@ -19,6 +19,50 @@ import <cmath>;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
+class skybox_gen : public generator_base {
+public:
+    skybox_gen(const vertex_attrib_kinds attr_kinds) noexcept;
+
+    auto vertex_count() -> span_size_t override;
+
+    void face_coords(span<float> dest) noexcept;
+
+    void positions(span<float> dest) noexcept;
+
+    void attrib_values(const vertex_attrib_variant, span<float>) override;
+
+    auto draw_variant_count() -> span_size_t override;
+
+    auto index_type(const drawing_variant) -> index_data_type override;
+
+    auto index_count(const drawing_variant) -> span_size_t override;
+
+    void indices(const drawing_variant, span<std::uint8_t> dest) override;
+
+    void indices(const drawing_variant, span<std::uint16_t> dest) override;
+
+    void indices(const drawing_variant, span<std::uint32_t> dest) override;
+
+    auto operation_count(const drawing_variant) -> span_size_t override;
+
+    void instructions(const drawing_variant, span<draw_operation> ops) override;
+
+    auto bounding_sphere() -> math::sphere<float, true> override;
+
+private:
+    using _base = generator_base;
+
+    static auto _attr_mask() noexcept -> vertex_attrib_kinds;
+
+    template <typename T>
+    void _indices(const drawing_variant, span<T> dest) noexcept;
+};
+//------------------------------------------------------------------------------
+auto skybox(const vertex_attrib_kinds attr_kinds)
+  -> std::unique_ptr<generator> {
+    return std::make_unique<skybox_gen>(attr_kinds);
+}
+//------------------------------------------------------------------------------
 auto skybox_gen::_attr_mask() noexcept -> vertex_attrib_kinds {
     return vertex_attrib_kind::position | vertex_attrib_kind::pivot |
            vertex_attrib_kind::face_coord;
@@ -143,7 +187,7 @@ auto skybox_gen::index_count(const drawing_variant) -> span_size_t {
 }
 //------------------------------------------------------------------------------
 template <typename T>
-inline void skybox_gen::_indices(
+void skybox_gen::_indices(
   [[maybe_unused]] const drawing_variant var,
   span<T> dest) noexcept {
     assert(dest.size() >= index_count(var));

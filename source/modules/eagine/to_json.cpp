@@ -19,7 +19,7 @@ import <memory>;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
-struct to_json_options {
+export struct to_json_options {
     to_json_options() noexcept = default;
 
     std::map<vertex_attrib_kind, std::map<std::int16_t, std::string>>
@@ -27,9 +27,10 @@ struct to_json_options {
     drawing_variant draw_variant{0};
 };
 //------------------------------------------------------------------------------
-auto parse_from(main_ctx&, generator&, to_json_options& opts) noexcept -> bool;
+export auto parse_from(main_ctx&, generator&, to_json_options& opts) noexcept
+  -> bool;
 //------------------------------------------------------------------------------
-auto to_json(std::ostream&, generator&, const to_json_options&)
+export auto to_json(std::ostream&, generator&, const to_json_options&)
   -> std::ostream&;
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes

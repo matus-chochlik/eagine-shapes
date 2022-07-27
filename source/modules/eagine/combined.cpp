@@ -92,7 +92,7 @@ private:
     void _attrib_values(const vertex_attrib_variant, span<T>);
 };
 //------------------------------------------------------------------------------
-static inline auto combine(std::unique_ptr<generator>&& gen) {
+export auto combine(std::unique_ptr<generator>&& gen) {
     std::vector<std::unique_ptr<generator>> v;
     v.reserve(1);
     v.emplace_back(std::move(gen));

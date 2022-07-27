@@ -25,11 +25,66 @@ import <vector>;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
+class surface_points_gen
+  : public main_ctx_object
+  , public delegated_gen {
+
+public:
+    surface_points_gen(
+      std::shared_ptr<generator> gen,
+      const span_size_t point_count,
+      main_ctx_parent parent) noexcept;
+
+    surface_points_gen(
+      std::shared_ptr<generator> gen,
+      const span_size_t point_count,
+      const vertex_attrib_variant weight_variant,
+      main_ctx_parent parent) noexcept;
+
+    auto vertex_count() -> span_size_t override;
+    void attrib_values(const vertex_attrib_variant, span<float>) override;
+
+    auto operation_count(const drawing_variant) -> span_size_t override;
+
+    void instructions(const drawing_variant, span<draw_operation> ops) override;
+
+private:
+    struct ext_topology : topology {
+        using topology::topology;
+
+        std::vector<std::tuple<span_size_t, std::array<float, 3>>> point_params;
+    };
+
+    auto _topology(const drawing_variant var) noexcept -> ext_topology&;
+
+    const span_size_t _point_count{0};
+    topology_options _topo_opts;
+
+    std::map<drawing_variant, ext_topology> _topologies;
+};
+//------------------------------------------------------------------------------
+auto surface_points(
+  std::shared_ptr<generator> gen,
+  const span_size_t point_count,
+  main_ctx_parent parent) noexcept -> std::unique_ptr<generator> {
+    return std::make_unique<surface_points_gen>(
+      std::move(gen), point_count, parent);
+}
+//------------------------------------------------------------------------------
+auto surface_points(
+  std::shared_ptr<generator> gen,
+  const span_size_t point_count,
+  const vertex_attrib_variant weight_variant,
+  main_ctx_parent parent) noexcept -> std::unique_ptr<generator> {
+    return std::make_unique<surface_points_gen>(
+      std::move(gen), point_count, weight_variant, parent);
+}
+//------------------------------------------------------------------------------
 surface_points_gen::surface_points_gen(
   std::shared_ptr<generator> gen,
   const span_size_t point_count,
   main_ctx_parent parent) noexcept
-  : main_ctx_object{identifier{"SurfPtsGen"}, parent}
+  : main_ctx_object{"SurfPtsGen", parent}
   , delegated_gen{std::move(gen)}
   , _point_count{point_count} {
     _topo_opts.features.set(topology_feature_bit::triangle_area);

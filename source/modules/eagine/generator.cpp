@@ -335,106 +335,48 @@ export struct generator : interface<generator> {
 //------------------------------------------------------------------------------
 /// @brief Common base implementation of the shape generator interface.
 /// @ingroup shapes
-export class generator_base : public generator {
+class generator_base : public generator {
 public:
-    auto attrib_kinds() noexcept -> vertex_attrib_kinds final {
-        return _attr_kinds;
-    }
+    auto attrib_kinds() noexcept -> vertex_attrib_kinds final;
 
     auto enable(const generator_capability cap, const bool value) noexcept
-      -> bool final {
-        bool result{true};
-        if(value) {
-            if(_supported_caps.has(cap)) {
-                _enabled_caps.set(cap);
-            } else {
-                result = false;
-            }
-        } else {
-            _enabled_caps.clear(cap);
-        }
-        return result;
-    }
+      -> bool final;
 
-    auto is_enabled(const generator_capability cap) noexcept -> bool final {
-        return _enabled_caps.has(cap);
-    }
+    auto is_enabled(const generator_capability cap) noexcept -> bool final;
 
-    auto instance_count() -> span_size_t override {
-        return 1;
-    }
+    auto instance_count() -> span_size_t override;
 
     auto attribute_variants(const vertex_attrib_kind attrib)
-      -> span_size_t override {
-        return has(attrib) ? 1 : 0;
-    }
+      -> span_size_t override;
 
-    auto variant_name(const vertex_attrib_variant) -> string_view override {
-        return {};
-    }
+    auto variant_name(const vertex_attrib_variant) -> string_view override;
 
     auto values_per_vertex(const vertex_attrib_variant vav)
-      -> span_size_t override {
-        return has_variant(vav) ? attrib_values_per_vertex(vav) : 0U;
-    }
+      -> span_size_t override;
 
-    auto attrib_type(const vertex_attrib_variant) -> attrib_data_type override {
-        return attrib_data_type::float_;
-    }
+    auto attrib_type(const vertex_attrib_variant) -> attrib_data_type override;
 
-    auto is_attrib_integral(const vertex_attrib_variant vav) -> bool override {
-        switch(attrib_type(vav)) {
-            case attrib_data_type::ubyte:
-            case attrib_data_type::int_16:
-            case attrib_data_type::int_32:
-            case attrib_data_type::uint_16:
-            case attrib_data_type::uint_32:
-                return true;
-            default:
-                break;
-        }
-        return false;
-    }
+    auto is_attrib_integral(const vertex_attrib_variant vav) -> bool override;
 
-    auto is_attrib_normalized(const vertex_attrib_variant) -> bool override {
-        return false;
-    }
+    auto is_attrib_normalized(const vertex_attrib_variant) -> bool override;
 
-    auto attrib_divisor(const vertex_attrib_variant) -> std::uint32_t override {
-        return 0U;
-    }
+    auto attrib_divisor(const vertex_attrib_variant) -> std::uint32_t override;
 
-    void attrib_values(const vertex_attrib_variant, span<byte>) override {
-        unreachable();
-    }
+    void attrib_values(const vertex_attrib_variant, span<byte>) override;
 
-    void attrib_values(const vertex_attrib_variant, span<std::int16_t>)
-      override {
-        unreachable();
-    }
+    void attrib_values(const vertex_attrib_variant, span<std::int16_t>) override;
 
-    void attrib_values(const vertex_attrib_variant, span<std::int32_t>)
-      override {
-        unreachable();
-    }
+    void attrib_values(const vertex_attrib_variant, span<std::int32_t>) override;
 
     void attrib_values(const vertex_attrib_variant, span<std::uint16_t>)
-      override {
-        unreachable();
-    }
+      override;
 
     void attrib_values(const vertex_attrib_variant, span<std::uint32_t>)
-      override {
-        unreachable();
-    }
+      override;
 
-    void attrib_values(const vertex_attrib_variant, span<float>) override {
-        unreachable();
-    }
+    void attrib_values(const vertex_attrib_variant, span<float>) override;
 
-    auto draw_variant_count() -> span_size_t override {
-        return 1;
-    }
+    auto draw_variant_count() -> span_size_t override;
 
     auto index_type(const drawing_variant) -> index_data_type override;
 
@@ -449,29 +391,12 @@ public:
 protected:
     generator_base(
       const vertex_attrib_kinds attr_kinds,
-      const generator_capabilities supported_caps) noexcept
-      : _attr_kinds{attr_kinds}
-      , _supported_caps{supported_caps} {}
+      const generator_capabilities supported_caps) noexcept;
 
 private:
     vertex_attrib_kinds _attr_kinds;
     const generator_capabilities _supported_caps;
     generator_capabilities _enabled_caps{_supported_caps};
-};
-//------------------------------------------------------------------------------
-/// @brief Base class for shape generators re-calculating the center.
-/// @ingroup shapes
-export class centered_unit_shape_generator_base : public generator_base {
-public:
-    using generator_base::attrib_values;
-    void attrib_values(const vertex_attrib_variant vav, span<float> dest)
-      override;
-
-protected:
-    centered_unit_shape_generator_base(
-      const vertex_attrib_kinds attr_kinds,
-      const generator_capabilities supported_caps) noexcept
-      : generator_base(attr_kinds, supported_caps) {}
 };
 //------------------------------------------------------------------------------
 export auto operator+(

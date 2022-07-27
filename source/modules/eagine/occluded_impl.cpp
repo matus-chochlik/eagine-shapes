@@ -26,11 +26,35 @@ import <vector>;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
+class occluded_gen
+  : public main_ctx_object
+  , public delegated_gen {
+
+public:
+    occluded_gen(
+      std::shared_ptr<generator> gen,
+      const span_size_t samples,
+      main_ctx_parent parent) noexcept;
+
+    void occlusions(const vertex_attrib_variant, span<float>);
+    void attrib_values(const vertex_attrib_variant, span<float>) override;
+
+private:
+    span_size_t _samples{64};
+};
+//------------------------------------------------------------------------------
+auto occlude(
+  std::shared_ptr<generator> gen,
+  const span_size_t samples,
+  main_ctx_parent parent) noexcept -> std::unique_ptr<generator> {
+    return std::make_unique<occluded_gen>(std::move(gen), samples, parent);
+}
+//------------------------------------------------------------------------------
 occluded_gen::occluded_gen(
   std::shared_ptr<generator> gen,
   const span_size_t samples,
   main_ctx_parent parent) noexcept
-  : main_ctx_object{identifier{"OcclShpGen"}, parent}
+  : main_ctx_object{"OcclShpGen", parent}
   , delegated_gen{cache(std::move(gen), this->as_parent())}
   , _samples{samples} {
     delegated_gen::_add(vertex_attrib_kind::occlusion);

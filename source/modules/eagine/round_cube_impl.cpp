@@ -20,6 +20,58 @@ import <cmath>;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
+class unit_round_cube_gen : public generator_base {
+public:
+    unit_round_cube_gen(
+      const vertex_attrib_kinds attr_kinds,
+      const int divisions) noexcept;
+
+    auto vertex_count() -> span_size_t override;
+
+    void positions(span<float> dest) noexcept;
+
+    void normals(span<float> dest) noexcept;
+
+    void tangents(span<float> dest) noexcept;
+
+    void bitangents(span<float> dest) noexcept;
+
+    void face_coords(span<float> dest) noexcept;
+
+    void attrib_values(const vertex_attrib_variant, span<float>) override;
+
+    auto index_type(const drawing_variant) -> index_data_type override;
+
+    auto index_count(const drawing_variant) -> span_size_t override;
+
+    void indices(const drawing_variant, span<std::uint8_t> dest) override;
+
+    void indices(const drawing_variant, span<std::uint16_t> dest) override;
+
+    void indices(const drawing_variant, span<std::uint32_t> dest) override;
+
+    auto operation_count(const drawing_variant) -> span_size_t override;
+
+    void instructions(const drawing_variant, span<draw_operation> ops) override;
+
+    auto bounding_sphere() -> math::sphere<float, true> override;
+
+private:
+    using _base = generator_base;
+
+    static auto _attr_mask() noexcept -> vertex_attrib_kinds;
+
+    template <typename T>
+    void _indices(const drawing_variant, span<T> dest) noexcept;
+
+    int _divisions;
+};
+//------------------------------------------------------------------------------
+auto unit_round_cube(const vertex_attrib_kinds attr_kinds, const int divisions)
+  -> std::unique_ptr<generator> {
+    return std::make_unique<unit_round_cube_gen>(attr_kinds, divisions);
+}
+//------------------------------------------------------------------------------
 auto unit_round_cube_gen::_attr_mask() noexcept -> vertex_attrib_kinds {
     return vertex_attrib_kind::position | vertex_attrib_kind::normal |
            vertex_attrib_kind::tangent | vertex_attrib_kind::bitangent |
@@ -42,7 +94,7 @@ auto unit_round_cube_gen::vertex_count() -> span_size_t {
     return 6 * (_divisions + 1) * (_divisions + 1);
 }
 //------------------------------------------------------------------------------
-static inline auto unit_round_cube_face_normal(const span_size_t f) noexcept {
+auto unit_round_cube_face_normal(const span_size_t f) noexcept {
     return std::array<math::tvec<float, 3, true>, 6>{{
       {-1.F, 0.F, 0.F},
       {+1.F, 0.F, 0.F},
@@ -53,7 +105,7 @@ static inline auto unit_round_cube_face_normal(const span_size_t f) noexcept {
     }}[f];
 }
 //------------------------------------------------------------------------------
-static inline auto unit_round_cube_face_tangent(const span_size_t f) noexcept {
+auto unit_round_cube_face_tangent(const span_size_t f) noexcept {
     return std::array<math::tvec<float, 3, true>, 6>{{
       {0.F, 0.F, +1.F},
       {0.F, 0.F, -1.F},
@@ -64,7 +116,7 @@ static inline auto unit_round_cube_face_tangent(const span_size_t f) noexcept {
     }}[f];
 }
 //------------------------------------------------------------------------------
-static inline auto unit_round_cube_face_bitangent(const span_size_t f) noexcept {
+auto unit_round_cube_face_bitangent(const span_size_t f) noexcept {
     return std::array<math::tvec<float, 3, true>, 6>{{
       {0.F, +1.F, 0.F},
       {0.F, +1.F, 0.F},
@@ -244,7 +296,7 @@ auto unit_round_cube_gen::index_type(const drawing_variant var)
 }
 //------------------------------------------------------------------------------
 template <typename T>
-inline void unit_round_cube_gen::_indices(
+void unit_round_cube_gen::_indices(
   [[maybe_unused]] const drawing_variant var,
   span<T> dest) noexcept {
     assert(var == 0);

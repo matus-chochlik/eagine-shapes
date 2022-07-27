@@ -23,13 +23,21 @@ function(eagine_example_common EXAMPLE_NAME)
 		"${EXAMPLE_NAME}.cpp"
 		${ARGN}
 	)
-	eagine_add_exe_analysis(eagine-${EXAMPLE_NAME})
 	add_dependencies(eagine-shapes-examples eagine-${EXAMPLE_NAME})
-	target_link_libraries(
-		eagine-${EXAMPLE_NAME}
-		PUBLIC EAGine::Shapes
-		PRIVATE ${ARGN}
-	)
+	if(${WITH_MODULES})
+		eagine_target_modules(
+			eagine-${EXAMPLE_NAME}
+			eagine.core
+			eagine.shapes
+		)
+	else()
+		eagine_add_exe_analysis(eagine-${EXAMPLE_NAME})
+		target_link_libraries(
+			eagine-${EXAMPLE_NAME}
+			PUBLIC EAGine::Shapes
+			PRIVATE ${ARGN}
+		)
+	endif()
 
 	set_target_properties(
 		eagine-${EXAMPLE_NAME}

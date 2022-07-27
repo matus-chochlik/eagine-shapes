@@ -18,6 +18,41 @@ import <cmath>;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
+class unit_screen_gen : public generator_base {
+public:
+    unit_screen_gen(const vertex_attrib_kinds attr_kinds) noexcept;
+
+    auto vertex_count() -> span_size_t override;
+
+    void positions(span<float> dest) noexcept;
+
+    void normals(span<float> dest) noexcept;
+
+    void tangents(span<float> dest) noexcept;
+
+    void bitangents(span<float> dest) noexcept;
+
+    void face_coords(span<float> dest) noexcept;
+
+    void attrib_values(const vertex_attrib_variant, span<float>) override;
+
+    auto operation_count(const drawing_variant) -> span_size_t override;
+
+    void instructions(const drawing_variant, span<draw_operation> ops) override;
+
+    auto bounding_sphere() -> math::sphere<float, true> override;
+
+private:
+    using _base = generator_base;
+
+    static auto _attr_mask() noexcept -> vertex_attrib_kinds;
+};
+//------------------------------------------------------------------------------
+auto unit_screen(const vertex_attrib_kinds attr_kinds)
+  -> std::unique_ptr<generator> {
+    return std::make_unique<unit_screen_gen>(attr_kinds);
+}
+//------------------------------------------------------------------------------
 auto unit_screen_gen::_attr_mask() noexcept -> vertex_attrib_kinds {
     return vertex_attrib_kind::position | vertex_attrib_kind::normal |
            vertex_attrib_kind::tangent | vertex_attrib_kind::bitangent |
