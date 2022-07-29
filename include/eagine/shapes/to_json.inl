@@ -37,8 +37,8 @@ auto parse_from(main_ctx& ctx, generator&, to_json_options& opts) noexcept
                         } else {
                             ctx.log()
                               .error("failed to parse attribute index")
-                              .arg(EAGINE_ID(attrib), info.name)
-                              .arg(EAGINE_ID(value), arg.next().get());
+                              .arg("attrib", info.name)
+                              .arg("value", arg.next().get());
                             return false;
                         }
                     }

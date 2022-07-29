@@ -34,7 +34,7 @@ triangle_adjacency_gen::triangle_adjacency_gen(
   std::shared_ptr<generator> gen,
   const drawing_variant var,
   main_ctx_parent parent) noexcept
-  : main_ctx_object{EAGINE_ID(AjcyShpGen), parent}
+  : main_ctx_object{"AjcyShpGen", parent}
   , delegated_gen{std::move(gen)} {
     enable(generator_capability::indexed_drawing, true);
     _topology(var);

@@ -217,7 +217,7 @@ public:
       std::shared_ptr<generator> gen,
       const topology_options& opts,
       main_ctx_parent parent)
-      : main_ctx_object{EAGINE_ID(ShpTopolgy), parent}
+      : main_ctx_object{"ShpTopolgy", parent}
       , _gen{std::move(gen)} {
         _scan_topology(opts);
     }
