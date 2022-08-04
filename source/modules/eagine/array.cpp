@@ -8,10 +8,7 @@
 export module eagine.shapes:array;
 
 import eagine.core.types;
-import eagine.core.memory;
-import eagine.core.identifier;
-import eagine.core.math;
-import :delegated;
+export import :generator;
 import <array>;
 import <memory>;
 

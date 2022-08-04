@@ -25,6 +25,10 @@ namespace eagine::shapes {
 //------------------------------------------------------------------------------
 // generator
 //------------------------------------------------------------------------------
+auto generator::value_count(const vertex_attrib_variant vav) -> span_size_t {
+    return vertex_count() * values_per_vertex(vav);
+}
+//------------------------------------------------------------------------------
 auto generator::find_variant(
   const vertex_attrib_kind attrib,
   const string_view name) -> vertex_attrib_variant {

@@ -8,12 +8,9 @@
 export module eagine.shapes:adjacency;
 
 import eagine.core.types;
-import eagine.core.memory;
 import eagine.core.main_ctx;
-import :delegated;
-import :topology;
+export import :generator;
 import <memory>;
-import <map>;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

@@ -156,9 +156,7 @@ export struct generator : abstract<generator> {
       -> span_size_t = 0;
 
     /// @brief Returns the total number of values for the specified attribute variant.
-    virtual auto value_count(const vertex_attrib_variant vav) -> span_size_t {
-        return vertex_count() * values_per_vertex(vav);
-    }
+    virtual auto value_count(const vertex_attrib_variant vav) -> span_size_t;
 
     /// @brief Returns the attribute data type for the specified variant.
     virtual auto attrib_type(const vertex_attrib_variant vav)
