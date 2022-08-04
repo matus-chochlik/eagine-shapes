@@ -49,7 +49,7 @@ export using drawing_variant = span_size_t;
 //------------------------------------------------------------------------------
 /// @brief Interface for shape loaders or generators.
 /// @ingroup shapes
-export struct generator : interface<generator> {
+export struct generator : abstract<generator> {
 
     /// @brief Returns the set of vertex attributes supported by this generator.
     /// @see attrib_count

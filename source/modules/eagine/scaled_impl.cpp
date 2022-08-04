@@ -15,6 +15,28 @@ import <memory>;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
+class scaled_gen : public delegated_gen {
+
+public:
+    scaled_gen(
+      std::shared_ptr<generator> gen,
+      const std::array<float, 3> s) noexcept
+      : delegated_gen{std::move(gen)}
+      , _s{s} {}
+
+    void attrib_values(const vertex_attrib_variant, span<float>) override;
+
+    auto bounding_sphere() -> math::sphere<float, true> override;
+
+private:
+    std::array<float, 3> _s;
+};
+//------------------------------------------------------------------------------
+auto scale(std::shared_ptr<generator> gen, const std::array<float, 3> s) noexcept
+  -> std::unique_ptr<generator> {
+    return std::make_unique<scaled_gen>(std::move(gen), s);
+}
+//------------------------------------------------------------------------------
 void scaled_gen::attrib_values(
   const vertex_attrib_variant vav,
   span<float> dest) {

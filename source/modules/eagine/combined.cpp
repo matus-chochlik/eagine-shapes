@@ -21,8 +21,7 @@ namespace eagine::shapes {
 //------------------------------------------------------------------------------
 export class combined_gen : public generator {
 public:
-    combined_gen(std::vector<std::unique_ptr<generator>>&& gens) noexcept
-      : _gens{std::move(gens)} {}
+    combined_gen(std::vector<std::unique_ptr<generator>>&& gens) noexcept;
 
     auto add(std::unique_ptr<generator>&& gen) && -> combined_gen&&;
 

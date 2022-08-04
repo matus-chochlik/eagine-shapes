@@ -22,6 +22,10 @@ import <vector>;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
+combined_gen::combined_gen(
+  std::vector<std::unique_ptr<generator>>&& gens) noexcept
+  : _gens{std::move(gens)} {}
+//------------------------------------------------------------------------------
 auto combined_gen::add(std::unique_ptr<generator>&& gen) && -> combined_gen&& {
     _gens.emplace_back(std::move(gen));
     return std::move(*this);
