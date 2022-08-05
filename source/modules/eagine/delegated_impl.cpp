@@ -132,6 +132,10 @@ auto delegated_gen::index_count(const drawing_variant var) -> span_size_t {
     return _gen->index_count(var);
 }
 //------------------------------------------------------------------------------
+void delegated_gen::indices(const drawing_variant var, span<std::uint8_t> dest) {
+    _gen->indices(var, dest);
+}
+//------------------------------------------------------------------------------
 void delegated_gen::indices(
   const drawing_variant var,
   span<std::uint16_t> dest) {
