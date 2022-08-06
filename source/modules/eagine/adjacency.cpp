@@ -9,7 +9,7 @@ export module eagine.shapes:adjacency;
 
 import eagine.core.types;
 import eagine.core.main_ctx;
-export import :generator;
+import :generator;
 import <memory>;
 
 namespace eagine::shapes {

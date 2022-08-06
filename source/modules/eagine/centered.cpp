@@ -11,7 +11,7 @@ import eagine.core.types;
 import eagine.core.memory;
 import eagine.core.identifier;
 import eagine.core.math;
-export import :generator;
+import :generator;
 import <memory>;
 import <utility>;
 

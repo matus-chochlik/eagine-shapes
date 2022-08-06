@@ -333,7 +333,7 @@ export struct generator : abstract<generator> {
 //------------------------------------------------------------------------------
 /// @brief Common base implementation of the shape generator interface.
 /// @ingroup shapes
-class generator_base : public generator {
+export class generator_base : public generator {
 public:
     auto attrib_kinds() noexcept -> vertex_attrib_kinds final;
 

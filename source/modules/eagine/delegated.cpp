@@ -19,7 +19,7 @@ namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Base class for delegating shape generators based on other generators.
 /// @ingroup shapes
-class delegated_gen : public generator {
+export class delegated_gen : public generator {
 public:
     delegated_gen(std::shared_ptr<generator> gen) noexcept;
 
