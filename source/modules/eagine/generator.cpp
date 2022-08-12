@@ -145,8 +145,9 @@ export struct generator : abstract<generator> {
       -> string_view = 0;
 
     /// @brief Finds attribute variant by kind and name.
-    auto find_variant(const vertex_attrib_kind attrib, const string_view name)
-      -> vertex_attrib_variant;
+    virtual auto find_variant(
+      const vertex_attrib_kind attrib,
+      const string_view name) -> vertex_attrib_variant = 0;
 
     /// @brief Finds attribute variant by name.
     auto find_variant(const string_view name) -> vertex_attrib_variant;
@@ -156,7 +157,8 @@ export struct generator : abstract<generator> {
       -> span_size_t = 0;
 
     /// @brief Returns the total number of values for the specified attribute variant.
-    virtual auto value_count(const vertex_attrib_variant vav) -> span_size_t;
+    virtual auto value_count(const vertex_attrib_variant vav)
+      -> span_size_t = 0;
 
     /// @brief Returns the attribute data type for the specified variant.
     virtual auto attrib_type(const vertex_attrib_variant vav)
@@ -269,13 +271,13 @@ export struct generator : abstract<generator> {
     }
 
     /// @brief Returns the bounding sphere for the generated shape.
-    virtual auto bounding_sphere() -> math::sphere<float, true>;
+    virtual auto bounding_sphere() -> math::sphere<float, true> = 0;
 
     /// @brief Calls a callback for each triangle in specified drawing variant.
     virtual void for_each_triangle(
       generator& gen,
       const drawing_variant var,
-      const callable_ref<void(const shape_face_info&)> callback);
+      const callable_ref<void(const shape_face_info&)> callback) = 0;
 
     /// @brief Calls a callback for each triangle in the default drawing variant.
     void for_each_triangle(
@@ -297,14 +299,14 @@ export struct generator : abstract<generator> {
 
     /// @brief Generates attribute values at random surface points.
     /// @see are_consistent
-    virtual void random_surface_values(const random_attribute_values&);
+    virtual void random_surface_values(const random_attribute_values&) = 0;
 
     /// @brief Calculates the intersections of the shape geometry with a ray.
     virtual void ray_intersections(
       generator&,
       const drawing_variant,
       const span<const math::line<float, true>> rays,
-      span<std::optional<float>> intersections);
+      span<std::optional<float>> intersections) = 0;
 
     /// @brief Calculates the intersections of the shape geometry with a ray.
     void ray_intersections(
@@ -336,7 +338,6 @@ export struct generator : abstract<generator> {
 export class generator_base : public generator {
 public:
     auto attrib_kinds() noexcept -> vertex_attrib_kinds final;
-
     auto enable(const generator_capability cap, const bool value) noexcept
       -> bool final;
 
@@ -349,8 +350,13 @@ public:
 
     auto variant_name(const vertex_attrib_variant) -> string_view override;
 
+    auto find_variant(const vertex_attrib_kind attrib, const string_view name)
+      -> vertex_attrib_variant override;
+
     auto values_per_vertex(const vertex_attrib_variant vav)
       -> span_size_t override;
+
+    auto value_count(const vertex_attrib_variant vav) -> span_size_t override;
 
     auto attrib_type(const vertex_attrib_variant) -> attrib_data_type override;
 
@@ -385,6 +391,21 @@ public:
     void indices(const drawing_variant, span<std::uint16_t> dest) override;
 
     void indices(const drawing_variant, span<std::uint32_t> dest) override;
+
+    auto bounding_sphere() -> math::sphere<float, true> override;
+
+    void for_each_triangle(
+      generator& gen,
+      const drawing_variant var,
+      const callable_ref<void(const shape_face_info&)> callback) override;
+
+    void random_surface_values(const random_attribute_values&) override;
+
+    void ray_intersections(
+      generator&,
+      const drawing_variant,
+      const span<const math::line<float, true>> rays,
+      span<std::optional<float>> intersections) override;
 
 protected:
     generator_base(

@@ -10,6 +10,7 @@ export module eagine.shapes:delegated;
 import eagine.core.types;
 import eagine.core.memory;
 import eagine.core.identifier;
+import eagine.core.utility;
 import eagine.core.math;
 import :generator;
 import <cstdint>;
@@ -39,8 +40,13 @@ public:
 
     auto variant_name(const vertex_attrib_variant vav) -> string_view override;
 
+    auto find_variant(const vertex_attrib_kind attrib, const string_view name)
+      -> vertex_attrib_variant override;
+
     auto values_per_vertex(const vertex_attrib_variant vav)
       -> span_size_t override;
+
+    auto value_count(const vertex_attrib_variant vav) -> span_size_t override;
 
     auto attrib_type(const vertex_attrib_variant vav)
       -> attrib_data_type override;
@@ -90,6 +96,19 @@ public:
       override;
 
     auto bounding_sphere() -> math::sphere<float, true> override;
+
+    void for_each_triangle(
+      generator& gen,
+      const drawing_variant var,
+      const callable_ref<void(const shape_face_info&)> callback) override;
+
+    void random_surface_values(const random_attribute_values&) override;
+
+    void ray_intersections(
+      generator&,
+      const drawing_variant,
+      const span<const math::line<float, true>> rays,
+      span<std::optional<float>> intersections) override;
 
 protected:
     [[nodiscard]] auto base_generator() const noexcept

@@ -12,6 +12,7 @@ module;
 module eagine.shapes;
 import eagine.core.types;
 import eagine.core.memory;
+import eagine.core.utility;
 import eagine.core.math;
 
 namespace eagine::shapes {
@@ -59,9 +60,20 @@ auto delegated_gen::variant_name(const vertex_attrib_variant vav)
     return _gen->variant_name(vav);
 }
 //------------------------------------------------------------------------------
+auto delegated_gen::find_variant(
+  const vertex_attrib_kind attrib,
+  const string_view name) -> vertex_attrib_variant {
+    return _gen->find_variant(attrib, name);
+}
+//------------------------------------------------------------------------------
 auto delegated_gen::values_per_vertex(const vertex_attrib_variant vav)
   -> span_size_t {
     return has_variant(vav) ? attrib_values_per_vertex(vav) : 0U;
+}
+//------------------------------------------------------------------------------
+auto delegated_gen::value_count(const vertex_attrib_variant vav)
+  -> span_size_t {
+    return vertex_count() * values_per_vertex(vav);
 }
 //------------------------------------------------------------------------------
 auto delegated_gen::attrib_type(const vertex_attrib_variant vav)
@@ -160,6 +172,25 @@ void delegated_gen::instructions(
 //------------------------------------------------------------------------------
 auto delegated_gen::bounding_sphere() -> math::sphere<float, true> {
     return _gen->bounding_sphere();
+}
+//------------------------------------------------------------------------------
+void delegated_gen::for_each_triangle(
+  generator& gen,
+  const drawing_variant var,
+  const callable_ref<void(const shape_face_info&)> callback) {
+    return _gen->for_each_triangle(gen, var, callback);
+}
+//------------------------------------------------------------------------------
+void delegated_gen::random_surface_values(const random_attribute_values& rav) {
+    _gen->random_surface_values(rav);
+}
+//------------------------------------------------------------------------------
+void delegated_gen::ray_intersections(
+  generator& gen,
+  const drawing_variant var,
+  const span<const math::line<float, true>> rays,
+  span<std::optional<float>> intersections) {
+    _gen->ray_intersections(gen, var, rays, intersections);
 }
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes
