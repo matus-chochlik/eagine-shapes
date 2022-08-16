@@ -11,6 +11,7 @@ import eagine.core.types;
 import eagine.core.memory;
 import eagine.core.identifier;
 import eagine.core.math;
+import eagine.core.utility;
 import eagine.core.logging;
 import eagine.core.main_ctx;
 import <array>;
@@ -52,8 +53,11 @@ public:
     auto attribute_variants(const vertex_attrib_kind) -> span_size_t final;
 
     auto variant_name(const vertex_attrib_variant vav) -> string_view final;
+    auto find_variant(const vertex_attrib_kind attrib, const string_view name)
+      -> vertex_attrib_variant final;
 
     auto values_per_vertex(const vertex_attrib_variant) -> span_size_t final;
+    auto value_count(const vertex_attrib_variant vav) -> span_size_t final;
     auto attrib_type(const vertex_attrib_variant) -> attrib_data_type final;
     auto is_attrib_integral(const vertex_attrib_variant) -> bool final;
     auto is_attrib_normalized(const vertex_attrib_variant) -> bool final;
@@ -84,6 +88,19 @@ public:
     auto bounding_sphere() -> math::sphere<float, true> final {
         return _bounding_sphere;
     }
+
+    void for_each_triangle(
+      generator& gen,
+      const drawing_variant var,
+      const callable_ref<void(const shape_face_info&)> callback) final;
+
+    void random_surface_values(const random_attribute_values&) final;
+
+    void ray_intersections(
+      generator&,
+      const drawing_variant,
+      const span<const math::line<float, true>> rays,
+      span<std::optional<float>> intersections) final;
 
 private:
     const std::shared_ptr<generator> _gen;
@@ -173,6 +190,12 @@ auto cached_gen::variant_name(const vertex_attrib_variant vav) -> string_view {
     return {pos->second};
 }
 //------------------------------------------------------------------------------
+auto cached_gen::find_variant(
+  const vertex_attrib_kind attrib,
+  const string_view name) -> vertex_attrib_variant {
+    return _gen->find_variant(attrib, name);
+}
+//------------------------------------------------------------------------------
 auto cached_gen::values_per_vertex(const vertex_attrib_variant vav)
   -> span_size_t {
     const std::lock_guard<std::mutex> lock{_mutex};
@@ -182,6 +205,10 @@ auto cached_gen::values_per_vertex(const vertex_attrib_variant vav)
           _values_per_vertex.emplace(vav, _gen->values_per_vertex(vav)).first;
     }
     return pos->second;
+}
+//------------------------------------------------------------------------------
+auto cached_gen::value_count(const vertex_attrib_variant vav) -> span_size_t {
+    return vertex_count() * values_per_vertex(vav);
 }
 //------------------------------------------------------------------------------
 auto cached_gen::attrib_type(const vertex_attrib_variant vav)
@@ -366,6 +393,25 @@ void cached_gen::instructions(
   const drawing_variant var,
   span<draw_operation> dest) {
     _get_instructions(var, dest, _instructions);
+}
+//------------------------------------------------------------------------------
+void cached_gen::for_each_triangle(
+  generator& gen,
+  const drawing_variant var,
+  const callable_ref<void(const shape_face_info&)> callback) {
+    return _gen->for_each_triangle(gen, var, callback);
+}
+//------------------------------------------------------------------------------
+void cached_gen::random_surface_values(const random_attribute_values& rav) {
+    _gen->random_surface_values(rav);
+}
+//------------------------------------------------------------------------------
+void cached_gen::ray_intersections(
+  generator& gen,
+  const drawing_variant var,
+  const span<const math::line<float, true>> rays,
+  span<std::optional<float>> intersections) {
+    _gen->ray_intersections(gen, var, rays, intersections);
 }
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes

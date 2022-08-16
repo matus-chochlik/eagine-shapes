@@ -49,7 +49,7 @@ export using drawing_variant = span_size_t;
 //------------------------------------------------------------------------------
 /// @brief Interface for shape loaders or generators.
 /// @ingroup shapes
-export struct generator : interface<generator> {
+export struct generator : abstract<generator> {
 
     /// @brief Returns the set of vertex attributes supported by this generator.
     /// @see attrib_count
@@ -145,8 +145,9 @@ export struct generator : interface<generator> {
       -> string_view = 0;
 
     /// @brief Finds attribute variant by kind and name.
-    auto find_variant(const vertex_attrib_kind attrib, const string_view name)
-      -> vertex_attrib_variant;
+    virtual auto find_variant(
+      const vertex_attrib_kind attrib,
+      const string_view name) -> vertex_attrib_variant = 0;
 
     /// @brief Finds attribute variant by name.
     auto find_variant(const string_view name) -> vertex_attrib_variant;
@@ -156,9 +157,8 @@ export struct generator : interface<generator> {
       -> span_size_t = 0;
 
     /// @brief Returns the total number of values for the specified attribute variant.
-    virtual auto value_count(const vertex_attrib_variant vav) -> span_size_t {
-        return vertex_count() * values_per_vertex(vav);
-    }
+    virtual auto value_count(const vertex_attrib_variant vav)
+      -> span_size_t = 0;
 
     /// @brief Returns the attribute data type for the specified variant.
     virtual auto attrib_type(const vertex_attrib_variant vav)
@@ -271,13 +271,13 @@ export struct generator : interface<generator> {
     }
 
     /// @brief Returns the bounding sphere for the generated shape.
-    virtual auto bounding_sphere() -> math::sphere<float, true>;
+    virtual auto bounding_sphere() -> math::sphere<float, true> = 0;
 
     /// @brief Calls a callback for each triangle in specified drawing variant.
     virtual void for_each_triangle(
       generator& gen,
       const drawing_variant var,
-      const callable_ref<void(const shape_face_info&)> callback);
+      const callable_ref<void(const shape_face_info&)> callback) = 0;
 
     /// @brief Calls a callback for each triangle in the default drawing variant.
     void for_each_triangle(
@@ -299,14 +299,14 @@ export struct generator : interface<generator> {
 
     /// @brief Generates attribute values at random surface points.
     /// @see are_consistent
-    virtual void random_surface_values(const random_attribute_values&);
+    virtual void random_surface_values(const random_attribute_values&) = 0;
 
     /// @brief Calculates the intersections of the shape geometry with a ray.
     virtual void ray_intersections(
       generator&,
       const drawing_variant,
       const span<const math::line<float, true>> rays,
-      span<std::optional<float>> intersections);
+      span<std::optional<float>> intersections) = 0;
 
     /// @brief Calculates the intersections of the shape geometry with a ray.
     void ray_intersections(
@@ -338,7 +338,6 @@ export struct generator : interface<generator> {
 class generator_base : public generator {
 public:
     auto attrib_kinds() noexcept -> vertex_attrib_kinds final;
-
     auto enable(const generator_capability cap, const bool value) noexcept
       -> bool final;
 
@@ -351,8 +350,13 @@ public:
 
     auto variant_name(const vertex_attrib_variant) -> string_view override;
 
+    auto find_variant(const vertex_attrib_kind attrib, const string_view name)
+      -> vertex_attrib_variant override;
+
     auto values_per_vertex(const vertex_attrib_variant vav)
       -> span_size_t override;
+
+    auto value_count(const vertex_attrib_variant vav) -> span_size_t override;
 
     auto attrib_type(const vertex_attrib_variant) -> attrib_data_type override;
 
@@ -388,6 +392,21 @@ public:
 
     void indices(const drawing_variant, span<std::uint32_t> dest) override;
 
+    auto bounding_sphere() -> math::sphere<float, true> override;
+
+    void for_each_triangle(
+      generator& gen,
+      const drawing_variant var,
+      const callable_ref<void(const shape_face_info&)> callback) override;
+
+    void random_surface_values(const random_attribute_values&) override;
+
+    void ray_intersections(
+      generator&,
+      const drawing_variant,
+      const span<const math::line<float, true>> rays,
+      span<std::optional<float>> intersections) override;
+
 protected:
     generator_base(
       const vertex_attrib_kinds attr_kinds,
@@ -422,6 +441,181 @@ auto operator+(
   -> std::array<std::unique_ptr<generator>, N + 1> {
     return _add_to_array(
       std::move(l), std::move(r), std::make_index_sequence<N>());
+}
+//------------------------------------------------------------------------------
+// generator_base
+//------------------------------------------------------------------------------
+inline auto generator_base::attrib_kinds() noexcept -> vertex_attrib_kinds {
+    return _attr_kinds;
+}
+//------------------------------------------------------------------------------
+inline auto generator_base::enable(
+  const generator_capability cap,
+  const bool value) noexcept -> bool {
+    bool result{true};
+    if(value) {
+        if(_supported_caps.has(cap)) {
+            _enabled_caps.set(cap);
+        } else {
+            result = false;
+        }
+    } else {
+        _enabled_caps.clear(cap);
+    }
+    return result;
+}
+//------------------------------------------------------------------------------
+inline auto generator_base::is_enabled(const generator_capability cap) noexcept
+  -> bool {
+    return _enabled_caps.has(cap);
+}
+//------------------------------------------------------------------------------
+inline auto generator_base::instance_count() -> span_size_t {
+    return 1;
+}
+//------------------------------------------------------------------------------
+inline auto generator_base::attribute_variants(const vertex_attrib_kind attrib)
+  -> span_size_t {
+    return has(attrib) ? 1 : 0;
+}
+//------------------------------------------------------------------------------
+inline auto generator_base::variant_name(const vertex_attrib_variant)
+  -> string_view {
+    return {};
+}
+//------------------------------------------------------------------------------
+inline auto generator_base::find_variant(
+  const vertex_attrib_kind attrib,
+  const string_view name) -> vertex_attrib_variant {
+    const span_size_t n = attribute_variants(attrib);
+    span_size_t index{-1};
+    for(const auto i : integer_range(n)) {
+        if(are_equal(name, variant_name({attrib, i}))) {
+            index = i;
+            break;
+        }
+    }
+    return {attrib, index};
+}
+//------------------------------------------------------------------------------
+inline auto generator_base::values_per_vertex(const vertex_attrib_variant vav)
+  -> span_size_t {
+    return has_variant(vav) ? attrib_values_per_vertex(vav) : 0U;
+}
+//------------------------------------------------------------------------------
+inline auto generator_base::value_count(const vertex_attrib_variant vav)
+  -> span_size_t {
+    return vertex_count() * values_per_vertex(vav);
+}
+//------------------------------------------------------------------------------
+inline auto generator_base::attrib_type(const vertex_attrib_variant)
+  -> attrib_data_type {
+    return attrib_data_type::float_;
+}
+//------------------------------------------------------------------------------
+inline auto generator_base::is_attrib_integral(const vertex_attrib_variant vav)
+  -> bool {
+    switch(attrib_type(vav)) {
+        case attrib_data_type::ubyte:
+        case attrib_data_type::int_16:
+        case attrib_data_type::int_32:
+        case attrib_data_type::uint_16:
+        case attrib_data_type::uint_32:
+            return true;
+        default:
+            break;
+    }
+    return false;
+}
+//------------------------------------------------------------------------------
+inline auto generator_base::is_attrib_normalized(const vertex_attrib_variant)
+  -> bool {
+    return false;
+}
+//------------------------------------------------------------------------------
+inline auto generator_base::attrib_divisor(const vertex_attrib_variant)
+  -> std::uint32_t {
+    return 0U;
+}
+//------------------------------------------------------------------------------
+inline void generator_base::attrib_values(
+  const vertex_attrib_variant,
+  span<byte>) {
+    unreachable();
+}
+//------------------------------------------------------------------------------
+inline void generator_base::attrib_values(
+  const vertex_attrib_variant,
+  span<std::int16_t>) {
+    unreachable();
+}
+//------------------------------------------------------------------------------
+inline void generator_base::attrib_values(
+  const vertex_attrib_variant,
+  span<std::int32_t>) {
+    unreachable();
+}
+//------------------------------------------------------------------------------
+inline void generator_base::attrib_values(
+  const vertex_attrib_variant,
+  span<std::uint16_t>) {
+    unreachable();
+}
+//------------------------------------------------------------------------------
+inline void generator_base::attrib_values(
+  const vertex_attrib_variant,
+  span<std::uint32_t>) {
+    unreachable();
+}
+//------------------------------------------------------------------------------
+inline auto generator_base::draw_variant_count() -> span_size_t {
+    return 1;
+}
+//------------------------------------------------------------------------------
+inline auto generator_base::index_type(const drawing_variant)
+  -> index_data_type {
+    return index_data_type::none;
+}
+//------------------------------------------------------------------------------
+inline auto generator_base::index_count(const drawing_variant) -> span_size_t {
+    return 0;
+}
+//------------------------------------------------------------------------------
+inline void generator_base::indices(const drawing_variant, span<std::uint8_t>) {
+    unreachable();
+}
+//------------------------------------------------------------------------------
+inline void generator_base::indices(
+  const drawing_variant var,
+  span<std::uint16_t> dest) {
+    if(index_type(var) == index_data_type::unsigned_8) {
+        std::vector<std::uint8_t> tmp;
+        tmp.resize(integer(index_count(var)));
+        indices(var, cover(tmp));
+        copy(view(tmp), dest);
+    }
+}
+//------------------------------------------------------------------------------
+inline void generator_base::indices(
+  const drawing_variant var,
+  span<std::uint32_t> dest) {
+    const auto ity = index_type(var);
+    if(ity == index_data_type::unsigned_8) {
+        std::vector<std::uint8_t> tmp;
+        tmp.resize(integer(index_count(var)));
+        indices(var, cover(tmp));
+        copy(view(tmp), dest);
+    } else if(ity == index_data_type::unsigned_16) {
+        std::vector<std::uint16_t> tmp;
+        tmp.resize(integer(index_count(var)));
+        indices(var, cover(tmp));
+        copy(view(tmp), dest);
+    }
+}
+//------------------------------------------------------------------------------
+inline void generator_base::random_surface_values(
+  [[maybe_unused]] const random_attribute_values& values) {
+    assert(are_consistent(values));
 }
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes

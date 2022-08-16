@@ -8,9 +8,8 @@
 export module eagine.shapes:occluded;
 
 import eagine.core.types;
-import eagine.core.memory;
 import eagine.core.main_ctx;
-import :delegated;
+import :generator;
 import <memory>;
 
 namespace eagine::shapes {

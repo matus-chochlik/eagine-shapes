@@ -7,7 +7,7 @@
 ///
 export module eagine.shapes:to_quads;
 
-import :delegated;
+import :generator;
 import <memory>;
 
 namespace eagine::shapes {

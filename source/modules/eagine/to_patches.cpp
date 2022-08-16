@@ -7,10 +7,7 @@
 ///
 export module eagine.shapes:to_patches;
 
-import eagine.core.types;
-import eagine.core.memory;
-import eagine.core.math;
-import :delegated;
+import :generator;
 import <memory>;
 
 namespace eagine::shapes {

@@ -5,19 +5,22 @@
 /// See accompanying file LICENSE_1_0.txt or copy at
 ///  http://www.boost.org/LICENSE_1_0.txt
 ///
-export module eagine.shapes:translated;
+module;
 
+#include <cassert>
+
+module eagine.shapes;
 import eagine.core.types;
-import :generator;
-import <array>;
+import eagine.core.memory;
+import eagine.core.utility;
+import eagine.core.math;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
-/// @brief Constructs instances of translated_gen modifier.
-/// @ingroup shapes
-export auto translate(
-  std::shared_ptr<generator> gen,
-  std::array<float, 3> d) noexcept -> std::unique_ptr<generator>;
+// delegated_generator
+//------------------------------------------------------------------------------
+delegated_gen::delegated_gen(std::shared_ptr<generator> gen) noexcept
+  : _gen{std::move(gen)} {}
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes
 

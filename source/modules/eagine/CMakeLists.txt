@@ -167,6 +167,7 @@ eagine_add_module(
 		eagine.core.types
 		eagine.core.memory
 		eagine.core.identifier
+		eagine.core.utility
 		eagine.core.math
 )
 
@@ -361,6 +362,7 @@ eagine_add_module(
 		to_json
 	SOURCES
 		generator_impl
+		delegated_impl
 		screen_impl
 		plane_impl
 		cube_impl

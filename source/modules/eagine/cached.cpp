@@ -10,7 +10,7 @@ export module eagine.shapes:cached;
 import eagine.core.types;
 import eagine.core.memory;
 import eagine.core.main_ctx;
-export import :generator;
+import :generator;
 import <cstdint>;
 import <map>;
 import <memory>;

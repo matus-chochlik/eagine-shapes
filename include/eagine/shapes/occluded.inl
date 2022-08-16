@@ -23,7 +23,7 @@ occluded_gen::occluded_gen(
   std::shared_ptr<generator> gen,
   const span_size_t samples,
   main_ctx_parent parent) noexcept
-  : main_ctx_object{EAGINE_ID(OcclShpGen), parent}
+  : main_ctx_object{"OcclShpGen", parent}
   , delegated_gen{cache(std::move(gen), this->as_parent())}
   , _samples{samples} {
     delegated_gen::_add(vertex_attrib_kind::occlusion);
