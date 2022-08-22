@@ -37,4 +37,5 @@ export import :to_quads;
 export import :topology;
 export import :adjacency;
 export import :surface_points;
+export import :from_json;
 export import :to_json;

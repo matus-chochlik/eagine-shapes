@@ -156,6 +156,7 @@ eagine_add_module(
 		eagine.core.types
 		eagine.core.memory
 		eagine.core.math
+		eagine.core.runtime
 		eagine.core.value_tree
 		eagine.core.main_ctx
 )
@@ -374,7 +375,7 @@ eagine_add_module(
 		torus_impl
 		twisted_torus_impl
 		value_tree_impl
-		from_json
+		from_json_impl
 		combined_impl
 		cached_impl
 		array_impl

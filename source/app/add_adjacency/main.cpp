@@ -4,11 +4,18 @@
 /// See accompanying file LICENSE_1_0.txt or copy at
 ///  http://www.boost.org/LICENSE_1_0.txt
 ///
+#if EAGINE_SHAPES_MODULE
+import eagine.core;
+import eagine.shapes;
+import <iostream>;
+import <map>;
+#else
 #include <eagine/main_ctx.hpp>
 #include <eagine/shapes/adjacency.hpp>
 #include <eagine/shapes/from_json.hpp>
 #include <eagine/shapes/to_json.hpp>
 #include <iostream>
+#endif
 
 namespace eagine {
 
