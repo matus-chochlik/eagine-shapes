@@ -363,7 +363,6 @@ eagine_add_module(
 		to_json
 	SOURCES
 		generator_impl
-		delegated_impl
 		screen_impl
 		plane_impl
 		cube_impl

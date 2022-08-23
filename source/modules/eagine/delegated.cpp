@@ -22,7 +22,8 @@ namespace eagine::shapes {
 /// @ingroup shapes
 class delegated_gen : public generator {
 public:
-    delegated_gen(std::shared_ptr<generator> gen) noexcept;
+    delegated_gen(std::shared_ptr<generator> gen) noexcept
+      : _gen{std::move(gen)} {}
 
     auto attrib_kinds() noexcept -> vertex_attrib_kinds final;
 
