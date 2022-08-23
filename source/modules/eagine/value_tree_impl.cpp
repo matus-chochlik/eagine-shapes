@@ -79,36 +79,31 @@ private:
     void _attrib_values(const vertex_attrib_variant, span<T>);
 };
 //------------------------------------------------------------------------------
-auto from_value_tree(valtree::compound source, main_ctx_parent parent)
-  -> std::unique_ptr<generator> {
-    return std::make_unique<value_tree_loader>(std::move(source), parent);
-}
-//------------------------------------------------------------------------------
 auto vertex_attrib_name(const vertex_attrib_kind attrib) noexcept {
     return enumerator_name(
-      attrib, std::type_identity<vertex_attrib_kind>{}, from_value_tree);
+      attrib, std::type_identity<vertex_attrib_kind>{}, from_value_tree_t{});
 }
 //------------------------------------------------------------------------------
 auto primitive_type_from(const string_view str) noexcept {
     return from_string(
-      str, std::type_identity<primitive_type>{}, from_value_tree);
+      str, std::type_identity<primitive_type>{}, from_value_tree_t{});
 }
 //------------------------------------------------------------------------------
 auto attrib_data_type_from(const string_view str) noexcept {
     return from_string(
-      str, std::type_identity<attrib_data_type>{}, from_value_tree);
+      str, std::type_identity<attrib_data_type>{}, from_value_tree_t{});
 }
 //------------------------------------------------------------------------------
 auto index_data_type_from(const string_view str) noexcept {
     return from_string(
-      str, std::type_identity<index_data_type>{}, from_value_tree);
+      str, std::type_identity<index_data_type>{}, from_value_tree_t{});
 }
 //------------------------------------------------------------------------------
 auto value_tree_loader::_attr_mask(const valtree::compound& source) noexcept
   -> vertex_attrib_kinds {
     vertex_attrib_kinds result;
     for(const auto& info : enumerator_mapping(
-          std::type_identity<vertex_attrib_kind>{}, from_value_tree)) {
+          std::type_identity<vertex_attrib_kind>{}, from_value_tree_t{})) {
         if(source.nested(info.name)) {
             result.set(info.enumerator);
         }
@@ -550,6 +545,11 @@ void value_tree_loader::instructions(
     } else {
         log_error("could not find shape draw instructions");
     }
+}
+//------------------------------------------------------------------------------
+auto from_value_tree(valtree::compound source, main_ctx_parent parent)
+  -> std::unique_ptr<generator> {
+    return std::make_unique<value_tree_loader>(std::move(source), parent);
 }
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes
