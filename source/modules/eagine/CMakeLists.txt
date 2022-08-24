@@ -224,6 +224,7 @@ eagine_add_module(
 		eagine.core.identifier
 		eagine.core.units
 		eagine.core.math
+		eagine.core.runtime
 		eagine.core.main_ctx
 )
 
