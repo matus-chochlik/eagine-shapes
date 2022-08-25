@@ -77,7 +77,7 @@ auto to_json(std::ostream& out, generator& gen, const to_json_options& opts)
                 << enumerator_name(
                      data_type,
                      std::type_identity<attrib_data_type>(),
-                     from_value_tree)
+                     from_value_tree_t{})
                 << '"' << '\n';
 
             const auto size = gen.value_count(vav);

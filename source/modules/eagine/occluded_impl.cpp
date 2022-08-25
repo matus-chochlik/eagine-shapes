@@ -17,11 +17,11 @@ import eagine.core.identifier;
 import eagine.core.units;
 import eagine.core.math;
 import eagine.core.progress;
+import eagine.core.runtime;
 import eagine.core.main_ctx;
 import <atomic>;
 import <random>;
 import <optional>;
-import <thread>;
 import <vector>;
 
 namespace eagine::shapes {
@@ -161,25 +161,18 @@ void occluded_gen::occlusions(
                         break;
                     }
                 }
+                return true;
             };
         };
 
-        const auto worker_count = std::thread::hardware_concurrency();
-        std::vector<std::thread> workers;
-        workers.reserve(worker_count);
-        for([[maybe_unused]] const auto t : integer_range(worker_count)) {
-            workers.emplace_back(
-              make_raytracer([](const auto) { return true; }));
-        }
+        const inplace_work_batch raytrace{
+          main_context().workers(),
+          make_raytracer([](const auto) { return true; })};
 
         make_raytracer(
           [raytracing{progress().activity("ray-tracing occlusions", vc)}](
             const auto v) { return raytracing.update_progress(v); })();
         vi = vc;
-
-        for(auto& worker : workers) {
-            worker.join();
-        }
     } else {
         fill(dest, 0.F);
     }

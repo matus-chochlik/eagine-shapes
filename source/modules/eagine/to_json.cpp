@@ -14,8 +14,8 @@ import eagine.core.main_ctx;
 import :generator;
 import <cstdint>;
 import <iosfwd>;
-import <map>;
 import <memory>;
+import <map>;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

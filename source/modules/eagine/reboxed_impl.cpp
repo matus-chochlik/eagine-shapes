@@ -31,7 +31,9 @@ auto rebox(std::shared_ptr<generator> gen) noexcept
 }
 //------------------------------------------------------------------------------
 reboxed_gen::reboxed_gen(std::shared_ptr<generator> gen) noexcept
-  : delegated_gen{std::move(gen)} {}
+  : delegated_gen{std::move(gen)} {
+    delegated_gen::_add(vertex_attrib_kind::box_coord);
+}
 //------------------------------------------------------------------------------
 void reboxed_gen::attrib_values(
   const vertex_attrib_variant vav,
