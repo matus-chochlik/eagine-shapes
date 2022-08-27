@@ -166,8 +166,7 @@ void occluded_gen::occlusions(
         };
 
         const inplace_work_batch raytrace{
-          main_context().workers(),
-          make_raytracer([](const auto) { return true; })};
+          workers(), make_raytracer([](const auto) { return true; })};
 
         make_raytracer(
           [raytracing{progress().activity("ray-tracing occlusions", vc)}](
