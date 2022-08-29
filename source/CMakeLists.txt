@@ -9,34 +9,27 @@ else()
 endif()
 add_subdirectory(app)
 
+set(
+	EAGINE_SHAPES_EXPORT_TARGETS
+	eagine-shapes-to_json
+	eagine-shapes-add_adjacency
+	eagine-shapes-add_occlusion
+)
+
 if(TARGET eagine-shapes)
 	add_library(EAGine::Shapes INTERFACE IMPORTED GLOBAL)
-	target_link_libraries(EAGine::Shapes INTERFACE eagine-shapes-headers)
-
 	target_link_libraries(
 		EAGine::Shapes
 		INTERFACE
+			eagine-shapes-headers
 			eagine-shapes
 	)
 
-	set(
-		EAGINE_SHAPES_EXPORT_TARGETS
+	list(
+		APPEND EAGINE_SHAPES_EXPORT_TARGETS
 		eagine-shapes-private-headers
 		eagine-shapes-headers
 		eagine-shapes
-		eagine-shapes-to_json
-		eagine-shapes-add_adjacency
-		eagine-shapes-add_occlusion
-	)
-
-	install(
-		TARGETS ${EAGINE_SHAPES_EXPORT_TARGETS}
-		EXPORT Shapes
-		LIBRARY DESTINATION lib
-		ARCHIVE DESTINATION lib
-		RUNTIME DESTINATION bin
-		INCLUDES DESTINATION include
-		PUBLIC_HEADER DESTINATION include
 	)
 
 	install(
@@ -46,3 +39,14 @@ if(TARGET eagine-shapes)
 		DESTINATION lib/cmake/EAGine
 	)
 endif()
+
+install(
+	TARGETS ${EAGINE_SHAPES_EXPORT_TARGETS}
+	EXPORT Shapes
+	LIBRARY DESTINATION lib
+	ARCHIVE DESTINATION lib
+	RUNTIME DESTINATION bin
+	INCLUDES DESTINATION include
+	PUBLIC_HEADER DESTINATION include
+)
+
