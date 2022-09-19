@@ -80,8 +80,22 @@ private:
 auto unit_plane_from(
   const vertex_attrib_kinds attr_kinds,
   const url& locator,
-  main_ctx&) -> std::unique_ptr<generator> {
+  main_ctx& ctx) -> std::unique_ptr<generator> {
     if(locator.has_path("/unit_plane")) {
+        using D = valid_if_positive<int>;
+        auto width{locator.query().arg_value_as<D>("width")};
+        auto height{locator.query().arg_value_as<D>("height")};
+        if(width && height) {
+            return unit_plane(attr_kinds, extract(width), extract(height));
+        } else if(!width) {
+            ctx.log()
+              .error("missing or invalid width creating plane shape generator")
+              .arg("URL", locator.str());
+        } else if(!height) {
+            ctx.log()
+              .error("missing or invalid height creating plane shape generator")
+              .arg("URL", locator.str());
+        }
         return unit_plane(attr_kinds);
     }
     return {};

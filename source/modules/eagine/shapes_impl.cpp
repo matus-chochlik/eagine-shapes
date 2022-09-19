@@ -28,6 +28,9 @@ auto shape_from(const url& locator, main_ctx& ctx)
     if(auto gen{unit_cube_from(attrs, locator, ctx)}) {
         return gen;
     }
+    if(auto gen{unit_plane_from(attrs, locator, ctx)}) {
+        return gen;
+    }
     if(auto gen{unit_torus_from(attrs, locator, ctx)}) {
         return gen;
     }
@@ -38,6 +41,9 @@ auto shape_from(const url& locator, main_ctx& ctx)
         return gen;
     }
     if(auto gen{unit_sphere_from(attrs, locator, ctx)}) {
+        return gen;
+    }
+    if(auto gen{unit_screen_from(attrs, locator, ctx)}) {
         return gen;
     }
     if(auto gen{skybox_from(attrs, locator, ctx)}) {

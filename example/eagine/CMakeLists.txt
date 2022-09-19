@@ -48,4 +48,7 @@ endfunction()
 
 eagine_example_common(for_each_triangle)
 eagine_example_common(shape_topology)
+if(WITH_MODULES)
+eagine_example_common(shape_from_url)
+endif()
 
