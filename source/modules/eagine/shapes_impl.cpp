@@ -18,11 +18,10 @@ namespace eagine::shapes {
 auto shape_from(const url& locator, main_ctx& ctx)
   -> std::unique_ptr<generator> {
 
-    const auto args{locator.query()};
     shapes::vertex_attrib_kinds attrs;
     for(const auto& info : enumerator_mapping(
           std::type_identity<shapes::vertex_attrib_kind>{}, default_selector)) {
-        if(args.arg_has_value(info.name, true)) {
+        if(locator.query().arg_has_value(info.name, true)) {
             attrs.set(info.enumerator);
         }
     }
@@ -30,6 +29,9 @@ auto shape_from(const url& locator, main_ctx& ctx)
         return gen;
     }
     if(auto gen{unit_torus_from(attrs, locator, ctx)}) {
+        return gen;
+    }
+    if(auto gen{unit_twisted_torus_from(attrs, locator, ctx)}) {
         return gen;
     }
     if(auto gen{unit_sphere_from(attrs, locator, ctx)}) {

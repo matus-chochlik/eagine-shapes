@@ -15,6 +15,8 @@ import eagine.core.types;
 import eagine.core.memory;
 import eagine.core.valid_if;
 import eagine.core.math;
+import eagine.core.runtime;
+import eagine.core.main_ctx;
 import <cmath>;
 
 namespace eagine::shapes {
@@ -58,6 +60,16 @@ private:
     template <typename T>
     void _indices(const drawing_variant, span<T> dest) noexcept;
 };
+//------------------------------------------------------------------------------
+auto unit_twisted_torus_from(
+  const vertex_attrib_kinds attr_kinds,
+  const url& locator,
+  main_ctx&) -> std::unique_ptr<generator> {
+    if(locator.has_path("/unit_twisted_torus")) {
+        return unit_twisted_torus(attr_kinds);
+    }
+    return {};
+}
 //------------------------------------------------------------------------------
 auto unit_twisted_torus(
   const vertex_attrib_kinds attr_kinds,

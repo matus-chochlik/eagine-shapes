@@ -141,6 +141,8 @@ eagine_add_module(
 		eagine.core.valid_if
 		eagine.core.utility
 		eagine.core.math
+		eagine.core.runtime
+		eagine.core.main_ctx
 )
 
 eagine_add_module(
