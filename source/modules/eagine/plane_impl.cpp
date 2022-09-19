@@ -15,6 +15,8 @@ import eagine.core.types;
 import eagine.core.memory;
 import eagine.core.math;
 import eagine.core.valid_if;
+import eagine.core.runtime;
+import eagine.core.main_ctx;
 import <cmath>;
 import <cstdint>;
 
@@ -74,6 +76,16 @@ private:
     int _width;
     int _height;
 };
+//------------------------------------------------------------------------------
+auto unit_plane_from(
+  const vertex_attrib_kinds attr_kinds,
+  const url& locator,
+  main_ctx&) -> std::unique_ptr<generator> {
+    if(locator.has_path("/unit_plane")) {
+        return unit_plane(attr_kinds);
+    }
+    return {};
+}
 //------------------------------------------------------------------------------
 auto unit_plane(
   const vertex_attrib_kinds attr_kinds,

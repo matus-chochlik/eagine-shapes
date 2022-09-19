@@ -14,6 +14,8 @@ module eagine.shapes;
 import eagine.core.types;
 import eagine.core.memory;
 import eagine.core.math;
+import eagine.core.runtime;
+import eagine.core.main_ctx;
 import <cstdint>;
 import <cmath>;
 
@@ -59,8 +61,18 @@ private:
     void _indices(const drawing_variant, span<T> dest) noexcept;
 };
 //------------------------------------------------------------------------------
+auto unit_icosahedron_from(
+  const vertex_attrib_kinds attr_kinds,
+  const url& locator,
+  main_ctx&) -> std::unique_ptr<generator> {
+    if(locator.has_path("/unit_icosahedron")) {
+        return unit_icosahedron(attr_kinds);
+    }
+    return {};
+}
+//------------------------------------------------------------------------------
 auto unit_icosahedron(vertex_attrib_kinds attr_kinds)
-  -> std::shared_ptr<generator> {
+  -> std::unique_ptr<generator> {
     return std::make_unique<unit_icosahedron_gen>(attr_kinds);
 }
 //------------------------------------------------------------------------------

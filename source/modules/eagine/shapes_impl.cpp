@@ -34,6 +34,9 @@ auto shape_from(const url& locator, main_ctx& ctx)
     if(auto gen{unit_twisted_torus_from(attrs, locator, ctx)}) {
         return gen;
     }
+    if(auto gen{unit_icosahedron_from(attrs, locator, ctx)}) {
+        return gen;
+    }
     if(auto gen{unit_sphere_from(attrs, locator, ctx)}) {
         return gen;
     }
