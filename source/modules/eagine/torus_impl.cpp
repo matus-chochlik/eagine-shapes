@@ -16,6 +16,8 @@ import eagine.core.memory;
 import eagine.core.valid_if;
 import eagine.core.utility;
 import eagine.core.math;
+import eagine.core.runtime;
+import eagine.core.main_ctx;
 import <array>;
 import <cstdint>;
 import <cmath>;
@@ -113,6 +115,16 @@ auto unit_torus_gen::_attr_mask() noexcept -> vertex_attrib_kinds {
            vertex_attrib_kind::occlusion | vertex_attrib_kind::pivot |
            vertex_attrib_kind::pivot_pivot | vertex_attrib_kind::vertex_pivot |
            vertex_attrib_kind::box_coord | vertex_attrib_kind::wrap_coord;
+}
+//------------------------------------------------------------------------------
+auto unit_torus_from(
+  const vertex_attrib_kinds attr_kinds,
+  const url& locator,
+  main_ctx&) -> std::unique_ptr<generator> {
+    if(locator.has_path("/unit_torus")) {
+        return unit_torus(attr_kinds);
+    }
+    return {};
 }
 //------------------------------------------------------------------------------
 auto unit_torus(

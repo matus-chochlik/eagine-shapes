@@ -12,6 +12,8 @@ import eagine.core.memory;
 import eagine.core.identifier;
 import eagine.core.valid_if;
 import eagine.core.math;
+import eagine.core.runtime;
+import eagine.core.main_ctx;
 import :generator;
 import <memory>;
 import <optional>;
@@ -20,6 +22,7 @@ namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of unit_sphere_gen.
 /// @ingroup shapes
+/// @see unit_sphere_from
 /// @see from_value_tree
 /// @see unit_cube
 /// @see unit_round_cube
@@ -44,6 +47,11 @@ export auto unit_sphere(
 export auto unit_sphere(const vertex_attrib_kinds attr_kinds) {
     return unit_sphere(attr_kinds, 18, 36);
 }
+
+/// @brief Tries to construct instances of unit_sphere_gen from an URL.
+/// @ingroup shapes
+export auto unit_sphere_from(const vertex_attrib_kinds, const url&, main_ctx&)
+  -> std::unique_ptr<generator>;
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes
 

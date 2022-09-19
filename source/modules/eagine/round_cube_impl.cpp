@@ -14,6 +14,8 @@ module eagine.shapes;
 import eagine.core.types;
 import eagine.core.memory;
 import eagine.core.math;
+import eagine.core.runtime;
+import eagine.core.main_ctx;
 import <array>;
 import <cstdint>;
 import <cmath>;
@@ -66,6 +68,16 @@ private:
 
     int _divisions;
 };
+//------------------------------------------------------------------------------
+auto unit_round_cube_from(
+  const vertex_attrib_kinds attr_kinds,
+  const url& locator,
+  main_ctx&) -> std::unique_ptr<generator> {
+    if(locator.has_path("/unit_round_cube")) {
+        return unit_round_cube(attr_kinds);
+    }
+    return {};
+}
 //------------------------------------------------------------------------------
 auto unit_round_cube(const vertex_attrib_kinds attr_kinds, const int divisions)
   -> std::unique_ptr<generator> {
