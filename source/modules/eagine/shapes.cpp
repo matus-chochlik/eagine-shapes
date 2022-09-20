@@ -45,6 +45,12 @@ export import :to_json;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
-export auto shape_from(const url&, main_ctx&) -> std::unique_ptr<generator>;
+export auto shape_from(vertex_attrib_kinds, const url&, main_ctx&)
+  -> std::unique_ptr<generator>;
+
+export auto shape_from(const url& locator, main_ctx& ctx)
+  -> std::unique_ptr<generator> {
+    return shape_from({}, locator, ctx);
+}
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes

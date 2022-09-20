@@ -75,6 +75,7 @@ eagine_add_module(
 		eagine.core.types
 		eagine.core.memory
 		eagine.core.math
+		eagine.core.valid_if
 		eagine.core.runtime
 		eagine.core.main_ctx
 )

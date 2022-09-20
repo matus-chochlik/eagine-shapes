@@ -15,10 +15,9 @@ import <memory>;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
-auto shape_from(const url& locator, main_ctx& ctx)
+auto shape_from(vertex_attrib_kinds attrs, const url& locator, main_ctx& ctx)
   -> std::unique_ptr<generator> {
 
-    shapes::vertex_attrib_kinds attrs;
     for(const auto& info : enumerator_mapping(
           std::type_identity<shapes::vertex_attrib_kind>{}, default_selector)) {
         if(locator.query().arg_has_value(info.name, true)) {
@@ -26,6 +25,9 @@ auto shape_from(const url& locator, main_ctx& ctx)
         }
     }
     if(auto gen{unit_cube_from(attrs, locator, ctx)}) {
+        return gen;
+    }
+    if(auto gen{unit_round_cube_from(attrs, locator, ctx)}) {
         return gen;
     }
     if(auto gen{unit_plane_from(attrs, locator, ctx)}) {

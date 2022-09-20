@@ -87,7 +87,12 @@ auto unit_sphere_from(
   const url& locator,
   main_ctx&) -> std::unique_ptr<generator> {
     if(locator.has_path("/unit_sphere")) {
-        return unit_sphere(attr_kinds);
+        const auto rings{locator.query().arg_value_as(
+          "rings", std::type_identity<valid_if_greater_than<int, 2>>{})};
+        const auto sections{locator.query().arg_value_as(
+          "sections", std::type_identity<valid_if_greater_than<int, 3>>{})};
+        return unit_sphere(
+          attr_kinds, extract_or(rings, 18), extract_or(sections, 36));
     }
     return {};
 }

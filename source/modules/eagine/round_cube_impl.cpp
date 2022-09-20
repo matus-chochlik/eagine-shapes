@@ -14,6 +14,7 @@ module eagine.shapes;
 import eagine.core.types;
 import eagine.core.memory;
 import eagine.core.math;
+import eagine.core.valid_if;
 import eagine.core.runtime;
 import eagine.core.main_ctx;
 import <array>;
@@ -26,7 +27,7 @@ class unit_round_cube_gen : public generator_base {
 public:
     unit_round_cube_gen(
       const vertex_attrib_kinds attr_kinds,
-      const int divisions) noexcept;
+      const valid_if_positive<int> divisions) noexcept;
 
     auto vertex_count() -> span_size_t override;
 
@@ -74,13 +75,16 @@ auto unit_round_cube_from(
   const url& locator,
   main_ctx&) -> std::unique_ptr<generator> {
     if(locator.has_path("/unit_round_cube")) {
-        return unit_round_cube(attr_kinds);
+        const auto divisions{locator.query().arg_value_as(
+          "divisions", std::type_identity<valid_if_positive<int>>{})};
+        return unit_round_cube(attr_kinds, extract_or(divisions, 8));
     }
     return {};
 }
 //------------------------------------------------------------------------------
-auto unit_round_cube(const vertex_attrib_kinds attr_kinds, const int divisions)
-  -> std::unique_ptr<generator> {
+auto unit_round_cube(
+  const vertex_attrib_kinds attr_kinds,
+  const valid_if_positive<int> divisions) -> std::unique_ptr<generator> {
     return std::make_unique<unit_round_cube_gen>(attr_kinds, divisions);
 }
 //------------------------------------------------------------------------------
@@ -93,12 +97,12 @@ auto unit_round_cube_gen::_attr_mask() noexcept -> vertex_attrib_kinds {
 //------------------------------------------------------------------------------
 unit_round_cube_gen::unit_round_cube_gen(
   const vertex_attrib_kinds attr_kinds,
-  const int divisions) noexcept
+  const valid_if_positive<int> divisions) noexcept
   : _base(
       attr_kinds & _attr_mask(),
       generator_capability::indexed_drawing |
         generator_capability::primitive_restart)
-  , _divisions{divisions} {
+  , _divisions{divisions.value()} {
     assert(_divisions > 0);
 }
 //------------------------------------------------------------------------------

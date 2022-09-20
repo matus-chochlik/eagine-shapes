@@ -7,6 +7,7 @@
 ///
 export module eagine.shapes:round_cube;
 
+import eagine.core.valid_if;
 import eagine.core.runtime;
 import eagine.core.main_ctx;
 import :generator;
@@ -26,7 +27,7 @@ namespace eagine::shapes {
 /// @see unit_screen
 export auto unit_round_cube(
   const vertex_attrib_kinds attr_kinds,
-  const int divisions) -> std::unique_ptr<generator>;
+  const valid_if_positive<int> divisions) -> std::unique_ptr<generator>;
 //------------------------------------------------------------------------------
 export auto unit_round_cube(const vertex_attrib_kinds attr_kinds) {
     return unit_round_cube(attr_kinds, 8);
