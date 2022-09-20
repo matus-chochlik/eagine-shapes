@@ -15,6 +15,8 @@ import eagine.core.types;
 import eagine.core.memory;
 import eagine.core.valid_if;
 import eagine.core.math;
+import eagine.core.runtime;
+import eagine.core.main_ctx;
 import <cmath>;
 
 namespace eagine::shapes {
@@ -58,6 +60,29 @@ private:
     template <typename T>
     void _indices(const drawing_variant, span<T> dest) noexcept;
 };
+//------------------------------------------------------------------------------
+auto unit_twisted_torus_from(
+  const vertex_attrib_kinds attr_kinds,
+  const url& locator,
+  main_ctx&) -> std::unique_ptr<generator> {
+    if(locator.has_path("/unit_twisted_torus")) {
+        const auto twist{
+          locator.query().arg_value_as("twist", std::type_identity<int>{})};
+        const auto rings{locator.query().arg_value_as(
+          "rings", std::type_identity<valid_if_greater_than<int, 2>>{})};
+        const auto sections{locator.query().arg_value_as(
+          "sections", std::type_identity<valid_if_greater_than<int, 3>>{})};
+        const auto radius_ratio{locator.query().arg_value_as(
+          "radius_ratio", std::type_identity<valid_if_ge0_lt1<float>>{})};
+        return unit_twisted_torus(
+          attr_kinds,
+          extract_or(twist, 12),
+          extract_or(rings, 38),
+          extract_or(sections, 12),
+          extract_or(radius_ratio, 0.5F));
+    }
+    return {};
+}
 //------------------------------------------------------------------------------
 auto unit_twisted_torus(
   const vertex_attrib_kinds attr_kinds,

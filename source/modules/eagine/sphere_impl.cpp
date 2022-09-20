@@ -15,6 +15,8 @@ import eagine.core.types;
 import eagine.core.memory;
 import eagine.core.valid_if;
 import eagine.core.math;
+import eagine.core.runtime;
+import eagine.core.main_ctx;
 import <cstdint>;
 import <cmath>;
 import <optional>;
@@ -79,6 +81,21 @@ private:
     template <typename T>
     void _indices(drawing_variant, span<T> dest) noexcept;
 };
+//------------------------------------------------------------------------------
+auto unit_sphere_from(
+  const vertex_attrib_kinds attr_kinds,
+  const url& locator,
+  main_ctx&) -> std::unique_ptr<generator> {
+    if(locator.has_path("/unit_sphere")) {
+        const auto rings{locator.query().arg_value_as(
+          "rings", std::type_identity<valid_if_greater_than<int, 2>>{})};
+        const auto sections{locator.query().arg_value_as(
+          "sections", std::type_identity<valid_if_greater_than<int, 3>>{})};
+        return unit_sphere(
+          attr_kinds, extract_or(rings, 18), extract_or(sections, 36));
+    }
+    return {};
+}
 //------------------------------------------------------------------------------
 auto unit_sphere(
   const vertex_attrib_kinds attr_kinds,

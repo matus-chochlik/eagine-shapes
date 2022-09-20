@@ -33,6 +33,8 @@ eagine_add_module(
 		eagine.core.reflection
 		eagine.core.utility
 		eagine.core.math
+		eagine.core.runtime
+		eagine.core.main_ctx
 )
 
 eagine_add_module(
@@ -52,6 +54,8 @@ eagine_add_module(
 		eagine.core.memory
 		eagine.core.valid_if
 		eagine.core.math
+		eagine.core.runtime
+		eagine.core.main_ctx
 )
 
 eagine_add_module(
@@ -61,6 +65,7 @@ eagine_add_module(
 		eagine.core.types
 		eagine.core.memory
 		eagine.core.math
+		eagine.core.main_ctx
 )
 
 eagine_add_module(
@@ -70,6 +75,9 @@ eagine_add_module(
 		eagine.core.types
 		eagine.core.memory
 		eagine.core.math
+		eagine.core.valid_if
+		eagine.core.runtime
+		eagine.core.main_ctx
 )
 
 eagine_add_module(
@@ -79,6 +87,8 @@ eagine_add_module(
 		eagine.core.types
 		eagine.core.memory
 		eagine.core.math
+		eagine.core.runtime
+		eagine.core.main_ctx
 )
 
 eagine_add_module(
@@ -88,6 +98,8 @@ eagine_add_module(
 		eagine.core.types
 		eagine.core.memory
 		eagine.core.math
+		eagine.core.runtime
+		eagine.core.main_ctx
 )
 
 eagine_add_module(
@@ -108,6 +120,8 @@ eagine_add_module(
 		eagine.core.identifier
 		eagine.core.valid_if
 		eagine.core.math
+		eagine.core.runtime
+		eagine.core.main_ctx
 )
 
 eagine_add_module(
@@ -120,6 +134,8 @@ eagine_add_module(
 		eagine.core.valid_if
 		eagine.core.utility
 		eagine.core.math
+		eagine.core.runtime
+		eagine.core.main_ctx
 )
 
 eagine_add_module(
@@ -132,6 +148,8 @@ eagine_add_module(
 		eagine.core.valid_if
 		eagine.core.utility
 		eagine.core.math
+		eagine.core.runtime
+		eagine.core.main_ctx
 )
 
 eagine_add_module(
@@ -391,5 +409,6 @@ eagine_add_module(
 		adjacency_impl
 		surface_points_impl
 		to_json_impl
+		shapes_impl
 )
 

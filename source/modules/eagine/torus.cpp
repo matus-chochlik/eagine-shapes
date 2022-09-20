@@ -13,6 +13,8 @@ import eagine.core.identifier;
 import eagine.core.valid_if;
 import eagine.core.utility;
 import eagine.core.math;
+import eagine.core.runtime;
+import eagine.core.main_ctx;
 import :generator;
 import <memory>;
 import <optional>;
@@ -29,6 +31,7 @@ export auto unit_torus(
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of unit_torus_gen.
 /// @ingroup shapes
+/// @see unit_torus_from
 /// @see from_value_tree
 /// @see unit_cube
 /// @see unit_round_cube
@@ -39,6 +42,11 @@ export auto unit_torus(
 export auto unit_torus(const vertex_attrib_kinds attr_kinds) {
     return unit_torus(attr_kinds, 18, 36, 0.5F);
 }
+
+/// @brief Tries to construct instances of unit_torus_gen from an URL.
+/// @ingroup shapes
+export auto unit_torus_from(const vertex_attrib_kinds, const url&, main_ctx&)
+  -> std::unique_ptr<generator>;
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes
 

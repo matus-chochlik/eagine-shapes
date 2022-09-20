@@ -14,6 +14,8 @@ module eagine.shapes;
 import eagine.core.types;
 import eagine.core.memory;
 import eagine.core.math;
+import eagine.core.runtime;
+import eagine.core.main_ctx;
 import <cstdint>;
 import <cmath>;
 
@@ -57,6 +59,16 @@ private:
     template <typename T>
     void _indices(const drawing_variant, span<T> dest) noexcept;
 };
+//------------------------------------------------------------------------------
+auto skybox_from(
+  const vertex_attrib_kinds attr_kinds,
+  const url& locator,
+  main_ctx&) -> std::unique_ptr<generator> {
+    if(locator.has_path("/skybox")) {
+        return skybox(attr_kinds);
+    }
+    return {};
+}
 //------------------------------------------------------------------------------
 auto skybox(const vertex_attrib_kinds attr_kinds)
   -> std::unique_ptr<generator> {

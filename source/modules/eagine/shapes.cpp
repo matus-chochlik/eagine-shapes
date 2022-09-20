@@ -7,6 +7,9 @@
 ///
 export module eagine.shapes;
 
+import eagine.core.runtime;
+import eagine.core.main_ctx;
+
 export import :vertex_attrib;
 export import :generator_capabilities;
 export import :drawing;
@@ -39,3 +42,15 @@ export import :adjacency;
 export import :surface_points;
 export import :from_json;
 export import :to_json;
+
+namespace eagine::shapes {
+//------------------------------------------------------------------------------
+export auto shape_from(vertex_attrib_kinds, const url&, main_ctx&)
+  -> std::unique_ptr<generator>;
+
+export auto shape_from(const url& locator, main_ctx& ctx)
+  -> std::unique_ptr<generator> {
+    return shape_from({}, locator, ctx);
+}
+//------------------------------------------------------------------------------
+} // namespace eagine::shapes

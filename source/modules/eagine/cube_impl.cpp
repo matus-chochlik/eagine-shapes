@@ -14,6 +14,8 @@ module eagine.shapes;
 import eagine.core.types;
 import eagine.core.memory;
 import eagine.core.math;
+import eagine.core.runtime;
+import eagine.core.main_ctx;
 import <cstdint>;
 import <cmath>;
 
@@ -84,6 +86,16 @@ private:
       const span_size_t t,
       const span_size_t v) noexcept -> span_size_t;
 };
+//------------------------------------------------------------------------------
+auto unit_cube_from(
+  const vertex_attrib_kinds attr_kinds,
+  const url& locator,
+  main_ctx&) -> std::unique_ptr<generator> {
+    if(locator.has_path("/unit_cube")) {
+        return unit_cube(attr_kinds);
+    }
+    return {};
+}
 //------------------------------------------------------------------------------
 auto unit_cube(const vertex_attrib_kinds attr_kinds)
   -> std::unique_ptr<generator> {

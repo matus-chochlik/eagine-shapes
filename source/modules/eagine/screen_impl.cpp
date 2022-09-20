@@ -14,6 +14,8 @@ module eagine.shapes;
 import eagine.core.types;
 import eagine.core.memory;
 import eagine.core.math;
+import eagine.core.runtime;
+import eagine.core.main_ctx;
 import <cmath>;
 
 namespace eagine::shapes {
@@ -47,6 +49,16 @@ private:
 
     static auto _attr_mask() noexcept -> vertex_attrib_kinds;
 };
+//------------------------------------------------------------------------------
+auto unit_screen_from(
+  const vertex_attrib_kinds attr_kinds,
+  const url& locator,
+  main_ctx&) -> std::unique_ptr<generator> {
+    if(locator.has_path("/unit_screen")) {
+        return unit_screen(attr_kinds);
+    }
+    return {};
+}
 //------------------------------------------------------------------------------
 auto unit_screen(const vertex_attrib_kinds attr_kinds)
   -> std::unique_ptr<generator> {
