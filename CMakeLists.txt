@@ -17,7 +17,6 @@ add_subdirectory(submodules)
 
 include(EAGineCoreCommon)
 
-add_subdirectory(include)
 add_subdirectory(source)
 add_subdirectory(example)
 add_subdirectory(deploy)

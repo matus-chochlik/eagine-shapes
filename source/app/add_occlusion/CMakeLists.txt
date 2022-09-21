@@ -5,16 +5,9 @@
 
 add_executable(eagine-shapes-add_occlusion main.cpp)
 eagine_add_exe_analysis(eagine-shapes-add_occlusion)
-if(${WITH_MODULES})
-	eagine_target_modules(
-		eagine-shapes-add_occlusion
-		eagine.core
-		eagine.shapes
-	)
-else()
-	target_link_libraries(
-		eagine-shapes-add_occlusion
-		PUBLIC EAGine::Shapes
-	)
-endif()
+eagine_target_modules(
+	eagine-shapes-add_occlusion
+	eagine.core
+	eagine.shapes
+)
 
