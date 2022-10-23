@@ -84,10 +84,7 @@ public:
         return span_size(_tri_idx);
     }
 
-    static auto setup_adjacent(
-      mesh_triangle& l,
-      mesh_triangle& r,
-      const topology_data& d) noexcept
+    auto setup_adjacent(mesh_triangle& that, const topology_data& d) noexcept
       -> std::tuple<bool, std::uint8_t, std::uint8_t, std::uint8_t, std::uint8_t>;
 
     /// @brief Returns the v-th vertex index.

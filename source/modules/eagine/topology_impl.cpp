@@ -73,10 +73,10 @@ struct topology_data {
 };
 //------------------------------------------------------------------------------
 auto mesh_triangle::setup_adjacent(
-  mesh_triangle& l,
   mesh_triangle& r,
   const topology_data& topo) noexcept
   -> std::tuple<bool, std::uint8_t, std::uint8_t, std::uint8_t, std::uint8_t> {
+    auto& l = *this;
     assert(l.index() != r.index());
     const auto delta = topo.distance_delta(l);
     for(const auto i : integer_range(std_size(3))) {
@@ -286,7 +286,7 @@ void topology::_scan_topology(topology_options opts) {
                       std::min(lidx, ridx), std::max(lidx, ridx));
                     if(_edges.find(key) == _edges.end()) {
                         auto [should_add, leb, lee, reb, ree] =
-                          mesh_triangle::setup_adjacent(ltri, rtri, data);
+                          ltri.setup_adjacent(rtri, data);
                         if(should_add) {
                             _edges.emplace(
                               key, mesh_edge{ltri, leb, lee, rtri, reb, ree});
