@@ -37,34 +37,40 @@ export enum class vertex_attrib_kind : std::uint32_t {
     pivot_pivot = 1U << 6U,
     /// @brief Vertex pivot point.
     vertex_pivot = 1U << 7U,
+    /// @brief Length of next edge.
+    next_edge_length = 1U << 8U,
+    /// @brief Length of next, previous and opposite edges.
+    edge_length = 1U << 9U,
+    /// @brief Area of face polygon.
+    face_area = 1U << 10U,
     /// @brief Normalized coordinate within shape bounding box.
-    box_coord = 1U << 8U,
+    box_coord = 1U << 11U,
     /// @brief UV-texture wrapping coordinate.
-    wrap_coord = 1U << 9U,
+    wrap_coord = 1U << 12U,
     /// @brief Generic face coordinate.
-    face_coord = 1U << 10U,
+    face_coord = 1U << 13U,
     /// @brief Generic face coordinate.
-    vertex_coord = 1U << 11U,
+    vertex_coord = 1U << 14U,
     /// @brief Vertex color value.
-    color = 1U << 12U,
+    color = 1U << 15U,
     /// @brief Generic vertex weight value.
-    weight = 1U << 13U,
+    weight = 1U << 16U,
     /// @brief Vertex (ambient) light occlusion value.
-    occlusion = 1U << 14U,
+    occlusion = 1U << 17U,
     /// @brief Generic scalar field value.
-    scalar_field = 1U << 15U,
+    scalar_field = 1U << 18U,
     /// @brief Generic vector field value.
-    vector_field = 1U << 16U,
+    vector_field = 1U << 19U,
     /// @brief Instance offset value
-    instance_offset = 1U << 17U,
+    instance_offset = 1U << 20U,
     /// @brief Instance scale value
-    instance_scale = 1U << 18U,
+    instance_scale = 1U << 21U,
     /// @brief Instance scale value
-    instance_transform = 1U << 19U,
+    instance_transform = 1U << 22U,
     /// @brief Face polygon id value (multiple faces can belong to the same polygon)
-    polygon_id = 1U << 20U,
+    polygon_id = 1U << 23U,
     /// @brief Face material id value.
-    material_id = 1U << 21U
+    material_id = 1U << 24U
     // also fix all_vertex_attrib_kinds
 };
 //------------------------------------------------------------------------------
@@ -77,7 +83,7 @@ export template <typename Selector>
 constexpr auto enumerator_mapping(
   const std::type_identity<vertex_attrib_kind>,
   const Selector) noexcept {
-    return enumerator_map_type<vertex_attrib_kind, 22>{
+    return enumerator_map_type<vertex_attrib_kind, 25>{
       {{"object_id", vertex_attrib_kind::object_id},
        {"position", vertex_attrib_kind::position},
        {"normal", vertex_attrib_kind::normal},
@@ -86,6 +92,9 @@ constexpr auto enumerator_mapping(
        {"pivot", vertex_attrib_kind::pivot},
        {"pivot_pivot", vertex_attrib_kind::pivot_pivot},
        {"vertex_pivot", vertex_attrib_kind::vertex_pivot},
+       {"next_edge_length", vertex_attrib_kind::next_edge_length},
+       {"edge_length", vertex_attrib_kind::edge_length},
+       {"face_area", vertex_attrib_kind::face_area},
        {"box_coord", vertex_attrib_kind::box_coord},
        {"wrap_coord", vertex_attrib_kind::wrap_coord},
        {"face_coord", vertex_attrib_kind::face_coord},
@@ -110,7 +119,7 @@ export using vertex_attrib_kinds = bitfield<vertex_attrib_kind>;
 /// @ingroup shapes
 export constexpr auto all_vertex_attrib_kinds() noexcept
   -> vertex_attrib_kinds {
-    return vertex_attrib_kinds{(1U << 22U) - 1U};
+    return vertex_attrib_kinds{(1U << 25U) - 1U};
 }
 //------------------------------------------------------------------------------
 /// @brief Bitwise-or operator for vertex_attrib_kind bits.
@@ -299,6 +308,7 @@ export auto attrib_values_per_vertex(const vertex_attrib_kind attr) noexcept
         case vertex_attrib_kind::pivot:
         case vertex_attrib_kind::pivot_pivot:
         case vertex_attrib_kind::vertex_pivot:
+        case vertex_attrib_kind::edge_length:
         case vertex_attrib_kind::face_coord:
         case vertex_attrib_kind::vertex_coord:
         case vertex_attrib_kind::box_coord:
@@ -307,6 +317,8 @@ export auto attrib_values_per_vertex(const vertex_attrib_kind attr) noexcept
             return 3;
         case vertex_attrib_kind::wrap_coord:
             return 2;
+        case vertex_attrib_kind::next_edge_length:
+        case vertex_attrib_kind::face_area:
         case vertex_attrib_kind::weight:
         case vertex_attrib_kind::scalar_field:
         case vertex_attrib_kind::occlusion:
