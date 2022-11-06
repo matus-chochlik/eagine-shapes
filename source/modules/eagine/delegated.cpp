@@ -117,8 +117,8 @@ protected:
         return _gen;
     }
 
-    auto _add(vertex_attrib_kind attr) noexcept -> auto& {
-        _attr_kinds.set(attr);
+    auto _add(vertex_attrib_kinds attrs) noexcept -> auto& {
+        _attr_kinds.merge(attrs);
         return *this;
     }
 
