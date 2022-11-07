@@ -37,8 +37,8 @@ export enum class vertex_attrib_kind : std::uint32_t {
     pivot_pivot = 1U << 6U,
     /// @brief Vertex pivot point.
     vertex_pivot = 1U << 7U,
-    /// @brief Length of next edge.
-    next_edge_length = 1U << 8U,
+    /// @brief Length of opposite edge.
+    opposite_length = 1U << 8U,
     /// @brief Length of next, previous and opposite edges.
     edge_length = 1U << 9U,
     /// @brief Area of face polygon.
@@ -92,7 +92,7 @@ constexpr auto enumerator_mapping(
        {"pivot", vertex_attrib_kind::pivot},
        {"pivot_pivot", vertex_attrib_kind::pivot_pivot},
        {"vertex_pivot", vertex_attrib_kind::vertex_pivot},
-       {"next_edge_length", vertex_attrib_kind::next_edge_length},
+       {"opposite_length", vertex_attrib_kind::opposite_length},
        {"edge_length", vertex_attrib_kind::edge_length},
        {"face_area", vertex_attrib_kind::face_area},
        {"box_coord", vertex_attrib_kind::box_coord},
@@ -317,7 +317,7 @@ export auto attrib_values_per_vertex(const vertex_attrib_kind attr) noexcept
             return 3;
         case vertex_attrib_kind::wrap_coord:
             return 2;
-        case vertex_attrib_kind::next_edge_length:
+        case vertex_attrib_kind::opposite_length:
         case vertex_attrib_kind::face_area:
         case vertex_attrib_kind::weight:
         case vertex_attrib_kind::scalar_field:

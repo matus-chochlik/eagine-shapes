@@ -23,7 +23,7 @@ auto main(main_ctx& ctx) -> int {
     if(auto bgen{get_base_generator(ctx)}) {
         shapes::vertex_attrib_kinds kinds;
         // TODO: other kinds
-        kinds.set(shapes::vertex_attrib_kind::next_edge_length);
+        kinds.set(shapes::vertex_attrib_kind::opposite_length);
         if(auto gen{shapes::add_primitive_info(std::move(bgen), kinds, ctx)}) {
             shapes::to_json_options opts;
             if(parse_from(ctx, extract(gen), opts)) {

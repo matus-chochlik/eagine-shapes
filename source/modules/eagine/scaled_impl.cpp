@@ -48,7 +48,7 @@ void scaled_gen::attrib_values(
                                   vav == vertex_attrib_kind::vertex_pivot ||
                                   vav == vertex_attrib_kind::face_area ||
                                   vav == vertex_attrib_kind::edge_length ||
-                                  vav == vertex_attrib_kind::next_edge_length;
+                                  vav == vertex_attrib_kind::opposite_length;
 
     if(is_scaled_attrib) {
         const auto m = values_per_vertex(vav);

@@ -43,7 +43,7 @@ public:
     auto index_count(const topology&) -> span_size_t;
     auto index_count(const drawing_variant) -> span_size_t override;
 
-    void next_edge_lengths(const vertex_attrib_variant, span<float>);
+    void opposite_lengths(const vertex_attrib_variant, span<float>);
     void edge_lengths(const vertex_attrib_variant, span<float>);
     void face_areas(const vertex_attrib_variant, span<float>);
     void attrib_values(const vertex_attrib_variant, span<float>) override;
@@ -130,7 +130,7 @@ auto primitive_info_gen::index_count(const drawing_variant var) -> span_size_t {
     return index_count(_topology(var));
 }
 //------------------------------------------------------------------------------
-void primitive_info_gen::next_edge_lengths(
+void primitive_info_gen::opposite_lengths(
   const vertex_attrib_variant,
   span<float>) {
     // TODO
@@ -148,8 +148,8 @@ void primitive_info_gen::attrib_values(
   const vertex_attrib_variant vav,
   span<float> dest) {
 
-    if(vav == vertex_attrib_kind::next_edge_length) {
-        next_edge_lengths(vav, dest);
+    if(vav == vertex_attrib_kind::opposite_length) {
+        opposite_lengths(vav, dest);
     } else if(vav == vertex_attrib_kind::edge_length) {
         edge_lengths(vav, dest);
     } else if(vav == vertex_attrib_kind::face_area) {
