@@ -39,7 +39,7 @@ export enum class vertex_attrib_kind : std::uint32_t {
     vertex_pivot = 1U << 7U,
     /// @brief Length of opposite edge.
     opposite_length = 1U << 8U,
-    /// @brief Length of next, previous and opposite edges.
+    /// @brief Length of previous, next and opposite edges.
     edge_length = 1U << 9U,
     /// @brief Area of face polygon.
     face_area = 1U << 10U,

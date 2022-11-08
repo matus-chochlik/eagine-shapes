@@ -29,6 +29,10 @@ public:
 
     void positions(span<float> dest) noexcept;
     void normals(span<float> dest) noexcept;
+    void pivots(span<float> dest) noexcept;
+    void opposite_lengths(span<float> dest) noexcept;
+    void edge_lengths(span<float> dest) noexcept;
+    void face_areas(span<float> dest) noexcept;
 
     void attrib_values(const vertex_attrib_variant, span<float>) override;
 
@@ -78,11 +82,17 @@ auto unit_icosahedron(vertex_attrib_kinds attr_kinds)
 //------------------------------------------------------------------------------
 auto unit_icosahedron_gen::_attr_mask() noexcept -> vertex_attrib_kinds {
     return vertex_attrib_kind::position | vertex_attrib_kind::normal |
+           vertex_attrib_kind::pivot_pivot | vertex_attrib_kind::vertex_pivot |
+           vertex_attrib_kind::opposite_length |
+           vertex_attrib_kind::edge_length | vertex_attrib_kind::face_area |
            vertex_attrib_kind::box_coord;
 }
 //------------------------------------------------------------------------------
 auto unit_icosahedron_gen::_shared_attrs() noexcept -> vertex_attrib_kinds {
     return vertex_attrib_kind::position | vertex_attrib_kind::normal |
+           vertex_attrib_kind::pivot_pivot | vertex_attrib_kind::vertex_pivot |
+           vertex_attrib_kind::opposite_length |
+           vertex_attrib_kind::edge_length | vertex_attrib_kind::face_area |
            vertex_attrib_kind::box_coord;
 }
 //------------------------------------------------------------------------------
@@ -145,6 +155,26 @@ void unit_icosahedron_gen::normals(span<float> dest) noexcept {
     }
 }
 //------------------------------------------------------------------------------
+void unit_icosahedron_gen::pivots(span<float> dest) noexcept {
+    assert(dest.size() >= vertex_count() * 3);
+    memory::fill(dest, 0.F);
+}
+//------------------------------------------------------------------------------
+void unit_icosahedron_gen::opposite_lengths(span<float> dest) noexcept {
+    assert(dest.size() >= vertex_count() * 1);
+    memory::fill(dest, 1.052F);
+}
+//------------------------------------------------------------------------------
+void unit_icosahedron_gen::edge_lengths(span<float> dest) noexcept {
+    assert(dest.size() >= vertex_count() * 3);
+    memory::fill(dest, 1.052F);
+}
+//------------------------------------------------------------------------------
+void unit_icosahedron_gen::face_areas(span<float> dest) noexcept {
+    assert(dest.size() >= vertex_count() * 1);
+    memory::fill(dest, 0.75F);
+}
+//------------------------------------------------------------------------------
 void unit_icosahedron_gen::attrib_values(
   const vertex_attrib_variant vav,
   span<float> dest) {
@@ -154,6 +184,19 @@ void unit_icosahedron_gen::attrib_values(
             break;
         case vertex_attrib_kind::normal:
             normals(dest);
+            break;
+        case vertex_attrib_kind::pivot_pivot:
+        case vertex_attrib_kind::vertex_pivot:
+            pivots(dest);
+            break;
+        case vertex_attrib_kind::opposite_length:
+            opposite_lengths(dest);
+            break;
+        case vertex_attrib_kind::edge_length:
+            edge_lengths(dest);
+            break;
+        case vertex_attrib_kind::face_area:
+            face_areas(dest);
             break;
         default:
             _base::attrib_values(vav, dest);
@@ -287,7 +330,7 @@ void unit_icosahedron_gen::instructions(
 }
 //------------------------------------------------------------------------------
 auto unit_icosahedron_gen::bounding_sphere() -> math::sphere<float, true> {
-    return {{0.0F}, 0.5F};
+    return {{0.0F}, 1.F};
 }
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes
