@@ -21,8 +21,6 @@ import <limits>;
 import <optional>;
 import <vector>;
 
-import <iostream>;
-
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
 // generator
