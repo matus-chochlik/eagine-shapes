@@ -174,7 +174,7 @@ void unit_torus_gen::vertex_pivots(span<float> dest) noexcept {
     const auto ri = ro * _radius_ratio;
     const auto rc = (ro + ri) / 2;
 
-    const auto s_step = 2 * math::pi / _sections;
+    const auto s_step = math::tau / _sections;
 
     for(const auto s : integer_range(_sections + 1)) {
         const auto vx = std::cos(s * s_step) * rc;
@@ -199,8 +199,8 @@ void unit_torus_gen::positions(
     const auto r1 = ri;
     const auto r2 = ro - ri;
 
-    const auto s_step = 2 * math::pi / _sections;
-    const auto r_step = 2 * math::pi / _rings;
+    const auto s_step = math::tau / _sections;
+    const auto r_step = math::tau / _rings;
 
     auto k = [this](span_size_t s, span_size_t r, span_size_t c) {
         return 3 * (s * (_rings + 1) + r) + c;
@@ -237,8 +237,8 @@ void unit_torus_gen::normals(
     assert(has(vertex_attrib_kind::normal));
     assert(dest.size() >= vertex_count() * 3);
 
-    const auto s_step = 2 * math::pi / _sections;
-    const auto r_step = 2 * math::pi / _rings;
+    const auto s_step = math::tau / _sections;
+    const auto r_step = math::tau / _rings;
 
     auto k = [this](span_size_t s, span_size_t r, span_size_t c) {
         return 3 * (s * (_rings + 1) + r) + c;
@@ -279,7 +279,7 @@ void unit_torus_gen::tangents(
         return 3 * (s * (_rings + 1) + r) + c;
     };
 
-    const auto s_step = 2 * math::pi / _sections;
+    const auto s_step = math::tau / _sections;
 
     for(const auto s : integer_range(_sections)) {
         for(const auto r : integer_range(_rings)) {
@@ -315,8 +315,8 @@ void unit_torus_gen::bitangents(
         return 3 * (s * (_rings + 1) + r) + c;
     };
 
-    const auto s_step = 2 * math::pi / _sections;
-    const auto r_step = 2 * math::pi / _rings;
+    const auto s_step = math::tau / _sections;
+    const auto r_step = math::tau / _rings;
 
     const auto ty = 0;
 
