@@ -24,20 +24,12 @@ function(eagine_example_common EXAMPLE_NAME)
 		${ARGN}
 	)
 	add_dependencies(eagine-shapes-examples eagine-${EXAMPLE_NAME})
-	if(${WITH_MODULES})
-		eagine_target_modules(
-			eagine-${EXAMPLE_NAME}
-			eagine.core
-			eagine.shapes
-		)
-	else()
-		eagine_add_exe_analysis(eagine-${EXAMPLE_NAME})
-		target_link_libraries(
-			eagine-${EXAMPLE_NAME}
-			PUBLIC EAGine::Shapes
-			PRIVATE ${ARGN}
-		)
-	endif()
+	eagine_add_exe_analysis(eagine-${EXAMPLE_NAME})
+	eagine_target_modules(
+		eagine-${EXAMPLE_NAME}
+		eagine.core
+		eagine.shapes
+	)
 
 	set_target_properties(
 		eagine-${EXAMPLE_NAME}
@@ -48,7 +40,5 @@ endfunction()
 
 eagine_example_common(for_each_triangle)
 eagine_example_common(shape_topology)
-if(WITH_MODULES)
 eagine_example_common(shape_from_url)
-endif()
 

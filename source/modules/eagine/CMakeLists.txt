@@ -234,6 +234,19 @@ eagine_add_module(
 )
 
 eagine_add_module(
+	eagine.shapes PARTITION primitive_info
+	IMPORTS
+		delegated
+		eagine.core.types
+		eagine.core.memory
+		eagine.core.identifier
+		eagine.core.units
+		eagine.core.math
+		eagine.core.runtime
+		eagine.core.main_ctx
+)
+
+eagine_add_module(
 	eagine.shapes PARTITION occluded
 	IMPORTS
 		delegated
@@ -369,6 +382,7 @@ eagine_add_module(
 		cached
 		array
 		centered
+		primitive_info
 		occluded
 		reboxed
 		scaled
@@ -398,6 +412,7 @@ eagine_add_module(
 		cached_impl
 		array_impl
 		centered_impl
+		primitive_info_impl
 		occluded_impl
 		reboxed_impl
 		scaled_impl

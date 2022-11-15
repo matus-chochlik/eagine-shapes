@@ -5,21 +5,9 @@
 /// See accompanying file LICENSE_1_0.txt or copy at
 ///  http://www.boost.org/LICENSE_1_0.txt
 ///
-#if EAGINE_SHAPES_MODULE
 import eagine.core;
 import eagine.shapes;
 import <iostream>;
-#else
-#include <eagine/main_ctx.hpp>
-#include <eagine/program_args.hpp>
-#include <eagine/shapes/cube.hpp>
-#include <eagine/shapes/icosahedron.hpp>
-#include <eagine/shapes/round_cube.hpp>
-#include <eagine/shapes/sphere.hpp>
-#include <eagine/shapes/topology.hpp>
-#include <eagine/shapes/torus.hpp>
-#include <iostream>
-#endif
 
 namespace eagine {
 

@@ -21,15 +21,12 @@ auto main(main_ctx& ctx) -> int {
     using namespace eagine;
 
     if(auto bgen{get_base_generator(ctx)}) {
-        valid_if_positive<span_size_t> samples{256};
-        if(const auto arg{ctx.args().find("--shape-occlusion-samples")}) {
-            arg.next().parse(samples, ctx.log().error_stream());
-        }
-        if(auto gen{
-             shapes::occlude(std::move(bgen), extract_or(samples, 256), ctx)}) {
+        shapes::vertex_attrib_kinds kinds;
+        // TODO: other kinds
+        kinds.set(shapes::vertex_attrib_kind::opposite_length);
+        if(auto gen{shapes::add_primitive_info(std::move(bgen), kinds, ctx)}) {
             shapes::to_json_options opts;
             if(parse_from(ctx, extract(gen), opts)) {
-                opts.attrib_variants[shapes::vertex_attrib_kind::occlusion][0];
                 shapes::to_json(std::cout, extract(gen), opts) << std::endl;
             }
         }

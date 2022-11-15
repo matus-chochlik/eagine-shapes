@@ -4,5 +4,6 @@
 #  http://www.boost.org/LICENSE_1_0.txt
 
 add_subdirectory(to_json)
-add_subdirectory(add_adjacency)
 add_subdirectory(add_occlusion)
+add_subdirectory(add_adjacency)
+add_subdirectory(add_primitive_info)

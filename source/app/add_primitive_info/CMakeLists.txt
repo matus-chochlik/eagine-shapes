@@ -3,10 +3,11 @@
 # See accompanying file LICENSE_1_0.txt or copy at
 #  http://www.boost.org/LICENSE_1_0.txt
 
-add_executable(eagine-shapes-to_json main.cpp)
-eagine_add_exe_analysis(eagine-shapes-to_json)
+add_executable(eagine-shapes-add_primitive_info main.cpp)
+eagine_add_exe_analysis(eagine-shapes-add_primitive_info)
 eagine_target_modules(
-	eagine-shapes-to_json
+	eagine-shapes-add_primitive_info
 	eagine.core
 	eagine.shapes
 )
+

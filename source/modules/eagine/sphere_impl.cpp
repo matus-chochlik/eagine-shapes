@@ -132,8 +132,8 @@ void unit_sphere_gen::positions(span<float> dest) noexcept {
 
     span_size_t k = 0;
 
-    const auto s_step = 2 * math::pi / _sections;
-    const auto r_step = 1 * math::pi / _rings;
+    const auto s_step = math::tau / _sections;
+    const auto r_step = math::pi / _rings;
 
     for(const auto s : integer_range(_sections + 1)) {
         for(const auto r : integer_range(_rings + 1)) {
@@ -153,8 +153,8 @@ void unit_sphere_gen::normals(span<float> dest) noexcept {
 
     span_size_t k = 0;
 
-    const auto s_step = 2 * math::pi / _sections;
-    const auto r_step = 1 * math::pi / _rings;
+    const auto s_step = math::tau / _sections;
+    const auto r_step = math::pi / _rings;
 
     for(const auto s : integer_range(_sections + 1)) {
         for(const auto r : integer_range(_rings + 1)) {
@@ -174,7 +174,7 @@ void unit_sphere_gen::tangents(span<float> dest) noexcept {
 
     span_size_t k = 0;
 
-    const auto s_step = 2 * math::pi / _sections;
+    const auto s_step = math::tau / _sections;
 
     for(const auto s : integer_range(_sections + 1)) {
         auto x = -std::sin(s * s_step);
@@ -194,8 +194,8 @@ void unit_sphere_gen::bitangents(span<float> dest) noexcept {
 
     span_size_t k = 0;
 
-    const auto s_step = 2 * math::pi / _sections;
-    const auto r_step = 1 * math::pi / _rings;
+    const auto s_step = math::tau / _sections;
+    const auto r_step = math::pi / _rings;
     const auto ty = 0;
 
     for(const auto s : integer_range(_sections + 1)) {

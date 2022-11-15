@@ -60,6 +60,9 @@ public:
     void wrap_coords(span<float> dest) noexcept;
 
     void occlusions(span<float> dest, const offset_getter) noexcept;
+    void opposite_lengths(span<float> dest, const offset_getter) noexcept;
+    void edge_lengths(span<float> dest, const offset_getter) noexcept;
+    void face_areas(span<float> dest, const offset_getter) noexcept;
 
     auto attribute_variants(const vertex_attrib_kind attrib)
       -> span_size_t override;
@@ -112,9 +115,11 @@ private:
 auto unit_torus_gen::_attr_mask() noexcept -> vertex_attrib_kinds {
     return vertex_attrib_kind::position | vertex_attrib_kind::normal |
            vertex_attrib_kind::tangent | vertex_attrib_kind::bitangent |
-           vertex_attrib_kind::occlusion | vertex_attrib_kind::pivot |
-           vertex_attrib_kind::pivot_pivot | vertex_attrib_kind::vertex_pivot |
-           vertex_attrib_kind::box_coord | vertex_attrib_kind::wrap_coord;
+           vertex_attrib_kind::occlusion | vertex_attrib_kind::opposite_length |
+           vertex_attrib_kind::edge_length | vertex_attrib_kind::face_area |
+           vertex_attrib_kind::pivot | vertex_attrib_kind::pivot_pivot |
+           vertex_attrib_kind::vertex_pivot | vertex_attrib_kind::box_coord |
+           vertex_attrib_kind::wrap_coord;
 }
 //------------------------------------------------------------------------------
 auto unit_torus_from(
@@ -174,7 +179,7 @@ void unit_torus_gen::vertex_pivots(span<float> dest) noexcept {
     const auto ri = ro * _radius_ratio;
     const auto rc = (ro + ri) / 2;
 
-    const auto s_step = 2 * math::pi / _sections;
+    const auto s_step = math::tau / _sections;
 
     for(const auto s : integer_range(_sections + 1)) {
         const auto vx = std::cos(s * s_step) * rc;
@@ -199,8 +204,8 @@ void unit_torus_gen::positions(
     const auto r1 = ri;
     const auto r2 = ro - ri;
 
-    const auto s_step = 2 * math::pi / _sections;
-    const auto r_step = 2 * math::pi / _rings;
+    const auto s_step = math::tau / _sections;
+    const auto r_step = math::tau / _rings;
 
     auto k = [this](span_size_t s, span_size_t r, span_size_t c) {
         return 3 * (s * (_rings + 1) + r) + c;
@@ -237,8 +242,8 @@ void unit_torus_gen::normals(
     assert(has(vertex_attrib_kind::normal));
     assert(dest.size() >= vertex_count() * 3);
 
-    const auto s_step = 2 * math::pi / _sections;
-    const auto r_step = 2 * math::pi / _rings;
+    const auto s_step = math::tau / _sections;
+    const auto r_step = math::tau / _rings;
 
     auto k = [this](span_size_t s, span_size_t r, span_size_t c) {
         return 3 * (s * (_rings + 1) + r) + c;
@@ -279,7 +284,7 @@ void unit_torus_gen::tangents(
         return 3 * (s * (_rings + 1) + r) + c;
     };
 
-    const auto s_step = 2 * math::pi / _sections;
+    const auto s_step = math::tau / _sections;
 
     for(const auto s : integer_range(_sections)) {
         for(const auto r : integer_range(_rings)) {
@@ -315,8 +320,8 @@ void unit_torus_gen::bitangents(
         return 3 * (s * (_rings + 1) + r) + c;
     };
 
-    const auto s_step = 2 * math::pi / _sections;
-    const auto r_step = 2 * math::pi / _rings;
+    const auto s_step = math::tau / _sections;
+    const auto r_step = math::tau / _rings;
 
     const auto ty = 0;
 
@@ -388,6 +393,73 @@ void unit_torus_gen::occlusions(
               1.F,
               math::minimum(float(std::sin((r + rd) * r_step)) * 1.7F, 1.F),
               blend_fact);
+        }
+        dest[k(s, _rings)] = dest[k(s, 0)];
+    }
+    for(const auto r : integer_range(_rings + 1)) {
+        dest[k(_sections, r)] = dest[k(0, r)];
+    }
+}
+//------------------------------------------------------------------------------
+void unit_torus_gen::opposite_lengths(
+  span<float> dest,
+  const offset_getter get_offs) noexcept {
+    assert(has(vertex_attrib_kind::opposite_length));
+    assert(dest.size() >= vertex_count());
+
+    const auto r_step = math::pi / _rings;
+    const auto s_step = math::pi / _sections;
+
+    auto k = [this](span_size_t s, span_size_t r) {
+        return (s * (_rings + 1) + r);
+    };
+
+    for(const auto s : integer_range(_sections)) {
+        for(const auto r : integer_range(_rings)) {
+            const auto [rd, sd, td] = get_offs(s, r);
+            (void)(td);
+            (void)(sd);
+            const float l{float(s_step * std::sin((r + rd) * r_step))};
+
+            dest[k(s, r)] = l;
+        }
+        dest[k(s, _rings)] = dest[k(s, 0)];
+    }
+    for(const auto r : integer_range(_rings + 1)) {
+        dest[k(_sections, r)] = dest[k(0, r)];
+    }
+}
+//------------------------------------------------------------------------------
+void unit_torus_gen::edge_lengths(
+  span<float> dest,
+  const offset_getter) noexcept {
+    assert(has(vertex_attrib_kind::edge_length));
+    assert(dest.size() >= 3 * vertex_count());
+}
+//------------------------------------------------------------------------------
+void unit_torus_gen::face_areas(
+  span<float> dest,
+  const offset_getter get_offs) noexcept {
+    assert(has(vertex_attrib_kind::face_area));
+    assert(dest.size() >= vertex_count());
+
+    const auto r_step = math::pi / _rings;
+    const auto s_step = math::pi / _sections;
+    const auto a_mult =
+      std::sqrt(std::pow(r_step, 2.F) + std::pow(s_step, 2.F));
+
+    auto k = [this](span_size_t s, span_size_t r) {
+        return (s * (_rings + 1) + r);
+    };
+
+    for(const auto s : integer_range(_sections)) {
+        for(const auto r : integer_range(_rings)) {
+            const auto [rd, sd, td] = get_offs(s, r);
+            (void)(td);
+            (void)(sd);
+
+            dest[k(s, r)] =
+              float(a_mult * std::pow(std::sin((r + rd) * r_step), 2.F));
         }
         dest[k(s, _rings)] = dest[k(s, 0)];
     }
@@ -503,6 +575,18 @@ void unit_torus_gen::attrib_values(
         case vertex_attrib_kind::occlusion:
             make_special_attrib_values(
               &unit_torus_gen::occlusions, vav.index(), dest);
+            break;
+        case vertex_attrib_kind::opposite_length:
+            make_special_attrib_values(
+              &unit_torus_gen::opposite_lengths, vav.index(), dest);
+            break;
+        case vertex_attrib_kind::edge_length:
+            make_special_attrib_values(
+              &unit_torus_gen::edge_lengths, vav.index(), dest);
+            break;
+        case vertex_attrib_kind::face_area:
+            make_special_attrib_values(
+              &unit_torus_gen::face_areas, vav.index(), dest);
             break;
         case vertex_attrib_kind::wrap_coord:
             wrap_coords(dest);

@@ -84,10 +84,7 @@ public:
         return span_size(_tri_idx);
     }
 
-    static auto setup_adjacent(
-      mesh_triangle& l,
-      mesh_triangle& r,
-      const topology_data& d) noexcept
+    auto setup_adjacent(mesh_triangle& that, const topology_data& d) noexcept
       -> std::tuple<bool, std::uint8_t, std::uint8_t, std::uint8_t, std::uint8_t>;
 
     /// @brief Returns the v-th vertex index.
@@ -188,7 +185,9 @@ export enum class topology_feature_bit : unsigned {
     /// @brief Shape triangle area.
     triangle_area = 1U << 1U,
     /// @brief Shape triangle weight (from vertex weight).
-    triangle_weight = 1U << 2U
+    triangle_weight = 1U << 2U,
+    /// @brief Shape triangle area.
+    edge_length = 1U << 3U
 };
 //------------------------------------------------------------------------------
 /// @brief Shape topology features bitfield.
@@ -199,7 +198,15 @@ export using topology_feature_bits = bitfield<topology_feature_bit>;
 /// @ingroup shapes
 export constexpr auto all_topology_features() noexcept
   -> topology_feature_bits {
-    return topology_feature_bits{(1U << 3U) - 1U};
+    return topology_feature_bits{(1U << 4U) - 1U};
+}
+//------------------------------------------------------------------------------
+/// @brief Bitwise-or operator for vertex_attrib_kind bits.
+/// @ingroup shapes
+export constexpr auto operator|(
+  const topology_feature_bit a,
+  const topology_feature_bit b) noexcept -> topology_feature_bits {
+    return {a, b};
 }
 //------------------------------------------------------------------------------
 export struct topology_options {

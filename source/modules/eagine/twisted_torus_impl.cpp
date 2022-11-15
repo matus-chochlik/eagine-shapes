@@ -128,8 +128,8 @@ void unit_twisted_torus_gen::positions(span<float> dest) noexcept {
     const double r2 = ro - ri;
 
     const double r_twist = double(_twist) / double(_rings);
-    const double r_step = (2 * math::pi) / double(_rings);
-    const double s_step = (2 * math::pi) / double(_sections);
+    const double r_step = math::tau / double(_rings);
+    const double s_step = math::tau / double(_sections);
     const double s_slip = s_step * _thickness_ratio * 2.0;
 
     for(const auto f : integer_range(2)) {
@@ -199,8 +199,8 @@ void unit_twisted_torus_gen::normals(span<float> dest) noexcept {
     span_size_t k = 0;
 
     const double r_twist = double(_twist) / double(_rings);
-    const double r_step = (2.0 * math::pi) / double(_rings);
-    const double s_step = (2.0 * math::pi) / double(_sections);
+    const double r_step = math::tau / double(_rings);
+    const double s_step = math::tau / double(_sections);
     const double s_slip = s_step * _thickness_ratio * 2.0;
 
     for(const auto f : integer_range(2)) {

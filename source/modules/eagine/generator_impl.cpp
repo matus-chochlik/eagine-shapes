@@ -99,10 +99,9 @@ auto generator_base::bounding_sphere() -> math::sphere<float, true> {
     float radius{0.F};
     for(const auto c : integer_range(m)) {
         const integer k{c};
-        const auto q = (max[k] - min[k]) * 0.5F;
-        radius += q * q;
+        radius = math::maximum(radius, (max[k] - min[k]) * 0.25F);
     }
-    radius = std::sqrt(radius);
+    radius = std::sqrt(3 * radius * radius);
 
     return {center, radius};
 }

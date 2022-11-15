@@ -30,6 +30,7 @@ export import :combined;
 export import :cached;
 export import :array;
 export import :centered;
+export import :primitive_info;
 export import :occluded;
 export import :reboxed;
 export import :scaled;
