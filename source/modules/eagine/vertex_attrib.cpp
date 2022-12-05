@@ -49,28 +49,30 @@ export enum class vertex_attrib_kind : std::uint32_t {
     wrap_coord = 1U << 12U,
     /// @brief Generic face coordinate.
     face_coord = 1U << 13U,
+    /// @brief Generic tile coordinate.
+    tile_coord = 1U << 14U,
     /// @brief Generic face coordinate.
-    vertex_coord = 1U << 14U,
+    vertex_coord = 1U << 15U,
     /// @brief Vertex color value.
-    color = 1U << 15U,
+    color = 1U << 16U,
     /// @brief Generic vertex weight value.
-    weight = 1U << 16U,
+    weight = 1U << 17U,
     /// @brief Vertex (ambient) light occlusion value.
-    occlusion = 1U << 17U,
+    occlusion = 1U << 18U,
     /// @brief Generic scalar field value.
-    scalar_field = 1U << 18U,
+    scalar_field = 1U << 19U,
     /// @brief Generic vector field value.
-    vector_field = 1U << 19U,
+    vector_field = 1U << 20U,
     /// @brief Instance offset value
-    instance_offset = 1U << 20U,
+    instance_offset = 1U << 21U,
     /// @brief Instance scale value
-    instance_scale = 1U << 21U,
+    instance_scale = 1U << 22U,
     /// @brief Instance scale value
-    instance_transform = 1U << 22U,
+    instance_transform = 1U << 23U,
     /// @brief Face polygon id value (multiple faces can belong to the same polygon)
-    polygon_id = 1U << 23U,
+    polygon_id = 1U << 24U,
     /// @brief Face material id value.
-    material_id = 1U << 24U
+    material_id = 1U << 25U
     // also fix all_vertex_attrib_kinds
 };
 //------------------------------------------------------------------------------
@@ -83,7 +85,7 @@ export template <typename Selector>
 constexpr auto enumerator_mapping(
   const std::type_identity<vertex_attrib_kind>,
   const Selector) noexcept {
-    return enumerator_map_type<vertex_attrib_kind, 25>{
+    return enumerator_map_type<vertex_attrib_kind, 26>{
       {{"object_id", vertex_attrib_kind::object_id},
        {"position", vertex_attrib_kind::position},
        {"normal", vertex_attrib_kind::normal},
@@ -98,6 +100,7 @@ constexpr auto enumerator_mapping(
        {"box_coord", vertex_attrib_kind::box_coord},
        {"wrap_coord", vertex_attrib_kind::wrap_coord},
        {"face_coord", vertex_attrib_kind::face_coord},
+       {"tile_coord", vertex_attrib_kind::tile_coord},
        {"vertex_coord", vertex_attrib_kind::vertex_coord},
        {"color", vertex_attrib_kind::color},
        {"weight", vertex_attrib_kind::weight},
@@ -119,7 +122,7 @@ export using vertex_attrib_kinds = bitfield<vertex_attrib_kind>;
 /// @ingroup shapes
 export constexpr auto all_vertex_attrib_kinds() noexcept
   -> vertex_attrib_kinds {
-    return vertex_attrib_kinds{(1U << 25U) - 1U};
+    return vertex_attrib_kinds{(1U << 26U) - 1U};
 }
 //------------------------------------------------------------------------------
 /// @brief Bitwise-or operator for vertex_attrib_kind bits.
@@ -316,6 +319,7 @@ export auto attrib_values_per_vertex(const vertex_attrib_kind attr) noexcept
         case vertex_attrib_kind::vector_field:
             return 3;
         case vertex_attrib_kind::wrap_coord:
+        case vertex_attrib_kind::tile_coord:
             return 2;
         case vertex_attrib_kind::opposite_length:
         case vertex_attrib_kind::face_area:
