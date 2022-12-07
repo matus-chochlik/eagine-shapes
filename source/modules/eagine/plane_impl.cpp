@@ -192,7 +192,9 @@ void unit_plane_gen::bitangents(span<float> dest) noexcept {
 }
 //------------------------------------------------------------------------------
 void unit_plane_gen::box_coords(span<float> dest) noexcept {
-    assert(has(vertex_attrib_kind::box_coord));
+    assert(
+      has(vertex_attrib_kind::box_coord) ||
+      has(vertex_attrib_kind::wrap_coord));
     assert(dest.size() >= vertex_count() * 2);
 
     span_size_t k = 0;
