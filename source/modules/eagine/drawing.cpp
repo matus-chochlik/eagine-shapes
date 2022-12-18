@@ -63,7 +63,7 @@ constexpr auto enumerator_mapping(
 /// @brief Shape vertex attribute data type enumeration.
 /// @ingroup shapes
 /// @see index_data_type
-export enum class attrib_data_type {
+export enum class attrib_data_type : std::uint8_t {
     /// @brief None / unknown.
     none,
     /// @brief Unsigned byte.
