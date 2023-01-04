@@ -16,7 +16,7 @@ namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of occluded_gen modifier.
 /// @ingroup shapes
-export auto occlude(
+export [[nodiscard]] auto occlude(
   std::shared_ptr<generator> gen,
   const span_size_t samples,
   main_ctx_parent parent) noexcept -> std::unique_ptr<generator>;

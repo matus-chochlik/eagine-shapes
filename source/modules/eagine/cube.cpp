@@ -24,13 +24,15 @@ namespace eagine::shapes {
 /// @see unit_torus
 /// @see unit_twisted_torus
 /// @see unit_screen
-export auto unit_cube(const vertex_attrib_kinds attr_kinds)
+export [[nodiscard]] auto unit_cube(const vertex_attrib_kinds attr_kinds)
   -> std::unique_ptr<generator>;
 
 /// @brief Tries to construct instances of unit_cube_gen from an URL.
 /// @ingroup shapes
-export auto unit_cube_from(const vertex_attrib_kinds, const url&, main_ctx&)
-  -> std::unique_ptr<generator>;
+export [[nodiscard]] auto unit_cube_from(
+  const vertex_attrib_kinds,
+  const url&,
+  main_ctx&) -> std::unique_ptr<generator>;
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes
 

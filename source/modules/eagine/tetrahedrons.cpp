@@ -22,7 +22,7 @@ namespace eagine::shapes {
 /// @see unit_torus
 /// @see unit_screen
 /// @see unit_twisted_torus
-export auto marching_tetrahedrons(vertex_attrib_kinds attr_kinds)
+export [[nodiscard]] auto marching_tetrahedrons(vertex_attrib_kinds attr_kinds)
   -> std::unique_ptr<generator>;
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes

@@ -22,7 +22,7 @@ namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of cached_gen modifier.
 /// @ingroup shapes
-export auto cache(
+export [[nodiscard]] auto cache(
   std::shared_ptr<generator> gen,
   main_ctx_parent parent) noexcept -> std::unique_ptr<generator>;
 //------------------------------------------------------------------------------

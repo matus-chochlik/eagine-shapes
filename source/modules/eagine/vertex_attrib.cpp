@@ -231,7 +231,7 @@ private:
 //------------------------------------------------------------------------------
 /// @brief Operator for constructing of vertex_attrib_variant from kind and index.
 /// @ingroup shapes
-export constexpr auto operator/(
+export [[nodiscard]] constexpr auto operator/(
   const vertex_attrib_kind attrib,
   const span_size_t variant_index) noexcept -> vertex_attrib_variant {
     return {attrib, variant_index};
@@ -247,8 +247,8 @@ using vertex_attrib_variants = std::array<const vertex_attrib_variant, N>;
 /// @ingroup shapes
 /// @see vertex_attrib_variant
 /// @see vertex_attrib_variants
-export constexpr auto operator+(const vertex_attrib_variant a) noexcept
-  -> vertex_attrib_variants<1> {
+export [[nodiscard]] constexpr auto operator+(
+  const vertex_attrib_variant a) noexcept -> vertex_attrib_variants<1> {
     return {{a}};
 }
 //------------------------------------------------------------------------------
@@ -256,7 +256,7 @@ export constexpr auto operator+(const vertex_attrib_variant a) noexcept
 /// @ingroup shapes
 /// @see vertex_attrib_variant
 /// @see vertex_attrib_variants
-export constexpr auto operator+(
+export [[nodiscard]] constexpr auto operator+(
   const vertex_attrib_variant a,
   const vertex_attrib_variant b) noexcept -> vertex_attrib_variants<2> {
     return {{a, b}};
@@ -264,7 +264,7 @@ export constexpr auto operator+(
 //------------------------------------------------------------------------------
 // append_attrib
 export template <std::size_t N, std::size_t... I>
-constexpr auto do_append_attrib(
+[[nodiscard]] constexpr auto do_append_attrib(
   const vertex_attrib_variants<N>& a,
   const vertex_attrib_variant b,
   const std::index_sequence<I...>) noexcept {
@@ -276,7 +276,7 @@ constexpr auto do_append_attrib(
 /// @see vertex_attrib_variant
 /// @see vertex_attrib_variants
 export template <std::size_t N>
-constexpr auto operator+(
+[[nodiscard]] constexpr auto operator+(
   const vertex_attrib_variants<N>& a,
   const vertex_attrib_variant b) noexcept -> vertex_attrib_variants<N + 1> {
     return do_append_attrib(a, b, std::make_index_sequence<N>());
@@ -286,8 +286,8 @@ constexpr auto operator+(
 /// @ingroup shapes
 /// @see vertex_attrib_kinds
 export template <std::size_t N>
-auto get_attrib_kinds(const vertex_attrib_variants<N>& vaals) noexcept
-  -> vertex_attrib_kinds {
+[[nodiscard]] auto get_attrib_kinds(
+  const vertex_attrib_variants<N>& vaals) noexcept -> vertex_attrib_kinds {
     vertex_attrib_kinds res;
 
     for(const vertex_attrib_variant& vaal : vaals) {
@@ -339,7 +339,8 @@ export auto attrib_values_per_vertex(const vertex_attrib_kind attr) noexcept
 //------------------------------------------------------------------------------
 /// @brief Gets the default number of values per vertex for an attribute variant.
 /// @ingroup shapes
-export auto attrib_values_per_vertex(const vertex_attrib_variant vav) noexcept {
+export [[nodiscard]] auto attrib_values_per_vertex(
+  const vertex_attrib_variant vav) noexcept {
     return attrib_values_per_vertex(vav.attribute());
 }
 //------------------------------------------------------------------------------

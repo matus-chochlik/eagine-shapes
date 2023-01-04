@@ -15,7 +15,7 @@ namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of scaled_wrap_coords_gen modifier.
 /// @ingroup shapes
-export auto scale_wrap_coords(
+export [[nodiscard]] auto scale_wrap_coords(
   std::shared_ptr<generator> gen,
   float x,
   float y,

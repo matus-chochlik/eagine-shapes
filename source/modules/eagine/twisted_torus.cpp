@@ -25,7 +25,7 @@ namespace eagine::shapes {
 /// @see unit_icosahedron
 /// @see unit_torus
 /// @see unit_screen
-export auto unit_twisted_torus(
+export [[nodiscard]] auto unit_twisted_torus(
   const vertex_attrib_kinds attr_kinds,
   const int twist,
   const valid_if_greater_than<int, 2>& rings,
@@ -40,13 +40,14 @@ export auto unit_twisted_torus(
 /// @see unit_torus
 /// @see unit_icosahedron
 /// @see unit_screen
-export auto unit_twisted_torus(const vertex_attrib_kinds attr_kinds) {
+export [[nodiscard]] auto unit_twisted_torus(
+  const vertex_attrib_kinds attr_kinds) {
     return unit_twisted_torus(attr_kinds, 12, 38, 12, 0.5F);
 }
 
 /// @brief Tries to construct instances of unit_twisted_torus_gen from an URL.
 /// @ingroup shapes
-export auto unit_twisted_torus_from(
+export [[nodiscard]] auto unit_twisted_torus_from(
   const vertex_attrib_kinds,
   const url&,
   main_ctx&) -> std::unique_ptr<generator>;

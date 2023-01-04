@@ -27,11 +27,15 @@ export struct to_json_options {
     drawing_variant draw_variant{0};
 };
 //------------------------------------------------------------------------------
-export auto parse_from(main_ctx&, generator&, to_json_options& opts) noexcept
-  -> bool;
+export [[nodiscard]] auto parse_from(
+  main_ctx&,
+  generator&,
+  to_json_options& opts) noexcept -> bool;
 //------------------------------------------------------------------------------
-export auto to_json(std::ostream&, generator&, const to_json_options&)
-  -> std::ostream&;
+export [[nodiscard]] auto to_json(
+  std::ostream&,
+  generator&,
+  const to_json_options&) -> std::ostream&;
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes
 

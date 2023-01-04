@@ -14,12 +14,12 @@ import <memory>;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
-export auto array(
+export [[nodiscard]] auto array(
   std::shared_ptr<generator> gen,
   const std::array<float, 3> d,
   const span_size_t count) noexcept -> std::unique_ptr<generator>;
 //------------------------------------------------------------------------------
-export auto ortho_array_xyz(
+export [[nodiscard]] auto ortho_array_xyz(
   std::shared_ptr<generator> gen,
   const std::array<float, 3> d,
   const std::array<span_size_t, 3> n) noexcept {

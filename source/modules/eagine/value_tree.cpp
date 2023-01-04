@@ -23,8 +23,9 @@ namespace eagine::shapes {
 /// @see unit_screen
 /// @see unit_torus
 /// @see unit_twisted_torus
-export auto from_value_tree(valtree::compound source, main_ctx_parent parent)
-  -> std::unique_ptr<generator>;
+export [[nodiscard]] auto from_value_tree(
+  valtree::compound source,
+  main_ctx_parent parent) -> std::unique_ptr<generator>;
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes
 

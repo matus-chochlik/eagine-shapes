@@ -16,14 +16,14 @@ namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of triangle_adjacency_gen modifier.
 /// @ingroup shapes
-export auto add_triangle_adjacency(
+export [[nodiscard]] auto add_triangle_adjacency(
   std::shared_ptr<generator> gen,
   const drawing_variant var,
   main_ctx_parent parent) noexcept -> std::unique_ptr<generator>;
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of triangle_adjacency_gen modifier.
 /// @ingroup shapes
-export auto add_triangle_adjacency(
+export [[nodiscard]] auto add_triangle_adjacency(
   std::shared_ptr<generator> gen,
   main_ctx_parent parent) noexcept {
     return add_triangle_adjacency(std::move(gen), 0, parent);

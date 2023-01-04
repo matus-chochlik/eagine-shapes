@@ -15,11 +15,11 @@ import <array>;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
-export auto combine(std::unique_ptr<generator>&& gen)
+export [[nodiscard]] auto combine(std::unique_ptr<generator>&& gen)
   -> std::unique_ptr<generator>;
 //------------------------------------------------------------------------------
 export template <std::size_t N>
-auto combine(std::array<std::unique_ptr<generator>, N>&& gens)
+[[nodiscard]] auto combine(std::array<std::unique_ptr<generator>, N>&& gens)
   -> std::unique_ptr<generator>;
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes

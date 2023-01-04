@@ -16,7 +16,7 @@ namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of scaled_gen modifier.
 /// @ingroup shapes
-export auto scale(
+export [[nodiscard]] auto scale(
   std::shared_ptr<generator> gen,
   const std::array<float, 3> s) noexcept -> std::unique_ptr<generator>;
 //------------------------------------------------------------------------------

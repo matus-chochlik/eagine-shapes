@@ -14,7 +14,7 @@ namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of to_quads_gen modifier.
 /// @ingroup shapes
-export auto to_quads(std::shared_ptr<generator> gen) noexcept
+export [[nodiscard]] auto to_quads(std::shared_ptr<generator> gen) noexcept
   -> std::unique_ptr<generator>;
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes

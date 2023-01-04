@@ -15,7 +15,7 @@ namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of translated_gen modifier.
 /// @ingroup shapes
-export auto translate(
+export [[nodiscard]] auto translate(
   std::shared_ptr<generator> gen,
   std::array<float, 3> d) noexcept -> std::unique_ptr<generator>;
 //------------------------------------------------------------------------------

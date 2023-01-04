@@ -30,7 +30,7 @@ namespace eagine::shapes {
 /// @see unit_torus
 /// @see unit_twisted_torus
 /// @see unit_screen
-export auto unit_sphere(
+export [[nodiscard]] auto unit_sphere(
   const vertex_attrib_kinds attr_kinds,
   const valid_if_greater_than<int, 2>& rings,
   const valid_if_greater_than<int, 3>& sections) -> std::unique_ptr<generator>;
@@ -44,14 +44,16 @@ export auto unit_sphere(
 /// @see unit_twisted_torus
 /// @see unit_icosahedron
 /// @see unit_screen
-export auto unit_sphere(const vertex_attrib_kinds attr_kinds) {
+export [[nodiscard]] auto unit_sphere(const vertex_attrib_kinds attr_kinds) {
     return unit_sphere(attr_kinds, 18, 36);
 }
 
 /// @brief Tries to construct instances of unit_sphere_gen from an URL.
 /// @ingroup shapes
-export auto unit_sphere_from(const vertex_attrib_kinds, const url&, main_ctx&)
-  -> std::unique_ptr<generator>;
+export [[nodiscard]] auto unit_sphere_from(
+  const vertex_attrib_kinds,
+  const url&,
+  main_ctx&) -> std::unique_ptr<generator>;
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes
 

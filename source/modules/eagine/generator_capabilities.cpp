@@ -34,14 +34,14 @@ export using generator_capabilities = bitfield<generator_capability>;
 //------------------------------------------------------------------------------
 /// @brief Returns vertex_attrib_kinds value with all bits set.
 /// @ingroup shapes
-export constexpr auto all_generator_capabilities() noexcept
+export [[nodiscard]] constexpr auto all_generator_capabilities() noexcept
   -> generator_capabilities {
     return generator_capabilities{(1U << 5U) - 1U};
 }
 //------------------------------------------------------------------------------
 /// @brief Bitwise-or operator for generator_capability enumerators.
 /// @ingroup shapes
-export constexpr auto operator|(
+export [[nodiscard]] constexpr auto operator|(
   const generator_capability a,
   const generator_capability b) noexcept -> generator_capabilities {
     return {a, b};

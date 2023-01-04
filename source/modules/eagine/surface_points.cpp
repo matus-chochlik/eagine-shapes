@@ -17,14 +17,14 @@ namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Constructs instance of surface_points_gen modifier.
 /// @ingroup shapes
-export auto surface_points(
+export [[nodiscard]] auto surface_points(
   std::shared_ptr<generator> gen,
   const span_size_t point_count,
   main_ctx_parent parent) noexcept -> std::unique_ptr<generator>;
 //------------------------------------------------------------------------------
 /// @brief Constructs instance of surface_points_gen modifier.
 /// @ingroup shapes
-export auto surface_points(
+export [[nodiscard]] auto surface_points(
   std::shared_ptr<generator> gen,
   const span_size_t point_count,
   const vertex_attrib_variant weight_variant,

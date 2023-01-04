@@ -27,20 +27,22 @@ namespace eagine::shapes {
 /// @see unit_icosahedron
 /// @see unit_torus
 /// @see unit_twisted_torus
-export auto unit_plane(
+export [[nodiscard]] auto unit_plane(
   const vertex_attrib_kinds attr_kinds,
   const valid_if_positive<int>& width,
   const valid_if_positive<int>& height) -> std::unique_ptr<generator>;
 
-export auto unit_plane(const vertex_attrib_kinds attr_kinds)
+export [[nodiscard]] auto unit_plane(const vertex_attrib_kinds attr_kinds)
   -> std::unique_ptr<generator> {
     return unit_plane(attr_kinds, 4, 4);
 }
 
 /// @brief Tries to construct instances of unit_plane_gen from an URL.
 /// @ingroup shapes
-export auto unit_plane_from(const vertex_attrib_kinds, const url&, main_ctx&)
-  -> std::unique_ptr<generator>;
+export [[nodiscard]] auto unit_plane_from(
+  const vertex_attrib_kinds,
+  const url&,
+  main_ctx&) -> std::unique_ptr<generator>;
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes
 

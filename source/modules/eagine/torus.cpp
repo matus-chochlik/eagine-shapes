@@ -23,7 +23,7 @@ namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of unit_torus_gen.
 /// @ingroup shapes
-export auto unit_torus(
+export [[nodiscard]] auto unit_torus(
   const vertex_attrib_kinds attr_kinds,
   const valid_if_greater_than<int, 4>& rings,
   const valid_if_greater_than<int, 3>& sections,
@@ -39,14 +39,16 @@ export auto unit_torus(
 /// @see unit_twisted_torus
 /// @see unit_icosahedron
 /// @see unit_screen
-export auto unit_torus(const vertex_attrib_kinds attr_kinds) {
+export [[nodiscard]] auto unit_torus(const vertex_attrib_kinds attr_kinds) {
     return unit_torus(attr_kinds, 18, 36, 0.5F);
 }
 
 /// @brief Tries to construct instances of unit_torus_gen from an URL.
 /// @ingroup shapes
-export auto unit_torus_from(const vertex_attrib_kinds, const url&, main_ctx&)
-  -> std::unique_ptr<generator>;
+export [[nodiscard]] auto unit_torus_from(
+  const vertex_attrib_kinds,
+  const url&,
+  main_ctx&) -> std::unique_ptr<generator>;
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes
 

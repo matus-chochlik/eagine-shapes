@@ -14,7 +14,7 @@ namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of to_patches_gen modifier.
 /// @ingroup shapes
-export auto to_patches(std::shared_ptr<generator> gen) noexcept
+export [[nodiscard]] auto to_patches(std::shared_ptr<generator> gen) noexcept
   -> std::unique_ptr<generator>;
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes

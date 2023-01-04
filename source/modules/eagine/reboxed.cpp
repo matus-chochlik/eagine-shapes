@@ -16,7 +16,7 @@ namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of reboxed_gen modifier.
 /// @ingroup shapes
-export auto rebox(std::shared_ptr<generator> gen) noexcept
+export [[nodiscard]] auto rebox(std::shared_ptr<generator> gen) noexcept
   -> std::unique_ptr<generator>;
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes

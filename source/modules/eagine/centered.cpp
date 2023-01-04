@@ -19,7 +19,7 @@ namespace eagine::shapes {
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of centered_gen modifier.
 /// @ingroup shapes
-export auto center(std::shared_ptr<generator> gen) noexcept
+export [[nodiscard]] auto center(std::shared_ptr<generator> gen) noexcept
   -> std::unique_ptr<generator>;
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes

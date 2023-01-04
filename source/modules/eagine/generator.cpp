@@ -53,19 +53,20 @@ export struct generator : abstract<generator> {
 
     /// @brief Returns the set of vertex attributes supported by this generator.
     /// @see attrib_count
-    virtual auto attrib_kinds() noexcept -> vertex_attrib_kinds = 0;
+    [[nodiscard]] virtual auto attrib_kinds() noexcept
+      -> vertex_attrib_kinds = 0;
 
     /// @brief Tests if the specified attribute is supported by this generator.
     /// @see attrib_kinds
     /// @see attrib_count
-    auto has(const vertex_attrib_kind attrib) noexcept {
+    [[nodiscard]] auto has(const vertex_attrib_kind attrib) noexcept {
         return attrib_kinds().has(attrib);
     }
 
     /// @brief Returns the count of vertex attributes supported by this generator.
     /// @see attrib_kinds
     /// @see for_each_attrib
-    auto supported_attrib_count() noexcept -> span_size_t {
+    [[nodiscard]] auto supported_attrib_count() noexcept -> span_size_t {
         return count_set_bits(attrib_kinds());
     }
 
@@ -94,11 +95,12 @@ export struct generator : abstract<generator> {
     /// @brief Indicates if the specified generator capability is enabled.
     /// @see enable
     /// @see disable
-    virtual auto is_enabled(const generator_capability cap) noexcept
-      -> bool = 0;
+    [[nodiscard]] virtual auto is_enabled(
+      const generator_capability cap) noexcept -> bool = 0;
 
     /// @brief Indicates if indexed drawing is enabled.
-    auto indexed_drawing(const drawing_variant var) noexcept -> bool {
+    [[nodiscard]] auto indexed_drawing(const drawing_variant var) noexcept
+      -> bool {
         if(is_enabled(generator_capability::indexed_drawing)) {
             return index_count(var) > 0;
         }
@@ -106,74 +108,75 @@ export struct generator : abstract<generator> {
     }
 
     /// @brief Indicates if element strips are enabled.
-    auto strips_allowed() noexcept -> bool {
+    [[nodiscard]] auto strips_allowed() noexcept -> bool {
         return is_enabled(generator_capability::element_strips);
     }
 
     /// @brief Indicates if element fans are enabled.
-    auto fans_allowed() noexcept -> bool {
+    [[nodiscard]] auto fans_allowed() noexcept -> bool {
         return is_enabled(generator_capability::element_fans);
     }
 
     /// @brief Indicates if primitive restart is enabled.
-    auto primitive_restart() noexcept -> bool {
+    [[nodiscard]] auto primitive_restart() noexcept -> bool {
         return is_enabled(generator_capability::primitive_restart);
     }
 
     /// @brief Indicates if vertex attribute divisors is enabled.
-    auto attrib_divisors() noexcept -> bool {
+    [[nodiscard]] auto attrib_divisors() noexcept -> bool {
         return is_enabled(generator_capability::attrib_divisors);
     }
 
     /// @brief Returns the instance count.
-    virtual auto instance_count() -> span_size_t = 0;
+    [[nodiscard]] virtual auto instance_count() -> span_size_t = 0;
 
     /// @brief Returns the shape geometry vertex count.
-    virtual auto vertex_count() -> span_size_t = 0;
+    [[nodiscard]] virtual auto vertex_count() -> span_size_t = 0;
 
     /// @brief Returns the count of shape attribute variants.
-    virtual auto attribute_variants(const vertex_attrib_kind)
+    [[nodiscard]] virtual auto attribute_variants(const vertex_attrib_kind)
       -> span_size_t = 0;
 
-    auto has_variant(const vertex_attrib_variant vav) -> bool {
+    [[nodiscard]] auto has_variant(const vertex_attrib_variant vav) -> bool {
         assert(vav.has_valid_index());
         return vav.index() < attribute_variants(vav.attribute());
     }
 
     /// @brief Returns the name of the specified attribute variant.
-    virtual auto variant_name(const vertex_attrib_variant vav)
+    [[nodiscard]] virtual auto variant_name(const vertex_attrib_variant vav)
       -> string_view = 0;
 
     /// @brief Finds attribute variant by kind and name.
-    virtual auto find_variant(
+    [[nodiscard]] virtual auto find_variant(
       const vertex_attrib_kind attrib,
       const string_view name) -> vertex_attrib_variant = 0;
 
     /// @brief Finds attribute variant by name.
-    auto find_variant(const string_view name) -> vertex_attrib_variant;
+    [[nodiscard]] auto find_variant(const string_view name)
+      -> vertex_attrib_variant;
 
     /// @brief Returns the number of values per vertex for the specified variant.
-    virtual auto values_per_vertex(const vertex_attrib_variant)
+    [[nodiscard]] virtual auto values_per_vertex(const vertex_attrib_variant)
       -> span_size_t = 0;
 
     /// @brief Returns the total number of values for the specified attribute variant.
-    virtual auto value_count(const vertex_attrib_variant vav)
+    [[nodiscard]] virtual auto value_count(const vertex_attrib_variant vav)
       -> span_size_t = 0;
 
     /// @brief Returns the attribute data type for the specified variant.
-    virtual auto attrib_type(const vertex_attrib_variant vav)
+    [[nodiscard]] virtual auto attrib_type(const vertex_attrib_variant vav)
       -> attrib_data_type = 0;
 
     /// @brief Indicates if the specified variant attribute values are integral.
-    virtual auto is_attrib_integral(const vertex_attrib_variant vav)
-      -> bool = 0;
+    [[nodiscard]] virtual auto is_attrib_integral(
+      const vertex_attrib_variant vav) -> bool = 0;
 
     /// @brief Indicates if the specified variant attribute values should be normalized.
-    virtual auto is_attrib_normalized(const vertex_attrib_variant vav)
-      -> bool = 0;
+    [[nodiscard]] virtual auto is_attrib_normalized(
+      const vertex_attrib_variant vav) -> bool = 0;
 
     /// @brief Returns the vertex attribute divisor value.
-    virtual auto attrib_divisor(const vertex_attrib_variant vav)
+    [[nodiscard]] virtual auto attrib_divisor(const vertex_attrib_variant vav)
       -> std::uint32_t = 0;
 
     /// @brief Fetches the vertex attribute data for the specified variant as bytes.
@@ -205,26 +208,29 @@ export struct generator : abstract<generator> {
       span<float> dest) = 0;
 
     /// @brief Returns the count of possible shape draw variants.
-    virtual auto draw_variant_count() -> span_size_t = 0;
+    [[nodiscard]] virtual auto draw_variant_count() -> span_size_t = 0;
 
     /// @brief Returns the identifier of the drawing variant at the specified index.
-    auto draw_variant(const span_size_t index) -> drawing_variant {
+    [[nodiscard]] auto draw_variant(const span_size_t index)
+      -> drawing_variant {
         return index;
     }
 
     /// @brief Returns the index data type for the specified draw variant.
-    virtual auto index_type(const drawing_variant) -> index_data_type = 0;
+    [[nodiscard]] virtual auto index_type(const drawing_variant)
+      -> index_data_type = 0;
 
     /// @brief Returns the index data type for the default draw variant.
-    auto index_type() -> index_data_type {
+    [[nodiscard]] auto index_type() -> index_data_type {
         return index_type(0);
     }
 
     /// @brief Returns the index count for the specified drawing variant.
-    virtual auto index_count(const drawing_variant) -> span_size_t = 0;
+    [[nodiscard]] virtual auto index_count(const drawing_variant)
+      -> span_size_t = 0;
 
     /// @brief Returns the index count for the default drawing variant.
-    auto index_count() {
+    [[nodiscard]] auto index_count() {
         return index_count(0);
     }
 
@@ -253,10 +259,11 @@ export struct generator : abstract<generator> {
     }
 
     /// @brief Returns the number of drawing instructions for the specified variant.
-    virtual auto operation_count(const drawing_variant) -> span_size_t = 0;
+    [[nodiscard]] virtual auto operation_count(const drawing_variant)
+      -> span_size_t = 0;
 
     /// @brief Returns the number of drawing instructions for the default variant.
-    auto operation_count() {
+    [[nodiscard]] auto operation_count() {
         return operation_count(0);
     }
 
@@ -287,8 +294,8 @@ export struct generator : abstract<generator> {
 
     /// @brief Checks if the structure for random values is consistent.
     /// @see random_attribute_values
-    auto are_consistent(const random_attribute_values& values) noexcept
-      -> bool {
+    [[nodiscard]] auto are_consistent(
+      const random_attribute_values& values) noexcept -> bool {
         for(const auto& [vav, dest] : values.float_values) {
             if(dest.size() < values.count * values_per_vertex(vav)) {
                 return false;
@@ -316,7 +323,7 @@ export struct generator : abstract<generator> {
     }
 
     /// @brief Returns the parameter for the nearest intersection with a ray.
-    auto ray_intersection(
+    [[nodiscard]] auto ray_intersection(
       const drawing_variant var,
       const math::line<float, true>& ray) -> std::optional<float> {
         std::optional<float> result{};
@@ -325,7 +332,7 @@ export struct generator : abstract<generator> {
     }
 
     /// @brief Returns the parameter for the nearest intersection with a ray.
-    auto ray_intersection(const math::line<float, true>& ray)
+    [[nodiscard]] auto ray_intersection(const math::line<float, true>& ray)
       -> std::optional<float> {
         std::optional<float> result{};
         ray_intersections(*this, 0, view_one(ray), cover_one(result));
