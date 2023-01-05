@@ -6,6 +6,7 @@ eagine_add_module(
 	eagine.shapes PARTITION generator_capabilities
 	IMPORTS
 		eagine.core.types
+		eagine.core.reflection
 )
 
 eagine_add_module(
@@ -427,3 +428,10 @@ eagine_add_module(
 		shapes_impl
 )
 
+eagine_add_module_tests(
+	eagine.shapes
+	UNITS
+		generator_capabilities
+	IMPORTS
+		eagine.core
+)

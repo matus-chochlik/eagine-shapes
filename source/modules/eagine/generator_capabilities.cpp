@@ -8,9 +8,11 @@
 export module eagine.shapes:generator_capabilities;
 
 import eagine.core.types;
+import eagine.core.reflection;
 import <cstdint>;
 
-namespace eagine::shapes {
+namespace eagine {
+namespace shapes {
 //------------------------------------------------------------------------------
 /// @brief Shape generator capability bit enumeration.
 /// @ingroup shapes
@@ -47,4 +49,18 @@ export [[nodiscard]] constexpr auto operator|(
     return {a, b};
 }
 //------------------------------------------------------------------------------
-} // namespace eagine::shapes
+} // namespace shapes
+export template <typename Selector>
+constexpr auto enumerator_mapping(
+  const std::type_identity<shapes::generator_capability>,
+  const Selector) noexcept {
+    using shapes::generator_capability;
+    return enumerator_map_type<generator_capability, 5>{
+      {{"indexed_drawing", generator_capability::indexed_drawing},
+       {"element_strips", generator_capability::element_strips},
+       {"element_fans", generator_capability::element_fans},
+       {"primitive_restart", generator_capability::primitive_restart},
+       {"attrib_divisors", generator_capability::attrib_divisors}}};
+}
+//------------------------------------------------------------------------------
+} // namespace eagine
