@@ -18,7 +18,7 @@ import eagine.core.reflection;
 import eagine.core.utility;
 import eagine.core.math;
 export import :generator_capabilities;
-export import :vertex_attrib;
+export import :vertex_attributes;
 export import :drawing;
 import <array>;
 import <memory>;

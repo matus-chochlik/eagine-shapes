@@ -10,7 +10,7 @@ export module eagine.shapes;
 import eagine.core.runtime;
 import eagine.core.main_ctx;
 
-export import :vertex_attrib;
+export import :vertex_attributes;
 export import :generator_capabilities;
 export import :drawing;
 export import :generator;

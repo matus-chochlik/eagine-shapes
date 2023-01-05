@@ -1,3 +1,4 @@
+
 /// @file
 ///
 /// Copyright Matus Chochlik.
@@ -10,29 +11,29 @@
 import eagine.core;
 import eagine.shapes;
 //------------------------------------------------------------------------------
-void generator_capabilities_all(auto& s) {
-    eagitest::case_ test{s, 1, "all"};
+void vertex_attrib_kinds_all(auto& s) {
+    eagitest::case_ test{s, 1, "all kinds"};
     eagitest::track trck{test, 0, 1};
 
-    const eagine::shapes::generator_capabilities all_caps{
-      eagine::shapes::all_generator_capabilities()};
+    const eagine::shapes::vertex_attrib_kinds all_attrs{
+      eagine::shapes::all_vertex_attrib_kinds()};
 
-    eagine::shapes::generator_capabilities test_caps;
+    eagine::shapes::vertex_attrib_kinds test_attrs;
 
     for(const auto& info :
-        eagine::enumerators<eagine::shapes::generator_capability>()) {
-        test.check(all_caps.has(info.enumerator), "has enumerator");
-        test.check(test_caps.has_not(info.enumerator), "has not enumerator");
-        test_caps.set(info.enumerator);
+        eagine::enumerators<eagine::shapes::vertex_attrib_kind>()) {
+        test.check(all_attrs.has(info.enumerator), "has enumerator");
+        test.check(test_attrs.has_not(info.enumerator), "has not enumerator");
+        test_attrs.set(info.enumerator);
         trck.checkpoint(1);
     }
 
-    test.check(all_caps == test_caps, "all set");
+    test.check(all_attrs == test_attrs, "all set");
 }
 //------------------------------------------------------------------------------
 auto main(int argc, const char** argv) -> int {
-    eagitest::suite test{argc, argv, "generator capabilities", 1};
-    test.once(generator_capabilities_all);
+    eagitest::suite test{argc, argv, "vertex attributes", 1};
+    test.once(vertex_attrib_kinds_all);
     return test.exit_code();
 }
 //------------------------------------------------------------------------------

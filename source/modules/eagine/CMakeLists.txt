@@ -10,7 +10,7 @@ eagine_add_module(
 )
 
 eagine_add_module(
-	eagine.shapes PARTITION vertex_attrib
+	eagine.shapes PARTITION vertex_attributes
 	IMPORTS
 		eagine.core.types
 		eagine.core.reflection
@@ -27,7 +27,7 @@ eagine_add_module(
 eagine_add_module(
 	eagine.shapes PARTITION generator
 	IMPORTS
-		generator_capabilities vertex_attrib drawing
+		generator_capabilities vertex_attributes drawing
 		eagine.core.types
 		eagine.core.memory
 		eagine.core.container
@@ -363,7 +363,7 @@ eagine_add_module(
 	INTERFACES shapes
 	PARTITIONS
 		generator_capabilities
-		vertex_attrib
+		vertex_attributes
 		drawing
 		generator
 		screen
@@ -432,6 +432,7 @@ eagine_add_module_tests(
 	eagine.shapes
 	UNITS
 		generator_capabilities
+		vertex_attributes
 	IMPORTS
 		eagine.core
 )
