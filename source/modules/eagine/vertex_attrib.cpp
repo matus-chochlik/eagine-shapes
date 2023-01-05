@@ -160,65 +160,66 @@ public:
       , _index{vav._index} {}
 
     /// @brief Return the attribute kind.
-    constexpr auto attribute() const noexcept -> vertex_attrib_kind {
+    [[nodiscard]] constexpr auto attribute() const noexcept
+      -> vertex_attrib_kind {
         return _attrib;
     }
 
     /// @brief Check if the stored index is valid.
-    constexpr auto has_valid_index() const noexcept {
+    [[nodiscard]] constexpr auto has_valid_index() const noexcept {
         return _index >= 0;
     }
 
     /// @brief Check if the stored index is valid.
     /// @see has_valid_index
-    constexpr explicit operator bool() const noexcept {
+    [[nodiscard]] constexpr explicit operator bool() const noexcept {
         return has_valid_index();
     }
 
     /// @brief Returns the index of the attribute variant.
-    constexpr auto index() const noexcept -> span_size_t {
+    [[nodiscard]] constexpr auto index() const noexcept -> span_size_t {
         return _index;
     }
 
-    constexpr operator std::array<const vertex_attrib_variant, 1>()
+    [[nodiscard]] constexpr operator std::array<const vertex_attrib_variant, 1>()
       const noexcept {
         return {{*this}};
     }
 
-    constexpr auto as_tuple() const noexcept {
+    [[nodiscard]] constexpr auto as_tuple() const noexcept {
         return std::make_tuple(_attrib, _index);
     }
 
     /// @brief Equality comparison.
-    friend constexpr auto operator==(
+    [[nodiscard]] friend constexpr auto operator==(
       const vertex_attrib_variant l,
       const vertex_attrib_variant r) noexcept {
         return l.as_tuple() == r.as_tuple();
     }
 
     /// @brief Nonequality comparison.
-    friend constexpr auto operator!=(
+    [[nodiscard]] friend constexpr auto operator!=(
       const vertex_attrib_variant l,
       const vertex_attrib_variant r) noexcept {
         return l.as_tuple() != r.as_tuple();
     }
 
     /// @brief Less-than comparison.
-    friend constexpr auto operator<(
+    [[nodiscard]] friend constexpr auto operator<(
       const vertex_attrib_variant l,
       const vertex_attrib_variant r) noexcept {
         return l.as_tuple() < r.as_tuple();
     }
 
     /// @brief Variant and kind equality comparison.
-    friend constexpr auto operator==(
+    [[nodiscard]] friend constexpr auto operator==(
       const vertex_attrib_variant l,
       const vertex_attrib_kind r) noexcept {
         return l._attrib == r;
     }
 
     /// @brief Variant and kind nonequality comparison.
-    friend constexpr auto operator!=(
+    [[nodiscard]] friend constexpr auto operator!=(
       const vertex_attrib_variant l,
       const vertex_attrib_kind r) noexcept {
         return l._attrib != r;
@@ -299,8 +300,8 @@ export template <std::size_t N>
 //------------------------------------------------------------------------------
 /// @brief Gets the default number of values per vertex for an attribute kind.
 /// @ingroup shapes
-export auto attrib_values_per_vertex(const vertex_attrib_kind attr) noexcept
-  -> span_size_t {
+export [[nodiscard]] auto attrib_values_per_vertex(
+  const vertex_attrib_kind attr) noexcept -> span_size_t {
     switch(attr) {
         case vertex_attrib_kind::color:
             return 4;
