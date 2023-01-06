@@ -6,7 +6,8 @@
 ///  http://www.boost.org/LICENSE_1_0.txt
 ///
 
-#include <eagine/testing/unit_begin.hpp>
+#include <eagine/testing/unit_begin_ctx.hpp>
+import eagine.core;
 import eagine.shapes;
 //------------------------------------------------------------------------------
 void plane_defaults_1(auto& s) {
@@ -34,10 +35,41 @@ void plane_defaults_1(auto& s) {
     test.check(plane->operation_count() > 0, "has operations");
 }
 //------------------------------------------------------------------------------
-auto main(int argc, const char** argv) -> int {
-    eagitest::suite test{argc, argv, "plane", 1};
+void plane_from_url_1(auto& s) {
+    eagitest::case_ test{s, 2, "from URL 1"};
+
+    const auto p0{eagine::shapes::unit_plane_from(
+      eagine::shapes::all_vertex_attrib_kinds(),
+      eagine::url{"http://bad/url"},
+      s.context())};
+
+    test.check(not p0, "not p0");
+}
+//------------------------------------------------------------------------------
+void plane_from_url_2(auto& s) {
+    eagitest::case_ test{s, 3, "from URL 2"};
+
+    const auto p1{eagine::shapes::unit_plane_from(
+      eagine::shapes::all_vertex_attrib_kinds(),
+      eagine::url{"shape:///unit_plane?width=1+height=1"},
+      s.context())};
+
+    test.ensure(bool(p1), "p1");
+    test.check(p1->vertex_count() >= 4, "vertex count");
+}
+//------------------------------------------------------------------------------
+// main
+//------------------------------------------------------------------------------
+auto test_main(eagine::test_ctx& ctx) -> int {
+    eagitest::ctx_suite test{ctx, "plane", 3};
     test.once(plane_defaults_1);
+    test.once(plane_from_url_1);
+    test.once(plane_from_url_2);
     return test.exit_code();
 }
 //------------------------------------------------------------------------------
-#include <eagine/testing/unit_end.hpp>
+auto main(int argc, const char** argv) -> int {
+    return eagine::test_main_impl(argc, argv, test_main);
+}
+//------------------------------------------------------------------------------
+#include <eagine/testing/unit_end_ctx.hpp>
