@@ -32,7 +32,7 @@ auto main(main_ctx& ctx) -> int {
         gen = shapes::unit_twisted_torus(shapes::vertex_attrib_kind::position);
     }
 
-    if(!gen) {
+    if(not gen) {
         gen = shapes::unit_icosahedron(shapes::vertex_attrib_kind::position);
     }
 
