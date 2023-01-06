@@ -433,6 +433,7 @@ eagine_add_module_tests(
 	UNITS
 		generator_capabilities
 		vertex_attributes
+		screen
 		plane
 	IMPORTS
 		eagine.core
