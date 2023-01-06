@@ -31,7 +31,7 @@ static auto get_base_generator(const main_ctx& ctx) {
         gen = shapes::unit_icosahedron(attrbits);
     }
 
-    if(!gen) {
+    if(not gen) {
         gen = shapes::unit_icosahedron(attrbits);
     }
 

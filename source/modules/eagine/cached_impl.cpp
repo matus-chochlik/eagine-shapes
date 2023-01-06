@@ -308,7 +308,7 @@ void cached_gen::_get_indices(
         const auto size = std_size(index_count(var));
         const std::lock_guard<std::mutex> lock{_mutex};
         auto& cached = cache[var];
-        if(cached.empty() && size != 0U) {
+        if(cached.empty() and size != 0U) {
             cached.resize(size);
             _gen->indices(var, cover(cached));
             log_debug("cached vertex indices")

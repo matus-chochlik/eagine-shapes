@@ -366,7 +366,7 @@ void unit_sphere_gen::ray_intersections(
           math::line_sphere_intersection_params(ray, bs));
         if(nparam > 0.0001F) {
             auto& oparam = intersections[i];
-            if(!oparam || bool(nparam < oparam)) {
+            if(not oparam or bool(nparam < oparam)) {
                 oparam = nparam;
             }
         }

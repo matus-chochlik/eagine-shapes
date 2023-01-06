@@ -29,14 +29,15 @@ auto parse_from(main_ctx& ctx, generator&, to_json_options& opts) noexcept
     opts.attrib_variants[vertex_attrib_kind::position][0];
     for(const auto arg : ctx.args()) {
         if(arg.is_long_tag("shape-draw-variant")) {
-            if(!arg.next().parse(opts.draw_variant, ctx.log().error_stream())) {
+            if(not arg.next().parse(
+                 opts.draw_variant, ctx.log().error_stream())) {
                 return false;
             }
         } else {
             for(const auto& info : enumerator_mapping(
                   std::type_identity<vertex_attrib_kind>(), default_selector)) {
                 if(arg.is_prefixed_tag("--shape-attrib-", info.name)) {
-                    if(arg.next().starts_with("-") || !arg.next()) {
+                    if(arg.next().starts_with("-") or not arg.next()) {
                         opts.attrib_variants[info.enumerator][0];
                     } else {
                         std::int16_t var_idx{-1};
@@ -83,7 +84,7 @@ auto to_json(std::ostream& out, generator& gen, const to_json_options& opts)
             const auto size = gen.value_count(vav);
             out << R"(,"size":)" << size << '\n';
 
-            if(!name.empty()) {
+            if(not name.empty()) {
                 out << R"(,"name":")" << name << '"' << '\n';
             }
 
@@ -114,7 +115,7 @@ auto to_json(std::ostream& out, generator& gen, const to_json_options& opts)
     if(idx_type != index_data_type::none) {
         std::vector<std::uint32_t> indices;
         indices.resize(integer(gen.index_count(opts.draw_variant)));
-        if(!indices.empty()) {
+        if(not indices.empty()) {
             gen.indices(opts.draw_variant, cover(indices));
             out << R"(,"indices":[)";
             interleaved_call print_idx(
@@ -128,7 +129,7 @@ auto to_json(std::ostream& out, generator& gen, const to_json_options& opts)
 
     std::vector<draw_operation> operations;
     operations.resize(integer(gen.operation_count(opts.draw_variant)));
-    if(!operations.empty()) {
+    if(not operations.empty()) {
         gen.instructions(opts.draw_variant, cover(operations));
         out << R"(,"instructions":[{)";
 

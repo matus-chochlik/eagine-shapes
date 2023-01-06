@@ -85,7 +85,7 @@ auto to_patches_gen::_get_instr(const drawing_variant var) -> _instr_info& {
 
         for(const auto& op : info.ops) {
             if(
-              op.mode != primitive_type::triangles &&
+              op.mode != primitive_type::triangles and
               op.mode != primitive_type::quads) {
                 info.needs_reindex = true;
                 break;
@@ -128,12 +128,14 @@ void to_patches_gen::_make_indices(
                 bool r1{true};
                 bool even{true};
                 for(const auto i0 : chunk) {
-                    if(op.primitive_restart && (i0 == op.primitive_restart_index)) {
+                    if(
+                      op.primitive_restart and
+                      (i0 == op.primitive_restart_index)) {
                         r2 = true;
                         r1 = true;
                         even = true;
                     } else {
-                        if(r1 || r2) {
+                        if(r1 or r2) {
                             r2 = r1;
                             r1 = false;
                         } else {
@@ -146,7 +148,7 @@ void to_patches_gen::_make_indices(
                                 new_indices.push_back(i2);
                                 new_indices.push_back(i0);
                             }
-                            even = !even;
+                            even = not even;
                         }
                     }
                     i2 = i1;

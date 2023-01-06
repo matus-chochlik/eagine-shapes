@@ -96,13 +96,13 @@ primitive_info_gen::primitive_info_gen(
 auto primitive_info_gen::enable(
   const generator_capability cap,
   const bool value) noexcept -> bool {
-    return delegated_gen::enable(cap, value) ||
+    return delegated_gen::enable(cap, value) or
            (cap == generator_capability::indexed_drawing);
 }
 //------------------------------------------------------------------------------
 auto primitive_info_gen::is_enabled(const generator_capability cap) noexcept
   -> bool {
-    return delegated_gen::is_enabled(cap) ||
+    return delegated_gen::is_enabled(cap) or
            (cap == generator_capability::indexed_drawing);
 }
 //------------------------------------------------------------------------------

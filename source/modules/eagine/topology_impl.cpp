@@ -68,7 +68,7 @@ struct topology_data {
 
     auto is_same_vertex(unsigned i, unsigned j, float delta) const noexcept
       -> bool {
-        return (i == j) || have_same_position(i, j, delta);
+        return (i == j) or have_same_position(i, j, delta);
     }
 };
 //------------------------------------------------------------------------------
@@ -199,7 +199,7 @@ void topology::_scan_topology(topology_options opts) {
         span_size_t i;
 
         const auto is_pri = [&]() {
-            return indexed &&
+            return indexed and
                    data.indices[i] == operation.primitive_restart_index;
         };
 

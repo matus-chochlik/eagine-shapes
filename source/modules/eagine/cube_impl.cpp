@@ -114,7 +114,7 @@ auto unit_cube_gen::_shared_attrs() noexcept -> vertex_attrib_kinds {
 }
 //------------------------------------------------------------------------------
 auto unit_cube_gen::_only_shared_attribs() noexcept -> bool {
-    return !(attrib_kinds() & ~_shared_attrs());
+    return not(attrib_kinds() & ~_shared_attrs());
 }
 //------------------------------------------------------------------------------
 auto unit_cube_gen::_face_vert(
