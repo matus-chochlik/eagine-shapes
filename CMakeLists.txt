@@ -5,7 +5,11 @@
 #
 cmake_minimum_required(VERSION 3.16)
 
-project(EAGineShapes)
+project(
+	EAGineShapes
+	LANGUAGES CXX
+	HOMEPAGE_URL https://github.com/matus-chochlik/eagine-shapes
+)
 if(NOT EAGINE_CORE_ROOT)
 	set(EAGINE_CORE_ROOT ${PROJECT_SOURCE_DIR}/submodules/eagine-core)
 endif()
