@@ -396,36 +396,36 @@ eagine_add_module(
 		surface_points
 		to_json
 	SOURCES
-		generator_impl
-		screen_impl
-		plane_impl
-		cube_impl
-		round_cube_impl
-		skybox_impl
-		icosahedron_impl
-		tetrahedrons_impl
-		sphere_impl
-		torus_impl
-		twisted_torus_impl
-		value_tree_impl
-		from_json_impl
-		combined_impl
-		cached_impl
-		array_impl
-		centered_impl
-		primitive_info_impl
-		occluded_impl
-		reboxed_impl
-		scaled_impl
-		scaled_wrap_coords_impl
-		translated_impl
-		to_patches_impl
-		to_quads_impl
-		topology_impl
-		adjacency_impl
-		surface_points_impl
-		to_json_impl
-		shapes_impl
+		generator
+		screen
+		plane
+		cube
+		round_cube
+		skybox
+		icosahedron
+		tetrahedrons
+		sphere
+		torus
+		twisted_torus
+		value_tree
+		from_json
+		combined
+		cached
+		array
+		centered
+		primitive_info
+		occluded
+		reboxed
+		scaled
+		scaled_wrap_coords
+		translated
+		to_patches
+		to_quads
+		topology
+		adjacency
+		surface_points
+		to_json
+		shapes
 )
 
 eagine_add_module_tests(
