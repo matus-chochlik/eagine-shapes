@@ -10,8 +10,7 @@ module eagine.shapes;
 import eagine.core.types;
 import eagine.core.runtime;
 import eagine.core.main_ctx;
-import <array>;
-import <memory>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

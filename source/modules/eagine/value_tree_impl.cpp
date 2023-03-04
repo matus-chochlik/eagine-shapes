@@ -19,10 +19,7 @@ import eagine.core.math;
 import eagine.core.value_tree;
 import eagine.core.logging;
 import eagine.core.main_ctx;
-import <cmath>;
-import <optional>;
-import <string>;
-import <map>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

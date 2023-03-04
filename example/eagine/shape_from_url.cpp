@@ -7,6 +7,7 @@
 ///
 import eagine.core;
 import eagine.shapes;
+import std;
 
 namespace eagine {
 

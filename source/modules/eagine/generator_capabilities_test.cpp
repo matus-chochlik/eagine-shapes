@@ -9,6 +9,7 @@
 #include <eagine/testing/unit_begin.hpp>
 import eagine.core;
 import eagine.shapes;
+import std;
 //------------------------------------------------------------------------------
 void generator_capabilities_all(auto& s) {
     eagitest::case_ test{s, 1, "all"};

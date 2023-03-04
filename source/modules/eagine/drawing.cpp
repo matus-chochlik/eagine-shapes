@@ -10,8 +10,7 @@ export module eagine.shapes:drawing;
 import eagine.core.types;
 import eagine.core.identifier;
 import eagine.core.reflection;
-import <cstdint>;
-import <type_traits>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

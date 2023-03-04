@@ -10,7 +10,7 @@ export module eagine.shapes:primitive_info;
 import eagine.core.types;
 import eagine.core.main_ctx;
 import :generator;
-import <memory>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

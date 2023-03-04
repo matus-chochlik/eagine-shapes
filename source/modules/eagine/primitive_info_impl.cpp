@@ -19,7 +19,7 @@ import eagine.core.math;
 import eagine.core.progress;
 import eagine.core.runtime;
 import eagine.core.main_ctx;
-import <map>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

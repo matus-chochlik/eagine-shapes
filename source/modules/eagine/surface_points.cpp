@@ -10,8 +10,7 @@ export module eagine.shapes:surface_points;
 import eagine.core.types;
 import eagine.core.main_ctx;
 import :generator;
-import <memory>;
-import <utility>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

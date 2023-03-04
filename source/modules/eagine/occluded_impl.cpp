@@ -19,10 +19,7 @@ import eagine.core.math;
 import eagine.core.progress;
 import eagine.core.runtime;
 import eagine.core.main_ctx;
-import <atomic>;
-import <random>;
-import <optional>;
-import <vector>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

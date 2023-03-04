@@ -18,10 +18,7 @@ import eagine.core.identifier;
 import eagine.core.math;
 import eagine.core.main_ctx;
 import :generator;
-import <array>;
-import <concepts>;
-import <iosfwd>;
-import <vector>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

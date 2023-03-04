@@ -17,11 +17,7 @@ import eagine.core.identifier;
 import eagine.core.units;
 import eagine.core.math;
 import eagine.core.main_ctx;
-import <array>;
-import <algorithm>;
-import <map>;
-import <random>;
-import <vector>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

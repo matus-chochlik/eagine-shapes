@@ -12,7 +12,7 @@ import eagine.core.valid_if;
 import eagine.core.runtime;
 import eagine.core.main_ctx;
 import :generator;
-import <memory>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

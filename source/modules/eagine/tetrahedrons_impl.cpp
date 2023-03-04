@@ -14,8 +14,7 @@ module eagine.shapes;
 import eagine.core.types;
 import eagine.core.memory;
 import eagine.core.math;
-import <cstdint>;
-import <memory>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

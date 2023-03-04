@@ -9,8 +9,7 @@ export module eagine.shapes:reboxed;
 
 import eagine.core.types;
 import :generator;
-import <memory>;
-import <utility>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

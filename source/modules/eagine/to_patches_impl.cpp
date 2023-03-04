@@ -13,9 +13,7 @@ module eagine.shapes;
 
 import eagine.core.types;
 import eagine.core.memory;
-import <variant>;
-import <vector>;
-import <map>;
+import std;
 
 import <iostream>;
 

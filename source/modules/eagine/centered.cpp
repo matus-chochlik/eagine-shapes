@@ -12,8 +12,7 @@ import eagine.core.memory;
 import eagine.core.identifier;
 import eagine.core.math;
 import :generator;
-import <memory>;
-import <utility>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

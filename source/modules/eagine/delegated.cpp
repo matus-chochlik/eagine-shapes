@@ -13,8 +13,7 @@ import eagine.core.identifier;
 import eagine.core.utility;
 import eagine.core.math;
 import :generator;
-import <cstdint>;
-import <memory>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

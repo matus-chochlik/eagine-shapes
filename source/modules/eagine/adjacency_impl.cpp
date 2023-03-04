@@ -16,8 +16,7 @@ import eagine.core.memory;
 import eagine.core.math;
 import eagine.core.identifier;
 import eagine.core.main_ctx;
-import <vector>;
-import <map>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

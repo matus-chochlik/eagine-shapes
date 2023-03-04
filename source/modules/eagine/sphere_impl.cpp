@@ -17,10 +17,7 @@ import eagine.core.valid_if;
 import eagine.core.math;
 import eagine.core.runtime;
 import eagine.core.main_ctx;
-import <cstdint>;
-import <cmath>;
-import <optional>;
-import <utility>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

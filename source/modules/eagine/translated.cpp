@@ -9,7 +9,7 @@ export module eagine.shapes:translated;
 
 import eagine.core.types;
 import :generator;
-import <array>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

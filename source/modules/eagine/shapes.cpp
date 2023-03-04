@@ -43,6 +43,7 @@ export import :adjacency;
 export import :surface_points;
 export import :from_json;
 export import :to_json;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

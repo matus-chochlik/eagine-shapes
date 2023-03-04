@@ -9,11 +9,7 @@ export module eagine.shapes:vertex_attributes;
 
 import eagine.core.types;
 import eagine.core.reflection;
-import <array>;
-import <cstdint>;
-import <type_traits>;
-import <tuple>;
-import <utility>;
+import std;
 
 namespace eagine {
 namespace shapes {

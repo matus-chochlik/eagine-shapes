@@ -16,7 +16,7 @@ import eagine.core.memory;
 import eagine.core.math;
 import eagine.core.runtime;
 import eagine.core.main_ctx;
-import <cmath>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

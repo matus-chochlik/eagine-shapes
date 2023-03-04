@@ -8,7 +8,7 @@
 export module eagine.shapes:to_quads;
 
 import :generator;
-import <memory>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

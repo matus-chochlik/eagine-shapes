@@ -18,10 +18,7 @@ import eagine.core.utility;
 import eagine.core.math;
 import eagine.core.runtime;
 import eagine.core.main_ctx;
-import <array>;
-import <cstdint>;
-import <cmath>;
-import <random>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

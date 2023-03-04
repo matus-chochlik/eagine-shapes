@@ -9,7 +9,7 @@ export module eagine.shapes:generator_capabilities;
 
 import eagine.core.types;
 import eagine.core.reflection;
-import <cstdint>;
+import std;
 
 namespace eagine {
 namespace shapes {

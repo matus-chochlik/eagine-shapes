@@ -14,8 +14,7 @@ import eagine.core.runtime;
 import eagine.core.main_ctx;
 import :generator;
 import :value_tree;
-import <iostream>;
-import <memory>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

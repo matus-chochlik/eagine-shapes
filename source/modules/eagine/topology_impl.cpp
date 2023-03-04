@@ -18,10 +18,7 @@ import eagine.core.container;
 import eagine.core.math;
 import eagine.core.progress;
 import eagine.core.main_ctx;
-import <array>;
-import <iostream>;
-import <map>;
-import <vector>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

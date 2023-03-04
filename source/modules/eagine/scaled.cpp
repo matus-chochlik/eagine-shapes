@@ -9,8 +9,7 @@ export module eagine.shapes:scaled;
 
 import eagine.core.types;
 import :generator;
-import <memory>;
-import <array>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

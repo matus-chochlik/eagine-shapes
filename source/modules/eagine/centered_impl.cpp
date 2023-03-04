@@ -10,9 +10,7 @@ module eagine.shapes;
 import eagine.core.types;
 import eagine.core.memory;
 import eagine.core.math;
-import <array>;
-import <limits>;
-import <memory>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

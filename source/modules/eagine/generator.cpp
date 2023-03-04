@@ -20,9 +20,7 @@ import eagine.core.math;
 export import :generator_capabilities;
 export import :vertex_attributes;
 export import :drawing;
-import <array>;
-import <memory>;
-import <optional>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

@@ -8,7 +8,7 @@
 export module eagine.shapes:tetrahedrons;
 
 import :generator;
-import <memory>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
