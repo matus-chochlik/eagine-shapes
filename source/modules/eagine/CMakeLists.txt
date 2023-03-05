@@ -28,49 +28,7 @@ eagine_add_module(
 		eagine.core.utility
 		eagine.core.math
 		eagine.core.runtime
-		eagine.core.main_ctx
-)
-
-eagine_add_module(
-	eagine.shapes PARTITION screen
-	IMPORTS
-		generator
-		eagine.core.types
-		eagine.core.memory
-		eagine.core.math
-)
-
-eagine_add_module(
-	eagine.shapes PARTITION plane
-	IMPORTS
-		generator
-		eagine.core.types
-		eagine.core.memory
 		eagine.core.valid_if
-		eagine.core.math
-		eagine.core.runtime
-		eagine.core.main_ctx
-)
-
-eagine_add_module(
-	eagine.shapes PARTITION cube
-	IMPORTS
-		generator
-		eagine.core.types
-		eagine.core.memory
-		eagine.core.math
-		eagine.core.main_ctx
-)
-
-eagine_add_module(
-	eagine.shapes PARTITION round_cube
-	IMPORTS
-		generator
-		eagine.core.types
-		eagine.core.memory
-		eagine.core.math
-		eagine.core.valid_if
-		eagine.core.runtime
 		eagine.core.main_ctx
 )
 
@@ -358,10 +316,6 @@ eagine_add_module(
 		vertex_attributes
 		drawing
 		generator
-		screen
-		plane
-		cube
-		round_cube
 		skybox
 		icosahedron
 		tetrahedrons
