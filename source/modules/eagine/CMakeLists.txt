@@ -33,18 +33,6 @@ eagine_add_module(
 )
 
 eagine_add_module(
-	eagine.shapes PARTITION from_json
-	IMPORTS
-		generator
-		eagine.core.types
-		eagine.core.memory
-		eagine.core.math
-		eagine.core.runtime
-		eagine.core.value_tree
-		eagine.core.main_ctx
-)
-
-eagine_add_module(
 	eagine.shapes PARTITION delegated
 	IMPORTS
 		generator
@@ -69,22 +57,6 @@ eagine_add_module(
 )
 
 eagine_add_module(
-	eagine.shapes PARTITION to_patches
-	IMPORTS
-		delegated
-		eagine.core.types
-		eagine.core.memory
-)
-
-eagine_add_module(
-	eagine.shapes PARTITION to_quads
-	IMPORTS
-		delegated
-		eagine.core.types
-		eagine.core.memory
-)
-
-eagine_add_module(
 	eagine.shapes PARTITION topology
 	IMPORTS
 		generator
@@ -92,29 +64,6 @@ eagine_add_module(
 		eagine.core.memory
 		eagine.core.identifier
 		eagine.core.container
-		eagine.core.math
-		eagine.core.main_ctx
-)
-
-eagine_add_module(
-	eagine.shapes PARTITION adjacency
-	IMPORTS
-		delegated topology
-		eagine.core.types
-		eagine.core.memory
-		eagine.core.identifier
-		eagine.core.math
-		eagine.core.main_ctx
-)
-
-eagine_add_module(
-	eagine.shapes PARTITION surface_points
-	IMPORTS
-		delegated topology
-		eagine.core.types
-		eagine.core.memory
-		eagine.core.identifier
-		eagine.core.units
 		eagine.core.math
 		eagine.core.main_ctx
 )
@@ -137,14 +86,9 @@ eagine_add_module(
 		vertex_attributes
 		drawing
 		generator
-		from_json
 		delegated
 		primitive_info
-		to_patches
-		to_quads
 		topology
-		adjacency
-		surface_points
 		to_json
 	SOURCES
 		generator

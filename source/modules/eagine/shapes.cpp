@@ -15,12 +15,7 @@ export import :drawing;
 export import :generator;
 export import :delegated;
 export import :primitive_info;
-export import :to_patches;
-export import :to_quads;
 export import :topology;
-export import :adjacency;
-export import :surface_points;
-export import :from_json;
 export import :to_json;
 import std;
 

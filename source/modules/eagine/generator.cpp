@@ -941,21 +941,6 @@ export [[nodiscard]] auto unit_twisted_torus_from(
   const url&,
   main_ctx&) -> std::unique_ptr<generator>;
 //------------------------------------------------------------------------------
-// value_tree
-//------------------------------------------------------------------------------
-/// @brief Constructs instances of value_tree_loader.
-/// @ingroup shapes
-/// @see unit_cube
-/// @see unit_round_cube
-/// @see unit_sphere
-/// @see unit_icosahedron
-/// @see unit_screen
-/// @see unit_torus
-/// @see unit_twisted_torus
-export [[nodiscard]] auto from_value_tree(
-  valtree::compound source,
-  main_ctx_parent parent) -> std::unique_ptr<generator>;
-//------------------------------------------------------------------------------
 // combined
 //------------------------------------------------------------------------------
 export [[nodiscard]] auto combine(std::unique_ptr<generator>&& gen)
@@ -1039,6 +1024,74 @@ export [[nodiscard]] auto occlude(
   std::shared_ptr<generator> gen,
   const span_size_t samples,
   main_ctx_parent parent) noexcept -> std::unique_ptr<generator>;
+//------------------------------------------------------------------------------
+// value_tree
+//------------------------------------------------------------------------------
+/// @brief Constructs instances of value_tree_loader.
+/// @ingroup shapes
+/// @see unit_cube
+/// @see unit_round_cube
+/// @see unit_sphere
+/// @see unit_icosahedron
+/// @see unit_screen
+/// @see unit_torus
+/// @see unit_twisted_torus
+export [[nodiscard]] auto from_value_tree(
+  valtree::compound source,
+  main_ctx_parent parent) -> std::unique_ptr<generator>;
+//------------------------------------------------------------------------------
+// from_json
+//------------------------------------------------------------------------------
+export [[nodiscard]] auto from_json_stream(std::istream&, main_ctx&) noexcept
+  -> std::unique_ptr<generator>;
+//------------------------------------------------------------------------------
+// surface_points
+//------------------------------------------------------------------------------
+/// @brief Constructs instance of surface_points_gen modifier.
+/// @ingroup shapes
+export [[nodiscard]] auto surface_points(
+  std::shared_ptr<generator> gen,
+  const span_size_t point_count,
+  main_ctx_parent parent) noexcept -> std::unique_ptr<generator>;
+//------------------------------------------------------------------------------
+/// @brief Constructs instance of surface_points_gen modifier.
+/// @ingroup shapes
+export [[nodiscard]] auto surface_points(
+  std::shared_ptr<generator> gen,
+  const span_size_t point_count,
+  const vertex_attrib_variant weight_variant,
+  main_ctx_parent parent) noexcept -> std::unique_ptr<generator>;
+//------------------------------------------------------------------------------
+// add_triangle_adjacency
+//------------------------------------------------------------------------------
+/// @brief Constructs instances of triangle_adjacency_gen modifier.
+/// @ingroup shapes
+export [[nodiscard]] auto add_triangle_adjacency(
+  std::shared_ptr<generator> gen,
+  const drawing_variant var,
+  main_ctx_parent parent) noexcept -> std::unique_ptr<generator>;
+//------------------------------------------------------------------------------
+/// @brief Constructs instances of triangle_adjacency_gen modifier.
+/// @ingroup shapes
+export [[nodiscard]] auto add_triangle_adjacency(
+  std::shared_ptr<generator> gen,
+  main_ctx_parent parent) noexcept {
+    return add_triangle_adjacency(std::move(gen), 0, parent);
+}
+//------------------------------------------------------------------------------
+// to_patches
+//------------------------------------------------------------------------------
+/// @brief Constructs instances of to_patches_gen modifier.
+/// @ingroup shapes
+export [[nodiscard]] auto to_patches(std::shared_ptr<generator> gen) noexcept
+  -> std::unique_ptr<generator>;
+//------------------------------------------------------------------------------
+// to_quads
+//------------------------------------------------------------------------------
+/// @brief Constructs instances of to_quads_gen modifier.
+/// @ingroup shapes
+export [[nodiscard]] auto to_quads(std::shared_ptr<generator> gen) noexcept
+  -> std::unique_ptr<generator>;
 //------------------------------------------------------------------------------
 } // namespace shapes
 }// namespace eagine
