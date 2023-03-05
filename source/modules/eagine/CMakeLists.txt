@@ -3,13 +3,6 @@
 # See accompanying file LICENSE_1_0.txt or copy at
 #  http://www.boost.org/LICENSE_1_0.txt
 eagine_add_module(
-	eagine.shapes PARTITION generator_capabilities
-	IMPORTS
-		eagine.core.types
-		eagine.core.reflection
-)
-
-eagine_add_module(
 	eagine.shapes PARTITION vertex_attributes
 	IMPORTS
 		eagine.core.types
@@ -27,7 +20,7 @@ eagine_add_module(
 eagine_add_module(
 	eagine.shapes PARTITION generator
 	IMPORTS
-		generator_capabilities vertex_attributes drawing
+		vertex_attributes drawing
 		eagine.core.types
 		eagine.core.memory
 		eagine.core.container
@@ -362,7 +355,6 @@ eagine_add_module(
 	PP_NAME SHAPES
 	INTERFACES shapes
 	PARTITIONS
-		generator_capabilities
 		vertex_attributes
 		drawing
 		generator
