@@ -33,78 +33,6 @@ eagine_add_module(
 )
 
 eagine_add_module(
-	eagine.shapes PARTITION skybox
-	IMPORTS
-		generator
-		eagine.core.types
-		eagine.core.memory
-		eagine.core.math
-		eagine.core.runtime
-		eagine.core.main_ctx
-)
-
-eagine_add_module(
-	eagine.shapes PARTITION icosahedron
-	IMPORTS
-		generator
-		eagine.core.types
-		eagine.core.memory
-		eagine.core.math
-		eagine.core.runtime
-		eagine.core.main_ctx
-)
-
-eagine_add_module(
-	eagine.shapes PARTITION tetrahedrons
-	IMPORTS
-		generator
-		eagine.core.types
-		eagine.core.memory
-		eagine.core.math
-)
-
-eagine_add_module(
-	eagine.shapes PARTITION sphere
-	IMPORTS
-		generator
-		eagine.core.types
-		eagine.core.memory
-		eagine.core.identifier
-		eagine.core.valid_if
-		eagine.core.math
-		eagine.core.runtime
-		eagine.core.main_ctx
-)
-
-eagine_add_module(
-	eagine.shapes PARTITION torus
-	IMPORTS
-		generator
-		eagine.core.types
-		eagine.core.memory
-		eagine.core.identifier
-		eagine.core.valid_if
-		eagine.core.utility
-		eagine.core.math
-		eagine.core.runtime
-		eagine.core.main_ctx
-)
-
-eagine_add_module(
-	eagine.shapes PARTITION twisted_torus
-	IMPORTS
-		generator
-		eagine.core.types
-		eagine.core.memory
-		eagine.core.identifier
-		eagine.core.valid_if
-		eagine.core.utility
-		eagine.core.math
-		eagine.core.runtime
-		eagine.core.main_ctx
-)
-
-eagine_add_module(
 	eagine.shapes PARTITION value_tree
 	IMPORTS
 		generator
@@ -316,12 +244,6 @@ eagine_add_module(
 		vertex_attributes
 		drawing
 		generator
-		skybox
-		icosahedron
-		tetrahedrons
-		sphere
-		torus
-		twisted_torus
 		value_tree
 		from_json
 		delegated

@@ -776,6 +776,171 @@ export [[nodiscard]] auto unit_round_cube_from(
   const url&,
   main_ctx&) -> std::unique_ptr<generator>;
 //------------------------------------------------------------------------------
+// skybox
+//------------------------------------------------------------------------------
+/// @brief Constructs instances of skybox_gen
+/// @ingroup shapes
+/// @see skybox_from
+/// @see from_value_tree
+/// @see unit_cube
+/// @see unit_round_cube
+/// @see unit_icosahedron
+/// @see unit_sphere
+/// @see unit_torus
+/// @see unit_twisted_torus
+/// @see unit_screen
+export [[nodiscard]] auto skybox(const vertex_attrib_kinds attr_kinds)
+  -> std::unique_ptr<generator>;
+
+/// @brief Tries to construct instances of skybox_gen from an URL.
+/// @ingroup shapes
+export [[nodiscard]] auto skybox_from(
+  const vertex_attrib_kinds,
+  const url&,
+  main_ctx&) -> std::unique_ptr<generator>;
+//------------------------------------------------------------------------------
+// icosahedron
+//------------------------------------------------------------------------------
+/// @brief Constructs instances of unit_icosahedron_gen.
+/// @ingroup shapes
+/// @see unit_icosahedron_from
+/// @see from_value_tree
+/// @see unit_cube
+/// @see unit_round_cube
+/// @see unit_sphere
+/// @see unit_torus
+/// @see unit_screen
+/// @see unit_twisted_torus
+export [[nodiscard]] auto unit_icosahedron(vertex_attrib_kinds attr_kinds)
+  -> std::unique_ptr<generator>;
+
+/// @brief Tries to construct instances of unit_icosahedron_gen from an URL.
+/// @ingroup shapes
+export [[nodiscard]] auto unit_icosahedron_from(
+  const vertex_attrib_kinds,
+  const url&,
+  main_ctx&) -> std::unique_ptr<generator>;
+//------------------------------------------------------------------------------
+// tetrahedrons
+//------------------------------------------------------------------------------
+/// @brief Constructs instances of marching_tetrahedrons_gen.
+/// @ingroup shapes
+/// @see from_value_tree
+/// @see unit_cube
+/// @see unit_icosahedron
+/// @see unit_round_cube
+/// @see unit_sphere
+/// @see unit_torus
+/// @see unit_screen
+/// @see unit_twisted_torus
+export [[nodiscard]] auto marching_tetrahedrons(vertex_attrib_kinds attr_kinds)
+  -> std::unique_ptr<generator>;
+//------------------------------------------------------------------------------
+// sphere
+//------------------------------------------------------------------------------
+/// @brief Constructs instances of unit_sphere_gen.
+/// @ingroup shapes
+/// @see unit_sphere_from
+/// @see from_value_tree
+/// @see unit_cube
+/// @see unit_round_cube
+/// @see unit_icosahedron
+/// @see unit_torus
+/// @see unit_twisted_torus
+/// @see unit_screen
+export [[nodiscard]] auto unit_sphere(
+  const vertex_attrib_kinds attr_kinds,
+  const valid_if_greater_than<int, 2>& rings,
+  const valid_if_greater_than<int, 3>& sections) -> std::unique_ptr<generator>;
+//------------------------------------------------------------------------------
+/// @brief Constructs instances of unit_sphere_gen.
+/// @ingroup shapes
+/// @see from_value_tree
+/// @see unit_cube
+/// @see unit_round_cube
+/// @see unit_torus
+/// @see unit_twisted_torus
+/// @see unit_icosahedron
+/// @see unit_screen
+export [[nodiscard]] auto unit_sphere(const vertex_attrib_kinds attr_kinds) {
+    return unit_sphere(attr_kinds, 18, 36);
+}
+
+/// @brief Tries to construct instances of unit_sphere_gen from an URL.
+/// @ingroup shapes
+export [[nodiscard]] auto unit_sphere_from(
+  const vertex_attrib_kinds,
+  const url&,
+  main_ctx&) -> std::unique_ptr<generator>;
+//------------------------------------------------------------------------------
+// torus
+//------------------------------------------------------------------------------
+/// @brief Constructs instances of unit_torus_gen.
+/// @ingroup shapes
+export [[nodiscard]] auto unit_torus(
+  const vertex_attrib_kinds attr_kinds,
+  const valid_if_greater_than<int, 4>& rings,
+  const valid_if_greater_than<int, 3>& sections,
+  const valid_if_ge0_lt1<float>& radius_ratio) -> std::unique_ptr<generator>;
+//------------------------------------------------------------------------------
+/// @brief Constructs instances of unit_torus_gen.
+/// @ingroup shapes
+/// @see unit_torus_from
+/// @see from_value_tree
+/// @see unit_cube
+/// @see unit_round_cube
+/// @see unit_sphere
+/// @see unit_twisted_torus
+/// @see unit_icosahedron
+/// @see unit_screen
+export [[nodiscard]] auto unit_torus(const vertex_attrib_kinds attr_kinds) {
+    return unit_torus(attr_kinds, 18, 36, 0.5F);
+}
+
+/// @brief Tries to construct instances of unit_torus_gen from an URL.
+/// @ingroup shapes
+export [[nodiscard]] auto unit_torus_from(
+  const vertex_attrib_kinds,
+  const url&,
+  main_ctx&) -> std::unique_ptr<generator>;
+//------------------------------------------------------------------------------
+// twisted_torus
+//------------------------------------------------------------------------------
+/// @brief Constructs instances of unit_twisted_torus_gen.
+/// @ingroup shapes
+/// @see from_value_tree
+/// @see unit_cube
+/// @see unit_round_cube
+/// @see unit_icosahedron
+/// @see unit_torus
+/// @see unit_screen
+export [[nodiscard]] auto unit_twisted_torus(
+  const vertex_attrib_kinds attr_kinds,
+  const int twist,
+  const valid_if_greater_than<int, 2>& rings,
+  const valid_if_greater_than<int, 3>& sections,
+  const valid_if_ge0_lt1<float>& radius_ratio) -> std::unique_ptr<generator>;
+//------------------------------------------------------------------------------
+/// @brief Constructs instances of unit_twisted_torus_gen.
+/// @ingroup shapes
+/// @see from_value_tree
+/// @see unit_cube
+/// @see unit_round_cube
+/// @see unit_torus
+/// @see unit_icosahedron
+/// @see unit_screen
+export [[nodiscard]] auto unit_twisted_torus(
+  const vertex_attrib_kinds attr_kinds) {
+    return unit_twisted_torus(attr_kinds, 12, 38, 12, 0.5F);
+}
+
+/// @brief Tries to construct instances of unit_twisted_torus_gen from an URL.
+/// @ingroup shapes
+export [[nodiscard]] auto unit_twisted_torus_from(
+  const vertex_attrib_kinds,
+  const url&,
+  main_ctx&) -> std::unique_ptr<generator>;
+//------------------------------------------------------------------------------
 } // namespace shapes
 }// namespace eagine
 
