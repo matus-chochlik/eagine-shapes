@@ -13,7 +13,6 @@ import eagine.core.math;
 import eagine.core.runtime;
 import eagine.core.main_ctx;
 import :generator;
-import :value_tree;
 import std;
 
 namespace eagine::shapes {

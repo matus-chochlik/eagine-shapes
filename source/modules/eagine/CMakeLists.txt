@@ -33,24 +33,9 @@ eagine_add_module(
 )
 
 eagine_add_module(
-	eagine.shapes PARTITION value_tree
-	IMPORTS
-		generator
-		eagine.core.types
-		eagine.core.memory
-		eagine.core.identifier
-		eagine.core.reflection
-		eagine.core.valid_if
-		eagine.core.utility
-		eagine.core.math
-		eagine.core.value_tree
-		eagine.core.main_ctx
-)
-
-eagine_add_module(
 	eagine.shapes PARTITION from_json
 	IMPORTS
-		generator value_tree
+		generator
 		eagine.core.types
 		eagine.core.memory
 		eagine.core.math
@@ -71,49 +56,6 @@ eagine_add_module(
 )
 
 eagine_add_module(
-	eagine.shapes PARTITION combined
-	IMPORTS
-		generator
-		eagine.core.types
-		eagine.core.memory
-		eagine.core.identifier
-		eagine.core.utility
-		eagine.core.math
-)
-
-eagine_add_module(
-	eagine.shapes PARTITION cached
-	IMPORTS
-		generator
-		eagine.core.types
-		eagine.core.memory
-		eagine.core.identifier
-		eagine.core.math
-		eagine.core.logging
-		eagine.core.main_ctx
-)
-
-eagine_add_module(
-	eagine.shapes PARTITION array
-	IMPORTS
-		delegated
-		eagine.core.types
-		eagine.core.memory
-		eagine.core.identifier
-		eagine.core.math
-)
-
-eagine_add_module(
-	eagine.shapes PARTITION centered
-	IMPORTS
-		delegated
-		eagine.core.types
-		eagine.core.memory
-		eagine.core.identifier
-		eagine.core.math
-)
-
-eagine_add_module(
 	eagine.shapes PARTITION primitive_info
 	IMPORTS
 		delegated
@@ -124,55 +66,6 @@ eagine_add_module(
 		eagine.core.math
 		eagine.core.runtime
 		eagine.core.main_ctx
-)
-
-eagine_add_module(
-	eagine.shapes PARTITION occluded
-	IMPORTS
-		delegated
-		eagine.core.types
-		eagine.core.memory
-		eagine.core.identifier
-		eagine.core.units
-		eagine.core.math
-		eagine.core.runtime
-		eagine.core.main_ctx
-)
-
-eagine_add_module(
-	eagine.shapes PARTITION reboxed
-	IMPORTS
-		delegated
-		eagine.core.types
-		eagine.core.memory
-		eagine.core.math
-)
-
-eagine_add_module(
-	eagine.shapes PARTITION scaled
-	IMPORTS
-		delegated
-		eagine.core.types
-		eagine.core.memory
-		eagine.core.math
-)
-
-eagine_add_module(
-	eagine.shapes PARTITION scaled_wrap_coords
-	IMPORTS
-		delegated
-		eagine.core.types
-		eagine.core.memory
-		eagine.core.math
-)
-
-eagine_add_module(
-	eagine.shapes PARTITION translated
-	IMPORTS
-		delegated
-		eagine.core.types
-		eagine.core.memory
-		eagine.core.math
 )
 
 eagine_add_module(
@@ -244,19 +137,9 @@ eagine_add_module(
 		vertex_attributes
 		drawing
 		generator
-		value_tree
 		from_json
 		delegated
-		combined
-		cached
-		array
-		centered
 		primitive_info
-		occluded
-		reboxed
-		scaled
-		scaled_wrap_coords
-		translated
 		to_patches
 		to_quads
 		topology

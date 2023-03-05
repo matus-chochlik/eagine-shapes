@@ -941,6 +941,105 @@ export [[nodiscard]] auto unit_twisted_torus_from(
   const url&,
   main_ctx&) -> std::unique_ptr<generator>;
 //------------------------------------------------------------------------------
+// value_tree
+//------------------------------------------------------------------------------
+/// @brief Constructs instances of value_tree_loader.
+/// @ingroup shapes
+/// @see unit_cube
+/// @see unit_round_cube
+/// @see unit_sphere
+/// @see unit_icosahedron
+/// @see unit_screen
+/// @see unit_torus
+/// @see unit_twisted_torus
+export [[nodiscard]] auto from_value_tree(
+  valtree::compound source,
+  main_ctx_parent parent) -> std::unique_ptr<generator>;
+//------------------------------------------------------------------------------
+// combined
+//------------------------------------------------------------------------------
+export [[nodiscard]] auto combine(std::unique_ptr<generator>&& gen)
+  -> std::unique_ptr<generator>;
+//------------------------------------------------------------------------------
+export template <std::size_t N>
+[[nodiscard]] auto combine(std::array<std::unique_ptr<generator>, N>&& gens)
+  -> std::unique_ptr<generator>;
+//------------------------------------------------------------------------------
+// cached
+//------------------------------------------------------------------------------
+/// @brief Constructs instances of cached_gen modifier.
+/// @ingroup shapes
+export [[nodiscard]] auto cache(
+  std::shared_ptr<generator> gen,
+  main_ctx_parent parent) noexcept -> std::unique_ptr<generator>;
+//------------------------------------------------------------------------------
+// array
+//------------------------------------------------------------------------------
+export [[nodiscard]] auto array(
+  std::shared_ptr<generator> gen,
+  const std::array<float, 3> d,
+  const span_size_t count) noexcept -> std::unique_ptr<generator>;
+//------------------------------------------------------------------------------
+export [[nodiscard]] auto ortho_array_xyz(
+  std::shared_ptr<generator> gen,
+  const std::array<float, 3> d,
+  const std::array<span_size_t, 3> n) noexcept {
+    const float z = 0.0F;
+    return array(
+      array(array(std::move(gen), {d[0], z, z}, n[0]), {z, d[1], z}, n[1]),
+      {z, z, d[2]},
+      n[2]);
+}
+//------------------------------------------------------------------------------
+// centered
+//------------------------------------------------------------------------------
+/// @brief Constructs instances of centered_gen modifier.
+/// @ingroup shapes
+export [[nodiscard]] auto center(std::shared_ptr<generator> gen) noexcept
+  -> std::unique_ptr<generator>;
+//------------------------------------------------------------------------------
+// translated
+//------------------------------------------------------------------------------
+/// @brief Constructs instances of translated_gen modifier.
+/// @ingroup shapes
+export [[nodiscard]] auto translate(
+  std::shared_ptr<generator> gen,
+  std::array<float, 3> d) noexcept -> std::unique_ptr<generator>;
+//------------------------------------------------------------------------------
+// scaled
+//------------------------------------------------------------------------------
+/// @brief Constructs instances of scaled_gen modifier.
+/// @ingroup shapes
+export [[nodiscard]] auto scale(
+  std::shared_ptr<generator> gen,
+  const std::array<float, 3> s) noexcept -> std::unique_ptr<generator>;
+//------------------------------------------------------------------------------
+// scaled_wrap_coords
+//------------------------------------------------------------------------------
+/// @brief Constructs instances of scaled_wrap_coords_gen modifier.
+/// @ingroup shapes
+export [[nodiscard]] auto scale_wrap_coords(
+  std::shared_ptr<generator> gen,
+  float x,
+  float y,
+  float z) noexcept -> std::unique_ptr<generator>;
+//------------------------------------------------------------------------------
+// reboxed
+//------------------------------------------------------------------------------
+/// @brief Constructs instances of reboxed_gen modifier.
+/// @ingroup shapes
+export [[nodiscard]] auto rebox(std::shared_ptr<generator> gen) noexcept
+  -> std::unique_ptr<generator>;
+//------------------------------------------------------------------------------
+// occluded
+//------------------------------------------------------------------------------
+/// @brief Constructs instances of occluded_gen modifier.
+/// @ingroup shapes
+export [[nodiscard]] auto occlude(
+  std::shared_ptr<generator> gen,
+  const span_size_t samples,
+  main_ctx_parent parent) noexcept -> std::unique_ptr<generator>;
+//------------------------------------------------------------------------------
 } // namespace shapes
 }// namespace eagine
 
