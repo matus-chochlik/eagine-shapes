@@ -7,7 +7,7 @@
 ///
 import eagine.core;
 import eagine.shapes;
-import <iostream>;
+import std;
 
 namespace eagine {
 
@@ -30,7 +30,7 @@ auto main(main_ctx& ctx) -> int {
         gen = shapes::unit_icosahedron(shapes::vertex_attrib_kind::position);
     }
 
-    if(!gen) {
+    if(not gen) {
         gen = shapes::unit_icosahedron(shapes::vertex_attrib_kind::position);
     }
 

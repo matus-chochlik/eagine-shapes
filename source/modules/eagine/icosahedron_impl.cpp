@@ -16,8 +16,7 @@ import eagine.core.memory;
 import eagine.core.math;
 import eagine.core.runtime;
 import eagine.core.main_ctx;
-import <cstdint>;
-import <cmath>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
@@ -97,7 +96,7 @@ auto unit_icosahedron_gen::_shared_attrs() noexcept -> vertex_attrib_kinds {
 }
 //------------------------------------------------------------------------------
 auto unit_icosahedron_gen::_only_shared_attribs() noexcept -> bool {
-    return !(attrib_kinds() & ~_shared_attrs());
+    return not(attrib_kinds() & ~_shared_attrs());
 }
 //------------------------------------------------------------------------------
 unit_icosahedron_gen::unit_icosahedron_gen(

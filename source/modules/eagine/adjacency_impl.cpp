@@ -16,8 +16,7 @@ import eagine.core.memory;
 import eagine.core.math;
 import eagine.core.identifier;
 import eagine.core.main_ctx;
-import <vector>;
-import <map>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
@@ -96,13 +95,13 @@ triangle_adjacency_gen::triangle_adjacency_gen(
 auto triangle_adjacency_gen::enable(
   const generator_capability cap,
   const bool value) noexcept -> bool {
-    return delegated_gen::enable(cap, value) ||
+    return delegated_gen::enable(cap, value) or
            (cap == generator_capability::indexed_drawing);
 }
 //------------------------------------------------------------------------------
 auto triangle_adjacency_gen::is_enabled(const generator_capability cap) noexcept
   -> bool {
-    return delegated_gen::is_enabled(cap) ||
+    return delegated_gen::is_enabled(cap) or
            (cap == generator_capability::indexed_drawing);
 }
 //------------------------------------------------------------------------------
@@ -175,7 +174,7 @@ auto triangle_adjacency_gen::operation_count(const drawing_variant)
 void triangle_adjacency_gen::instructions(
   const drawing_variant var,
   span<draw_operation> ops) {
-    assert(!ops.empty());
+    assert(not ops.empty());
 
     auto& topo = _topology(var);
     auto& op = ops[0];

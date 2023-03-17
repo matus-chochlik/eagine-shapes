@@ -18,10 +18,7 @@ import eagine.core.identifier;
 import eagine.core.math;
 import eagine.core.main_ctx;
 import :generator;
-import <array>;
-import <concepts>;
-import <iosfwd>;
-import <vector>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
@@ -45,17 +42,17 @@ public:
       , _edge_indices{{aeb, aee, beb, bee}} {}
 
     /// @brief Returns one of the two adjacent triangle faces.
-    /// @pre i >= 0 && i < 2
+    /// @pre i >= 0 and i < 2
     auto triangle(const span_size_t i) const noexcept -> const mesh_triangle& {
-        assert(i >= 0 && i < 2);
+        assert(i >= 0 and i < 2);
         return *_triangles[integer(i)];
     }
 
     /// @brief Returns a pair of vertex indices (0,1 or 2) defining the i-th edge.
-    /// @pre i >= 0 && i < 2
+    /// @pre i >= 0 and i < 2
     auto edge_vertices(const span_size_t i) const noexcept
       -> std::tuple<unsigned, unsigned> {
-        assert(i >= 0 && i < 2);
+        assert(i >= 0 and i < 2);
         return {
           _edge_indices[integer(2 * i)], _edge_indices[integer(2 * i + 1)]};
     }
@@ -88,32 +85,32 @@ public:
       -> std::tuple<bool, std::uint8_t, std::uint8_t, std::uint8_t, std::uint8_t>;
 
     /// @brief Returns the v-th vertex index.
-    /// @pre v >= 0 && v < 3
+    /// @pre v >= 0 and v < 3
     auto vertex_index(const span_size_t v) const noexcept {
-        assert(v >= 0 && v < 3);
+        assert(v >= 0 and v < 3);
         return _indices[integer(v)];
     }
 
     /// @brief Returns the triangle adjacent through the v-th edge.
-    /// @pre v >= 0 && v < 3
+    /// @pre v >= 0 and v < 3
     /// @see opposite_vertex
     auto adjacent_triangle(const span_size_t v) const noexcept
       -> const mesh_triangle* {
-        assert(v >= 0 && v < 3);
+        assert(v >= 0 and v < 3);
         return _adjacent[integer(v)];
     }
 
     /// @brief Returns opposite vertex index (0,1 or 2) in the v-th adjacent triangle.
-    /// @pre v >= 0 && v < 3
+    /// @pre v >= 0 and v < 3
     /// @see adjacent_triangle
     /// @see opposite_index
     auto opposite_vertex(const span_size_t v) const noexcept -> unsigned {
-        assert(v >= 0 && v < 3);
+        assert(v >= 0 and v < 3);
         return _opposite[integer(v)];
     }
 
     /// @brief Returns the in-mesh index of the v-th adjacent vertex.
-    /// @pre v >= 0 && v < 3
+    /// @pre v >= 0 and v < 3
     /// @see opposite_vertex
     /// @see adjacent_triangle
     auto opposite_index(const span_size_t v) const noexcept -> unsigned {

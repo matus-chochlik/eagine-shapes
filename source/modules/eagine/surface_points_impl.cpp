@@ -17,11 +17,7 @@ import eagine.core.identifier;
 import eagine.core.units;
 import eagine.core.math;
 import eagine.core.main_ctx;
-import <array>;
-import <algorithm>;
-import <map>;
-import <random>;
-import <vector>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
@@ -154,8 +150,8 @@ void surface_points_gen::attrib_values(
   const vertex_attrib_variant vav,
   span<float> dest) {
 
-    const auto is_normalized_attrib = vav == vertex_attrib_kind::normal ||
-                                      vav == vertex_attrib_kind::tangent ||
+    const auto is_normalized_attrib = vav == vertex_attrib_kind::normal or
+                                      vav == vertex_attrib_kind::tangent or
                                       vav == vertex_attrib_kind::bitangent;
 
     const auto gen = delegated_gen::base_generator();

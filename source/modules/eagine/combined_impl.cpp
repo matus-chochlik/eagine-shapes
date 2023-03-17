@@ -16,9 +16,7 @@ import eagine.core.memory;
 import eagine.core.identifier;
 import eagine.core.math;
 import eagine.core.utility;
-import <memory>;
-import <optional>;
-import <vector>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
@@ -152,7 +150,7 @@ auto combined_gen::enable(
 //------------------------------------------------------------------------------
 auto combined_gen::is_enabled(const generator_capability cap) noexcept -> bool {
     for(const auto& gen : _gens) {
-        if(!gen->is_enabled(cap)) {
+        if(not gen->is_enabled(cap)) {
             return false;
         }
     }
@@ -430,7 +428,7 @@ void combined_gen::instructions(
 auto combined_gen::bounding_sphere() -> math::sphere<float, true> {
     math::vector<float, 3, true> center{0.F};
     float radius{0.F};
-    if(!_gens.empty()) {
+    if(not _gens.empty()) {
         std::vector<math::sphere<float, true>> bss;
         bss.reserve(_gens.size());
         for(auto& gen : _gens) {

@@ -16,7 +16,7 @@ import eagine.core.memory;
 import eagine.core.math;
 import eagine.core.runtime;
 import eagine.core.main_ctx;
-import <cmath>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
@@ -157,8 +157,8 @@ void unit_screen_gen::bitangents(span<float> dest) noexcept {
 //------------------------------------------------------------------------------
 void unit_screen_gen::face_coords(span<float> dest) noexcept {
     assert(
-      has(vertex_attrib_kind::box_coord) ||
-      has(vertex_attrib_kind::face_coord) ||
+      has(vertex_attrib_kind::box_coord) or
+      has(vertex_attrib_kind::face_coord) or
       has(vertex_attrib_kind::wrap_coord));
     assert(dest.size() >= vertex_count() * 2);
 

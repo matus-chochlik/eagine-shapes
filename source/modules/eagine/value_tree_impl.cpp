@@ -19,10 +19,7 @@ import eagine.core.math;
 import eagine.core.value_tree;
 import eagine.core.logging;
 import eagine.core.main_ctx;
-import <cmath>;
-import <optional>;
-import <string>;
-import <map>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
@@ -418,7 +415,7 @@ void value_tree_loader::instructions(
 
                     // first
                     if(const auto first_a{_source.nested(instr_a, "first")}) {
-                        if(!_source.fetch_value(first_a, op.first)) {
+                        if(not _source.fetch_value(first_a, op.first)) {
                             log_error("could not fetch shape draw offset")
                               .arg("index", i);
                         }
@@ -429,7 +426,7 @@ void value_tree_loader::instructions(
 
                     // count
                     if(const auto count_a{_source.nested(instr_a, "count")}) {
-                        if(!_source.fetch_value(count_a, op.count)) {
+                        if(not _source.fetch_value(count_a, op.count)) {
                             log_error("could not fetch shape draw count")
                               .arg("index", i);
                         }
@@ -440,7 +437,7 @@ void value_tree_loader::instructions(
 
                     // phase
                     if(const auto phase_a{_source.nested(instr_a, "phase")}) {
-                        if(!_source.fetch_value(phase_a, op.phase)) {
+                        if(not _source.fetch_value(phase_a, op.phase)) {
                             log_error("could not fetch draw phase value")
                               .arg("index", i);
                         }
@@ -449,7 +446,7 @@ void value_tree_loader::instructions(
                     // primitive restart index
                     if(const auto pri_a{
                          _source.nested(instr_a, "primitive_restart_index")}) {
-                        if(!_source.fetch_value(
+                        if(not _source.fetch_value(
                              pri_a, op.primitive_restart_index)) {
                             log_error("could not fetch restart index")
                               .arg("index", i);
@@ -459,7 +456,7 @@ void value_tree_loader::instructions(
                     // patch_vertices
                     if(const auto ptch_vert_a{
                          _source.nested(instr_a, "patch_vertices")}) {
-                        if(!_source.fetch_value(
+                        if(not _source.fetch_value(
                              ptch_vert_a, op.patch_vertices)) {
                             log_error("could not fetch patch vertex count")
                               .arg("index", i);
@@ -505,7 +502,7 @@ void value_tree_loader::instructions(
                     // primitive restart
                     if(const auto prirest_a{
                          _source.nested(instr_a, "primitive_restart")}) {
-                        if(!_source.fetch_value(prirest_a, btemp)) {
+                        if(not _source.fetch_value(prirest_a, btemp)) {
                             op.primitive_restart = btemp;
                         } else {
                             log_error("invalid primitive restart flag")

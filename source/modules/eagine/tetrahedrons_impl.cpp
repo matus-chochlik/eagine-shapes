@@ -14,8 +14,7 @@ module eagine.shapes;
 import eagine.core.types;
 import eagine.core.memory;
 import eagine.core.math;
-import <cstdint>;
-import <memory>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
@@ -77,7 +76,7 @@ auto marching_tetrahedrons_gen::_shared_attrs() noexcept
 }
 //------------------------------------------------------------------------------
 auto marching_tetrahedrons_gen::_only_shared_attribs() noexcept -> bool {
-    return !(attrib_kinds() & ~_shared_attrs());
+    return not(attrib_kinds() & ~_shared_attrs());
 }
 //------------------------------------------------------------------------------
 marching_tetrahedrons_gen::marching_tetrahedrons_gen(

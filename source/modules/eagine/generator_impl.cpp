@@ -15,11 +15,7 @@ import eagine.core.memory;
 import eagine.core.reflection;
 import eagine.core.math;
 import eagine.core.utility;
-import <array>;
-import <cmath>;
-import <limits>;
-import <optional>;
-import <vector>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
@@ -188,7 +184,7 @@ void generator_base::ray_intersections(
         }
     }
 
-    if(!ray_idx.empty()) {
+    if(not ray_idx.empty()) {
         const auto intersect = [&ray_idx, &rays, &intersections](
                                  const auto& fce, const bool cw) {
             for(const auto i : ray_idx) {
@@ -200,7 +196,7 @@ void generator_base::ray_intersections(
                     const auto fnml = fce.normal(cw);
                     if(dot(ray.direction(), fnml) < 0.F) {
                         auto& oparam = intersections[i];
-                        if(!oparam || bool(nparam < oparam)) {
+                        if(not oparam or bool(nparam < oparam)) {
                             oparam = nparam;
                         }
                     }

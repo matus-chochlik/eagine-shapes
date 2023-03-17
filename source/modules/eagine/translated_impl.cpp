@@ -10,8 +10,7 @@ module eagine.shapes;
 import eagine.core.types;
 import eagine.core.memory;
 import eagine.core.math;
-import <array>;
-import <memory>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
@@ -41,9 +40,9 @@ void translated_gen::attrib_values(
   span<float> dest) {
     delegated_gen::attrib_values(vav, dest);
 
-    const bool is_translated_attrib = vav == vertex_attrib_kind::position ||
-                                      vav == vertex_attrib_kind::pivot ||
-                                      vav == vertex_attrib_kind::pivot_pivot ||
+    const bool is_translated_attrib = vav == vertex_attrib_kind::position or
+                                      vav == vertex_attrib_kind::pivot or
+                                      vav == vertex_attrib_kind::pivot_pivot or
                                       vav == vertex_attrib_kind::vertex_pivot;
 
     if(is_translated_attrib) {

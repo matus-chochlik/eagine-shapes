@@ -10,8 +10,7 @@ module eagine.shapes;
 import eagine.core.types;
 import eagine.core.memory;
 import eagine.core.math;
-import <array>;
-import <memory>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
@@ -42,12 +41,12 @@ void scaled_gen::attrib_values(
   span<float> dest) {
     delegated_gen::attrib_values(vav, dest);
 
-    const bool is_scaled_attrib = vav == vertex_attrib_kind::position ||
-                                  vav == vertex_attrib_kind::pivot ||
-                                  vav == vertex_attrib_kind::pivot_pivot ||
-                                  vav == vertex_attrib_kind::vertex_pivot ||
-                                  vav == vertex_attrib_kind::face_area ||
-                                  vav == vertex_attrib_kind::edge_length ||
+    const bool is_scaled_attrib = vav == vertex_attrib_kind::position or
+                                  vav == vertex_attrib_kind::pivot or
+                                  vav == vertex_attrib_kind::pivot_pivot or
+                                  vav == vertex_attrib_kind::vertex_pivot or
+                                  vav == vertex_attrib_kind::face_area or
+                                  vav == vertex_attrib_kind::edge_length or
                                   vav == vertex_attrib_kind::opposite_length;
 
     if(is_scaled_attrib) {

@@ -19,10 +19,7 @@ import eagine.core.math;
 import eagine.core.progress;
 import eagine.core.runtime;
 import eagine.core.main_ctx;
-import <atomic>;
-import <random>;
-import <optional>;
-import <vector>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
@@ -70,7 +67,7 @@ void occluded_gen::occlusions(
     const auto nvpv = delegated_gen::values_per_vertex({nva, vav});
     const auto ns = _samples;
 
-    if((pvpv == 3) && (nvpv == 3)) {
+    if((pvpv == 3) and (nvpv == 3)) {
         assert(dest.size() >= vc * delegated_gen::values_per_vertex(vav));
 
         std::vector<float> positions(std_size(vc * pvpv));
@@ -154,7 +151,7 @@ void occluded_gen::occlusions(
                     const auto v = vi++;
                     if(v < vc) {
                         dest[v] = vertex_occlusion(v);
-                        if(!progress_update(v)) [[unlikely]] {
+                        if(not progress_update(v)) [[unlikely]] {
                             break;
                         }
                     } else {

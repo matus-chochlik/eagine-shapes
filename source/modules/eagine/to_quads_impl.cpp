@@ -14,7 +14,7 @@ module eagine.shapes;
 import eagine.core.types;
 import eagine.core.memory;
 import eagine.core.math;
-import <vector>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
@@ -68,7 +68,7 @@ auto to_quads_gen::index_count(const drawing_variant var) -> span_size_t {
             } else {
                 span_size_t prev{0};
                 span_size_t curr{0};
-                if(op.primitive_restart && delegated_gen::primitive_restart()) {
+                if(op.primitive_restart and delegated_gen::primitive_restart()) {
                     while(curr < op.count) {
                         if(
                           idx[integer(op.first + curr)] ==
@@ -121,8 +121,8 @@ void to_quads_gen::_indices(const drawing_variant var, span<T> dest) noexcept {
                 while(curr + 4 <= op.count) {
                     for(const auto t : integer_range(4)) {
                         if(
-                          op.primitive_restart &&
-                          delegated_gen::primitive_restart() &&
+                          op.primitive_restart and
+                          delegated_gen::primitive_restart() and
                           (del_idx[integer(op.first + curr + t)] ==
                            op.primitive_restart_index)) {
                             curr += t + 1;
@@ -200,7 +200,7 @@ void to_quads_gen::instructions(
             span_size_t count{0};
             span_size_t prev{0};
             span_size_t curr{0};
-            if(op.primitive_restart && delegated_gen::primitive_restart()) {
+            if(op.primitive_restart and delegated_gen::primitive_restart()) {
                 while(curr < op.count) {
                     if(idx[integer(op.first + curr)] == op.primitive_restart_index) {
                         count += num_verts(curr - prev);

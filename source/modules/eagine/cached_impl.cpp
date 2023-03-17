@@ -14,11 +14,7 @@ import eagine.core.math;
 import eagine.core.utility;
 import eagine.core.logging;
 import eagine.core.main_ctx;
-import <array>;
-import <map>;
-import <memory>;
-import <mutex>;
-import <vector>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
@@ -308,7 +304,7 @@ void cached_gen::_get_indices(
         const auto size = std_size(index_count(var));
         const std::lock_guard<std::mutex> lock{_mutex};
         auto& cached = cache[var];
-        if(cached.empty() && size != 0U) {
+        if(cached.empty() and size != 0U) {
             cached.resize(size);
             _gen->indices(var, cover(cached));
             log_debug("cached vertex indices")

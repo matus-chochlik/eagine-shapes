@@ -11,9 +11,7 @@ import eagine.core.types;
 import eagine.core.memory;
 import eagine.core.identifier;
 import eagine.core.math;
-import <array>;
-import <memory>;
-import <limits>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

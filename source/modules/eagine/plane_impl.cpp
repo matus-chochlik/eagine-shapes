@@ -17,8 +17,7 @@ import eagine.core.math;
 import eagine.core.valid_if;
 import eagine.core.runtime;
 import eagine.core.main_ctx;
-import <cmath>;
-import <cstdint>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
@@ -85,13 +84,13 @@ auto unit_plane_from(
         using D = valid_if_positive<int>;
         auto width{locator.query().arg_value_as<D>("width")};
         auto height{locator.query().arg_value_as<D>("height")};
-        if(width && height) {
+        if(width and height) {
             return unit_plane(attr_kinds, extract(width), extract(height));
-        } else if(!width) {
+        } else if(not width) {
             ctx.log()
               .error("missing or invalid width creating plane shape generator")
               .arg("URL", locator.str());
-        } else if(!height) {
+        } else if(not height) {
             ctx.log()
               .error("missing or invalid height creating plane shape generator")
               .arg("URL", locator.str());
@@ -193,7 +192,7 @@ void unit_plane_gen::bitangents(span<float> dest) noexcept {
 //------------------------------------------------------------------------------
 void unit_plane_gen::box_coords(span<float> dest) noexcept {
     assert(
-      has(vertex_attrib_kind::box_coord) ||
+      has(vertex_attrib_kind::box_coord) or
       has(vertex_attrib_kind::wrap_coord));
     assert(dest.size() >= vertex_count() * 2);
 

@@ -17,10 +17,7 @@ import eagine.core.valid_if;
 import eagine.core.math;
 import eagine.core.runtime;
 import eagine.core.main_ctx;
-import <cstdint>;
-import <cmath>;
-import <optional>;
-import <utility>;
+import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
@@ -366,7 +363,7 @@ void unit_sphere_gen::ray_intersections(
           math::line_sphere_intersection_params(ray, bs));
         if(nparam > 0.0001F) {
             auto& oparam = intersections[i];
-            if(!oparam || bool(nparam < oparam)) {
+            if(not oparam or bool(nparam < oparam)) {
                 oparam = nparam;
             }
         }
