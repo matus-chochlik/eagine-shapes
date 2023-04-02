@@ -7,9 +7,9 @@
 ///
 export module eagine.shapes:vertex_attributes;
 
+import std;
 import eagine.core.types;
 import eagine.core.reflection;
-import std;
 
 namespace eagine {
 namespace shapes {

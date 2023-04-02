@@ -11,11 +11,9 @@ module;
 
 module eagine.shapes;
 
+import std;
 import eagine.core.types;
 import eagine.core.memory;
-import std;
-
-import <iostream>;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

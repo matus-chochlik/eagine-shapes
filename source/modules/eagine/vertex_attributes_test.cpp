@@ -8,9 +8,9 @@
 ///
 
 #include <eagine/testing/unit_begin.hpp>
+import std;
 import eagine.core;
 import eagine.shapes;
-import std;
 //------------------------------------------------------------------------------
 void vertex_attrib_kinds_all(auto& s) {
     eagitest::case_ test{s, 1, "all kinds"};
