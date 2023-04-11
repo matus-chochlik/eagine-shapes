@@ -12,6 +12,7 @@ import eagine.core.types;
 import eagine.core.memory;
 import eagine.core.math;
 import eagine.core.runtime;
+import eagine.core.value_tree;
 import eagine.core.main_ctx;
 import :generator;
 

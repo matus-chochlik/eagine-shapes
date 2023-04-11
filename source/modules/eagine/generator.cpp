@@ -20,6 +20,7 @@ import eagine.core.utility;
 import eagine.core.runtime;
 import eagine.core.math;
 import eagine.core.valid_if;
+import eagine.core.value_tree;
 import eagine.core.main_ctx;
 export import :vertex_attributes;
 export import :drawing;
