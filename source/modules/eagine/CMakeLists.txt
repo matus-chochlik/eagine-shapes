@@ -81,7 +81,6 @@ eagine_add_module(
 
 eagine_add_module(
 	eagine.shapes
-	PP_NAME SHAPES
 	INTERFACES shapes
 	PARTITIONS
 		vertex_attributes
