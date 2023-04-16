@@ -76,10 +76,10 @@ auto unit_twisted_torus_from(
           "radius_ratio", std::type_identity<valid_if_ge0_lt1<float>>{})};
         return unit_twisted_torus(
           attr_kinds,
-          extract_or(twist, 12),
-          extract_or(rings, 38),
-          extract_or(sections, 12),
-          extract_or(radius_ratio, 0.5F));
+          twist.value_or(12),
+          rings.value_or(38),
+          sections.value_or(12),
+          radius_ratio.value_or(0.5F));
     }
     return {};
 }

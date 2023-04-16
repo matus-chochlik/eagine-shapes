@@ -26,7 +26,7 @@ auto main(main_ctx& ctx) -> int {
             arg.next().parse(samples, ctx.log().error_stream());
         }
         if(auto gen{
-             shapes::occlude(std::move(bgen), extract_or(samples, 256), ctx)}) {
+             shapes::occlude(std::move(bgen), samples.value_or(256), ctx)}) {
             shapes::to_json_options opts;
             if(parse_from(ctx, extract(gen), opts)) {
                 opts.attrib_variants[shapes::vertex_attrib_kind::occlusion][0];

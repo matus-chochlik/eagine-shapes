@@ -132,9 +132,9 @@ auto unit_torus_from(
           "radius_ratio", std::type_identity<valid_if_ge0_lt1<float>>{})};
         return unit_torus(
           attr_kinds,
-          extract_or(rings, 18),
-          extract_or(sections, 36),
-          extract_or(radius_ratio, 0.5F));
+          rings.value_or(18),
+          sections.value_or(36),
+          radius_ratio.value_or(0.5F));
     }
     return {};
 }
