@@ -23,7 +23,7 @@ auto main(main_ctx& ctx) -> int {
     if(auto bgen{get_base_generator(ctx)}) {
         valid_if_positive<span_size_t> samples{256};
         if(const auto arg{ctx.args().find("--shape-occlusion-samples")}) {
-            arg.next().parse(samples, ctx.log().error_stream());
+            assign_if_fits(arg.next(), samples);
         }
         if(auto gen{
              shapes::occlude(std::move(bgen), samples.value_or(256), ctx)}) {
