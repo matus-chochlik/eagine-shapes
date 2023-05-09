@@ -7,13 +7,13 @@
 ///
 export module eagine.shapes:delegated;
 
+import std;
 import eagine.core.types;
 import eagine.core.memory;
 import eagine.core.identifier;
 import eagine.core.utility;
 import eagine.core.math;
 import :generator;
-import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

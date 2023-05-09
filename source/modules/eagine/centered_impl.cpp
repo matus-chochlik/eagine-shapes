@@ -7,10 +7,10 @@
 ///
 module eagine.shapes;
 
+import std;
 import eagine.core.types;
 import eagine.core.memory;
 import eagine.core.math;
-import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
@@ -31,6 +31,7 @@ void centered_gen::attrib_values(
   span<float> dest) {
 
     const bool is_centered_attrib = vav == vertex_attrib_kind::position or
+                                    vav == vertex_attrib_kind::inner_position or
                                     vav == vertex_attrib_kind::pivot or
                                     vav == vertex_attrib_kind::pivot_pivot or
                                     vav == vertex_attrib_kind::vertex_pivot;

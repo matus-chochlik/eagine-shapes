@@ -11,6 +11,7 @@ module;
 
 export module eagine.shapes:generator;
 
+import std;
 import eagine.core.types;
 import eagine.core.memory;
 import eagine.core.container;
@@ -19,12 +20,12 @@ import eagine.core.utility;
 import eagine.core.runtime;
 import eagine.core.math;
 import eagine.core.valid_if;
+import eagine.core.value_tree;
 import eagine.core.main_ctx;
 export import :vertex_attributes;
 export import :drawing;
-import std;
 
-namespace eagine{
+namespace eagine {
 namespace shapes {
 //------------------------------------------------------------------------------
 /// @brief Shape generator capability bit enumeration.
@@ -1094,5 +1095,5 @@ export [[nodiscard]] auto to_quads(std::shared_ptr<generator> gen) noexcept
   -> std::unique_ptr<generator>;
 //------------------------------------------------------------------------------
 } // namespace shapes
-}// namespace eagine
+} // namespace eagine
 

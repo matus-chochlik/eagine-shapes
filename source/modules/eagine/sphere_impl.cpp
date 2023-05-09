@@ -11,13 +11,13 @@ module;
 
 module eagine.shapes;
 
+import std;
 import eagine.core.types;
 import eagine.core.memory;
 import eagine.core.valid_if;
 import eagine.core.math;
 import eagine.core.runtime;
 import eagine.core.main_ctx;
-import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
@@ -89,7 +89,7 @@ auto unit_sphere_from(
         const auto sections{locator.query().arg_value_as(
           "sections", std::type_identity<valid_if_greater_than<int, 3>>{})};
         return unit_sphere(
-          attr_kinds, extract_or(rings, 18), extract_or(sections, 36));
+          attr_kinds, rings.value_or(18), sections.value_or(36));
     }
     return {};
 }

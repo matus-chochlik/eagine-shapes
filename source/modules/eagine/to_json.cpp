@@ -7,12 +7,12 @@
 ///
 export module eagine.shapes:to_json;
 
+import std;
 import eagine.core.types;
 import eagine.core.memory;
 import eagine.core.math;
 import eagine.core.main_ctx;
 import :generator;
-import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

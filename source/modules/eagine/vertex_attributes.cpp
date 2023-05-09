@@ -7,9 +7,9 @@
 ///
 export module eagine.shapes:vertex_attributes;
 
+import std;
 import eagine.core.types;
 import eagine.core.reflection;
-import std;
 
 namespace eagine {
 namespace shapes {
@@ -22,54 +22,56 @@ export enum class vertex_attrib_kind : std::uint32_t {
     object_id = 1U << 0U,
     /// @brief Vertex position.
     position = 1U << 1U,
+    /// @brief Shell inner vertex position.
+    inner_position = 1U << 2U,
     /// @brief Vertex normal vector.
-    normal = 1U << 2U,
+    normal = 1U << 3U,
     /// @brief Vertex tangential vector.
-    tangent = 1U << 3U,
+    tangent = 1U << 4U,
     /// @brief Vertex bi-tangential vector.
-    bitangent = 1U << 4U,
+    bitangent = 1U << 5U,
     /// @brief Shape pivot point.
-    pivot = 1U << 5U,
+    pivot = 1U << 6U,
     /// @brief Pivot of vertex pivot point.
-    pivot_pivot = 1U << 6U,
+    pivot_pivot = 1U << 7U,
     /// @brief Vertex pivot point.
-    vertex_pivot = 1U << 7U,
+    vertex_pivot = 1U << 8U,
     /// @brief Length of opposite edge.
-    opposite_length = 1U << 8U,
+    opposite_length = 1U << 9U,
     /// @brief Length of previous, next and opposite edges.
-    edge_length = 1U << 9U,
+    edge_length = 1U << 10U,
     /// @brief Area of face polygon.
-    face_area = 1U << 10U,
+    face_area = 1U << 11U,
     /// @brief Normalized coordinate within shape bounding box.
-    box_coord = 1U << 11U,
+    box_coord = 1U << 12U,
     /// @brief UV-texture wrapping coordinate.
-    wrap_coord = 1U << 12U,
+    wrap_coord = 1U << 13U,
     /// @brief Generic face coordinate.
-    face_coord = 1U << 13U,
+    face_coord = 1U << 14U,
     /// @brief Generic tile coordinate.
-    tile_coord = 1U << 14U,
+    tile_coord = 1U << 15U,
     /// @brief Generic face coordinate.
-    vertex_coord = 1U << 15U,
+    vertex_coord = 1U << 16U,
     /// @brief Vertex color value.
-    color = 1U << 16U,
+    color = 1U << 17U,
     /// @brief Generic vertex weight value.
-    weight = 1U << 17U,
+    weight = 1U << 18U,
     /// @brief Vertex (ambient) light occlusion value.
-    occlusion = 1U << 18U,
+    occlusion = 1U << 19U,
     /// @brief Generic scalar field value.
-    scalar_field = 1U << 19U,
+    scalar_field = 1U << 20U,
     /// @brief Generic vector field value.
-    vector_field = 1U << 20U,
+    vector_field = 1U << 21U,
     /// @brief Instance offset value
-    instance_offset = 1U << 21U,
+    instance_offset = 1U << 22U,
     /// @brief Instance scale value
-    instance_scale = 1U << 22U,
+    instance_scale = 1U << 23U,
     /// @brief Instance scale value
-    instance_transform = 1U << 23U,
+    instance_transform = 1U << 24U,
     /// @brief Face polygon id value (multiple faces can belong to the same polygon)
-    polygon_id = 1U << 24U,
+    polygon_id = 1U << 25U,
     /// @brief Face material id value.
-    material_id = 1U << 25U
+    material_id = 1U << 26U
     // also fix all_vertex_attrib_kinds
 };
 //------------------------------------------------------------------------------
@@ -86,7 +88,7 @@ export using vertex_attrib_kinds = bitfield<vertex_attrib_kind>;
 /// @ingroup shapes
 export constexpr auto all_vertex_attrib_kinds() noexcept
   -> vertex_attrib_kinds {
-    return vertex_attrib_kinds{(1U << 26U) - 1U};
+    return vertex_attrib_kinds{(1U << 27U) - 1U};
 }
 //------------------------------------------------------------------------------
 /// @brief Bitwise-or operator for vertex_attrib_kind bits.
@@ -270,6 +272,7 @@ export [[nodiscard]] auto attrib_values_per_vertex(
         case vertex_attrib_kind::color:
             return 4;
         case vertex_attrib_kind::position:
+        case vertex_attrib_kind::inner_position:
         case vertex_attrib_kind::normal:
         case vertex_attrib_kind::tangent:
         case vertex_attrib_kind::bitangent:
@@ -315,9 +318,10 @@ constexpr auto enumerator_mapping(
   const std::type_identity<shapes::vertex_attrib_kind>,
   const Selector) noexcept {
     using shapes::vertex_attrib_kind;
-    return enumerator_map_type<vertex_attrib_kind, 26>{
+    return enumerator_map_type<vertex_attrib_kind, 27>{
       {{"object_id", vertex_attrib_kind::object_id},
        {"position", vertex_attrib_kind::position},
+       {"inner_position", vertex_attrib_kind::inner_position},
        {"normal", vertex_attrib_kind::normal},
        {"tangent", vertex_attrib_kind::tangent},
        {"bitangent", vertex_attrib_kind::bitangent},

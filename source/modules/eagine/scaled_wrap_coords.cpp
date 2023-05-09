@@ -7,9 +7,9 @@
 ///
 export module eagine.shapes:scaled_wrap_coords;
 
+import std;
 import eagine.core.types;
 import :generator;
-import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------

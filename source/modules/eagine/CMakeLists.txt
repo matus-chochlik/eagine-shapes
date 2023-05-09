@@ -29,6 +29,7 @@ eagine_add_module(
 		eagine.core.math
 		eagine.core.runtime
 		eagine.core.valid_if
+		eagine.core.value_tree
 		eagine.core.main_ctx
 )
 
@@ -80,7 +81,6 @@ eagine_add_module(
 
 eagine_add_module(
 	eagine.shapes
-	PP_NAME SHAPES
 	INTERFACES shapes
 	PARTITIONS
 		vertex_attributes
@@ -121,6 +121,21 @@ eagine_add_module(
 		surface_points
 		to_json
 		shapes
+	IMPORTS
+		eagine.core.types
+		eagine.core.memory
+		eagine.core.identifier
+		eagine.core.reflection
+		eagine.core.container
+		eagine.core.math
+		eagine.core.units
+		eagine.core.utility
+		eagine.core.runtime
+		eagine.core.valid_if
+		eagine.core.value_tree
+		eagine.core.logging
+		eagine.core.progress
+		eagine.core.main_ctx
 )
 
 eagine_add_module_tests(

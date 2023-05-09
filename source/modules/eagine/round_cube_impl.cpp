@@ -11,13 +11,13 @@ module;
 
 module eagine.shapes;
 
+import std;
 import eagine.core.types;
 import eagine.core.memory;
 import eagine.core.math;
 import eagine.core.valid_if;
 import eagine.core.runtime;
 import eagine.core.main_ctx;
-import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
@@ -75,7 +75,7 @@ auto unit_round_cube_from(
     if(locator.has_path("/unit_round_cube")) {
         const auto divisions{locator.query().arg_value_as(
           "divisions", std::type_identity<valid_if_positive<int>>{})};
-        return unit_round_cube(attr_kinds, extract_or(divisions, 8));
+        return unit_round_cube(attr_kinds, divisions.value_or(8));
     }
     return {};
 }

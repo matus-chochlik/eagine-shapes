@@ -7,6 +7,7 @@
 ///
 export module eagine.shapes;
 
+import std;
 import eagine.core.runtime;
 import eagine.core.main_ctx;
 
@@ -17,7 +18,6 @@ export import :delegated;
 export import :primitive_info;
 export import :topology;
 export import :to_json;
-import std;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
