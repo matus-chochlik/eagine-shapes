@@ -82,15 +82,6 @@ eagine_add_module(
 
 eagine_add_module(
 	eagine.shapes
-	INTERFACES shapes
-	PARTITIONS
-		vertex_attributes
-		drawing
-		generator
-		delegated
-		primitive_info
-		topology
-		to_json
 	SOURCES
 		generator
 		screen
@@ -148,4 +139,5 @@ eagine_add_module_tests(
 		plane
 	IMPORTS
 		eagine.core
+		eagine.core.main_ctx
 )
