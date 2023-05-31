@@ -211,7 +211,7 @@ auto value_tree_loader::attrib_type(const vertex_attrib_variant vav)
             if(const auto type_a{_source.nested(variant_a, "type")}) {
                 if(_source.fetch_value(type_a, _temp)) {
                     if(const auto type{attrib_data_type_from(view(_temp))}) {
-                        return extract(type);
+                        return *type;
                     } else {
                         log_error("unknown attribute variant data type")
                           .arg("type", _temp)
@@ -253,7 +253,7 @@ auto value_tree_loader::is_attrib_normalized(const vertex_attrib_variant vav)
             } else if(const auto type_a{_source.nested(variant_a, "type")}) {
                 if(_source.fetch_value(type_a, _temp)) {
                     if(const auto type{attrib_data_type_from(view(_temp))}) {
-                        return extract(type) != attrib_data_type::float_;
+                        return *type != attrib_data_type::float_;
                     } else {
                         log_error("unknown attribute variant data type")
                           .arg("type", _temp)
@@ -352,7 +352,7 @@ auto value_tree_loader::index_type(const drawing_variant) -> index_data_type {
     if(const auto type_a{_source.nested("index_type")}) {
         if(_source.fetch_value(type_a, _temp)) {
             if(const auto type{index_data_type_from(view(_temp))}) {
-                return extract(type);
+                return *type;
             } else {
                 log_error("unsupported index type value").arg("type", _temp);
             }
@@ -468,7 +468,7 @@ void value_tree_loader::instructions(
                         if(_source.fetch_value(mode_a, _temp)) {
                             if(const auto mode{
                                  primitive_type_from(view(_temp))}) {
-                                op.mode = extract(mode);
+                                op.mode = *mode;
                             } else {
                                 log_error("unsupported shape draw mode")
                                   .arg("mode", _temp)
@@ -489,7 +489,7 @@ void value_tree_loader::instructions(
                         if(_source.fetch_value(type_a, _temp)) {
                             if(const auto type{
                                  index_data_type_from(view(_temp))}) {
-                                op.idx_type = extract(type);
+                                op.idx_type = *type;
                             } else {
                                 log_error("unsupported index type value")
                                   .arg("type", _temp);

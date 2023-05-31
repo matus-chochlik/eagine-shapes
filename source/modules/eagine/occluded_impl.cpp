@@ -17,6 +17,7 @@ import eagine.core.memory;
 import eagine.core.identifier;
 import eagine.core.units;
 import eagine.core.math;
+import eagine.core.valid_if;
 import eagine.core.progress;
 import eagine.core.runtime;
 import eagine.core.main_ctx;
@@ -98,7 +99,7 @@ void occluded_gen::occlusions(
 
                 std::vector<math::line<float, true>> rays(std_size(ns));
                 std::vector<float> weights(rays.size());
-                std::vector<std::optional<float>> params(rays.size());
+                std::vector<optionally_valid<float>> params(rays.size());
 
                 const auto vertex_occlusion = [&](const auto v) -> float {
                     const auto pk = std_size(v * pvpv);
@@ -127,7 +128,7 @@ void occluded_gen::occlusions(
                         rays[s] = math::line<float, true>{pos, dir};
                         weights[s] = wght;
                     }
-                    fill(cover(params), std::optional<float>{});
+                    fill(cover(params), optionally_valid<float>{});
                     delegated_gen::ray_intersections(
                       *this, 0, view(rays), cover(params));
 
@@ -135,7 +136,7 @@ void occluded_gen::occlusions(
                     float wght = 0.F;
                     for(const auto s : integer_range(ns)) {
                         if(params[s] > 0.0F) {
-                            const auto aip = extract(params[s]);
+                            const auto aip = *params[s];
                             occl += (std::exp(-0.25F * aip) +
                                      std::exp(-0.125F * aip) +
                                      std::exp(-0.03125F * aip) +

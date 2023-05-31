@@ -13,6 +13,7 @@ import eagine.core.memory;
 import eagine.core.identifier;
 import eagine.core.math;
 import eagine.core.utility;
+import eagine.core.valid_if;
 import eagine.core.logging;
 import eagine.core.main_ctx;
 
@@ -96,7 +97,7 @@ public:
       generator&,
       const drawing_variant,
       const span<const math::line<float, true>> rays,
-      span<std::optional<float>> intersections) final;
+      span<optionally_valid<float>> intersections) final;
 
 private:
     const std::shared_ptr<generator> _gen;
@@ -406,7 +407,7 @@ void cached_gen::ray_intersections(
   generator& gen,
   const drawing_variant var,
   const span<const math::line<float, true>> rays,
-  span<std::optional<float>> intersections) {
+  span<optionally_valid<float>> intersections) {
     _gen->ray_intersections(gen, var, rays, intersections);
 }
 //------------------------------------------------------------------------------

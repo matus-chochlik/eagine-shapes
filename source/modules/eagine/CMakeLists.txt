@@ -41,6 +41,7 @@ eagine_add_module(
 		eagine.core.memory
 		eagine.core.identifier
 		eagine.core.utility
+		eagine.core.valid_if
 		eagine.core.math
 )
 

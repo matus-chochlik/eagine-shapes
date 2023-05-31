@@ -15,8 +15,9 @@ import std;
 import eagine.core.types;
 import eagine.core.memory;
 import eagine.core.identifier;
-import eagine.core.math;
 import eagine.core.utility;
+import eagine.core.valid_if;
+import eagine.core.math;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
@@ -90,7 +91,7 @@ public:
       generator&,
       const drawing_variant,
       const span<const math::line<float, true>> rays,
-      span<std::optional<float>> intersections) final;
+      span<optionally_valid<float>> intersections) final;
 
 private:
     std::vector<std::unique_ptr<generator>> _gens;
@@ -465,7 +466,7 @@ void combined_gen::ray_intersections(
   generator&,
   const drawing_variant var,
   const span<const math::line<float, true>> rays,
-  span<std::optional<float>> intersections) {
+  span<optionally_valid<float>> intersections) {
 
     for(auto& gen : _gens) {
         gen->ray_intersections(extract(gen), var, rays, intersections);

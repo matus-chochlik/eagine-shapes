@@ -16,6 +16,7 @@ import eagine.core.memory;
 import eagine.core.reflection;
 import eagine.core.math;
 import eagine.core.utility;
+import eagine.core.valid_if;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
@@ -161,7 +162,7 @@ void generator_base::ray_intersections(
   generator& gen,
   const drawing_variant var,
   const span<const math::line<float, true>> rays,
-  span<std::optional<float>> intersections) {
+  span<optionally_valid<float>> intersections) {
 
     assert(intersections.size() >= rays.size());
 

@@ -65,7 +65,7 @@ public:
       generator& gen,
       const drawing_variant,
       const span<const math::line<float, true>> rays,
-      span<std::optional<float>> intersections) override;
+      span<optionally_valid<float>> intersections) override;
 
 private:
     using _base = generator_base;
@@ -351,7 +351,7 @@ void unit_sphere_gen::ray_intersections(
   generator& gen,
   const drawing_variant,
   const span<const math::line<float, true>> rays,
-  span<std::optional<float>> intersections) {
+  span<optionally_valid<float>> intersections) {
 
     assert(intersections.size() >= rays.size());
 
