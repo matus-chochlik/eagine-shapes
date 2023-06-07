@@ -365,28 +365,28 @@ export struct generator : abstract<generator> {
       generator&,
       const drawing_variant,
       const span<const math::line<float, true>> rays,
-      span<std::optional<float>> intersections) = 0;
+      span<optionally_valid<float>> intersections) = 0;
 
     /// @brief Calculates the intersections of the shape geometry with a ray.
     void ray_intersections(
       const span<const math::line<float, true>> rays,
-      span<std::optional<float>> intersections) {
+      span<optionally_valid<float>> intersections) {
         return ray_intersections(*this, 0, rays, intersections);
     }
 
     /// @brief Returns the parameter for the nearest intersection with a ray.
     [[nodiscard]] auto ray_intersection(
       const drawing_variant var,
-      const math::line<float, true>& ray) -> std::optional<float> {
-        std::optional<float> result{};
+      const math::line<float, true>& ray) -> optionally_valid<float> {
+        optionally_valid<float> result{};
         ray_intersections(*this, var, view_one(ray), cover_one(result));
         return result;
     }
 
     /// @brief Returns the parameter for the nearest intersection with a ray.
     [[nodiscard]] auto ray_intersection(const math::line<float, true>& ray)
-      -> std::optional<float> {
-        std::optional<float> result{};
+      -> optionally_valid<float> {
+        optionally_valid<float> result{};
         ray_intersections(*this, 0, view_one(ray), cover_one(result));
         return result;
     }
@@ -464,7 +464,7 @@ public:
       generator&,
       const drawing_variant,
       const span<const math::line<float, true>> rays,
-      span<std::optional<float>> intersections) override;
+      span<optionally_valid<float>> intersections) override;
 
 protected:
     generator_base(

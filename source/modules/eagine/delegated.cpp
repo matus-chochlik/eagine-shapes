@@ -12,6 +12,7 @@ import eagine.core.types;
 import eagine.core.memory;
 import eagine.core.identifier;
 import eagine.core.utility;
+import eagine.core.valid_if;
 import eagine.core.math;
 import :generator;
 
@@ -108,7 +109,7 @@ public:
       generator&,
       const drawing_variant,
       const span<const math::line<float, true>> rays,
-      span<std::optional<float>> intersections) override;
+      span<optionally_valid<float>> intersections) override;
 
 protected:
     [[nodiscard]] auto base_generator() const noexcept
@@ -299,7 +300,7 @@ inline void delegated_gen::ray_intersections(
   generator& gen,
   const drawing_variant var,
   const span<const math::line<float, true>> rays,
-  span<std::optional<float>> intersections) {
+  span<optionally_valid<float>> intersections) {
     _gen->ray_intersections(gen, var, rays, intersections);
 }
 //------------------------------------------------------------------------------
