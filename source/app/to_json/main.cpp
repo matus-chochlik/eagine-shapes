@@ -43,8 +43,8 @@ auto main(main_ctx& ctx) -> int {
 
     if(auto gen{get_base_generator(ctx)}) {
         shapes::to_json_options opts;
-        if(parse_from(ctx, extract(gen), opts)) {
-            shapes::to_json(std::cout, extract(gen), opts) << std::endl;
+        if(parse_from(ctx, *gen, opts)) {
+            shapes::to_json(std::cout, *gen, opts) << std::endl;
         }
     }
     return 0;

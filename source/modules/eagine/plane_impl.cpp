@@ -85,7 +85,7 @@ auto unit_plane_from(
         auto width{locator.query().arg_value_as<D>("width")};
         auto height{locator.query().arg_value_as<D>("height")};
         if(width and height) {
-            return unit_plane(attr_kinds, extract(width), extract(height));
+            return unit_plane(attr_kinds, *width, *height);
         } else if(not width) {
             ctx.log()
               .error("missing or invalid width creating plane shape generator")
@@ -123,8 +123,8 @@ unit_plane_gen::unit_plane_gen(
       generator_capability::primitive_restart |
         generator_capability::element_strips |
         generator_capability::indexed_drawing)
-  , _width{extract(width)}
-  , _height{extract(height)} {}
+  , _width{*width}
+  , _height{*height} {}
 //------------------------------------------------------------------------------
 auto unit_plane_gen::vertex_count() -> span_size_t {
     return span_size((_width + 1) * (_height + 1));

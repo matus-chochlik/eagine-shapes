@@ -115,7 +115,7 @@ public:
     /// @see adjacent_triangle
     auto opposite_index(const span_size_t v) const noexcept -> unsigned {
         if(auto tri{adjacent_triangle(v)}) {
-            return extract(tri).vertex_index(opposite_vertex(v));
+            return tri->vertex_index(opposite_vertex(v));
         }
         return _indices[(v + 2) % 3];
     }
