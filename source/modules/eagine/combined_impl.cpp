@@ -452,7 +452,7 @@ void combined_gen::for_each_triangle(
   const drawing_variant var,
   const callable_ref<void(const shape_face_info&)> callback) {
     for(auto& gen : _gens) {
-        gen->for_each_triangle(extract(gen), var, callback);
+        gen->for_each_triangle(*gen, var, callback);
     }
 }
 //------------------------------------------------------------------------------
@@ -469,7 +469,7 @@ void combined_gen::ray_intersections(
   span<optionally_valid<float>> intersections) {
 
     for(auto& gen : _gens) {
-        gen->ray_intersections(extract(gen), var, rays, intersections);
+        gen->ray_intersections(*gen, var, rays, intersections);
     }
 }
 //------------------------------------------------------------------------------
