@@ -79,7 +79,7 @@ private:
 auto unit_plane_from(
   const vertex_attrib_kinds attr_kinds,
   const url& locator,
-  main_ctx& ctx) -> std::unique_ptr<generator> {
+  main_ctx& ctx) -> shared_holder<generator> {
     if(locator.has_path("/unit_plane")) {
         using D = valid_if_positive<int>;
         auto width{locator.query().arg_value_as<D>("width")};
@@ -103,8 +103,8 @@ auto unit_plane_from(
 auto unit_plane(
   const vertex_attrib_kinds attr_kinds,
   const valid_if_positive<int>& width,
-  const valid_if_positive<int>& height) -> std::unique_ptr<generator> {
-    return std::make_unique<unit_plane_gen>(attr_kinds, width, height);
+  const valid_if_positive<int>& height) -> shared_holder<generator> {
+    return {hold<unit_plane_gen>, attr_kinds, width, height};
 }
 //------------------------------------------------------------------------------
 auto unit_plane_gen::_attr_mask() noexcept -> vertex_attrib_kinds {

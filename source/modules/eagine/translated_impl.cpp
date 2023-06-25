@@ -17,7 +17,7 @@ namespace eagine::shapes {
 class translated_gen : public delegated_gen {
 public:
     translated_gen(
-      std::shared_ptr<generator> gen,
+      shared_holder<generator> gen,
       const std::array<float, 3> d) noexcept
       : delegated_gen{std::move(gen)}
       , _d{d} {}
@@ -30,9 +30,9 @@ private:
     std::array<float, 3> _d;
 };
 //------------------------------------------------------------------------------
-auto translate(std::shared_ptr<generator> gen, std::array<float, 3> d) noexcept
-  -> std::unique_ptr<generator> {
-    return std::make_unique<translated_gen>(std::move(gen), d);
+auto translate(shared_holder<generator> gen, std::array<float, 3> d) noexcept
+  -> shared_holder<generator> {
+    return {hold<translated_gen>, std::move(gen), d};
 }
 //------------------------------------------------------------------------------
 void translated_gen::attrib_values(

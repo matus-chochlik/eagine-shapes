@@ -15,7 +15,7 @@ import eagine.core.main_ctx;
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
 auto shape_from(vertex_attrib_kinds attrs, const url& locator, main_ctx& ctx)
-  -> std::unique_ptr<generator> {
+  -> shared_holder<generator> {
 
     for(const auto& info : enumerator_mapping(
           std::type_identity<shapes::vertex_attrib_kind>{}, default_selector)) {

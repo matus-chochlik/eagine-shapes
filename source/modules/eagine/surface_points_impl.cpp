@@ -27,12 +27,12 @@ class surface_points_gen
 
 public:
     surface_points_gen(
-      std::shared_ptr<generator> gen,
+      shared_holder<generator> gen,
       const span_size_t point_count,
       main_ctx_parent parent) noexcept;
 
     surface_points_gen(
-      std::shared_ptr<generator> gen,
+      shared_holder<generator> gen,
       const span_size_t point_count,
       const vertex_attrib_variant weight_variant,
       main_ctx_parent parent) noexcept;
@@ -60,24 +60,27 @@ private:
 };
 //------------------------------------------------------------------------------
 auto surface_points(
-  std::shared_ptr<generator> gen,
+  shared_holder<generator> gen,
   const span_size_t point_count,
-  main_ctx_parent parent) noexcept -> std::unique_ptr<generator> {
-    return std::make_unique<surface_points_gen>(
-      std::move(gen), point_count, parent);
+  main_ctx_parent parent) noexcept -> shared_holder<generator> {
+    return {hold<surface_points_gen>, std::move(gen), point_count, parent};
 }
 //------------------------------------------------------------------------------
 auto surface_points(
-  std::shared_ptr<generator> gen,
+  shared_holder<generator> gen,
   const span_size_t point_count,
   const vertex_attrib_variant weight_variant,
-  main_ctx_parent parent) noexcept -> std::unique_ptr<generator> {
-    return std::make_unique<surface_points_gen>(
-      std::move(gen), point_count, weight_variant, parent);
+  main_ctx_parent parent) noexcept -> shared_holder<generator> {
+    return {
+      hold<surface_points_gen>,
+      std::move(gen),
+      point_count,
+      weight_variant,
+      parent};
 }
 //------------------------------------------------------------------------------
 surface_points_gen::surface_points_gen(
-  std::shared_ptr<generator> gen,
+  shared_holder<generator> gen,
   const span_size_t point_count,
   main_ctx_parent parent) noexcept
   : main_ctx_object{"SurfPtsGen", parent}
@@ -87,7 +90,7 @@ surface_points_gen::surface_points_gen(
 }
 //------------------------------------------------------------------------------
 surface_points_gen::surface_points_gen(
-  std::shared_ptr<generator> gen,
+  shared_holder<generator> gen,
   const span_size_t point_count,
   const vertex_attrib_variant weight_variant,
   main_ctx_parent parent) noexcept

@@ -17,7 +17,7 @@ namespace eagine::shapes {
 class centered_gen : public delegated_gen {
 
 public:
-    centered_gen(std::shared_ptr<generator> gen) noexcept
+    centered_gen(shared_holder<generator> gen) noexcept
       : delegated_gen{std::move(gen)} {}
 
     using delegated_gen::attrib_values;
@@ -83,9 +83,8 @@ void centered_gen::attrib_values(
     }
 }
 //------------------------------------------------------------------------------
-auto center(std::shared_ptr<generator> gen) noexcept
-  -> std::unique_ptr<generator> {
-    return std::make_unique<centered_gen>(std::move(gen));
+auto center(shared_holder<generator> gen) noexcept -> shared_holder<generator> {
+    return {hold<centered_gen>, std::move(gen)};
 }
 //------------------------------------------------------------------------------
 auto centered_gen::bounding_sphere() -> math::sphere<float, true> {

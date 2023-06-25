@@ -478,26 +478,26 @@ private:
 };
 //------------------------------------------------------------------------------
 export auto operator+(
-  std::unique_ptr<generator>&& l,
-  std::unique_ptr<generator>&& r) noexcept
-  -> std::array<std::unique_ptr<generator>, 2> {
+  shared_holder<generator>&& l,
+  shared_holder<generator>&& r) noexcept
+  -> std::array<shared_holder<generator>, 2> {
     return {{std::move(l), std::move(r)}};
 }
 //------------------------------------------------------------------------------
 export template <std::size_t N, std::size_t... I>
 auto _add_to_array(
-  std::array<std::unique_ptr<generator>, N>&& l,
-  std::unique_ptr<generator>&& r,
+  std::array<shared_holder<generator>, N>&& l,
+  shared_holder<generator>&& r,
   const std::index_sequence<I...>) noexcept
-  -> std::array<std::unique_ptr<generator>, N + 1> {
+  -> std::array<shared_holder<generator>, N + 1> {
     return {{std::move(l[I])..., std::move(r)}};
 }
 //------------------------------------------------------------------------------
 export template <std::size_t N>
 auto operator+(
-  std::array<std::unique_ptr<generator>, N>&& l,
-  std::unique_ptr<generator>&& r) noexcept
-  -> std::array<std::unique_ptr<generator>, N + 1> {
+  std::array<shared_holder<generator>, N>&& l,
+  shared_holder<generator>&& r) noexcept
+  -> std::array<shared_holder<generator>, N + 1> {
     return _add_to_array(
       std::move(l), std::move(r), std::make_index_sequence<N>());
 }
@@ -689,14 +689,14 @@ inline void generator_base::random_surface_values(
 /// @see unit_torus
 /// @see unit_twisted_torus
 export [[nodiscard]] auto unit_screen(const vertex_attrib_kinds attr_kinds)
-  -> std::unique_ptr<generator>;
+  -> shared_holder<generator>;
 
 /// @brief Tries to construct instances of unit_screen_gen from an URL.
 /// @ingroup shapes
 export [[nodiscard]] auto unit_screen_from(
   const vertex_attrib_kinds,
   const url&,
-  main_ctx&) -> std::unique_ptr<generator>;
+  main_ctx&) -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 // plane
 //------------------------------------------------------------------------------
@@ -714,10 +714,10 @@ export [[nodiscard]] auto unit_screen_from(
 export [[nodiscard]] auto unit_plane(
   const vertex_attrib_kinds attr_kinds,
   const valid_if_positive<int>& width,
-  const valid_if_positive<int>& height) -> std::unique_ptr<generator>;
+  const valid_if_positive<int>& height) -> shared_holder<generator>;
 
 export [[nodiscard]] auto unit_plane(const vertex_attrib_kinds attr_kinds)
-  -> std::unique_ptr<generator> {
+  -> shared_holder<generator> {
     return unit_plane(attr_kinds, 4, 4);
 }
 
@@ -726,7 +726,7 @@ export [[nodiscard]] auto unit_plane(const vertex_attrib_kinds attr_kinds)
 export [[nodiscard]] auto unit_plane_from(
   const vertex_attrib_kinds,
   const url&,
-  main_ctx&) -> std::unique_ptr<generator>;
+  main_ctx&) -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 // cube
 //------------------------------------------------------------------------------
@@ -741,14 +741,14 @@ export [[nodiscard]] auto unit_plane_from(
 /// @see unit_twisted_torus
 /// @see unit_screen
 export [[nodiscard]] auto unit_cube(const vertex_attrib_kinds attr_kinds)
-  -> std::unique_ptr<generator>;
+  -> shared_holder<generator>;
 
 /// @brief Tries to construct instances of unit_cube_gen from an URL.
 /// @ingroup shapes
 export [[nodiscard]] auto unit_cube_from(
   const vertex_attrib_kinds,
   const url&,
-  main_ctx&) -> std::unique_ptr<generator>;
+  main_ctx&) -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 // round_cube
 //------------------------------------------------------------------------------
@@ -764,7 +764,7 @@ export [[nodiscard]] auto unit_cube_from(
 /// @see unit_screen
 export [[nodiscard]] auto unit_round_cube(
   const vertex_attrib_kinds attr_kinds,
-  const valid_if_positive<int> divisions) -> std::unique_ptr<generator>;
+  const valid_if_positive<int> divisions) -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 export [[nodiscard]] auto unit_round_cube(const vertex_attrib_kinds attr_kinds) {
     return unit_round_cube(attr_kinds, 8);
@@ -775,7 +775,7 @@ export [[nodiscard]] auto unit_round_cube(const vertex_attrib_kinds attr_kinds) 
 export [[nodiscard]] auto unit_round_cube_from(
   const vertex_attrib_kinds,
   const url&,
-  main_ctx&) -> std::unique_ptr<generator>;
+  main_ctx&) -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 // skybox
 //------------------------------------------------------------------------------
@@ -791,14 +791,14 @@ export [[nodiscard]] auto unit_round_cube_from(
 /// @see unit_twisted_torus
 /// @see unit_screen
 export [[nodiscard]] auto skybox(const vertex_attrib_kinds attr_kinds)
-  -> std::unique_ptr<generator>;
+  -> shared_holder<generator>;
 
 /// @brief Tries to construct instances of skybox_gen from an URL.
 /// @ingroup shapes
 export [[nodiscard]] auto skybox_from(
   const vertex_attrib_kinds,
   const url&,
-  main_ctx&) -> std::unique_ptr<generator>;
+  main_ctx&) -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 // icosahedron
 //------------------------------------------------------------------------------
@@ -813,14 +813,14 @@ export [[nodiscard]] auto skybox_from(
 /// @see unit_screen
 /// @see unit_twisted_torus
 export [[nodiscard]] auto unit_icosahedron(vertex_attrib_kinds attr_kinds)
-  -> std::unique_ptr<generator>;
+  -> shared_holder<generator>;
 
 /// @brief Tries to construct instances of unit_icosahedron_gen from an URL.
 /// @ingroup shapes
 export [[nodiscard]] auto unit_icosahedron_from(
   const vertex_attrib_kinds,
   const url&,
-  main_ctx&) -> std::unique_ptr<generator>;
+  main_ctx&) -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 // tetrahedrons
 //------------------------------------------------------------------------------
@@ -835,7 +835,7 @@ export [[nodiscard]] auto unit_icosahedron_from(
 /// @see unit_screen
 /// @see unit_twisted_torus
 export [[nodiscard]] auto marching_tetrahedrons(vertex_attrib_kinds attr_kinds)
-  -> std::unique_ptr<generator>;
+  -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 // sphere
 //------------------------------------------------------------------------------
@@ -852,7 +852,7 @@ export [[nodiscard]] auto marching_tetrahedrons(vertex_attrib_kinds attr_kinds)
 export [[nodiscard]] auto unit_sphere(
   const vertex_attrib_kinds attr_kinds,
   const valid_if_greater_than<int, 2>& rings,
-  const valid_if_greater_than<int, 3>& sections) -> std::unique_ptr<generator>;
+  const valid_if_greater_than<int, 3>& sections) -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of unit_sphere_gen.
 /// @ingroup shapes
@@ -872,7 +872,7 @@ export [[nodiscard]] auto unit_sphere(const vertex_attrib_kinds attr_kinds) {
 export [[nodiscard]] auto unit_sphere_from(
   const vertex_attrib_kinds,
   const url&,
-  main_ctx&) -> std::unique_ptr<generator>;
+  main_ctx&) -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 // torus
 //------------------------------------------------------------------------------
@@ -882,7 +882,7 @@ export [[nodiscard]] auto unit_torus(
   const vertex_attrib_kinds attr_kinds,
   const valid_if_greater_than<int, 4>& rings,
   const valid_if_greater_than<int, 3>& sections,
-  const valid_if_ge0_lt1<float>& radius_ratio) -> std::unique_ptr<generator>;
+  const valid_if_ge0_lt1<float>& radius_ratio) -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of unit_torus_gen.
 /// @ingroup shapes
@@ -903,7 +903,7 @@ export [[nodiscard]] auto unit_torus(const vertex_attrib_kinds attr_kinds) {
 export [[nodiscard]] auto unit_torus_from(
   const vertex_attrib_kinds,
   const url&,
-  main_ctx&) -> std::unique_ptr<generator>;
+  main_ctx&) -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 // twisted_torus
 //------------------------------------------------------------------------------
@@ -920,7 +920,7 @@ export [[nodiscard]] auto unit_twisted_torus(
   const int twist,
   const valid_if_greater_than<int, 2>& rings,
   const valid_if_greater_than<int, 3>& sections,
-  const valid_if_ge0_lt1<float>& radius_ratio) -> std::unique_ptr<generator>;
+  const valid_if_ge0_lt1<float>& radius_ratio) -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of unit_twisted_torus_gen.
 /// @ingroup shapes
@@ -940,34 +940,34 @@ export [[nodiscard]] auto unit_twisted_torus(
 export [[nodiscard]] auto unit_twisted_torus_from(
   const vertex_attrib_kinds,
   const url&,
-  main_ctx&) -> std::unique_ptr<generator>;
+  main_ctx&) -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 // combined
 //------------------------------------------------------------------------------
-export [[nodiscard]] auto combine(std::unique_ptr<generator>&& gen)
-  -> std::unique_ptr<generator>;
+export [[nodiscard]] auto combine(shared_holder<generator>&& gen)
+  -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 export template <std::size_t N>
-[[nodiscard]] auto combine(std::array<std::unique_ptr<generator>, N>&& gens)
-  -> std::unique_ptr<generator>;
+[[nodiscard]] auto combine(std::array<shared_holder<generator>, N>&& gens)
+  -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 // cached
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of cached_gen modifier.
 /// @ingroup shapes
 export [[nodiscard]] auto cache(
-  std::shared_ptr<generator> gen,
-  main_ctx_parent parent) noexcept -> std::unique_ptr<generator>;
+  shared_holder<generator> gen,
+  main_ctx_parent parent) noexcept -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 // array
 //------------------------------------------------------------------------------
 export [[nodiscard]] auto array(
-  std::shared_ptr<generator> gen,
+  shared_holder<generator> gen,
   const std::array<float, 3> d,
-  const span_size_t count) noexcept -> std::unique_ptr<generator>;
+  const span_size_t count) noexcept -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 export [[nodiscard]] auto ortho_array_xyz(
-  std::shared_ptr<generator> gen,
+  shared_holder<generator> gen,
   const std::array<float, 3> d,
   const std::array<span_size_t, 3> n) noexcept {
     const float z = 0.0F;
@@ -981,50 +981,50 @@ export [[nodiscard]] auto ortho_array_xyz(
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of centered_gen modifier.
 /// @ingroup shapes
-export [[nodiscard]] auto center(std::shared_ptr<generator> gen) noexcept
-  -> std::unique_ptr<generator>;
+export [[nodiscard]] auto center(shared_holder<generator> gen) noexcept
+  -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 // translated
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of translated_gen modifier.
 /// @ingroup shapes
 export [[nodiscard]] auto translate(
-  std::shared_ptr<generator> gen,
-  std::array<float, 3> d) noexcept -> std::unique_ptr<generator>;
+  shared_holder<generator> gen,
+  std::array<float, 3> d) noexcept -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 // scaled
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of scaled_gen modifier.
 /// @ingroup shapes
 export [[nodiscard]] auto scale(
-  std::shared_ptr<generator> gen,
-  const std::array<float, 3> s) noexcept -> std::unique_ptr<generator>;
+  shared_holder<generator> gen,
+  const std::array<float, 3> s) noexcept -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 // scaled_wrap_coords
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of scaled_wrap_coords_gen modifier.
 /// @ingroup shapes
 export [[nodiscard]] auto scale_wrap_coords(
-  std::shared_ptr<generator> gen,
+  shared_holder<generator> gen,
   float x,
   float y,
-  float z) noexcept -> std::unique_ptr<generator>;
+  float z) noexcept -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 // reboxed
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of reboxed_gen modifier.
 /// @ingroup shapes
-export [[nodiscard]] auto rebox(std::shared_ptr<generator> gen) noexcept
-  -> std::unique_ptr<generator>;
+export [[nodiscard]] auto rebox(shared_holder<generator> gen) noexcept
+  -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 // occluded
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of occluded_gen modifier.
 /// @ingroup shapes
 export [[nodiscard]] auto occlude(
-  std::shared_ptr<generator> gen,
+  shared_holder<generator> gen,
   const span_size_t samples,
-  main_ctx_parent parent) noexcept -> std::unique_ptr<generator>;
+  main_ctx_parent parent) noexcept -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 // value_tree
 //------------------------------------------------------------------------------
@@ -1039,43 +1039,43 @@ export [[nodiscard]] auto occlude(
 /// @see unit_twisted_torus
 export [[nodiscard]] auto from_value_tree(
   valtree::compound source,
-  main_ctx_parent parent) -> std::unique_ptr<generator>;
+  main_ctx_parent parent) -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 // from_json
 //------------------------------------------------------------------------------
 export [[nodiscard]] auto from_json_stream(std::istream&, main_ctx&) noexcept
-  -> std::unique_ptr<generator>;
+  -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 // surface_points
 //------------------------------------------------------------------------------
 /// @brief Constructs instance of surface_points_gen modifier.
 /// @ingroup shapes
 export [[nodiscard]] auto surface_points(
-  std::shared_ptr<generator> gen,
+  shared_holder<generator> gen,
   const span_size_t point_count,
-  main_ctx_parent parent) noexcept -> std::unique_ptr<generator>;
+  main_ctx_parent parent) noexcept -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 /// @brief Constructs instance of surface_points_gen modifier.
 /// @ingroup shapes
 export [[nodiscard]] auto surface_points(
-  std::shared_ptr<generator> gen,
+  shared_holder<generator> gen,
   const span_size_t point_count,
   const vertex_attrib_variant weight_variant,
-  main_ctx_parent parent) noexcept -> std::unique_ptr<generator>;
+  main_ctx_parent parent) noexcept -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 // add_triangle_adjacency
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of triangle_adjacency_gen modifier.
 /// @ingroup shapes
 export [[nodiscard]] auto add_triangle_adjacency(
-  std::shared_ptr<generator> gen,
+  shared_holder<generator> gen,
   const drawing_variant var,
-  main_ctx_parent parent) noexcept -> std::unique_ptr<generator>;
+  main_ctx_parent parent) noexcept -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of triangle_adjacency_gen modifier.
 /// @ingroup shapes
 export [[nodiscard]] auto add_triangle_adjacency(
-  std::shared_ptr<generator> gen,
+  shared_holder<generator> gen,
   main_ctx_parent parent) noexcept {
     return add_triangle_adjacency(std::move(gen), 0, parent);
 }
@@ -1084,15 +1084,15 @@ export [[nodiscard]] auto add_triangle_adjacency(
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of to_patches_gen modifier.
 /// @ingroup shapes
-export [[nodiscard]] auto to_patches(std::shared_ptr<generator> gen) noexcept
-  -> std::unique_ptr<generator>;
+export [[nodiscard]] auto to_patches(shared_holder<generator> gen) noexcept
+  -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 // to_quads
 //------------------------------------------------------------------------------
 /// @brief Constructs instances of to_quads_gen modifier.
 /// @ingroup shapes
-export [[nodiscard]] auto to_quads(std::shared_ptr<generator> gen) noexcept
-  -> std::unique_ptr<generator>;
+export [[nodiscard]] auto to_quads(shared_holder<generator> gen) noexcept
+  -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 } // namespace shapes
 } // namespace eagine

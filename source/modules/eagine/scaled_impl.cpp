@@ -18,7 +18,7 @@ class scaled_gen : public delegated_gen {
 
 public:
     scaled_gen(
-      std::shared_ptr<generator> gen,
+      shared_holder<generator> gen,
       const std::array<float, 3> s) noexcept
       : delegated_gen{std::move(gen)}
       , _s{s} {}
@@ -31,9 +31,9 @@ private:
     std::array<float, 3> _s;
 };
 //------------------------------------------------------------------------------
-auto scale(std::shared_ptr<generator> gen, const std::array<float, 3> s) noexcept
-  -> std::unique_ptr<generator> {
-    return std::make_unique<scaled_gen>(std::move(gen), s);
+auto scale(shared_holder<generator> gen, const std::array<float, 3> s) noexcept
+  -> shared_holder<generator> {
+    return {hold<scaled_gen>, std::move(gen), s};
 }
 //------------------------------------------------------------------------------
 void scaled_gen::attrib_values(

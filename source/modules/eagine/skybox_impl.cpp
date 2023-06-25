@@ -62,16 +62,15 @@ private:
 auto skybox_from(
   const vertex_attrib_kinds attr_kinds,
   const url& locator,
-  main_ctx&) -> std::unique_ptr<generator> {
+  main_ctx&) -> shared_holder<generator> {
     if(locator.has_path("/skybox")) {
         return skybox(attr_kinds);
     }
     return {};
 }
 //------------------------------------------------------------------------------
-auto skybox(const vertex_attrib_kinds attr_kinds)
-  -> std::unique_ptr<generator> {
-    return std::make_unique<skybox_gen>(attr_kinds);
+auto skybox(const vertex_attrib_kinds attr_kinds) -> shared_holder<generator> {
+    return {hold<skybox_gen>, attr_kinds};
 }
 //------------------------------------------------------------------------------
 auto skybox_gen::_attr_mask() noexcept -> vertex_attrib_kinds {

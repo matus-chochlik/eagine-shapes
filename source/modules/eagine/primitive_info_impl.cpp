@@ -29,7 +29,7 @@ class primitive_info_gen
 
 public:
     primitive_info_gen(
-      std::shared_ptr<generator> gen,
+      shared_holder<generator> gen,
       vertex_attrib_kinds attribs,
       main_ctx_parent parent) noexcept;
 
@@ -59,11 +59,10 @@ private:
 };
 //------------------------------------------------------------------------------
 auto add_primitive_info(
-  std::shared_ptr<generator> gen,
+  shared_holder<generator> gen,
   vertex_attrib_kinds attribs,
-  main_ctx_parent parent) noexcept -> std::unique_ptr<generator> {
-    return std::make_unique<primitive_info_gen>(
-      std::move(gen), attribs, parent);
+  main_ctx_parent parent) noexcept -> shared_holder<generator> {
+    return {hold<primitive_info_gen>, std::move(gen), attribs, parent};
 }
 //------------------------------------------------------------------------------
 auto primitive_info_gen::_topology(const drawing_variant var) noexcept
@@ -84,7 +83,7 @@ auto primitive_info_gen::_topology(const drawing_variant var) noexcept
 }
 //------------------------------------------------------------------------------
 primitive_info_gen::primitive_info_gen(
-  std::shared_ptr<generator> gen,
+  shared_holder<generator> gen,
   vertex_attrib_kinds attribs,
   main_ctx_parent parent) noexcept
   : main_ctx_object{"PrimInfGen", parent}

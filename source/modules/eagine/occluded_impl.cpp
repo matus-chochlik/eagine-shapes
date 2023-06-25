@@ -30,7 +30,7 @@ class occluded_gen
 
 public:
     occluded_gen(
-      std::shared_ptr<generator> gen,
+      shared_holder<generator> gen,
       const span_size_t samples,
       main_ctx_parent parent) noexcept;
 
@@ -42,14 +42,14 @@ private:
 };
 //------------------------------------------------------------------------------
 auto occlude(
-  std::shared_ptr<generator> gen,
+  shared_holder<generator> gen,
   const span_size_t samples,
-  main_ctx_parent parent) noexcept -> std::unique_ptr<generator> {
-    return std::make_unique<occluded_gen>(std::move(gen), samples, parent);
+  main_ctx_parent parent) noexcept -> shared_holder<generator> {
+    return {hold<occluded_gen>, std::move(gen), samples, parent};
 }
 //------------------------------------------------------------------------------
 occluded_gen::occluded_gen(
-  std::shared_ptr<generator> gen,
+  shared_holder<generator> gen,
   const span_size_t samples,
   main_ctx_parent parent) noexcept
   : main_ctx_object{"OcclShpGen", parent}

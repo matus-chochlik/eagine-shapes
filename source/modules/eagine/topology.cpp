@@ -223,7 +223,7 @@ export class topology : public main_ctx_object {
 public:
     /// @brief Construction from a shape generator and options.
     topology(
-      std::shared_ptr<generator> gen,
+      shared_holder<generator> gen,
       const topology_options& opts,
       main_ctx_parent parent)
       : main_ctx_object{"ShpTopolgy", parent}
@@ -251,7 +251,7 @@ private:
 
     void _scan_topology(topology_options);
 
-    std::shared_ptr<generator> _gen;
+    shared_holder<generator> _gen;
     std::vector<mesh_triangle> _triangles;
     flat_map<std::tuple<unsigned, unsigned>, mesh_edge> _edges;
 };

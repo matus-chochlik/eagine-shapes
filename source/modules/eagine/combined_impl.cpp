@@ -23,9 +23,9 @@ namespace eagine::shapes {
 //------------------------------------------------------------------------------
 class combined_gen : public generator {
 public:
-    combined_gen(std::vector<std::unique_ptr<generator>>&& gens) noexcept;
+    combined_gen(std::vector<shared_holder<generator>>&& gens) noexcept;
 
-    auto add(std::unique_ptr<generator>&& gen) && -> combined_gen&&;
+    auto add(shared_holder<generator>&& gen) && -> combined_gen&&;
 
     auto attrib_kinds() noexcept -> vertex_attrib_kinds final;
 
@@ -94,7 +94,7 @@ public:
       span<optionally_valid<float>> intersections) final;
 
 private:
-    std::vector<std::unique_ptr<generator>> _gens;
+    std::vector<shared_holder<generator>> _gens;
 
     template <typename T>
     void _indices(const drawing_variant, span<T> dest);
@@ -103,29 +103,28 @@ private:
     void _attrib_values(const vertex_attrib_variant, span<T>);
 };
 //------------------------------------------------------------------------------
-auto combine(std::unique_ptr<generator>&& gen) -> std::unique_ptr<generator> {
-    std::vector<std::unique_ptr<generator>> v;
+auto combine(shared_holder<generator>&& gen) -> shared_holder<generator> {
+    std::vector<shared_holder<generator>> v;
     v.reserve(1);
     v.emplace_back(std::move(gen));
-    return std::make_unique<combined_gen>(std::move(v));
+    return {hold<combined_gen>, std::move(v)};
 }
 //------------------------------------------------------------------------------
 template <std::size_t N>
-auto combine(std::array<std::unique_ptr<generator>, N>&& gens)
-  -> std::unique_ptr<generator> {
-    std::vector<std::unique_ptr<generator>> v;
+auto combine(std::array<shared_holder<generator>, N>&& gens)
+  -> shared_holder<generator> {
+    std::vector<shared_holder<generator>> v;
     v.reserve(N);
     for(auto& gen : gens) {
         v.emplace_back(std::move(gen));
     }
-    return std::make_unique<combined_gen>(std::move(v));
+    return {hold<combined_gen>, std::move(v)};
 }
 //------------------------------------------------------------------------------
-combined_gen::combined_gen(
-  std::vector<std::unique_ptr<generator>>&& gens) noexcept
+combined_gen::combined_gen(std::vector<shared_holder<generator>>&& gens) noexcept
   : _gens{std::move(gens)} {}
 //------------------------------------------------------------------------------
-auto combined_gen::add(std::unique_ptr<generator>&& gen) && -> combined_gen&& {
+auto combined_gen::add(shared_holder<generator>&& gen) && -> combined_gen&& {
     _gens.emplace_back(std::move(gen));
     return std::move(*this);
 }

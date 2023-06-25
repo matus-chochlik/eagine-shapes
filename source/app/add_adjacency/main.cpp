@@ -12,7 +12,7 @@ import <map>;
 namespace eagine {
 
 static auto get_base_generator(main_ctx& ctx)
-  -> std::unique_ptr<shapes::generator> {
+  -> shared_holder<shapes::generator> {
     // TODO: parse input file path
     return shapes::from_json_stream(std::cin, ctx);
 }

@@ -25,7 +25,7 @@ class triangle_adjacency_gen
   , public delegated_gen {
 public:
     triangle_adjacency_gen(
-      std::shared_ptr<generator> gen,
+      shared_holder<generator> gen,
       const drawing_variant var,
       main_ctx_parent parent) noexcept;
 
@@ -59,11 +59,10 @@ private:
 };
 //------------------------------------------------------------------------------
 auto add_triangle_adjacency(
-  std::shared_ptr<generator> gen,
+  shared_holder<generator> gen,
   const drawing_variant var,
-  main_ctx_parent parent) noexcept -> std::unique_ptr<generator> {
-    return std::make_unique<triangle_adjacency_gen>(
-      std::move(gen), var, parent);
+  main_ctx_parent parent) noexcept -> shared_holder<generator> {
+    return {hold<triangle_adjacency_gen>, std::move(gen), var, parent};
 }
 //------------------------------------------------------------------------------
 auto triangle_adjacency_gen::_topology(const drawing_variant var) noexcept
@@ -83,7 +82,7 @@ auto triangle_adjacency_gen::_topology(const drawing_variant var) noexcept
 }
 //------------------------------------------------------------------------------
 triangle_adjacency_gen::triangle_adjacency_gen(
-  std::shared_ptr<generator> gen,
+  shared_holder<generator> gen,
   const drawing_variant var,
   main_ctx_parent parent) noexcept
   : main_ctx_object{"AjcyShpGen", parent}

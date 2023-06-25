@@ -82,7 +82,7 @@ private:
 auto unit_sphere_from(
   const vertex_attrib_kinds attr_kinds,
   const url& locator,
-  main_ctx&) -> std::unique_ptr<generator> {
+  main_ctx&) -> shared_holder<generator> {
     if(locator.has_path("/unit_sphere")) {
         const auto rings{locator.query().arg_value_as(
           "rings", std::type_identity<valid_if_greater_than<int, 2>>{})};
@@ -97,8 +97,8 @@ auto unit_sphere_from(
 auto unit_sphere(
   const vertex_attrib_kinds attr_kinds,
   const valid_if_greater_than<int, 2>& rings,
-  const valid_if_greater_than<int, 3>& sections) -> std::unique_ptr<generator> {
-    return std::make_unique<unit_sphere_gen>(attr_kinds, rings, sections);
+  const valid_if_greater_than<int, 3>& sections) -> shared_holder<generator> {
+    return {hold<unit_sphere_gen>, attr_kinds, rings, sections};
 }
 //------------------------------------------------------------------------------
 auto unit_sphere_gen::_attr_mask() noexcept -> vertex_attrib_kinds {

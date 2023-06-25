@@ -20,7 +20,7 @@ namespace eagine::shapes {
 class to_patches_gen : public delegated_gen {
 
 public:
-    to_patches_gen(std::shared_ptr<generator> gen) noexcept
+    to_patches_gen(shared_holder<generator> gen) noexcept
       : delegated_gen{std::move(gen)} {}
 
     auto index_type(const drawing_variant) -> index_data_type override;
@@ -65,9 +65,9 @@ private:
       _new_indices;
 };
 //------------------------------------------------------------------------------
-auto to_patches(std::shared_ptr<generator> gen) noexcept
-  -> std::unique_ptr<generator> {
-    return std::make_unique<to_patches_gen>(std::move(gen));
+auto to_patches(shared_holder<generator> gen) noexcept
+  -> shared_holder<generator> {
+    return {hold<to_patches_gen>, std::move(gen)};
 }
 //------------------------------------------------------------------------------
 auto to_patches_gen::_get_instr(const drawing_variant var) -> _instr_info& {
