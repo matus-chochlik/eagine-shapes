@@ -20,7 +20,7 @@ namespace eagine::shapes {
 //------------------------------------------------------------------------------
 class to_quads_gen : public delegated_gen {
 public:
-    to_quads_gen(std::shared_ptr<generator> gen) noexcept
+    to_quads_gen(shared_holder<generator> gen) noexcept
       : delegated_gen{std::move(gen)} {}
 
     auto index_count(const drawing_variant) -> span_size_t override;
@@ -40,9 +40,9 @@ private:
     void _indices(const drawing_variant, span<T> dest) noexcept;
 };
 //------------------------------------------------------------------------------
-auto to_quads(std::shared_ptr<generator> gen) noexcept
-  -> std::unique_ptr<generator> {
-    return std::make_unique<to_quads_gen>(std::move(gen));
+auto to_quads(shared_holder<generator> gen) noexcept
+  -> shared_holder<generator> {
+    return {hold<to_quads_gen>, std::move(gen)};
 }
 //------------------------------------------------------------------------------
 auto to_quads_gen::index_count(const drawing_variant var) -> span_size_t {

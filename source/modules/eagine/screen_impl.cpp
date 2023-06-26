@@ -53,7 +53,7 @@ private:
 auto unit_screen_from(
   const vertex_attrib_kinds attr_kinds,
   const url& locator,
-  main_ctx&) -> std::unique_ptr<generator> {
+  main_ctx&) -> shared_holder<generator> {
     if(locator.has_path("/unit_screen")) {
         return unit_screen(attr_kinds);
     }
@@ -61,8 +61,8 @@ auto unit_screen_from(
 }
 //------------------------------------------------------------------------------
 auto unit_screen(const vertex_attrib_kinds attr_kinds)
-  -> std::unique_ptr<generator> {
-    return std::make_unique<unit_screen_gen>(attr_kinds);
+  -> shared_holder<generator> {
+    return {hold<unit_screen_gen>, attr_kinds};
 }
 //------------------------------------------------------------------------------
 auto unit_screen_gen::_attr_mask() noexcept -> vertex_attrib_kinds {

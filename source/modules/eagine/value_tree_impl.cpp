@@ -545,8 +545,8 @@ void value_tree_loader::instructions(
 }
 //------------------------------------------------------------------------------
 auto from_value_tree(valtree::compound source, main_ctx_parent parent)
-  -> std::unique_ptr<generator> {
-    return std::make_unique<value_tree_loader>(std::move(source), parent);
+  -> shared_holder<generator> {
+    return {hold<value_tree_loader>, std::move(source), parent};
 }
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes

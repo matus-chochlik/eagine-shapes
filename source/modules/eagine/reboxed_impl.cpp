@@ -18,17 +18,16 @@ namespace eagine::shapes {
 class reboxed_gen : public delegated_gen {
 
 public:
-    reboxed_gen(std::shared_ptr<generator> gen) noexcept;
+    reboxed_gen(shared_holder<generator> gen) noexcept;
 
     void attrib_values(const vertex_attrib_variant, span<float>) override;
 };
 //------------------------------------------------------------------------------
-auto rebox(std::shared_ptr<generator> gen) noexcept
-  -> std::unique_ptr<generator> {
-    return std::make_unique<reboxed_gen>(std::move(gen));
+auto rebox(shared_holder<generator> gen) noexcept -> shared_holder<generator> {
+    return {hold<reboxed_gen>, std::move(gen)};
 }
 //------------------------------------------------------------------------------
-reboxed_gen::reboxed_gen(std::shared_ptr<generator> gen) noexcept
+reboxed_gen::reboxed_gen(shared_holder<generator> gen) noexcept
   : delegated_gen{std::move(gen)} {
     delegated_gen::_add(vertex_attrib_kind::box_coord);
 }

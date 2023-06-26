@@ -17,7 +17,7 @@ namespace eagine::shapes {
 class array_gen : public delegated_gen {
 public:
     array_gen(
-      std::shared_ptr<generator> gen,
+      shared_holder<generator> gen,
       const std::array<float, 3> d,
       const span_size_t n) noexcept
       : delegated_gen{std::move(gen)}
@@ -53,10 +53,10 @@ private:
 };
 //------------------------------------------------------------------------------
 auto array(
-  std::shared_ptr<generator> gen,
+  shared_holder<generator> gen,
   const std::array<float, 3> d,
-  const span_size_t count) noexcept -> std::unique_ptr<generator> {
-    return std::make_unique<array_gen>(std::move(gen), d, count);
+  const span_size_t count) noexcept -> shared_holder<generator> {
+    return {hold<array_gen>, std::move(gen), d, count};
 }
 //------------------------------------------------------------------------------
 auto array_gen::vertex_count() -> span_size_t {

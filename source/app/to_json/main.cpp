@@ -15,7 +15,7 @@ static auto get_base_generator(const main_ctx& ctx) {
     const auto& args = ctx.args();
 
     const auto attrbits{shapes::all_vertex_attrib_kinds()};
-    std::shared_ptr<shapes::generator> gen;
+    shared_holder<shapes::generator> gen;
 
     if(args.find("--twisted-torus")) {
         gen = shapes::unit_twisted_torus(attrbits, 6, 48, 4, 0.5F);

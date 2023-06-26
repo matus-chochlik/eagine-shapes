@@ -19,7 +19,7 @@ import :generator;
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
 auto from_json_stream(std::istream& input, main_ctx& ctx) noexcept
-  -> std::unique_ptr<generator> {
+  -> shared_holder<generator> {
     memory::buffer json_data;
     if(read_stream_data(input, json_data)) {
         if(const auto json_text{as_chars(view(json_data))}) {

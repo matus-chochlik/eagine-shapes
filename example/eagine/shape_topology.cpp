@@ -15,7 +15,7 @@ auto main(main_ctx& ctx) -> int {
     using namespace eagine;
     const auto& args = ctx.args();
 
-    std::shared_ptr<shapes::generator> gen;
+    shared_holder<shapes::generator> gen;
 
     if(args.find("--torus")) {
         gen =

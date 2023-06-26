@@ -62,8 +62,8 @@ private:
 };
 //------------------------------------------------------------------------------
 auto marching_tetrahedrons(vertex_attrib_kinds attr_kinds)
-  -> std::unique_ptr<generator> {
-    return std::make_unique<marching_tetrahedrons_gen>(attr_kinds);
+  -> shared_holder<generator> {
+    return {hold<marching_tetrahedrons_gen>, attr_kinds};
 }
 //------------------------------------------------------------------------------
 auto marching_tetrahedrons_gen::_attr_mask() noexcept -> vertex_attrib_kinds {

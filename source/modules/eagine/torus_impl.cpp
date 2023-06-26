@@ -122,7 +122,7 @@ auto unit_torus_gen::_attr_mask() noexcept -> vertex_attrib_kinds {
 auto unit_torus_from(
   const vertex_attrib_kinds attr_kinds,
   const url& locator,
-  main_ctx&) -> std::unique_ptr<generator> {
+  main_ctx&) -> shared_holder<generator> {
     if(locator.has_path("/unit_torus")) {
         const auto rings{locator.query().arg_value_as(
           "rings", std::type_identity<valid_if_greater_than<int, 4>>{})};
@@ -143,9 +143,8 @@ auto unit_torus(
   const vertex_attrib_kinds attr_kinds,
   const valid_if_greater_than<int, 4>& rings,
   const valid_if_greater_than<int, 3>& sections,
-  const valid_if_ge0_lt1<float>& radius_ratio) -> std::unique_ptr<generator> {
-    return std::make_unique<unit_torus_gen>(
-      attr_kinds, rings, sections, radius_ratio);
+  const valid_if_ge0_lt1<float>& radius_ratio) -> shared_holder<generator> {
+    return {hold<unit_torus_gen>, attr_kinds, rings, sections, radius_ratio};
 }
 //------------------------------------------------------------------------------
 unit_torus_gen::unit_torus_gen(

@@ -24,7 +24,7 @@ class cached_gen
   , public generator {
 
 public:
-    cached_gen(std::shared_ptr<generator> gen, main_ctx_parent parent) noexcept;
+    cached_gen(shared_holder<generator> gen, main_ctx_parent parent) noexcept;
 
     auto attrib_kinds() noexcept -> vertex_attrib_kinds final {
         return _gen->attrib_kinds();
@@ -100,7 +100,7 @@ public:
       span<optionally_valid<float>> intersections) final;
 
 private:
-    const std::shared_ptr<generator> _gen;
+    const shared_holder<generator> _gen;
     const span_size_t _instance_count;
     const span_size_t _vertex_count;
     const span_size_t _draw_variant_count;
@@ -151,13 +151,13 @@ private:
       std::map<drawing_variant, std::vector<draw_operation>>&);
 };
 //------------------------------------------------------------------------------
-auto cache(std::shared_ptr<generator> gen, main_ctx_parent parent) noexcept
-  -> std::unique_ptr<generator> {
-    return std::make_unique<cached_gen>(std::move(gen), parent);
+auto cache(shared_holder<generator> gen, main_ctx_parent parent) noexcept
+  -> shared_holder<generator> {
+    return {hold<cached_gen>, std::move(gen), parent};
 }
 //------------------------------------------------------------------------------
 cached_gen::cached_gen(
-  std::shared_ptr<generator> gen,
+  shared_holder<generator> gen,
   main_ctx_parent parent) noexcept
   : main_ctx_object{"CchdShpGen", parent}
   , _gen{std::move(gen)}

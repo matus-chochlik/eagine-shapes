@@ -71,7 +71,7 @@ private:
 auto unit_round_cube_from(
   const vertex_attrib_kinds attr_kinds,
   const url& locator,
-  main_ctx&) -> std::unique_ptr<generator> {
+  main_ctx&) -> shared_holder<generator> {
     if(locator.has_path("/unit_round_cube")) {
         const auto divisions{locator.query().arg_value_as(
           "divisions", std::type_identity<valid_if_positive<int>>{})};
@@ -82,8 +82,8 @@ auto unit_round_cube_from(
 //------------------------------------------------------------------------------
 auto unit_round_cube(
   const vertex_attrib_kinds attr_kinds,
-  const valid_if_positive<int> divisions) -> std::unique_ptr<generator> {
-    return std::make_unique<unit_round_cube_gen>(attr_kinds, divisions);
+  const valid_if_positive<int> divisions) -> shared_holder<generator> {
+    return {hold<unit_round_cube_gen>, attr_kinds, divisions};
 }
 //------------------------------------------------------------------------------
 auto unit_round_cube_gen::_attr_mask() noexcept -> vertex_attrib_kinds {

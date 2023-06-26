@@ -22,7 +22,7 @@ namespace eagine::shapes {
 /// @ingroup shapes
 class delegated_gen : public generator {
 public:
-    delegated_gen(std::shared_ptr<generator> gen) noexcept
+    delegated_gen(shared_holder<generator> gen) noexcept
       : _gen{std::move(gen)} {}
 
     auto attrib_kinds() noexcept -> vertex_attrib_kinds final;
@@ -113,7 +113,7 @@ public:
 
 protected:
     [[nodiscard]] auto base_generator() const noexcept
-      -> std::shared_ptr<generator> {
+      -> shared_holder<generator> {
         return _gen;
     }
 
@@ -123,7 +123,7 @@ protected:
     }
 
 private:
-    std::shared_ptr<generator> _gen;
+    shared_holder<generator> _gen;
     vertex_attrib_kinds _attr_kinds;
 };
 //------------------------------------------------------------------------------

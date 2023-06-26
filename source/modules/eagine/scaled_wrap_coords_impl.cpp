@@ -19,7 +19,7 @@ class scaled_wrap_coords_gen : public delegated_gen {
 
 public:
     scaled_wrap_coords_gen(
-      std::shared_ptr<generator> gen,
+      shared_holder<generator> gen,
       std::array<float, 3> scale) noexcept
       : delegated_gen{std::move(gen)}
       , _scale{scale} {}
@@ -31,12 +31,14 @@ private:
 };
 //------------------------------------------------------------------------------
 auto scale_wrap_coords(
-  std::shared_ptr<generator> gen,
+  shared_holder<generator> gen,
   float x,
   float y,
-  float z) noexcept -> std::unique_ptr<generator> {
-    return std::make_unique<scaled_wrap_coords_gen>(
-      std::move(gen), std::array<float, 3>{x, y, z});
+  float z) noexcept -> shared_holder<generator> {
+    return {
+      hold<scaled_wrap_coords_gen>,
+      std::move(gen),
+      std::array<float, 3>{x, y, z}};
 }
 //------------------------------------------------------------------------------
 void scaled_wrap_coords_gen::attrib_values(

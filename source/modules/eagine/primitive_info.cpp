@@ -17,9 +17,9 @@ namespace eagine::shapes {
 /// @brief Constructs instances of primitive_info modifier.
 /// @ingroup shapes
 export [[nodiscard]] auto add_primitive_info(
-  std::shared_ptr<generator> gen,
+  shared_holder<generator> gen,
   vertex_attrib_kinds attribs,
-  main_ctx_parent parent) noexcept -> std::unique_ptr<generator>;
+  main_ctx_parent parent) noexcept -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes
 

@@ -64,7 +64,7 @@ private:
 auto unit_twisted_torus_from(
   const vertex_attrib_kinds attr_kinds,
   const url& locator,
-  main_ctx&) -> std::unique_ptr<generator> {
+  main_ctx&) -> shared_holder<generator> {
     if(locator.has_path("/unit_twisted_torus")) {
         const auto twist{
           locator.query().arg_value_as("twist", std::type_identity<int>{})};
@@ -89,9 +89,14 @@ auto unit_twisted_torus(
   const int twist,
   const valid_if_greater_than<int, 2>& rings,
   const valid_if_greater_than<int, 3>& sections,
-  const valid_if_ge0_lt1<float>& radius_ratio) -> std::unique_ptr<generator> {
-    return std::make_unique<unit_twisted_torus_gen>(
-      attr_kinds, twist, rings, sections, radius_ratio);
+  const valid_if_ge0_lt1<float>& radius_ratio) -> shared_holder<generator> {
+    return {
+      hold<unit_twisted_torus_gen>,
+      attr_kinds,
+      twist,
+      rings,
+      sections,
+      radius_ratio};
 }
 //------------------------------------------------------------------------------
 auto unit_twisted_torus_gen::_attr_mask() noexcept -> vertex_attrib_kinds {
