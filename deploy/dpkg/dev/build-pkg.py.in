@@ -59,7 +59,7 @@ Architecture: %s
 Installed-Size: %d
 Depends: eagine-core-dev
 Maintainer: Matus Chochlik <chochlik@gmail.com>
-Description: Collection of various modern C++ utilities.
+Description: C++ generator of geometric shapes used for rendering.
 """ % (
     "@PKG_VERSION@",
     "@PKG_ARCH@",
