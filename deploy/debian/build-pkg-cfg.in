@@ -1,2 +1,0 @@
-eagine_shapes_name="$<TARGET_FILE_NAME:eagine-shapes>"
-eagine_shapes_path="$<TARGET_FILE:eagine-shapes>"
