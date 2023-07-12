@@ -409,7 +409,7 @@ void value_tree_loader::instructions(
     bool btemp{};
     if(const auto instrs_a{_source.nested("instructions")}) {
         if(ops.size() == _source.nested_count(instrs_a)) {
-            for(const auto i : integer_range(ops.size())) {
+            for(const auto i : index_range(ops)) {
                 if(const auto instr_a{_source.nested(instrs_a, i)}) {
                     auto& op = ops[i];
 
