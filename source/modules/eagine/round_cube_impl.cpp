@@ -247,7 +247,7 @@ void unit_round_cube_gen::_directions(span<float> dest, float len) noexcept {
         for(const auto y : integer_range(_divisions + 1)) {
             for(const auto x : integer_range(_divisions + 1)) {
                 const auto p{parameters(x, y) * len};
-                const auto vp = (vx * p.x()) + (vy * p.y()) + (vz * p.z());
+                const auto vp = vx * p.x() + vy * p.y() + vz * p.z();
                 dest[l++] = vp.x();
                 dest[l++] = vp.y();
                 dest[l++] = vp.z();
@@ -273,13 +273,13 @@ void unit_round_cube_gen::tangents(span<float> dest) noexcept {
     assert(dest.size() >= vertex_count() * 3);
 
     for(const auto f : integer_range(6)) {
-        const auto vx{unit_round_cube_face_normal(f)};
+        const auto vx{-unit_round_cube_face_normal(f)};
         const auto vy{unit_round_cube_face_bitangent(f)};
-        const auto vz{-unit_round_cube_face_tangent(f)};
+        const auto vz{unit_round_cube_face_tangent(f)};
         for(const auto y : integer_range(_divisions + 1)) {
             for(const auto x : integer_range(_divisions + 1)) {
                 const auto p{parameters(x, y)};
-                const auto vp = (vx * p.x()) + (vy * p.y()) + (vz * p.z());
+                const auto vp = vx * p.x() + vy * p.y() + vz * p.z();
                 dest[l++] = vp.x();
                 dest[l++] = vp.y();
                 dest[l++] = vp.z();
@@ -297,12 +297,12 @@ void unit_round_cube_gen::bitangents(span<float> dest) noexcept {
 
     for(const auto f : integer_range(6)) {
         const auto vx{unit_round_cube_face_tangent(f)};
-        const auto vy{unit_round_cube_face_normal(f)};
-        const auto vz{-unit_round_cube_face_bitangent(f)};
+        const auto vy{-unit_round_cube_face_normal(f)};
+        const auto vz{unit_round_cube_face_bitangent(f)};
         for(const auto y : integer_range(_divisions + 1)) {
             for(const auto x : integer_range(_divisions + 1)) {
                 const auto p{parameters(x, y)};
-                const auto vp = (vx * p.x()) + (vy * p.y()) + (vz * p.z());
+                const auto vp = vx * p.x() + vy * p.y() + vz * p.z();
                 dest[l++] = vp.x();
                 dest[l++] = vp.y();
                 dest[l++] = vp.z();
