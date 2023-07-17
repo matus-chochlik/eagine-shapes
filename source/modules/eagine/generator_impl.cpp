@@ -177,7 +177,7 @@ void generator_base::ray_intersections(
 
     const auto bs = gen.bounding_sphere();
 
-    for(const auto i : integer_range(rays.size())) {
+    for(const auto i : index_range(rays)) {
         const auto nparam = math::nearest_ray_param(
           math::line_sphere_intersection_params(rays[i], bs));
         if(nparam >= 0.F) {

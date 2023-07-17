@@ -102,7 +102,7 @@ void to_patches_gen::_make_indices(
 
     auto& info{_get_instr(var)};
 
-    for(const auto i : integer_range(info.ops.size())) {
+    for(const auto i : index_range(info.ops)) {
         auto& op = info.ops[i];
         if(op.idx_type == index_data_type::none) {
         } else {
@@ -226,7 +226,7 @@ void to_patches_gen::instructions(
     (void)index_count(var);
 
     auto& info{_get_instr(var)};
-    for(const auto i : integer_range(info.ops.size())) {
+    for(const auto i : index_range(info.ops)) {
         auto& op = ops[i];
         op = info.ops[i];
         if(op.mode == primitive_type::triangles) {

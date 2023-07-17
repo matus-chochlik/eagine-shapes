@@ -21,6 +21,88 @@ import eagine.core.main_ctx;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
+// unit_round_cube_parameter_cache
+//------------------------------------------------------------------------------
+class unit_round_cube_parameter_cache {
+public:
+    using vec3 = math::tvec<float, 3, true>;
+    unit_round_cube_parameter_cache(int d);
+
+    auto interpolate(int x1, int y1, int x2, int y2) noexcept -> vec3;
+    void fill_square(int x1, int y1, int x2, int y2) noexcept;
+
+    constexpr auto index_of(int x, int y) const noexcept {
+        return (_d + 1U) * std_size_t(y) + std_size(x);
+    }
+
+    void set(int x, int y, vec3 v) noexcept {
+        _values[index_of(x, y)] = v;
+    }
+
+    auto get(int x, int y) const noexcept -> vec3 {
+        return _values[index_of(x, y)];
+    }
+
+    auto has(int x, int y) const noexcept -> bool {
+        return get(x, y).z() > 0.F;
+    }
+
+private:
+    std::size_t _d;
+    std::vector<vec3> _values;
+};
+//------------------------------------------------------------------------------
+unit_round_cube_parameter_cache::unit_round_cube_parameter_cache(int d)
+  : _d{std_size(d)} {
+    _values.resize((_d + 1U) * (_d + 1U), vec3{0.F});
+    const float isr3{1.F / std::sqrt(3.F)};
+    set(0, 0, {-isr3, -isr3, isr3});
+    set(_d, 0, {+isr3, -isr3, isr3});
+    set(0, _d, {-isr3, +isr3, isr3});
+    set(_d, _d, {+isr3, +isr3, isr3});
+    fill_square(0, 0, _d, _d);
+}
+//------------------------------------------------------------------------------
+auto unit_round_cube_parameter_cache::interpolate(
+  int x1,
+  int y1,
+  int x2,
+  int y2) noexcept -> vec3 {
+    assert(has(x1, y1));
+    assert(has(x2, y2));
+    return math::normalized(get(x1, y1) + get(x2, y2));
+}
+//------------------------------------------------------------------------------
+void unit_round_cube_parameter_cache::fill_square(
+  int x1,
+  int y1,
+  int x2,
+  int y2) noexcept {
+    const int xm = std::midpoint(x1, x2);
+    const int ym = std::midpoint(y1, y2);
+    if(not has(xm, y1)) {
+        set(xm, y1, interpolate(x1, y1, x2, y1));
+    }
+    if(not has(x1, ym)) {
+        set(x1, ym, interpolate(x1, y1, x1, y2));
+    }
+    if(not has(x2, ym)) {
+        set(x2, ym, interpolate(x2, y1, x2, y2));
+    }
+    if(not has(xm, y2)) {
+        set(xm, y2, interpolate(x1, y2, x2, y2));
+    }
+    if(not has(xm, ym)) {
+        set(xm, ym, interpolate(x1, ym, x2, ym));
+        fill_square(x1, y1, xm, ym);
+        fill_square(xm, y1, x2, ym);
+        fill_square(x1, ym, xm, y2);
+        fill_square(xm, ym, x2, y2);
+    }
+}
+//------------------------------------------------------------------------------
+// unit_round_cube_gen
+//------------------------------------------------------------------------------
 class unit_round_cube_gen : public generator_base {
 public:
     unit_round_cube_gen(
@@ -28,6 +110,11 @@ public:
       const valid_if_positive<int> divisions) noexcept;
 
     auto vertex_count() -> span_size_t override;
+
+    auto parameters(int x, int y) noexcept -> math::tvec<float, 3, true>;
+    auto normal(int face, int x, int y) noexcept -> math::tvec<float, 3, true>;
+
+    void _directions(span<float> dest, float len) noexcept;
 
     void positions(span<float> dest) noexcept;
 
@@ -66,7 +153,26 @@ private:
     void _indices(const drawing_variant, span<T> dest) noexcept;
 
     int _divisions;
+    unit_round_cube_parameter_cache _parameters;
 };
+//------------------------------------------------------------------------------
+unit_round_cube_gen::unit_round_cube_gen(
+  const vertex_attrib_kinds attr_kinds,
+  const valid_if_positive<int> divisions) noexcept
+  : _base(
+      attr_kinds & _attr_mask(),
+      generator_capability::indexed_drawing |
+        generator_capability::primitive_restart)
+  , _divisions{divisions.value() + divisions.value() % 2}
+  , _parameters{_divisions} {
+    assert(_divisions > 0);
+}
+//------------------------------------------------------------------------------
+auto unit_round_cube(
+  const vertex_attrib_kinds attr_kinds,
+  const valid_if_positive<int> divisions) -> shared_holder<generator> {
+    return {hold<unit_round_cube_gen>, attr_kinds, divisions};
+}
 //------------------------------------------------------------------------------
 auto unit_round_cube_from(
   const vertex_attrib_kinds attr_kinds,
@@ -80,28 +186,11 @@ auto unit_round_cube_from(
     return {};
 }
 //------------------------------------------------------------------------------
-auto unit_round_cube(
-  const vertex_attrib_kinds attr_kinds,
-  const valid_if_positive<int> divisions) -> shared_holder<generator> {
-    return {hold<unit_round_cube_gen>, attr_kinds, divisions};
-}
-//------------------------------------------------------------------------------
 auto unit_round_cube_gen::_attr_mask() noexcept -> vertex_attrib_kinds {
     return vertex_attrib_kind::position | vertex_attrib_kind::normal |
            vertex_attrib_kind::tangent | vertex_attrib_kind::bitangent |
            vertex_attrib_kind::pivot | vertex_attrib_kind::face_coord |
            vertex_attrib_kind::box_coord;
-}
-//------------------------------------------------------------------------------
-unit_round_cube_gen::unit_round_cube_gen(
-  const vertex_attrib_kinds attr_kinds,
-  const valid_if_positive<int> divisions) noexcept
-  : _base(
-      attr_kinds & _attr_mask(),
-      generator_capability::indexed_drawing |
-        generator_capability::primitive_restart)
-  , _divisions{divisions.value()} {
-    assert(_divisions > 0);
 }
 //------------------------------------------------------------------------------
 auto unit_round_cube_gen::vertex_count() -> span_size_t {
@@ -141,108 +230,87 @@ auto unit_round_cube_face_bitangent(const span_size_t f) noexcept {
     }}[f];
 }
 //------------------------------------------------------------------------------
-void unit_round_cube_gen::positions(span<float> dest) noexcept {
-    span_size_t k = 0;
+auto unit_round_cube_gen::parameters(int x, int y) noexcept
+  -> math::tvec<float, 3, true> {
+    return _parameters.get(x, y);
+}
+//------------------------------------------------------------------------------
+void unit_round_cube_gen::_directions(span<float> dest, float len) noexcept {
+    span_size_t l = 0;
 
     assert(dest.size() >= vertex_count() * 3);
 
-    auto frac = [this](int q) {
-        auto adjust = [](float f) {
-            return 0.5F * std::asin(f) / std::asin(0.5F);
-        };
-        return adjust(float(q) / float(_divisions) - 0.5F);
-    };
-
     for(const auto f : integer_range(6)) {
-        const auto vx = unit_round_cube_face_tangent(f);
-        const auto vy = unit_round_cube_face_bitangent(f);
-        const auto vz = unit_round_cube_face_normal(f);
+        const auto vx{unit_round_cube_face_tangent(f)};
+        const auto vy{unit_round_cube_face_bitangent(f)};
+        const auto vz{unit_round_cube_face_normal(f)};
         for(const auto y : integer_range(_divisions + 1)) {
-            const float j = frac(y);
             for(const auto x : integer_range(_divisions + 1)) {
-                const float i = frac(x);
-                const auto vp = normalized((vz * 0.5F) + (vy * j) + (vx * i));
-                dest[k++] = vp.x();
-                dest[k++] = vp.y();
-                dest[k++] = vp.z();
+                const auto p{parameters(x, y) * len};
+                const auto vp = vx * p.x() + vy * p.y() + vz * p.z();
+                dest[l++] = vp.x();
+                dest[l++] = vp.y();
+                dest[l++] = vp.z();
             }
         }
     }
 
-    assert(k == vertex_count() * 3);
+    assert(l == vertex_count() * 3);
+}
+//------------------------------------------------------------------------------
+void unit_round_cube_gen::positions(span<float> dest) noexcept {
+    _directions(dest, 0.5F);
 }
 //------------------------------------------------------------------------------
 void unit_round_cube_gen::normals(span<float> dest) noexcept {
     assert(has(vertex_attrib_kind::normal));
-    positions(dest);
+    _directions(dest, 1.0F);
 }
 //------------------------------------------------------------------------------
 void unit_round_cube_gen::tangents(span<float> dest) noexcept {
-    span_size_t k = 0;
+    span_size_t l = 0;
 
     assert(dest.size() >= vertex_count() * 3);
 
-    auto frac = [this](int q) {
-        auto adjust = [](float f) {
-            return 0.5F * std::asin(f) / std::asin(0.5F);
-        };
-        return adjust(float(q) / float(_divisions) - 0.5F);
-    };
-
     for(const auto f : integer_range(6)) {
-        const auto vx = unit_round_cube_face_tangent(f);
-        const auto vy = unit_round_cube_face_bitangent(f);
-        const auto vz = unit_round_cube_face_normal(f);
+        const auto vx{-unit_round_cube_face_normal(f)};
+        const auto vy{unit_round_cube_face_bitangent(f)};
+        const auto vz{unit_round_cube_face_tangent(f)};
         for(const auto y : integer_range(_divisions + 1)) {
-            const float j = frac(y);
             for(const auto x : integer_range(_divisions + 1)) {
-                const float i1 = frac(x);
-                const float i2 = frac(x + 1);
-                const auto vp1 = normalized((vz * 0.5F) + (vy * j) + (vx * i1));
-                const auto vp2 = normalized((vz * 0.5F) + (vy * j) + (vx * i2));
-                const auto vp = normalized(vp2 - vp1);
-                dest[k++] = vp.x();
-                dest[k++] = vp.y();
-                dest[k++] = vp.z();
+                const auto p{parameters(x, y)};
+                const auto vp = vx * p.x() + vy * p.y() + vz * p.z();
+                dest[l++] = vp.x();
+                dest[l++] = vp.y();
+                dest[l++] = vp.z();
             }
         }
     }
 
-    assert(k == vertex_count() * 3);
+    assert(l == vertex_count() * 3);
 }
 //------------------------------------------------------------------------------
 void unit_round_cube_gen::bitangents(span<float> dest) noexcept {
-    span_size_t k = 0;
+    span_size_t l = 0;
 
     assert(dest.size() >= vertex_count() * 3);
 
-    auto frac = [this](int q) {
-        auto adjust = [](float f) {
-            return 0.5F * std::asin(f) / std::asin(0.5F);
-        };
-        return adjust(float(q) / float(_divisions) - 0.5F);
-    };
-
     for(const auto f : integer_range(6)) {
-        const auto vx = unit_round_cube_face_tangent(f);
-        const auto vy = unit_round_cube_face_bitangent(f);
-        const auto vz = unit_round_cube_face_normal(f);
+        const auto vx{unit_round_cube_face_tangent(f)};
+        const auto vy{-unit_round_cube_face_normal(f)};
+        const auto vz{unit_round_cube_face_bitangent(f)};
         for(const auto y : integer_range(_divisions + 1)) {
-            const float j1 = frac(y);
-            const float j2 = frac(y + 1);
             for(const auto x : integer_range(_divisions + 1)) {
-                const float i = frac(x);
-                const auto vp1 = normalized((vz * 0.5F) + (vy * j1) + (vx * i));
-                const auto vp2 = normalized((vz * 0.5F) + (vy * j2) + (vx * i));
-                const auto vp = normalized(vp2 - vp1);
-                dest[k++] = vp.x();
-                dest[k++] = vp.y();
-                dest[k++] = vp.z();
+                const auto p{parameters(x, y)};
+                const auto vp = vx * p.x() + vy * p.y() + vz * p.z();
+                dest[l++] = vp.x();
+                dest[l++] = vp.y();
+                dest[l++] = vp.z();
             }
         }
     }
 
-    assert(k == vertex_count() * 3);
+    assert(l == vertex_count() * 3);
 }
 //------------------------------------------------------------------------------
 void unit_round_cube_gen::face_coords(span<float> dest) noexcept {
