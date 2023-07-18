@@ -138,7 +138,7 @@ void unit_icosahedron_gen::positions(span<float> dest) noexcept {
             const float sv[3] = {
               0.F, v % 2 == 0 ? ns : ps, v / 2 == 0 ? ns : ps};
             for(const auto qci : qip) {
-                dest[k++] = float(sv[qci] * q[qci]);
+                dest[k++] = float(sv[qci] * q[qci]) * 0.5F;
             }
         }
     }
