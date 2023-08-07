@@ -142,6 +142,7 @@ eagine_add_module_tests(
 		screen
 		plane
 	IMPORTS
+		std
 		eagine.core
 		eagine.core.main_ctx
 )
