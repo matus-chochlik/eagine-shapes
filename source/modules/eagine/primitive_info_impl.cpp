@@ -67,19 +67,16 @@ auto add_primitive_info(
 //------------------------------------------------------------------------------
 auto primitive_info_gen::_topology(const drawing_variant var) noexcept
   -> topology& {
-    auto pos = _topologies.find(var);
-    if(pos == _topologies.end()) {
+    auto found{find(_topologies, var)};
+    if(not found) {
         topology_options opts;
         opts.features = topology_feature_bit::triangle_area |
                         topology_feature_bit::edge_length;
-        pos = _topologies
-                .emplace(
-                  var,
-                  topology{
-                    delegated_gen::base_generator(), opts, this->as_parent()})
-                .first;
+        found.emplace(
+          var,
+          topology{delegated_gen::base_generator(), opts, this->as_parent()});
     }
-    return pos->second;
+    return *found;
 }
 //------------------------------------------------------------------------------
 primitive_info_gen::primitive_info_gen(

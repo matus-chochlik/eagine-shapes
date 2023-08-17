@@ -71,10 +71,10 @@ auto to_patches(shared_holder<generator> gen) noexcept
 }
 //------------------------------------------------------------------------------
 auto to_patches_gen::_get_instr(const drawing_variant var) -> _instr_info& {
-    auto pos{_instructions.find(var)};
-    if(pos == _instructions.end()) {
-        pos = _instructions.emplace(var, _instr_info{}).first;
-        auto& info = pos->second;
+    auto found{find(_instructions, var)};
+    if(not found) {
+        found.emplace(var, _instr_info{});
+        auto& info = *found;
         info.ops.resize(std_size(delegated_gen::operation_count(var)));
         delegated_gen::instructions(var, cover(info.ops));
         info.needs_reindex = false;
@@ -88,7 +88,7 @@ auto to_patches_gen::_get_instr(const drawing_variant var) -> _instr_info& {
             }
         }
     }
-    return pos->second;
+    return *found;
 }
 //------------------------------------------------------------------------------
 template <typename T>
@@ -159,12 +159,12 @@ void to_patches_gen::_make_indices(
 template <typename T>
 auto to_patches_gen::_get_indices(const drawing_variant var)
   -> std::vector<T>& {
-    auto pos{_new_indices.find(var)};
-    if(pos == _new_indices.end()) {
-        pos = _new_indices.emplace(var, std::vector<T>{}).first;
-        _make_indices(var, std::get<std::vector<T>>(pos->second));
+    auto found{find(_new_indices, var)};
+    if(not found) {
+        found.emplace(var, std::vector<T>{});
+        _make_indices(var, std::get<std::vector<T>>(*found));
     }
-    return std::get<std::vector<T>>(pos->second);
+    return std::get<std::vector<T>>(*found);
 }
 //------------------------------------------------------------------------------
 auto to_patches_gen::index_type(const drawing_variant var) -> index_data_type {
