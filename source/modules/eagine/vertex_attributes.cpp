@@ -9,6 +9,7 @@ export module eagine.shapes:vertex_attributes;
 
 import std;
 import eagine.core.types;
+import eagine.core.math;
 import eagine.core.container;
 import eagine.core.reflection;
 
@@ -268,43 +269,7 @@ export template <std::size_t N>
 /// @brief Gets the default number of values per vertex for an attribute kind.
 /// @ingroup shapes
 export [[nodiscard]] auto attrib_values_per_vertex(
-  const vertex_attrib_kind attr) noexcept -> span_size_t {
-    switch(attr) {
-        case vertex_attrib_kind::color:
-            return 4;
-        case vertex_attrib_kind::position:
-        case vertex_attrib_kind::inner_position:
-        case vertex_attrib_kind::normal:
-        case vertex_attrib_kind::tangent:
-        case vertex_attrib_kind::bitangent:
-        case vertex_attrib_kind::pivot:
-        case vertex_attrib_kind::pivot_pivot:
-        case vertex_attrib_kind::vertex_pivot:
-        case vertex_attrib_kind::edge_length:
-        case vertex_attrib_kind::face_coord:
-        case vertex_attrib_kind::vertex_coord:
-        case vertex_attrib_kind::box_coord:
-        case vertex_attrib_kind::instance_offset:
-        case vertex_attrib_kind::vector_field:
-            return 3;
-        case vertex_attrib_kind::wrap_coord:
-        case vertex_attrib_kind::tile_coord:
-            return 2;
-        case vertex_attrib_kind::opposite_length:
-        case vertex_attrib_kind::face_area:
-        case vertex_attrib_kind::weight:
-        case vertex_attrib_kind::scalar_field:
-        case vertex_attrib_kind::occlusion:
-        case vertex_attrib_kind::object_id:
-        case vertex_attrib_kind::polygon_id:
-        case vertex_attrib_kind::material_id:
-        case vertex_attrib_kind::instance_scale:
-            return 1;
-        case vertex_attrib_kind::instance_transform:
-            return 16;
-    }
-    return 0;
-}
+  const vertex_attrib_kind attr) noexcept -> span_size_t;
 //------------------------------------------------------------------------------
 /// @brief Gets the default number of values per vertex for an attribute variant.
 /// @ingroup shapes
@@ -360,6 +325,42 @@ public:
 private:
     flat_map<vertex_attrib_variant, T> _map;
 };
+//------------------------------------------------------------------------------
+using vertex_attrib_value_variant = std::variant<
+  std::monostate,
+  int,
+  math::vector<int, 2, true>,
+  math::vector<int, 3, true>,
+  math::vector<int, 4, true>,
+  float,
+  math::vector<float, 2, true>,
+  math::vector<float, 3, true>,
+  math::vector<float, 4, true>>;
+
+/// @brief Type for storing of vertex attribute values.
+/// @ingroup shapes
+export class vertex_attrib_value : public vertex_attrib_value_variant {
+    using base = vertex_attrib_value_variant;
+
+public:
+    using base::base;
+
+    constexpr explicit operator bool() const noexcept {
+        return not std::holds_alternative<std::monostate>(*this);
+    }
+};
+//------------------------------------------------------------------------------
+/// @brief Gets the default value per vertex for an attribute kind.
+/// @ingroup shapes
+export [[nodiscard]] auto default_attrib_value(
+  const vertex_attrib_kind attr) noexcept -> vertex_attrib_value;
+//------------------------------------------------------------------------------
+/// @brief Gets the default value per vertex for an attribute variant.
+/// @ingroup shapes
+export [[nodiscard]] auto default_attrib_value(
+  const vertex_attrib_variant vav) noexcept {
+    return default_attrib_value(vav.attribute());
+}
 //------------------------------------------------------------------------------
 } // namespace shapes
 export template <typename Selector>

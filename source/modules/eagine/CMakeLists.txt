@@ -7,6 +7,7 @@ eagine_add_module(
 	IMPORTS
 		std
 		eagine.core.types
+		eagine.core.math
 		eagine.core.container
 		eagine.core.reflection
 )
@@ -87,6 +88,7 @@ eagine_add_module(
 eagine_add_module(
 	eagine.shapes
 	SOURCES
+		vertex_attributes
 		generator
 		screen
 		plane
