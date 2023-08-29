@@ -7,6 +7,7 @@ eagine_add_module(
 	IMPORTS
 		std
 		eagine.core.types
+		eagine.core.container
 		eagine.core.reflection
 )
 

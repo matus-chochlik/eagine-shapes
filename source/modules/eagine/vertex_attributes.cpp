@@ -9,6 +9,7 @@ export module eagine.shapes:vertex_attributes;
 
 import std;
 import eagine.core.types;
+import eagine.core.container;
 import eagine.core.reflection;
 
 namespace eagine {
@@ -311,6 +312,54 @@ export [[nodiscard]] auto attrib_values_per_vertex(
   const vertex_attrib_variant vav) noexcept {
     return attrib_values_per_vertex(vav.attribute());
 }
+//------------------------------------------------------------------------------
+/// @brief Map from vertex attribute variant to a value of type T.
+/// @ingroup shapes
+export template <typename T>
+class vertex_attrib_map {
+public:
+    /// @brief Indicates if this map is empty.
+    /// @see size
+    auto empty() const noexcept -> bool {
+        return _map.empty();
+    }
+
+    /// @brief Returns the number of elements in this map.
+    /// @see empty
+    auto size() const noexcept -> span_size_t {
+        return _map.size();
+    }
+
+    /// @brief Returns the number of elements in this map.
+    /// @see empty
+    auto clear() noexcept -> auto& {
+        _map.clear();
+        return *this;
+    }
+
+    /// @brief Store the specified value associated to the attribute variant.
+    auto set(vertex_attrib_variant vav, T&& value) -> auto& {
+        _map[vav] = std::move(value);
+        return *this;
+    }
+
+    /// @brief Get the specified value associated to the attribute variant.
+    auto get(vertex_attrib_variant vav) const noexcept
+      -> optional_reference<const T> {
+        return eagine::find(_map, vav);
+    }
+
+    auto begin() const noexcept {
+        return _map.begin();
+    }
+
+    auto end() const noexcept {
+        return _map.end();
+    }
+
+private:
+    flat_map<vertex_attrib_variant, T> _map;
+};
 //------------------------------------------------------------------------------
 } // namespace shapes
 export template <typename Selector>
