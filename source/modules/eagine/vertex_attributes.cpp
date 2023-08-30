@@ -266,6 +266,24 @@ export template <std::size_t N>
     return res;
 }
 //------------------------------------------------------------------------------
+/// @brief Gets a zero-based index of a vertex attribute.
+/// @ingroup shapes
+export [[nodiscard]] auto attrib_index(const vertex_attrib_kind attr) noexcept
+  -> span_size_t;
+//------------------------------------------------------------------------------
+/// @brief Gets a zero-based index of a vertex attribute.
+/// @ingroup shapes
+export [[nodiscard]] auto attrib_index(
+  const vertex_attrib_kind attr,
+  span_size_t index) noexcept -> span_size_t;
+//------------------------------------------------------------------------------
+/// @brief Gets a zero-based index of a vertex attribute variant.
+/// @ingroup shapes
+export [[nodiscard]] auto attrib_index(const vertex_attrib_variant vav) noexcept
+  -> span_size_t {
+    return attrib_index(vav.attribute(), vav.index());
+}
+//------------------------------------------------------------------------------
 /// @brief Gets the default number of values per vertex for an attribute kind.
 /// @ingroup shapes
 export [[nodiscard]] auto attrib_values_per_vertex(
