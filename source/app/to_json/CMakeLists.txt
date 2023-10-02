@@ -7,6 +7,7 @@ add_executable(eagine-shapes-to_json main.cpp)
 eagine_add_exe_analysis(eagine-shapes-to_json)
 eagine_target_modules(
 	eagine-shapes-to_json
+	std
 	eagine.core
 	eagine.shapes
 )

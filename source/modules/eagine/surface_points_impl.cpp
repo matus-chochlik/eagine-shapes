@@ -101,13 +101,11 @@ surface_points_gen::surface_points_gen(
 //------------------------------------------------------------------------------
 auto surface_points_gen::_topology(const drawing_variant var) noexcept
   -> ext_topology& {
-    auto pos = _topologies.find(var);
-    if(pos == _topologies.end()) {
+    auto found{find(_topologies, var)};
+    if(not found) {
         auto gen = delegated_gen::base_generator();
-        pos = _topologies
-                .emplace(var, ext_topology{gen, _topo_opts, this->as_parent()})
-                .first;
-        auto& topo = pos->second;
+        found.emplace(var, ext_topology{gen, _topo_opts, this->as_parent()});
+        auto& topo = *found;
 
         std::vector<float> triangle_areas;
         triangle_areas.reserve(std_size(topo.triangle_count()));
@@ -142,7 +140,7 @@ auto surface_points_gen::_topology(const drawing_variant var) noexcept
               {tri_pick_idx, {bary_0, bary_1, bary_2}});
         }
     }
-    return pos->second;
+    return *found;
 }
 //------------------------------------------------------------------------------
 auto surface_points_gen::vertex_count() -> span_size_t {

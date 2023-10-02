@@ -169,22 +169,20 @@ cached_gen::cached_gen(
 auto cached_gen::attribute_variants(const vertex_attrib_kind attrib)
   -> span_size_t {
     const std::lock_guard<std::mutex> lock{_mutex};
-    auto pos = _attrib_variants.find(attrib);
-    if(pos == _attrib_variants.end()) {
-        pos = _attrib_variants.emplace(attrib, _gen->attribute_variants(attrib))
-                .first;
+    auto found{find(_attrib_variants, attrib)};
+    if(not found) {
+        found.emplace(attrib, _gen->attribute_variants(attrib));
     }
-    return pos->second;
+    return *found;
 }
 //------------------------------------------------------------------------------
 auto cached_gen::variant_name(const vertex_attrib_variant vav) -> string_view {
     const std::lock_guard<std::mutex> lock{_mutex};
-    auto pos = _variant_name.find(vav);
-    if(pos == _variant_name.end()) {
-        pos =
-          _variant_name.emplace(vav, to_string(_gen->variant_name(vav))).first;
+    auto found{find(_variant_name, vav)};
+    if(not found) {
+        found.emplace(vav, to_string(_gen->variant_name(vav)));
     }
-    return {pos->second};
+    return {*found};
 }
 //------------------------------------------------------------------------------
 auto cached_gen::find_variant(
@@ -196,12 +194,11 @@ auto cached_gen::find_variant(
 auto cached_gen::values_per_vertex(const vertex_attrib_variant vav)
   -> span_size_t {
     const std::lock_guard<std::mutex> lock{_mutex};
-    auto pos = _values_per_vertex.find(vav);
-    if(pos == _values_per_vertex.end()) {
-        pos =
-          _values_per_vertex.emplace(vav, _gen->values_per_vertex(vav)).first;
+    auto found{find(_values_per_vertex, vav)};
+    if(not found) {
+        found.emplace(vav, _gen->values_per_vertex(vav));
     }
-    return pos->second;
+    return *found;
 }
 //------------------------------------------------------------------------------
 auto cached_gen::value_count(const vertex_attrib_variant vav) -> span_size_t {
@@ -211,67 +208,66 @@ auto cached_gen::value_count(const vertex_attrib_variant vav) -> span_size_t {
 auto cached_gen::attrib_type(const vertex_attrib_variant vav)
   -> attrib_data_type {
     const std::lock_guard<std::mutex> lock{_mutex};
-    auto pos = _attrib_type.find(vav);
-    if(pos == _attrib_type.end()) {
-        pos = _attrib_type.emplace(vav, _gen->attrib_type(vav)).first;
+    auto found{find(_attrib_type, vav)};
+    if(not found) {
+        found.emplace(vav, _gen->attrib_type(vav));
     }
-    return pos->second;
+    return *found;
 }
 //------------------------------------------------------------------------------
 auto cached_gen::is_attrib_integral(const vertex_attrib_variant vav) -> bool {
     const std::lock_guard<std::mutex> lock{_mutex};
-    auto pos = _is_integral.find(vav);
-    if(pos == _is_integral.end()) {
-        pos = _is_integral.emplace(vav, _gen->is_attrib_integral(vav)).first;
+    auto found{find(_is_integral, vav)};
+    if(not found) {
+        found.emplace(vav, _gen->is_attrib_integral(vav));
     }
-    return pos->second;
+    return *found;
 }
 //------------------------------------------------------------------------------
 auto cached_gen::is_attrib_normalized(const vertex_attrib_variant vav) -> bool {
     const std::lock_guard<std::mutex> lock{_mutex};
-    auto pos = _is_normalized.find(vav);
-    if(pos == _is_normalized.end()) {
-        pos =
-          _is_normalized.emplace(vav, _gen->is_attrib_normalized(vav)).first;
+    auto found{find(_is_normalized, vav)};
+    if(not found) {
+        found.emplace(vav, _gen->is_attrib_normalized(vav));
     }
-    return pos->second;
+    return *found;
 }
 //------------------------------------------------------------------------------
 auto cached_gen::attrib_divisor(const vertex_attrib_variant vav)
   -> std::uint32_t {
     const std::lock_guard<std::mutex> lock{_mutex};
-    auto pos = _divisor.find(vav);
-    if(pos == _divisor.end()) {
-        pos = _divisor.emplace(vav, _gen->attrib_divisor(vav)).first;
+    auto found{find(_divisor, vav)};
+    if(not found) {
+        found.emplace(vav, _gen->attrib_divisor(vav));
     }
-    return pos->second;
+    return *found;
 }
 //------------------------------------------------------------------------------
 auto cached_gen::index_type(const drawing_variant var) -> index_data_type {
     const std::lock_guard<std::mutex> lock{_mutex};
-    auto pos = _index_type.find(var);
-    if(pos == _index_type.end()) {
-        pos = _index_type.emplace(var, _gen->index_type(var)).first;
+    auto found{find(_index_type, var)};
+    if(not found) {
+        found.emplace(var, _gen->index_type(var));
     }
-    return pos->second;
+    return *found;
 }
 //------------------------------------------------------------------------------
 auto cached_gen::index_count(const drawing_variant var) -> span_size_t {
     const std::lock_guard<std::mutex> lock{_mutex};
-    auto pos = _index_count.find(var);
-    if(pos == _index_count.end()) {
-        pos = _index_count.emplace(var, _gen->index_count(var)).first;
+    auto found{find(_index_count, var)};
+    if(not found) {
+        found.emplace(var, _gen->index_count(var));
     }
-    return pos->second;
+    return *found;
 }
 //------------------------------------------------------------------------------
 auto cached_gen::operation_count(const drawing_variant var) -> span_size_t {
     const std::lock_guard<std::mutex> lock{_mutex};
-    auto pos = _operation_count.find(var);
-    if(pos == _operation_count.end()) {
-        pos = _operation_count.emplace(var, _gen->operation_count(var)).first;
+    auto found{find(_operation_count, var)};
+    if(not found) {
+        found.emplace(var, _gen->operation_count(var));
     }
-    return pos->second;
+    return *found;
 }
 //------------------------------------------------------------------------------
 template <typename T>

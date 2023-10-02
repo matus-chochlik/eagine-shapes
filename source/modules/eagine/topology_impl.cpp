@@ -281,7 +281,7 @@ void topology::_scan_topology(topology_options opts) {
                 if(lidx < ridx) {
                     const auto key = std::make_tuple(
                       std::min(lidx, ridx), std::max(lidx, ridx));
-                    if(_edges.find(key) == _edges.end()) {
+                    if(not _edges.contains(key)) {
                         auto [should_add, leb, lee, reb, ree] =
                           ltri.setup_adjacent(rtri, data);
                         if(should_add) {

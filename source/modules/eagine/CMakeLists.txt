@@ -5,13 +5,17 @@
 eagine_add_module(
 	eagine.shapes PARTITION vertex_attributes
 	IMPORTS
+		std
 		eagine.core.types
+		eagine.core.math
+		eagine.core.container
 		eagine.core.reflection
 )
 
 eagine_add_module(
 	eagine.shapes PARTITION drawing
 	IMPORTS
+		std
 		eagine.core.types
 		eagine.core.identifier
 		eagine.core.reflection
@@ -20,7 +24,7 @@ eagine_add_module(
 eagine_add_module(
 	eagine.shapes PARTITION generator
 	IMPORTS
-		vertex_attributes drawing
+		std vertex_attributes drawing
 		eagine.core.types
 		eagine.core.memory
 		eagine.core.container
@@ -36,7 +40,7 @@ eagine_add_module(
 eagine_add_module(
 	eagine.shapes PARTITION delegated
 	IMPORTS
-		generator
+		std generator
 		eagine.core.types
 		eagine.core.memory
 		eagine.core.identifier
@@ -48,7 +52,7 @@ eagine_add_module(
 eagine_add_module(
 	eagine.shapes PARTITION primitive_info
 	IMPORTS
-		delegated
+		std delegated
 		eagine.core.types
 		eagine.core.memory
 		eagine.core.identifier
@@ -61,7 +65,7 @@ eagine_add_module(
 eagine_add_module(
 	eagine.shapes PARTITION topology
 	IMPORTS
-		generator
+		std generator
 		eagine.core.types
 		eagine.core.memory
 		eagine.core.identifier
@@ -73,7 +77,7 @@ eagine_add_module(
 eagine_add_module(
 	eagine.shapes PARTITION to_json
 	IMPORTS
-		generator
+		std generator
 		eagine.core.types
 		eagine.core.memory
 		eagine.core.math
@@ -84,6 +88,7 @@ eagine_add_module(
 eagine_add_module(
 	eagine.shapes
 	SOURCES
+		vertex_attributes
 		generator
 		screen
 		plane
@@ -115,6 +120,7 @@ eagine_add_module(
 		to_json
 		shapes
 	IMPORTS
+		std
 		eagine.core.types
 		eagine.core.memory
 		eagine.core.identifier
@@ -139,6 +145,7 @@ eagine_add_module_tests(
 		screen
 		plane
 	IMPORTS
+		std
 		eagine.core
 		eagine.core.main_ctx
 )

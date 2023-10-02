@@ -57,7 +57,7 @@ Package: eagine-shapes-dev
 Version: %s
 Architecture: %s
 Installed-Size: %d
-Depends: eagine-core-dev
+Depends: eagine-core-dev (>= @EAGINE_VERSION@)
 Maintainer: Matus Chochlik <chochlik@gmail.com>
 Description: C++ generator of geometric shapes used for rendering.
 """ % (

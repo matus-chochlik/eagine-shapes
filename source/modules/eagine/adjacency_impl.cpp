@@ -67,18 +67,15 @@ auto add_triangle_adjacency(
 //------------------------------------------------------------------------------
 auto triangle_adjacency_gen::_topology(const drawing_variant var) noexcept
   -> topology& {
-    auto pos = _topologies.find(var);
-    if(pos == _topologies.end()) {
+    auto found{find(_topologies, var)};
+    if(not found) {
         topology_options opts;
         opts.features = topology_feature_bit::triangle_adjacency;
-        pos = _topologies
-                .emplace(
-                  var,
-                  topology{
-                    delegated_gen::base_generator(), opts, this->as_parent()})
-                .first;
+        found.emplace(
+          var,
+          topology{delegated_gen::base_generator(), opts, this->as_parent()});
     }
-    return pos->second;
+    return *found;
 }
 //------------------------------------------------------------------------------
 triangle_adjacency_gen::triangle_adjacency_gen(

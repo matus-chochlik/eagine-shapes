@@ -146,9 +146,8 @@ auto value_tree_loader::variant_name(const vertex_attrib_variant vav)
          _source.nested(vertex_attrib_name(vav.attribute()))}) {
         if(const auto variant_a{_source.nested(attrib_a, vav.index())}) {
             if(const auto vpv_a{_source.nested(variant_a, "name")}) {
-                auto pos = _variant_names.find(vav);
-                if(pos != _variant_names.end()) {
-                    return {std::get<1>(*pos)};
+                if(const auto found{find(_variant_names, vav)}) {
+                    return *found;
                 }
                 auto& name = _variant_names[vav] = {};
                 if(_source.fetch_value(vpv_a, name)) {

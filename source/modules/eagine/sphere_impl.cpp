@@ -264,7 +264,7 @@ auto unit_sphere_gen::index_type(const drawing_variant v) -> index_data_type {
 }
 //------------------------------------------------------------------------------
 auto unit_sphere_gen::index_count(const drawing_variant) -> span_size_t {
-    return _sections * ((_rings + 1) * 2 + (primitive_restart() ? 1 : 0));
+    return (_sections + 1) * ((_rings + 1) * 2 + (primitive_restart() ? 1 : 0));
 }
 //------------------------------------------------------------------------------
 template <typename T>
