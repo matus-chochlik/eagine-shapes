@@ -58,7 +58,7 @@ Version: %s
 Architecture: %s
 Installed-Size: %d
 Depends: eagine-core-dev (>= @EAGINE_VERSION@)
-Maintainer: Matus Chochlik <chochlik@gmail.com>
+Maintainer: Matus Chochlik <matus.chochlik@proton.me>
 Description: C++ generator of geometric shapes used for rendering.
 """ % (
     "@PKG_VERSION@",
