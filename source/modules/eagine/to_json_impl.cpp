@@ -22,6 +22,7 @@ namespace eagine::shapes {
 //------------------------------------------------------------------------------
 auto parse_from(const url& locator, generator&, to_json_options& opts) noexcept
   -> bool {
+    opts.attrib_variants[vertex_attrib_kind::position][0];
     const auto& q{locator.query()};
     for(const auto& info : enumerator_mapping(
           std::type_identity<vertex_attrib_kind>(), default_selector)) {
