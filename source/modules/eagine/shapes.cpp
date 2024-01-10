@@ -9,6 +9,8 @@ export module eagine.shapes;
 
 import std;
 import eagine.core.types;
+import eagine.core.memory;
+import eagine.core.utility;
 import eagine.core.runtime;
 import eagine.core.main_ctx;
 
@@ -23,6 +25,10 @@ export import :to_json;
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
 export [[nodiscard]] auto has_shape_from(const url& locator) noexcept -> bool;
+
+export void for_each_shape_locator(
+  string_view domain,
+  callable_ref<void(string_view) noexcept> callback) noexcept;
 //------------------------------------------------------------------------------
 export [[nodiscard]] auto shape_from(vertex_attrib_kinds, const url&, main_ctx&)
   -> shared_holder<generator>;
