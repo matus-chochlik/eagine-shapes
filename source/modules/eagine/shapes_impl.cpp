@@ -9,10 +9,30 @@ module eagine.shapes;
 
 import std;
 import eagine.core.types;
+import eagine.core.memory;
 import eagine.core.runtime;
 import eagine.core.main_ctx;
 
 namespace eagine::shapes {
+//------------------------------------------------------------------------------
+auto has_shape_from(const url& locator) noexcept -> bool {
+    static const std::array<string_view, 9> paths{
+      {"/unit_cube",
+       "/unit_round_cube",
+       "/unit_plane",
+       "/unit_torus",
+       "/unit_twisted_torus",
+       "/unit_icosahedron",
+       "/unit_sphere",
+       "/unit_screen",
+       "/unit_skybox"}};
+    for(const auto path : paths) {
+        if(locator.has_path(path)) {
+            return true;
+        }
+    }
+    return false;
+}
 //------------------------------------------------------------------------------
 auto shape_from(vertex_attrib_kinds attrs, const url& locator, main_ctx& ctx)
   -> shared_holder<generator> {

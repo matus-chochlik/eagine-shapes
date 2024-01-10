@@ -22,6 +22,8 @@ export import :to_json;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
+export [[nodiscard]] auto has_shape_from(const url& locator) noexcept -> bool;
+//------------------------------------------------------------------------------
 export [[nodiscard]] auto shape_from(vertex_attrib_kinds, const url&, main_ctx&)
   -> shared_holder<generator>;
 

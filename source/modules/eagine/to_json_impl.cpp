@@ -20,6 +20,23 @@ import eagine.core.main_ctx;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
+auto parse_from(const url& locator, generator&, to_json_options& opts) noexcept
+  -> bool {
+    const auto& q{locator.query()};
+    for(const auto& info : enumerator_mapping(
+          std::type_identity<vertex_attrib_kind>(), default_selector)) {
+        if(const auto var{q.arg_value_as<int>(info.name)}) {
+            opts.attrib_variants[info.enumerator][*var];
+        } else if(q.arg_has_value(info.name, true)) {
+            opts.attrib_variants[info.enumerator][0];
+        }
+    }
+    if(const auto var{q.arg_value_as<span_size_t>("draw")}) {
+        opts.draw_variant = *var;
+    }
+    return true;
+}
+//------------------------------------------------------------------------------
 auto parse_from(main_ctx& ctx, generator&, to_json_options& opts) noexcept
   -> bool {
     opts.attrib_variants[vertex_attrib_kind::position][0];
@@ -83,7 +100,7 @@ auto to_json(std::ostream& out, generator& gen, const to_json_options& opts)
             }
 
             out << R"(,"data":[)";
-            const auto print_data = [&out, &gen, vav, size](auto& data) {
+            const auto print_data{[&out, &gen, vav, size](auto& data) {
                 data.resize(integer(size));
                 gen.attrib_values(vav, cover(data));
 
@@ -92,7 +109,7 @@ auto to_json(std::ostream& out, generator& gen, const to_json_options& opts)
                 for(const auto v : data) {
                     print_elem(v);
                 }
-            };
+            }};
 
             if(data_type == attrib_data_type::float_) {
                 std::vector<float> data;
