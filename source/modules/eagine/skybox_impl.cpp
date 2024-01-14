@@ -63,7 +63,7 @@ auto skybox_from(
   const vertex_attrib_kinds attr_kinds,
   const url& locator,
   main_ctx&) -> shared_holder<generator> {
-    if(locator.has_path("/skybox")) {
+    if(locator.has_path("/unit_skybox")) {
         return skybox(attr_kinds);
     }
     return {};
