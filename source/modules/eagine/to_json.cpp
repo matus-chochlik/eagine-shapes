@@ -10,6 +10,7 @@ export module eagine.shapes:to_json;
 import std;
 import eagine.core.types;
 import eagine.core.memory;
+import eagine.core.runtime;
 import eagine.core.math;
 import eagine.core.main_ctx;
 import :generator;
@@ -25,14 +26,17 @@ export struct to_json_options {
 };
 //------------------------------------------------------------------------------
 export [[nodiscard]] auto parse_from(
+  const url&,
+  generator&,
+  to_json_options& opts) noexcept -> bool;
+
+export [[nodiscard]] auto parse_from(
   main_ctx&,
   generator&,
   to_json_options& opts) noexcept -> bool;
 //------------------------------------------------------------------------------
-export [[nodiscard]] auto to_json(
-  std::ostream&,
-  generator&,
-  const to_json_options&) -> std::ostream&;
+export auto to_json(std::ostream&, generator&, const to_json_options&)
+  -> std::ostream&;
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes
 

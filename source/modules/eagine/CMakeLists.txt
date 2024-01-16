@@ -80,6 +80,7 @@ eagine_add_module(
 		std generator
 		eagine.core.types
 		eagine.core.memory
+		eagine.core.runtime
 		eagine.core.math
 		eagine.core.identifier
 		eagine.core.main_ctx

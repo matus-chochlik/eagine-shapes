@@ -111,6 +111,9 @@ public:
 
     auto vertex_count() -> span_size_t override;
 
+    auto values_per_vertex(const vertex_attrib_variant vav)
+      -> span_size_t override;
+
     auto parameters(int x, int y) noexcept -> math::tvec<float, 3, true>;
     auto normal(int face, int x, int y) noexcept -> math::tvec<float, 3, true>;
 
@@ -190,11 +193,19 @@ auto unit_round_cube_gen::_attr_mask() noexcept -> vertex_attrib_kinds {
     return vertex_attrib_kind::position | vertex_attrib_kind::normal |
            vertex_attrib_kind::tangent | vertex_attrib_kind::bitangent |
            vertex_attrib_kind::pivot | vertex_attrib_kind::face_coord |
-           vertex_attrib_kind::box_coord;
+           vertex_attrib_kind::wrap_coord | vertex_attrib_kind::box_coord;
 }
 //------------------------------------------------------------------------------
 auto unit_round_cube_gen::vertex_count() -> span_size_t {
     return 6 * (_divisions + 1) * (_divisions + 1);
+}
+//------------------------------------------------------------------------------
+auto unit_round_cube_gen::values_per_vertex(const vertex_attrib_variant vav)
+  -> span_size_t {
+    if(vav == vertex_attrib_kind::wrap_coord) {
+        return 3;
+    }
+    return generator_base::values_per_vertex(vav);
 }
 //------------------------------------------------------------------------------
 auto unit_round_cube_face_normal(const span_size_t f) noexcept {
@@ -314,7 +325,6 @@ void unit_round_cube_gen::bitangents(span<float> dest) noexcept {
 }
 //------------------------------------------------------------------------------
 void unit_round_cube_gen::face_coords(span<float> dest) noexcept {
-    assert(has(vertex_attrib_kind::face_coord));
     assert(dest.size() >= vertex_count() * 3);
 
     span_size_t k = 0;
@@ -351,6 +361,7 @@ void unit_round_cube_gen::attrib_values(
             bitangents(dest);
             break;
         case vertex_attrib_kind::face_coord:
+        case vertex_attrib_kind::wrap_coord:
             face_coords(dest);
             break;
         default:

@@ -26,6 +26,9 @@ public:
 
     auto vertex_count() -> span_size_t override;
 
+    auto values_per_vertex(const vertex_attrib_variant vav)
+      -> span_size_t override;
+
     void positions(span<float> dest) noexcept;
 
     void normals(span<float> dest) noexcept;
@@ -104,12 +107,12 @@ auto unit_cube(const vertex_attrib_kinds attr_kinds)
 auto unit_cube_gen::_attr_mask() noexcept -> vertex_attrib_kinds {
     return vertex_attrib_kind::position | vertex_attrib_kind::normal |
            vertex_attrib_kind::tangent | vertex_attrib_kind::bitangent |
-           vertex_attrib_kind::pivot | vertex_attrib_kind::face_coord;
+           vertex_attrib_kind::pivot | vertex_attrib_kind::face_coord |
+           vertex_attrib_kind::wrap_coord;
 }
 //------------------------------------------------------------------------------
 auto unit_cube_gen::_shared_attrs() noexcept -> vertex_attrib_kinds {
-    return vertex_attrib_kind::position | vertex_attrib_kind::pivot |
-           vertex_attrib_kind::face_coord;
+    return vertex_attrib_kind::position | vertex_attrib_kind::pivot;
 }
 //------------------------------------------------------------------------------
 auto unit_cube_gen::_only_shared_attribs() noexcept -> bool {
@@ -191,6 +194,14 @@ auto unit_cube_gen::vertex_count() -> span_size_t {
     } else {
         return 6 * 2 * 3;
     }
+}
+//------------------------------------------------------------------------------
+auto unit_cube_gen::values_per_vertex(const vertex_attrib_variant vav)
+  -> span_size_t {
+    if(vav == vertex_attrib_kind::wrap_coord) {
+        return 3;
+    }
+    return generator_base::values_per_vertex(vav);
 }
 //------------------------------------------------------------------------------
 auto unit_cube_gen::_coord_c(const span_size_t v, const span_size_t c) noexcept
@@ -357,7 +368,6 @@ void unit_cube_gen::bitangents(span<float> dest) noexcept {
 }
 //------------------------------------------------------------------------------
 void unit_cube_gen::face_coords(span<float> dest) noexcept {
-    assert(has(vertex_attrib_kind::face_coord));
     assert(dest.size() >= vertex_count() * 3);
 
     /*
@@ -410,6 +420,7 @@ void unit_cube_gen::attrib_values(
             bitangents(dest);
             break;
         case vertex_attrib_kind::face_coord:
+        case vertex_attrib_kind::wrap_coord:
             face_coords(dest);
             break;
         default:
