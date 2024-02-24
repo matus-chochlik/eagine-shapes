@@ -377,7 +377,7 @@ void unit_torus_gen::occlusions(
         return (s * (_rings + 1) + r);
     };
 
-    const auto blend_fact = float(std::exp(-_radius_ratio * 0.5F));
+    const auto blend_fact = float(std::exp(-_radius_ratio * 0.3F));
 
     for(const auto s : integer_range(_sections)) {
         for(const auto r : integer_range(_rings)) {
@@ -387,7 +387,7 @@ void unit_torus_gen::occlusions(
 
             dest[k(s, r)] = math::blend(
               1.F,
-              math::minimum(float(std::sin((r + rd) * r_step)) * 1.7F, 1.F),
+              math::minimum(float(std::sin((r + rd) * r_step)) * 1.5F, 1.F),
               blend_fact);
         }
         dest[k(s, _rings)] = dest[k(s, 0)];
