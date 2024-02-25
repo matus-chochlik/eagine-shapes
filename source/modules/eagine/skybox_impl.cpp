@@ -135,37 +135,19 @@ void skybox_gen::positions(span<float> dest) noexcept {
     dest[k++] = -1.F; dest[k++] =  1.F; dest[k++] =  1.F; // g
     dest[k++] =  1.F; dest[k++] =  1.F; dest[k++] =  1.F; // h
 
-    const float rt3{std::sqrt(3.F)};
-    dest[k++] = -rt3; dest[k++] =  0.F; dest[k++] =  0.F; // -x
-    dest[k++] =  rt3; dest[k++] =  0.F; dest[k++] =  0.F; // +x
-    dest[k++] =  0.F; dest[k++] = -rt3; dest[k++] =  0.F; // -y
-    dest[k++] =  0.F; dest[k++] =  rt3; dest[k++] =  0.F; // +y
-    dest[k++] =  0.F; dest[k++] =  0.F; dest[k++] = -rt3; // -y
-    dest[k++] =  0.F; dest[k++] =  0.F; dest[k++] =  rt3; // +y
+    const float sqr{std::sqrt(3.F)};
+    dest[k++] = -sqr; dest[k++] =  0.F; dest[k++] =  0.F; // -x
+    dest[k++] =  sqr; dest[k++] =  0.F; dest[k++] =  0.F; // +x
+    dest[k++] =  0.F; dest[k++] = -sqr; dest[k++] =  0.F; // -y
+    dest[k++] =  0.F; dest[k++] =  sqr; dest[k++] =  0.F; // +y
+    dest[k++] =  0.F; dest[k++] =  0.F; dest[k++] = -sqr; // -y
+    dest[k++] =  0.F; dest[k++] =  0.F; dest[k++] =  sqr; // +y
     // clang-format on
     assert(k == vertex_count() * 3);
 }
 //------------------------------------------------------------------------------
 void skybox_gen::face_coords(span<float> dest) noexcept {
-    span_size_t k = 0;
-    // clang-format off
-    dest[k++] = -1.F; dest[k++] = -1.F; dest[k++] =  1.F; // a
-    dest[k++] =  1.F; dest[k++] = -1.F; dest[k++] =  1.F; // b
-    dest[k++] = -1.F; dest[k++] =  1.F; dest[k++] =  1.F; // c
-    dest[k++] =  1.F; dest[k++] =  1.F; dest[k++] =  1.F; // d
-    dest[k++] = -1.F; dest[k++] = -1.F; dest[k++] = -1.F; // e
-    dest[k++] =  1.F; dest[k++] = -1.F; dest[k++] = -1.F; // f
-    dest[k++] = -1.F; dest[k++] =  1.F; dest[k++] = -1.F; // g
-    dest[k++] =  1.F; dest[k++] =  1.F; dest[k++] = -1.F; // h
-
-    dest[k++] = -1.F; dest[k++] =  0.F; dest[k++] =  0.F; // -x
-    dest[k++] =  1.F; dest[k++] =  0.F; dest[k++] =  0.F; // +x
-    dest[k++] =  0.F; dest[k++] = -1.F; dest[k++] =  0.F; // -y
-    dest[k++] =  0.F; dest[k++] =  1.F; dest[k++] =  0.F; // +y
-    dest[k++] =  0.F; dest[k++] =  0.F; dest[k++] =  1.F; // -z
-    dest[k++] =  0.F; dest[k++] =  0.F; dest[k++] = -1.F; // +z
-    // clang-format on
-    assert(k == vertex_count() * 3);
+    positions(dest);
 }
 //------------------------------------------------------------------------------
 void skybox_gen::attrib_values(
