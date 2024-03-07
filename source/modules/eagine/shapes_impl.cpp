@@ -35,7 +35,7 @@ void for_each_shape_locator(
   callable_ref<void(string_view) noexcept> callback) noexcept {
     for(const auto path : url_shape_names()) {
         callback(std::format(
-          "shape://{}/{}?view=0+position=0",
+          "shape://{}/{}?view=0&position=0",
           domain.std_view(),
           path.std_view()));
     }

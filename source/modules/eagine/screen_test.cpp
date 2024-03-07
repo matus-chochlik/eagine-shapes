@@ -51,7 +51,7 @@ void screen_from_url_2(auto& s) {
 
     const auto p1{eagine::shapes::unit_screen_from(
       eagine::shapes::all_vertex_attrib_kinds(),
-      eagine::url{"shape:///unit_screen?width=1+height=1"},
+      eagine::url{"shape:///unit_screen?width=1&height=1"},
       s.context())};
 
     test.ensure(bool(p1), "p1");
