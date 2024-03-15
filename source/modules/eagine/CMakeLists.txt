@@ -35,6 +35,7 @@ eagine_add_module(
 		eagine.core.valid_if
 		eagine.core.value_tree
 		eagine.core.main_ctx
+		eagine.core.resource
 )
 
 eagine_add_module(
@@ -136,6 +137,7 @@ eagine_add_module(
 		eagine.core.logging
 		eagine.core.progress
 		eagine.core.main_ctx
+		eagine.core.resource
 )
 
 eagine_add_module_tests(
