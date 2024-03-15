@@ -50,30 +50,32 @@ export enum class vertex_attrib_kind : std::uint32_t {
     color = 1U << 13U,
     /// @brief Generic vertex weight value.
     weight = 1U << 14U,
-    /// @brief Vertex (ambient) light occlusion value.
-    occlusion = 1U << 15U,
+    /// @brief Surface roughness value (0 - smooth, 1 - rough)
+    roughness = 1U << 15U,
+    /// @brief Vertex (ambient) light occlusion value (0 - occluded, 1 - exposed).
+    occlusion = 1U << 16U,
     /// @brief Generic scalar field value.
-    scalar_field = 1U << 16U,
+    scalar_field = 1U << 17U,
     /// @brief Generic vector field value.
-    vector_field = 1U << 17U,
+    vector_field = 1U << 18U,
     /// @brief Length of opposite edge.
-    opposite_length = 1U << 18U,
+    opposite_length = 1U << 19U,
     /// @brief Length of previous, next and opposite edges.
-    edge_length = 1U << 19U,
+    edge_length = 1U << 20U,
     /// @brief Area of face polygon.
-    face_area = 1U << 20U,
+    face_area = 1U << 21U,
     /// @brief Instance offset value
-    instance_offset = 1U << 21U,
+    instance_offset = 1U << 22U,
     /// @brief Instance scale value
-    instance_scale = 1U << 22U,
+    instance_scale = 1U << 23U,
     /// @brief Instance scale value
-    instance_transform = 1U << 23U,
+    instance_transform = 1U << 24U,
     /// @brief The object id attributes (typically unique integer).
-    object_id = 1U << 24U,
+    object_id = 1U << 25U,
     /// @brief Face polygon id value (multiple faces can belong to the same polygon)
-    polygon_id = 1U << 25U,
+    polygon_id = 1U << 26U,
     /// @brief Face material id value.
-    material_id = 1U << 26U
+    material_id = 1U << 27U
     // also fix all_vertex_attrib_kinds
 };
 //------------------------------------------------------------------------------
@@ -90,7 +92,7 @@ export using vertex_attrib_kinds = bitfield<vertex_attrib_kind>;
 /// @ingroup shapes
 export constexpr auto all_vertex_attrib_kinds() noexcept
   -> vertex_attrib_kinds {
-    return vertex_attrib_kinds{(1U << 27U) - 1U};
+    return vertex_attrib_kinds{(1U << 28U) - 1U};
 }
 //------------------------------------------------------------------------------
 /// @brief Bitwise-or operator for vertex_attrib_kind bits.
@@ -386,7 +388,7 @@ constexpr auto enumerator_mapping(
   const std::type_identity<shapes::vertex_attrib_kind>,
   const Selector) noexcept {
     using shapes::vertex_attrib_kind;
-    return enumerator_map_type<vertex_attrib_kind, 27>{
+    return enumerator_map_type<vertex_attrib_kind, 28>{
       {{"position", vertex_attrib_kind::position},
        {"inner_position", vertex_attrib_kind::inner_position},
        {"normal", vertex_attrib_kind::normal},
@@ -402,6 +404,7 @@ constexpr auto enumerator_mapping(
        {"vertex_coord", vertex_attrib_kind::vertex_coord},
        {"color", vertex_attrib_kind::color},
        {"weight", vertex_attrib_kind::weight},
+       {"roughness", vertex_attrib_kind::roughness},
        {"occlusion", vertex_attrib_kind::occlusion},
        {"scalar_field", vertex_attrib_kind::scalar_field},
        {"vector_field", vertex_attrib_kind::vector_field},
