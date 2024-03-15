@@ -1050,6 +1050,11 @@ export [[nodiscard]] auto from_json_resource(
   const embedded_resource&,
   main_ctx&) noexcept -> shared_holder<generator>;
 //------------------------------------------------------------------------------
+export [[nodiscard]] auto model_cube(main_ctx&) noexcept
+  -> shared_holder<generator>;
+export [[nodiscard]] auto model_cube_from(const url&, main_ctx&) noexcept
+  -> shared_holder<generator>;
+//------------------------------------------------------------------------------
 // surface_points
 //------------------------------------------------------------------------------
 /// @brief Constructs instance of surface_points_gen modifier.

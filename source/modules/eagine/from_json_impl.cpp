@@ -8,23 +8,10 @@
 module eagine.shapes;
 
 import std;
-import eagine.core.types;
-import eagine.core.memory;
-import eagine.core.math;
-import eagine.core.runtime;
-import eagine.core.value_tree;
-import eagine.core.main_ctx;
-import eagine.core.resource;
+import eagine.core;
 import :generator;
 
 namespace eagine::shapes {
-//------------------------------------------------------------------------------
-auto from_json_resource(
-  const embedded_resource& resource,
-  main_ctx& ctx) noexcept -> shared_holder<generator> {
-    return from_value_tree(
-      valtree::from_json_text(as_chars(resource.unpack(ctx)), ctx), ctx);
-}
 //------------------------------------------------------------------------------
 auto from_json_stream(std::istream& input, main_ctx& ctx) noexcept
   -> shared_holder<generator> {
@@ -41,6 +28,27 @@ auto from_json_stream(std::istream& input, main_ctx& ctx) noexcept
         }
     } else {
         ctx.log().error("failed to read stream data");
+    }
+    return {};
+}
+//------------------------------------------------------------------------------
+// from resource
+//------------------------------------------------------------------------------
+auto from_json_resource(
+  const embedded_resource& resource,
+  main_ctx& ctx) noexcept -> shared_holder<generator> {
+    return from_value_tree(
+      valtree::from_json_text(as_chars(resource.unpack(ctx)), ctx), ctx);
+}
+//------------------------------------------------------------------------------
+auto model_cube(main_ctx& ctx) noexcept -> shared_holder<generator> {
+    return from_json_resource(embedded<"Cube">(), ctx);
+}
+//------------------------------------------------------------------------------
+auto model_cube_from(const url& locator, main_ctx& ctx) noexcept
+  -> shared_holder<generator> {
+    if(locator.has_path("/model_cube")) {
+        return model_cube(ctx);
     }
     return {};
 }

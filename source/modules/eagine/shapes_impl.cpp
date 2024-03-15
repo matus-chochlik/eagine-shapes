@@ -8,16 +8,12 @@
 module eagine.shapes;
 
 import std;
-import eagine.core.types;
-import eagine.core.memory;
-import eagine.core.utility;
-import eagine.core.runtime;
-import eagine.core.main_ctx;
+import eagine.core;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
 auto url_shape_names() noexcept -> const auto& {
-    static const std::array<string_view, 9> names{
+    static const std::array<string_view, 10> names{
       {"unit_cube",
        "unit_round_cube",
        "unit_plane",
@@ -26,7 +22,8 @@ auto url_shape_names() noexcept -> const auto& {
        "unit_icosahedron",
        "unit_sphere",
        "unit_screen",
-       "unit_skybox"}};
+       "unit_skybox",
+       "model_cube"}};
     return names;
 }
 //------------------------------------------------------------------------------
@@ -87,6 +84,9 @@ auto shape_from(vertex_attrib_kinds attrs, const url& locator, main_ctx& ctx)
         return gen;
     }
     if(auto gen{skybox_from(attrs, locator, ctx)}) {
+        return gen;
+    }
+    if(auto gen{model_cube_from(locator, ctx)}) {
         return gen;
     }
     return {};
