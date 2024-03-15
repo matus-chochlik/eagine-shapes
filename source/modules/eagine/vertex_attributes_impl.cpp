@@ -53,6 +53,7 @@ auto attrib_values_per_vertex(const vertex_attrib_kind attr) noexcept
         case vertex_attrib_kind::weight:
         case vertex_attrib_kind::scalar_field:
         case vertex_attrib_kind::roughness:
+        case vertex_attrib_kind::pointiness:
         case vertex_attrib_kind::occlusion:
         case vertex_attrib_kind::object_id:
         case vertex_attrib_kind::polygon_id:
@@ -100,6 +101,8 @@ auto default_attrib_value(const vertex_attrib_kind attr) noexcept
         case vertex_attrib_kind::object_id:
         case vertex_attrib_kind::instance_scale:
             return 1.F;
+        case vertex_attrib_kind::pointiness:
+            return 0.5F;
         case vertex_attrib_kind::polygon_id:
         case vertex_attrib_kind::material_id:
             return 0;
