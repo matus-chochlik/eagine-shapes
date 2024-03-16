@@ -9,6 +9,7 @@ export module eagine.shapes:vertex_attributes;
 
 import std;
 import eagine.core.types;
+import eagine.core.memory;
 import eagine.core.math;
 import eagine.core.container;
 import eagine.core.reflection;
@@ -370,6 +371,41 @@ export [[nodiscard]] auto default_attrib_value(
   const vertex_attrib_variant vav) noexcept {
     return default_attrib_value(vav.attribute());
 }
+//------------------------------------------------------------------------------
+/// @brief Collection of vertex_attrib_variant objects with shared pointer semantics.
+/// @ingroup shapes
+export class shared_vertex_attrib_variants
+  : private std::shared_ptr<vertex_attrib_variant[]>
+  , public memory::span<const vertex_attrib_variant> {
+    using base_ptr = std::shared_ptr<vertex_attrib_variant[]>;
+    using base_span = memory::span<const vertex_attrib_variant>;
+
+public:
+    shared_vertex_attrib_variants() noexcept = default;
+
+    shared_vertex_attrib_variants(
+      std::initializer_list<vertex_attrib_variant> vavs) noexcept
+      : base_ptr{std::make_shared<vertex_attrib_variant[]>(vavs.size())}
+      , base_span{get(), span_size(vavs.size())} {
+        copy(
+          eagine::memory::view(vavs),
+          memory::span<vertex_attrib_variant>{get(), span_size(vavs.size())});
+    }
+
+    shared_vertex_attrib_variants(
+      std::convertible_to<vertex_attrib_variant> auto... vavs) noexcept
+        requires(sizeof...(vavs) > 0)
+      : shared_vertex_attrib_variants{{vertex_attrib_variant{vavs}...}} {};
+
+    auto view() const noexcept -> const base_span& {
+        return *this;
+    }
+
+    auto operator==(const shared_vertex_attrib_variants& that) const noexcept
+      -> bool {
+        return are_equal(this->view(), that.view());
+    }
+};
 //------------------------------------------------------------------------------
 } // namespace shapes
 export template <typename Selector>

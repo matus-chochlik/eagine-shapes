@@ -49,10 +49,47 @@ void vertex_attrib_kinds_index(auto& s) {
     }
 }
 //------------------------------------------------------------------------------
+void shared_vertex_attrib_variants(auto& s) {
+    eagitest::case_ test{s, 3, "shared variants"};
+
+    eagine::shapes::shared_vertex_attrib_variants evavs{};
+
+    eagine::shapes::shared_vertex_attrib_variants svavs{
+      eagine::shapes::vertex_attrib_kind::position,
+      eagine::shapes::vertex_attrib_variant{
+        eagine::shapes::vertex_attrib_kind::color, 0},
+      eagine::shapes::vertex_attrib_variant{
+        eagine::shapes::vertex_attrib_kind::color, 1},
+      eagine::shapes::vertex_attrib_kind::occlusion};
+
+    test.check(svavs != evavs, "unequal to empty");
+    test.check(not(svavs == evavs), "not equal to empty");
+
+    eagine::shapes::shared_vertex_attrib_variants cvavs{svavs};
+
+    test.check(svavs == cvavs, "equal");
+    test.check(not(svavs != cvavs), "not unequal");
+
+    test.check_equal(cvavs.size(), 4, "A");
+    test.check(
+      cvavs.front().attribute() == eagine::shapes::vertex_attrib_kind::position,
+      "B");
+    test.check(
+      cvavs.back().attribute() == eagine::shapes::vertex_attrib_kind::occlusion,
+      "C");
+    test.check(
+      cvavs[1].attribute() == eagine::shapes::vertex_attrib_kind::color, "D");
+    test.check(cvavs[1].index() == 0, "E");
+    test.check(
+      cvavs[2].attribute() == eagine::shapes::vertex_attrib_kind::color, "F");
+    test.check(cvavs[2].index() == 1, "G");
+}
+//------------------------------------------------------------------------------
 auto main(int argc, const char** argv) -> int {
-    eagitest::suite test{argc, argv, "vertex attributes", 2};
+    eagitest::suite test{argc, argv, "vertex attributes", 3};
     test.once(vertex_attrib_kinds_all);
     test.once(vertex_attrib_kinds_index);
+    test.once(shared_vertex_attrib_variants);
     return test.exit_code();
 }
 //------------------------------------------------------------------------------
