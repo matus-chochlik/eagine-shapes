@@ -22,40 +22,40 @@ namespace shapes {
 export enum class vertex_attrib_kind : std::uint32_t {
     /// @brief Vertex position.
     position = 1U << 0U,
-    /// @brief Shell inner vertex position.
-    inner_position = 1U << 1U,
     /// @brief Vertex normal vector.
-    normal = 1U << 2U,
+    normal = 1U << 1U,
     /// @brief Vertex tangential vector.
-    tangent = 1U << 3U,
+    tangent = 1U << 2U,
     /// @brief Vertex bi-tangential vector.
-    bitangent = 1U << 4U,
+    bitangent = 1U << 3U,
     /// @brief Shape pivot point.
-    pivot = 1U << 5U,
-    /// @brief Pivot of vertex pivot point.
-    pivot_pivot = 1U << 6U,
-    /// @brief Vertex pivot point.
-    vertex_pivot = 1U << 7U,
+    pivot = 1U << 4U,
     /// @brief Normalized coordinate within shape bounding box.
-    box_coord = 1U << 8U,
+    box_coord = 1U << 5U,
     /// @brief UV-texture wrapping coordinate.
-    wrap_coord = 1U << 9U,
+    wrap_coord = 1U << 6U,
     /// @brief Generic face coordinate.
-    face_coord = 1U << 10U,
+    face_coord = 1U << 7U,
     /// @brief Generic tile coordinate.
-    tile_coord = 1U << 11U,
+    tile_coord = 1U << 8U,
     /// @brief Generic vertex coordinate.
-    vertex_coord = 1U << 12U,
+    vertex_coord = 1U << 9U,
     /// @brief Vertex color value.
-    color = 1U << 13U,
+    color = 1U << 10U,
     /// @brief Generic vertex weight value.
-    weight = 1U << 14U,
+    weight = 1U << 11U,
     /// @brief Surface roughness value (0 - smooth, 1 - rough)
-    roughness = 1U << 15U,
+    roughness = 1U << 12U,
     /// @brief Surface pointiness value (0 - inset, 0.5 - flat, 1 - pointy)
-    pointiness = 1U << 16U,
+    pointiness = 1U << 13U,
     /// @brief Vertex (ambient) light occlusion value (0 - occluded, 1 - exposed).
-    occlusion = 1U << 17U,
+    occlusion = 1U << 14U,
+    /// @brief Shell inner vertex position.
+    inner_position = 1U << 15U,
+    /// @brief Pivot of vertex pivot point.
+    pivot_pivot = 1U << 16U,
+    /// @brief Vertex pivot point.
+    vertex_pivot = 1U << 17U,
     /// @brief Generic scalar field value.
     scalar_field = 1U << 18U,
     /// @brief Generic vector field value.
@@ -379,13 +379,10 @@ constexpr auto enumerator_mapping(
     using shapes::vertex_attrib_kind;
     return enumerator_map_type<vertex_attrib_kind, 29>{
       {{"position", vertex_attrib_kind::position},
-       {"inner_position", vertex_attrib_kind::inner_position},
        {"normal", vertex_attrib_kind::normal},
        {"tangent", vertex_attrib_kind::tangent},
        {"bitangent", vertex_attrib_kind::bitangent},
        {"pivot", vertex_attrib_kind::pivot},
-       {"pivot_pivot", vertex_attrib_kind::pivot_pivot},
-       {"vertex_pivot", vertex_attrib_kind::vertex_pivot},
        {"box_coord", vertex_attrib_kind::box_coord},
        {"wrap_coord", vertex_attrib_kind::wrap_coord},
        {"face_coord", vertex_attrib_kind::face_coord},
@@ -396,6 +393,9 @@ constexpr auto enumerator_mapping(
        {"roughness", vertex_attrib_kind::roughness},
        {"pointiness", vertex_attrib_kind::pointiness},
        {"occlusion", vertex_attrib_kind::occlusion},
+       {"inner_position", vertex_attrib_kind::inner_position},
+       {"pivot_pivot", vertex_attrib_kind::pivot_pivot},
+       {"vertex_pivot", vertex_attrib_kind::vertex_pivot},
        {"scalar_field", vertex_attrib_kind::scalar_field},
        {"vector_field", vertex_attrib_kind::vector_field},
        {"opposite_length", vertex_attrib_kind::opposite_length},
