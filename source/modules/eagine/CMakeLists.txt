@@ -133,6 +133,7 @@ eagine_add_module_tests(
 		vertex_attributes
 		screen
 		plane
+		models
 	IMPORTS
 		std
 		eagine.core
