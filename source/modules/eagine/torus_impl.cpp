@@ -50,6 +50,7 @@ public:
 
     void wrap_coords(span<float> dest) noexcept;
 
+    void roughness(span<float> dest, const offset_getter) noexcept;
     void occlusions(span<float> dest, const offset_getter) noexcept;
     void opposite_lengths(span<float> dest, const offset_getter) noexcept;
     void edge_lengths(span<float> dest, const offset_getter) noexcept;
@@ -106,7 +107,8 @@ private:
 auto unit_torus_gen::_attr_mask() noexcept -> vertex_attrib_kinds {
     return vertex_attrib_kind::position | vertex_attrib_kind::normal |
            vertex_attrib_kind::tangent | vertex_attrib_kind::bitangent |
-           vertex_attrib_kind::occlusion | vertex_attrib_kind::opposite_length |
+           vertex_attrib_kind::roughness | vertex_attrib_kind::occlusion |
+           vertex_attrib_kind::opposite_length |
            vertex_attrib_kind::edge_length | vertex_attrib_kind::face_area |
            vertex_attrib_kind::pivot | vertex_attrib_kind::pivot_pivot |
            vertex_attrib_kind::vertex_pivot | vertex_attrib_kind::box_coord |
@@ -359,6 +361,39 @@ void unit_torus_gen::wrap_coords(span<float> dest) noexcept {
     }
 }
 //------------------------------------------------------------------------------
+void unit_torus_gen::roughness(
+  span<float> dest,
+  const unit_torus_gen::offset_getter get_offs) noexcept {
+    assert(has(vertex_attrib_kind::roughness));
+    assert(dest.size() >= vertex_count());
+
+    const auto r_step = math::pi / _rings;
+
+    auto k = [this](span_size_t s, span_size_t r) {
+        return (s * (_rings + 1) + r);
+    };
+
+    const auto blend_fact = float(std::exp(-_radius_ratio * 0.3F));
+
+    for(const auto s : integer_range(_sections)) {
+        for(const auto r : integer_range(_rings)) {
+            const auto [rd, sd, td] = get_offs(s, r);
+            (void)(td);
+            (void)(sd);
+
+            const auto s_in{
+              math::minimum(float(std::sin((r + rd) * r_step)) * 1.5F, 1.F)};
+            const auto s_out{float(std::sin((r + rd) * r_step)) * 0.9F};
+            dest[k(s, r)] =
+              math::maximum(1.F - math::blend(1.F, s_in, blend_fact), s_out);
+        }
+        dest[k(s, _rings)] = dest[k(s, 0)];
+    }
+    for(const auto r : integer_range(_rings + 1)) {
+        dest[k(_sections, r)] = dest[k(0, r)];
+    }
+}
+//------------------------------------------------------------------------------
 void unit_torus_gen::occlusions(
   span<float> dest,
   const unit_torus_gen::offset_getter get_offs) noexcept {
@@ -515,6 +550,7 @@ auto unit_torus_gen::attribute_variants(const vertex_attrib_kind attrib)
         case vertex_attrib_kind::tangent:
         case vertex_attrib_kind::bitangent:
             return 4;
+        case vertex_attrib_kind::roughness:
         case vertex_attrib_kind::occlusion:
             return 1;
         default:
@@ -531,6 +567,7 @@ auto unit_torus_gen::variant_name(const vertex_attrib_variant vav)
         case vertex_attrib_kind::tangent:
         case vertex_attrib_kind::bitangent:
         case vertex_attrib_kind::wrap_coord:
+        case vertex_attrib_kind::roughness:
         case vertex_attrib_kind::occlusion:
             return special_variant_name(vav.index());
         default:
@@ -561,6 +598,10 @@ void unit_torus_gen::attrib_values(
         case vertex_attrib_kind::bitangent:
             make_special_attrib_values(
               &unit_torus_gen::bitangents, vav.index(), dest);
+            break;
+        case vertex_attrib_kind::roughness:
+            make_special_attrib_values(
+              &unit_torus_gen::roughness, vav.index(), dest);
             break;
         case vertex_attrib_kind::occlusion:
             make_special_attrib_values(
