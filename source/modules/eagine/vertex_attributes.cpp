@@ -44,7 +44,7 @@ export enum class vertex_attrib_kind : std::uint32_t {
     face_coord = 1U << 10U,
     /// @brief Generic tile coordinate.
     tile_coord = 1U << 11U,
-    /// @brief Generic face coordinate.
+    /// @brief Generic vertex coordinate.
     vertex_coord = 1U << 12U,
     /// @brief Vertex color value.
     color = 1U << 13U,
@@ -275,19 +275,6 @@ export template <std::size_t N>
 export [[nodiscard]] auto attrib_index(const vertex_attrib_kind attr) noexcept
   -> span_size_t;
 //------------------------------------------------------------------------------
-/// @brief Gets a zero-based index of a vertex attribute.
-/// @ingroup shapes
-export [[nodiscard]] auto attrib_index(
-  const vertex_attrib_kind attr,
-  span_size_t index) noexcept -> span_size_t;
-//------------------------------------------------------------------------------
-/// @brief Gets a zero-based index of a vertex attribute variant.
-/// @ingroup shapes
-export [[nodiscard]] auto attrib_index(const vertex_attrib_variant vav) noexcept
-  -> span_size_t {
-    return attrib_index(vav.attribute(), vav.index());
-}
-//------------------------------------------------------------------------------
 /// @brief Gets the default number of values per vertex for an attribute kind.
 /// @ingroup shapes
 export [[nodiscard]] auto attrib_values_per_vertex(
@@ -421,5 +408,62 @@ constexpr auto enumerator_mapping(
        {"polygon_id", vertex_attrib_kind::polygon_id},
        {"material_id", vertex_attrib_kind::material_id}}};
 }
+//------------------------------------------------------------------------------
+namespace shapes {
+/// @brief Returns the count of all vertex attribute kinds.
+/// @ingroup shapes
+export template <typename Sel = default_selector_t>
+[[nodiscard]] constexpr auto vertex_attrib_kind_count(
+  const Sel sel = default_selector) noexcept -> span_size_t {
+    return enumerator_count(
+      std::type_identity<shapes::vertex_attrib_kind>{}, sel);
+}
+//------------------------------------------------------------------------------
+export template <typename Sel = default_selector_t>
+[[nodiscard]] constexpr auto vertex_attrib_index(
+  vertex_attrib_kind kind,
+  const Sel sel = default_selector) noexcept -> span_size_t {
+    return enumerator_index(
+      kind, std::type_identity<shapes::vertex_attrib_kind>{}, sel);
+}
+//------------------------------------------------------------------------------
+/// @brief Gets a zero-based index of a vertex attribute.
+/// @ingroup shapes
+export [[nodiscard]] auto vertex_attrib_index(
+  const vertex_attrib_kind kind,
+  span_size_t index) noexcept -> span_size_t {
+    return vertex_attrib_index(kind) + index * vertex_attrib_kind_count();
+}
+//------------------------------------------------------------------------------
+/// @brief Gets a zero-based index of a vertex attribute variant.
+/// @ingroup shapes
+export [[nodiscard]] auto vertex_attrib_index(
+  const vertex_attrib_variant vav) noexcept -> span_size_t {
+    return vertex_attrib_index(vav.attribute(), vav.index());
+}
+//------------------------------------------------------------------------------
+export template <typename Sel = default_selector_t>
+[[nodiscard]] constexpr auto vertex_attrib_by_index(
+  span_size_t index,
+  const Sel sel = default_selector) noexcept -> vertex_attrib_kind {
+    return enumerator_by_index(
+      index % vertex_attrib_kind_count(),
+      std::type_identity<shapes::vertex_attrib_kind>{},
+      sel);
+}
+//------------------------------------------------------------------------------
+export template <typename Sel = default_selector_t>
+[[nodiscard]] constexpr auto vertex_attrib_variant_by_index(
+  span_size_t index,
+  const Sel sel = default_selector) noexcept -> vertex_attrib_variant {
+    return {
+      enumerator_by_index(
+        index % vertex_attrib_kind_count(),
+        std::type_identity<shapes::vertex_attrib_kind>{},
+        sel),
+      index / vertex_attrib_kind_count()};
+}
+//------------------------------------------------------------------------------
+} // namespace shapes
 //------------------------------------------------------------------------------
 } // namespace eagine

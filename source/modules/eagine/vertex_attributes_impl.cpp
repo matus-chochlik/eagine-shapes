@@ -13,16 +13,6 @@ import eagine.core;
 
 namespace eagine::shapes {
 //------------------------------------------------------------------------------
-auto attrib_index(const vertex_attrib_kind attr) noexcept -> span_size_t {
-    return enumerator_index(attr);
-}
-//------------------------------------------------------------------------------
-auto attrib_index(const vertex_attrib_kind attr, span_size_t index) noexcept
-  -> span_size_t {
-    return attrib_index(attr) +
-           index * enumerator_count(std::type_identity<vertex_attrib_kind>{});
-}
-//------------------------------------------------------------------------------
 auto attrib_values_per_vertex(const vertex_attrib_kind attr) noexcept
   -> span_size_t {
     switch(attr) {
