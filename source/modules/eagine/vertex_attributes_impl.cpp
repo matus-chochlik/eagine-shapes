@@ -119,12 +119,12 @@ auto shared_vertex_attrib_variants::basic() noexcept
        vertex_attrib_kind::normal,
        vertex_attrib_kind::tangent,
        vertex_attrib_kind::bitangent,
+       vertex_attrib_kind::color,
        vertex_attrib_kind::vertex_coord,
        vertex_attrib_kind::wrap_coord,
        vertex_attrib_kind::face_coord,
        vertex_attrib_kind::tile_coord,
        vertex_attrib_kind::box_coord,
-       vertex_attrib_kind::weight,
        vertex_attrib_kind::roughness,
        vertex_attrib_kind::pointiness,
        vertex_attrib_kind::occlusion}};
