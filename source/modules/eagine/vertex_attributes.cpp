@@ -384,18 +384,14 @@ public:
     shared_vertex_attrib_variants() noexcept = default;
 
     shared_vertex_attrib_variants(
-      std::initializer_list<vertex_attrib_variant> vavs) noexcept
-      : base_ptr{std::make_shared<vertex_attrib_variant[]>(vavs.size())}
-      , base_span{get(), span_size(vavs.size())} {
-        copy(
-          eagine::memory::view(vavs),
-          memory::span<vertex_attrib_variant>{get(), span_size(vavs.size())});
-    }
+      std::initializer_list<vertex_attrib_variant> vavs) noexcept;
 
     shared_vertex_attrib_variants(
       std::convertible_to<vertex_attrib_variant> auto... vavs) noexcept
         requires(sizeof...(vavs) > 0)
       : shared_vertex_attrib_variants{{vertex_attrib_variant{vavs}...}} {};
+
+    static auto basic() noexcept -> const shared_vertex_attrib_variants&;
 
     auto view() const noexcept -> const base_span& {
         return *this;

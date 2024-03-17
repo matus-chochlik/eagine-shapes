@@ -100,4 +100,35 @@ auto default_attrib_value(const vertex_attrib_kind attr) noexcept
     return {};
 }
 //------------------------------------------------------------------------------
+shared_vertex_attrib_variants::shared_vertex_attrib_variants(
+  std::initializer_list<vertex_attrib_variant> vavs) noexcept
+  : base_ptr{std::make_shared<vertex_attrib_variant[]>(vavs.size())}
+  , base_span{get(), span_size(vavs.size())} {
+    copy(
+      eagine::memory::view(vavs),
+      memory::span<vertex_attrib_variant>{get(), span_size(vavs.size())});
+}
+//------------------------------------------------------------------------------
+auto shared_vertex_attrib_variants::basic() noexcept
+  -> const shared_vertex_attrib_variants& {
+    static const shared_vertex_attrib_variants result{
+      {vertex_attrib_kind::position,
+       vertex_attrib_kind::pivot,
+       vertex_attrib_kind::pivot_pivot,
+       vertex_attrib_kind::vertex_pivot,
+       vertex_attrib_kind::normal,
+       vertex_attrib_kind::tangent,
+       vertex_attrib_kind::bitangent,
+       vertex_attrib_kind::vertex_coord,
+       vertex_attrib_kind::wrap_coord,
+       vertex_attrib_kind::face_coord,
+       vertex_attrib_kind::tile_coord,
+       vertex_attrib_kind::box_coord,
+       vertex_attrib_kind::weight,
+       vertex_attrib_kind::roughness,
+       vertex_attrib_kind::pointiness,
+       vertex_attrib_kind::occlusion}};
+    return result;
+}
+//------------------------------------------------------------------------------
 } // namespace eagine::shapes
