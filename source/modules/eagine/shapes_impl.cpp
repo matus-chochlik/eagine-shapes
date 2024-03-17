@@ -86,6 +86,9 @@ auto shape_from(vertex_attrib_kinds attrs, const url& locator, main_ctx& ctx)
     if(auto gen{skybox_from(attrs, locator, ctx)}) {
         return gen;
     }
+    if(auto gen{model_spikosahedron_from(locator, ctx)}) {
+        return gen;
+    }
     if(auto gen{model_cube_from(locator, ctx)}) {
         return gen;
     }

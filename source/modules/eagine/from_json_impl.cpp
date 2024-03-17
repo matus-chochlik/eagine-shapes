@@ -53,4 +53,12 @@ auto model_cube_from(const url& locator, main_ctx& ctx) noexcept
     return {};
 }
 //------------------------------------------------------------------------------
+auto model_spikosahedron_from(const url& locator, main_ctx& ctx) noexcept
+  -> shared_holder<generator> {
+    if(locator.has_path("/model_spikosahedron")) {
+        return from_json_resource(embedded<"SpikHedron">(), ctx);
+    }
+    return {};
+}
+//------------------------------------------------------------------------------
 } // namespace eagine::shapes

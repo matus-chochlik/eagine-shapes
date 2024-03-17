@@ -1054,6 +1054,9 @@ export [[nodiscard]] auto model_cube(main_ctx&) noexcept
   -> shared_holder<generator>;
 export [[nodiscard]] auto model_cube_from(const url&, main_ctx&) noexcept
   -> shared_holder<generator>;
+export [[nodiscard]] auto model_spikosahedron_from(
+  const url&,
+  main_ctx&) noexcept -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 // surface_points
 //------------------------------------------------------------------------------

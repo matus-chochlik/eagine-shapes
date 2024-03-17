@@ -145,5 +145,6 @@ eagine_embed_target_resources(
 	TARGET eagine.shapes
 	RESOURCES
 		Cube       "resources/cube.json"
+		SpikHedron "resources/spikosahedron.json"
 	PACKED)
 
