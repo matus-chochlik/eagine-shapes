@@ -83,10 +83,11 @@ auto default_attrib_value(const vertex_attrib_kind attr) noexcept
         case vertex_attrib_kind::opposite_length:
         case vertex_attrib_kind::face_area:
         case vertex_attrib_kind::weight:
-        case vertex_attrib_kind::roughness:
         case vertex_attrib_kind::occlusion:
         case vertex_attrib_kind::instance_scale:
             return 1.F;
+        case vertex_attrib_kind::roughness:
+            return 0.8F;
         case vertex_attrib_kind::scalar_field:
         case vertex_attrib_kind::pointiness:
             return 0.5F;
