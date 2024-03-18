@@ -22,6 +22,7 @@ import eagine.core.math;
 import eagine.core.valid_if;
 import eagine.core.value_tree;
 import eagine.core.main_ctx;
+import eagine.core.resource;
 export import :vertex_attributes;
 export import :drawing;
 
@@ -1045,6 +1046,17 @@ export [[nodiscard]] auto from_value_tree(
 //------------------------------------------------------------------------------
 export [[nodiscard]] auto from_json_stream(std::istream&, main_ctx&) noexcept
   -> shared_holder<generator>;
+export [[nodiscard]] auto from_json_resource(
+  const embedded_resource&,
+  main_ctx&) noexcept -> shared_holder<generator>;
+//------------------------------------------------------------------------------
+export [[nodiscard]] auto model_cube(main_ctx&) noexcept
+  -> shared_holder<generator>;
+export [[nodiscard]] auto model_cube_from(const url&, main_ctx&) noexcept
+  -> shared_holder<generator>;
+export [[nodiscard]] auto model_spikosahedron_from(
+  const url&,
+  main_ctx&) noexcept -> shared_holder<generator>;
 //------------------------------------------------------------------------------
 // surface_points
 //------------------------------------------------------------------------------

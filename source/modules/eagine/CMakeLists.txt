@@ -7,6 +7,7 @@ eagine_add_module(
 	IMPORTS
 		std
 		eagine.core.types
+		eagine.core.memory
 		eagine.core.math
 		eagine.core.container
 		eagine.core.reflection
@@ -35,6 +36,7 @@ eagine_add_module(
 		eagine.core.valid_if
 		eagine.core.value_tree
 		eagine.core.main_ctx
+		eagine.core.resource
 )
 
 eagine_add_module(
@@ -122,20 +124,7 @@ eagine_add_module(
 		shapes
 	IMPORTS
 		std
-		eagine.core.types
-		eagine.core.memory
-		eagine.core.identifier
-		eagine.core.reflection
-		eagine.core.container
-		eagine.core.math
-		eagine.core.units
-		eagine.core.utility
-		eagine.core.runtime
-		eagine.core.valid_if
-		eagine.core.value_tree
-		eagine.core.logging
-		eagine.core.progress
-		eagine.core.main_ctx
+		eagine.core
 )
 
 eagine_add_module_tests(
@@ -145,8 +134,17 @@ eagine_add_module_tests(
 		vertex_attributes
 		screen
 		plane
+		models
 	IMPORTS
 		std
 		eagine.core
 		eagine.core.main_ctx
 )
+
+eagine_embed_target_resources(
+	TARGET eagine.shapes
+	RESOURCES
+		Cube       "resources/cube.json"
+		SpikHedron "resources/spikosahedron.json"
+	PACKED)
+

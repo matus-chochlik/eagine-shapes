@@ -9,21 +9,9 @@
 module eagine.shapes;
 
 import std;
-import eagine.core.types;
-import eagine.core.math;
-import eagine.core.reflection;
+import eagine.core;
 
 namespace eagine::shapes {
-//------------------------------------------------------------------------------
-auto attrib_index(const vertex_attrib_kind attr) noexcept -> span_size_t {
-    return enumerator_index(attr);
-}
-//------------------------------------------------------------------------------
-auto attrib_index(const vertex_attrib_kind attr, span_size_t index) noexcept
-  -> span_size_t {
-    return attrib_index(attr) +
-           index * enumerator_count(std::type_identity<vertex_attrib_kind>{});
-}
 //------------------------------------------------------------------------------
 auto attrib_values_per_vertex(const vertex_attrib_kind attr) noexcept
   -> span_size_t {
@@ -52,6 +40,8 @@ auto attrib_values_per_vertex(const vertex_attrib_kind attr) noexcept
         case vertex_attrib_kind::face_area:
         case vertex_attrib_kind::weight:
         case vertex_attrib_kind::scalar_field:
+        case vertex_attrib_kind::roughness:
+        case vertex_attrib_kind::pointiness:
         case vertex_attrib_kind::occlusion:
         case vertex_attrib_kind::object_id:
         case vertex_attrib_kind::polygon_id:
@@ -93,11 +83,15 @@ auto default_attrib_value(const vertex_attrib_kind attr) noexcept
         case vertex_attrib_kind::opposite_length:
         case vertex_attrib_kind::face_area:
         case vertex_attrib_kind::weight:
-        case vertex_attrib_kind::scalar_field:
         case vertex_attrib_kind::occlusion:
-        case vertex_attrib_kind::object_id:
         case vertex_attrib_kind::instance_scale:
             return 1.F;
+        case vertex_attrib_kind::roughness:
+            return 0.8F;
+        case vertex_attrib_kind::scalar_field:
+        case vertex_attrib_kind::pointiness:
+            return 0.5F;
+        case vertex_attrib_kind::object_id:
         case vertex_attrib_kind::polygon_id:
         case vertex_attrib_kind::material_id:
             return 0;
@@ -105,6 +99,37 @@ auto default_attrib_value(const vertex_attrib_kind attr) noexcept
             break;
     }
     return {};
+}
+//------------------------------------------------------------------------------
+shared_vertex_attrib_variants::shared_vertex_attrib_variants(
+  std::initializer_list<vertex_attrib_variant> vavs) noexcept
+  : base_ptr{std::make_shared<vertex_attrib_variant[]>(vavs.size())}
+  , base_span{get(), span_size(vavs.size())} {
+    copy(
+      eagine::memory::view(vavs),
+      memory::span<vertex_attrib_variant>{get(), span_size(vavs.size())});
+}
+//------------------------------------------------------------------------------
+auto shared_vertex_attrib_variants::basic() noexcept
+  -> const shared_vertex_attrib_variants& {
+    static const shared_vertex_attrib_variants result{
+      {vertex_attrib_kind::position,
+       vertex_attrib_kind::pivot,
+       vertex_attrib_kind::pivot_pivot,
+       vertex_attrib_kind::vertex_pivot,
+       vertex_attrib_kind::normal,
+       vertex_attrib_kind::tangent,
+       vertex_attrib_kind::bitangent,
+       vertex_attrib_kind::color,
+       vertex_attrib_kind::vertex_coord,
+       vertex_attrib_kind::wrap_coord,
+       vertex_attrib_kind::face_coord,
+       vertex_attrib_kind::tile_coord,
+       vertex_attrib_kind::box_coord,
+       vertex_attrib_kind::roughness,
+       vertex_attrib_kind::pointiness,
+       vertex_attrib_kind::occlusion}};
+    return result;
 }
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes

@@ -9,6 +9,7 @@ export module eagine.shapes:vertex_attributes;
 
 import std;
 import eagine.core.types;
+import eagine.core.memory;
 import eagine.core.math;
 import eagine.core.container;
 import eagine.core.reflection;
@@ -22,58 +23,62 @@ namespace shapes {
 export enum class vertex_attrib_kind : std::uint32_t {
     /// @brief Vertex position.
     position = 1U << 0U,
-    /// @brief Shell inner vertex position.
-    inner_position = 1U << 1U,
     /// @brief Vertex normal vector.
-    normal = 1U << 2U,
+    normal = 1U << 1U,
     /// @brief Vertex tangential vector.
-    tangent = 1U << 3U,
+    tangent = 1U << 2U,
     /// @brief Vertex bi-tangential vector.
-    bitangent = 1U << 4U,
+    bitangent = 1U << 3U,
     /// @brief Shape pivot point.
-    pivot = 1U << 5U,
-    /// @brief Pivot of vertex pivot point.
-    pivot_pivot = 1U << 6U,
-    /// @brief Vertex pivot point.
-    vertex_pivot = 1U << 7U,
+    pivot = 1U << 4U,
     /// @brief Normalized coordinate within shape bounding box.
-    box_coord = 1U << 8U,
+    box_coord = 1U << 5U,
     /// @brief UV-texture wrapping coordinate.
-    wrap_coord = 1U << 9U,
+    wrap_coord = 1U << 6U,
     /// @brief Generic face coordinate.
-    face_coord = 1U << 10U,
+    face_coord = 1U << 7U,
     /// @brief Generic tile coordinate.
-    tile_coord = 1U << 11U,
-    /// @brief Generic face coordinate.
-    vertex_coord = 1U << 12U,
+    tile_coord = 1U << 8U,
+    /// @brief Generic vertex coordinate.
+    vertex_coord = 1U << 9U,
     /// @brief Vertex color value.
-    color = 1U << 13U,
+    color = 1U << 10U,
     /// @brief Generic vertex weight value.
-    weight = 1U << 14U,
-    /// @brief Vertex (ambient) light occlusion value.
-    occlusion = 1U << 15U,
+    weight = 1U << 11U,
+    /// @brief Surface roughness value (0 - smooth, 1 - rough)
+    roughness = 1U << 12U,
+    /// @brief Surface pointiness value (0 - inset, 0.5 - flat, 1 - pointy)
+    pointiness = 1U << 13U,
+    /// @brief Vertex (ambient) light occlusion value (0 - occluded, 1 - exposed).
+    occlusion = 1U << 14U,
+    /// @brief Shell inner vertex position.
+    inner_position = 1U << 15U,
+    /// @brief Pivot of vertex pivot point.
+    pivot_pivot = 1U << 16U,
+    /// @brief Vertex pivot point.
+    vertex_pivot = 1U << 17U,
     /// @brief Generic scalar field value.
-    scalar_field = 1U << 16U,
+    scalar_field = 1U << 18U,
     /// @brief Generic vector field value.
-    vector_field = 1U << 17U,
+    vector_field = 1U << 19U,
     /// @brief Length of opposite edge.
-    opposite_length = 1U << 18U,
+    opposite_length = 1U << 20U,
     /// @brief Length of previous, next and opposite edges.
-    edge_length = 1U << 19U,
+    edge_length = 1U << 21U,
     /// @brief Area of face polygon.
-    face_area = 1U << 20U,
+    face_area = 1U << 22U,
     /// @brief Instance offset value
-    instance_offset = 1U << 21U,
+    instance_offset = 1U << 23U,
     /// @brief Instance scale value
-    instance_scale = 1U << 22U,
+    instance_scale = 1U << 24U,
     /// @brief Instance scale value
-    instance_transform = 1U << 23U,
+    instance_transform = 1U << 25U,
     /// @brief The object id attributes (typically unique integer).
-    object_id = 1U << 24U,
+    object_id = 1U << 26U,
     /// @brief Face polygon id value (multiple faces can belong to the same polygon)
-    polygon_id = 1U << 25U,
+    polygon_id = 1U << 27U,
     /// @brief Face material id value.
-    material_id = 1U << 26U
+    material_id = 1U << 28U
     // also fix all_vertex_attrib_kinds
 };
 //------------------------------------------------------------------------------
@@ -90,7 +95,7 @@ export using vertex_attrib_kinds = bitfield<vertex_attrib_kind>;
 /// @ingroup shapes
 export constexpr auto all_vertex_attrib_kinds() noexcept
   -> vertex_attrib_kinds {
-    return vertex_attrib_kinds{(1U << 27U) - 1U};
+    return vertex_attrib_kinds{(1U << 29U) - 1U};
 }
 //------------------------------------------------------------------------------
 /// @brief Bitwise-or operator for vertex_attrib_kind bits.
@@ -271,19 +276,6 @@ export template <std::size_t N>
 export [[nodiscard]] auto attrib_index(const vertex_attrib_kind attr) noexcept
   -> span_size_t;
 //------------------------------------------------------------------------------
-/// @brief Gets a zero-based index of a vertex attribute.
-/// @ingroup shapes
-export [[nodiscard]] auto attrib_index(
-  const vertex_attrib_kind attr,
-  span_size_t index) noexcept -> span_size_t;
-//------------------------------------------------------------------------------
-/// @brief Gets a zero-based index of a vertex attribute variant.
-/// @ingroup shapes
-export [[nodiscard]] auto attrib_index(const vertex_attrib_variant vav) noexcept
-  -> span_size_t {
-    return attrib_index(vav.attribute(), vav.index());
-}
-//------------------------------------------------------------------------------
 /// @brief Gets the default number of values per vertex for an attribute kind.
 /// @ingroup shapes
 export [[nodiscard]] auto attrib_values_per_vertex(
@@ -380,21 +372,49 @@ export [[nodiscard]] auto default_attrib_value(
     return default_attrib_value(vav.attribute());
 }
 //------------------------------------------------------------------------------
+/// @brief Collection of vertex_attrib_variant objects with shared pointer semantics.
+/// @ingroup shapes
+export class shared_vertex_attrib_variants
+  : private std::shared_ptr<vertex_attrib_variant[]>
+  , public memory::span<const vertex_attrib_variant> {
+    using base_ptr = std::shared_ptr<vertex_attrib_variant[]>;
+    using base_span = memory::span<const vertex_attrib_variant>;
+
+public:
+    shared_vertex_attrib_variants() noexcept = default;
+
+    shared_vertex_attrib_variants(
+      std::initializer_list<vertex_attrib_variant> vavs) noexcept;
+
+    shared_vertex_attrib_variants(
+      std::convertible_to<vertex_attrib_variant> auto... vavs) noexcept
+        requires(sizeof...(vavs) > 0)
+      : shared_vertex_attrib_variants{{vertex_attrib_variant{vavs}...}} {};
+
+    static auto basic() noexcept -> const shared_vertex_attrib_variants&;
+
+    auto view() const noexcept -> const base_span& {
+        return *this;
+    }
+
+    auto operator==(const shared_vertex_attrib_variants& that) const noexcept
+      -> bool {
+        return are_equal(this->view(), that.view());
+    }
+};
+//------------------------------------------------------------------------------
 } // namespace shapes
 export template <typename Selector>
 constexpr auto enumerator_mapping(
   const std::type_identity<shapes::vertex_attrib_kind>,
   const Selector) noexcept {
     using shapes::vertex_attrib_kind;
-    return enumerator_map_type<vertex_attrib_kind, 27>{
+    return enumerator_map_type<vertex_attrib_kind, 29>{
       {{"position", vertex_attrib_kind::position},
-       {"inner_position", vertex_attrib_kind::inner_position},
        {"normal", vertex_attrib_kind::normal},
        {"tangent", vertex_attrib_kind::tangent},
        {"bitangent", vertex_attrib_kind::bitangent},
        {"pivot", vertex_attrib_kind::pivot},
-       {"pivot_pivot", vertex_attrib_kind::pivot_pivot},
-       {"vertex_pivot", vertex_attrib_kind::vertex_pivot},
        {"box_coord", vertex_attrib_kind::box_coord},
        {"wrap_coord", vertex_attrib_kind::wrap_coord},
        {"face_coord", vertex_attrib_kind::face_coord},
@@ -402,7 +422,12 @@ constexpr auto enumerator_mapping(
        {"vertex_coord", vertex_attrib_kind::vertex_coord},
        {"color", vertex_attrib_kind::color},
        {"weight", vertex_attrib_kind::weight},
+       {"roughness", vertex_attrib_kind::roughness},
+       {"pointiness", vertex_attrib_kind::pointiness},
        {"occlusion", vertex_attrib_kind::occlusion},
+       {"inner_position", vertex_attrib_kind::inner_position},
+       {"pivot_pivot", vertex_attrib_kind::pivot_pivot},
+       {"vertex_pivot", vertex_attrib_kind::vertex_pivot},
        {"scalar_field", vertex_attrib_kind::scalar_field},
        {"vector_field", vertex_attrib_kind::vector_field},
        {"opposite_length", vertex_attrib_kind::opposite_length},
@@ -415,5 +440,62 @@ constexpr auto enumerator_mapping(
        {"polygon_id", vertex_attrib_kind::polygon_id},
        {"material_id", vertex_attrib_kind::material_id}}};
 }
+//------------------------------------------------------------------------------
+namespace shapes {
+/// @brief Returns the count of all vertex attribute kinds.
+/// @ingroup shapes
+export template <typename Sel = default_selector_t>
+[[nodiscard]] constexpr auto vertex_attrib_kind_count(
+  const Sel sel = default_selector) noexcept -> span_size_t {
+    return enumerator_count(
+      std::type_identity<shapes::vertex_attrib_kind>{}, sel);
+}
+//------------------------------------------------------------------------------
+export template <typename Sel = default_selector_t>
+[[nodiscard]] constexpr auto vertex_attrib_index(
+  vertex_attrib_kind kind,
+  const Sel sel = default_selector) noexcept -> span_size_t {
+    return enumerator_index(
+      kind, std::type_identity<shapes::vertex_attrib_kind>{}, sel);
+}
+//------------------------------------------------------------------------------
+/// @brief Gets a zero-based index of a vertex attribute.
+/// @ingroup shapes
+export [[nodiscard]] auto vertex_attrib_index(
+  const vertex_attrib_kind kind,
+  span_size_t index) noexcept -> span_size_t {
+    return vertex_attrib_index(kind) + index * vertex_attrib_kind_count();
+}
+//------------------------------------------------------------------------------
+/// @brief Gets a zero-based index of a vertex attribute variant.
+/// @ingroup shapes
+export [[nodiscard]] auto vertex_attrib_index(
+  const vertex_attrib_variant vav) noexcept -> span_size_t {
+    return vertex_attrib_index(vav.attribute(), vav.index());
+}
+//------------------------------------------------------------------------------
+export template <typename Sel = default_selector_t>
+[[nodiscard]] constexpr auto vertex_attrib_by_index(
+  span_size_t index,
+  const Sel sel = default_selector) noexcept -> vertex_attrib_kind {
+    return enumerator_by_index(
+      index % vertex_attrib_kind_count(),
+      std::type_identity<shapes::vertex_attrib_kind>{},
+      sel);
+}
+//------------------------------------------------------------------------------
+export template <typename Sel = default_selector_t>
+[[nodiscard]] constexpr auto vertex_attrib_variant_by_index(
+  span_size_t index,
+  const Sel sel = default_selector) noexcept -> vertex_attrib_variant {
+    return {
+      enumerator_by_index(
+        index % vertex_attrib_kind_count(),
+        std::type_identity<shapes::vertex_attrib_kind>{},
+        sel),
+      index / vertex_attrib_kind_count()};
+}
+//------------------------------------------------------------------------------
+} // namespace shapes
 //------------------------------------------------------------------------------
 } // namespace eagine
