@@ -43,42 +43,44 @@ export enum class vertex_attrib_kind : std::uint32_t {
     vertex_coord = 1U << 9U,
     /// @brief Vertex color value.
     color = 1U << 10U,
+    /// @brief Vertex light emission value.
+    emission = 1U << 11U,
     /// @brief Generic vertex weight value.
-    weight = 1U << 11U,
+    weight = 1U << 12U,
     /// @brief Surface roughness value (0 - smooth, 1 - rough)
-    roughness = 1U << 12U,
+    roughness = 1U << 13U,
     /// @brief Surface pointiness value (0 - inset, 0.5 - flat, 1 - pointy)
-    pointiness = 1U << 13U,
+    pointiness = 1U << 14U,
     /// @brief Vertex (ambient) light occlusion value (0 - occluded, 1 - exposed).
-    occlusion = 1U << 14U,
+    occlusion = 1U << 15U,
     /// @brief Shell inner vertex position.
-    inner_position = 1U << 15U,
+    inner_position = 1U << 16U,
     /// @brief Pivot of vertex pivot point.
-    pivot_pivot = 1U << 16U,
+    pivot_pivot = 1U << 17U,
     /// @brief Vertex pivot point.
-    vertex_pivot = 1U << 17U,
+    vertex_pivot = 1U << 18U,
     /// @brief Generic scalar field value.
-    scalar_field = 1U << 18U,
+    scalar_field = 1U << 19U,
     /// @brief Generic vector field value.
-    vector_field = 1U << 19U,
+    vector_field = 1U << 20U,
     /// @brief Length of opposite edge.
-    opposite_length = 1U << 20U,
+    opposite_length = 1U << 21U,
     /// @brief Length of previous, next and opposite edges.
-    edge_length = 1U << 21U,
+    edge_length = 1U << 22U,
     /// @brief Area of face polygon.
-    face_area = 1U << 22U,
+    face_area = 1U << 23U,
     /// @brief Instance offset value
-    instance_offset = 1U << 23U,
+    instance_offset = 1U << 24U,
     /// @brief Instance scale value
-    instance_scale = 1U << 24U,
+    instance_scale = 1U << 25U,
     /// @brief Instance scale value
-    instance_transform = 1U << 25U,
+    instance_transform = 1U << 26U,
     /// @brief The object id attributes (typically unique integer).
-    object_id = 1U << 26U,
+    object_id = 1U << 27U,
     /// @brief Face polygon id value (multiple faces can belong to the same polygon)
-    polygon_id = 1U << 27U,
+    polygon_id = 1U << 28U,
     /// @brief Face material id value.
-    material_id = 1U << 28U
+    material_id = 1U << 29U
     // also fix all_vertex_attrib_kinds
 };
 //------------------------------------------------------------------------------
@@ -95,7 +97,7 @@ export using vertex_attrib_kinds = bitfield<vertex_attrib_kind>;
 /// @ingroup shapes
 export constexpr auto all_vertex_attrib_kinds() noexcept
   -> vertex_attrib_kinds {
-    return vertex_attrib_kinds{(1U << 29U) - 1U};
+    return vertex_attrib_kinds{(1U << 30U) - 1U};
 }
 //------------------------------------------------------------------------------
 /// @brief Bitwise-or operator for vertex_attrib_kind bits.
@@ -421,6 +423,7 @@ constexpr auto enumerator_mapping(
        {"tile_coord", vertex_attrib_kind::tile_coord},
        {"vertex_coord", vertex_attrib_kind::vertex_coord},
        {"color", vertex_attrib_kind::color},
+       {"emission", vertex_attrib_kind::emission},
        {"weight", vertex_attrib_kind::weight},
        {"roughness", vertex_attrib_kind::roughness},
        {"pointiness", vertex_attrib_kind::pointiness},
