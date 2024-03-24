@@ -411,7 +411,7 @@ constexpr auto enumerator_mapping(
   const std::type_identity<shapes::vertex_attrib_kind>,
   const Selector) noexcept {
     using shapes::vertex_attrib_kind;
-    return enumerator_map_type<vertex_attrib_kind, 29>{
+    return enumerator_map_type<vertex_attrib_kind, 30>{
       {{"position", vertex_attrib_kind::position},
        {"normal", vertex_attrib_kind::normal},
        {"tangent", vertex_attrib_kind::tangent},
