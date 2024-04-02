@@ -17,6 +17,7 @@ auto attrib_values_per_vertex(const vertex_attrib_kind attr) noexcept
   -> span_size_t {
     switch(attr) {
         case vertex_attrib_kind::color:
+        case vertex_attrib_kind::emission:
             return 4;
         case vertex_attrib_kind::position:
         case vertex_attrib_kind::inner_position:
@@ -59,6 +60,8 @@ auto default_attrib_value(const vertex_attrib_kind attr) noexcept
     switch(attr) {
         case vertex_attrib_kind::color:
             return math::vector<float, 4, true>{0.5F, 0.5F, 0.5F, 1.F};
+        case vertex_attrib_kind::emission:
+            return math::vector<float, 4, true>{0.0F, 0.0F, 0.0F, 0.F};
         case vertex_attrib_kind::position:
         case vertex_attrib_kind::inner_position:
         case vertex_attrib_kind::pivot:
@@ -115,12 +118,12 @@ auto shared_vertex_attrib_variants::basic() noexcept
     static const shared_vertex_attrib_variants result{
       {vertex_attrib_kind::position,
        vertex_attrib_kind::pivot,
-       vertex_attrib_kind::pivot_pivot,
        vertex_attrib_kind::vertex_pivot,
        vertex_attrib_kind::normal,
        vertex_attrib_kind::tangent,
        vertex_attrib_kind::bitangent,
        vertex_attrib_kind::color,
+       vertex_attrib_kind::emission,
        vertex_attrib_kind::vertex_coord,
        vertex_attrib_kind::wrap_coord,
        vertex_attrib_kind::face_coord,
