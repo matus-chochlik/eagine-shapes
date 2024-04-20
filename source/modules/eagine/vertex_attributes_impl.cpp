@@ -11,7 +11,8 @@ module eagine.shapes;
 import std;
 import eagine.core;
 
-namespace eagine::shapes {
+namespace eagine {
+namespace shapes {
 //------------------------------------------------------------------------------
 auto attrib_values_per_vertex(const vertex_attrib_kind attr) noexcept
   -> span_size_t {
@@ -135,4 +136,41 @@ auto shared_vertex_attrib_variants::basic() noexcept
     return result;
 }
 //------------------------------------------------------------------------------
-} // namespace eagine::shapes
+} // namespace shapes
+auto enumerator_traits<shapes::vertex_attrib_kind>::mapping() noexcept
+  -> enumerator_map_type<shapes::vertex_attrib_kind, 30> {
+    using shapes::vertex_attrib_kind;
+    return enumerator_map_type<vertex_attrib_kind, 30>{
+      {{"position", vertex_attrib_kind::position},
+       {"normal", vertex_attrib_kind::normal},
+       {"tangent", vertex_attrib_kind::tangent},
+       {"bitangent", vertex_attrib_kind::bitangent},
+       {"pivot", vertex_attrib_kind::pivot},
+       {"box_coord", vertex_attrib_kind::box_coord},
+       {"wrap_coord", vertex_attrib_kind::wrap_coord},
+       {"face_coord", vertex_attrib_kind::face_coord},
+       {"tile_coord", vertex_attrib_kind::tile_coord},
+       {"vertex_coord", vertex_attrib_kind::vertex_coord},
+       {"color", vertex_attrib_kind::color},
+       {"emission", vertex_attrib_kind::emission},
+       {"weight", vertex_attrib_kind::weight},
+       {"roughness", vertex_attrib_kind::roughness},
+       {"pointiness", vertex_attrib_kind::pointiness},
+       {"occlusion", vertex_attrib_kind::occlusion},
+       {"inner_position", vertex_attrib_kind::inner_position},
+       {"pivot_pivot", vertex_attrib_kind::pivot_pivot},
+       {"vertex_pivot", vertex_attrib_kind::vertex_pivot},
+       {"scalar_field", vertex_attrib_kind::scalar_field},
+       {"vector_field", vertex_attrib_kind::vector_field},
+       {"opposite_length", vertex_attrib_kind::opposite_length},
+       {"edge_length", vertex_attrib_kind::edge_length},
+       {"face_area", vertex_attrib_kind::face_area},
+       {"instance_offset", vertex_attrib_kind::instance_offset},
+       {"instance_scale", vertex_attrib_kind::instance_scale},
+       {"instance_transform", vertex_attrib_kind::instance_transform},
+       {"object_id", vertex_attrib_kind::object_id},
+       {"polygon_id", vertex_attrib_kind::polygon_id},
+       {"material_id", vertex_attrib_kind::material_id}}};
+}
+//------------------------------------------------------------------------------
+} // namespace eagine
