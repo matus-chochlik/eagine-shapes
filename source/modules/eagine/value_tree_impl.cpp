@@ -70,30 +70,25 @@ private:
 };
 //------------------------------------------------------------------------------
 auto vertex_attrib_name(const vertex_attrib_kind attrib) noexcept {
-    return enumerator_name(
-      attrib, std::type_identity<vertex_attrib_kind>{}, from_value_tree_t{});
+    return enumerator_name<vertex_attrib_kind>(attrib);
 }
 //------------------------------------------------------------------------------
 auto primitive_type_from(const string_view str) noexcept {
-    return from_string(
-      str, std::type_identity<primitive_type>{}, from_value_tree_t{});
+    return from_string(str, std::type_identity<primitive_type>{});
 }
 //------------------------------------------------------------------------------
 auto attrib_data_type_from(const string_view str) noexcept {
-    return from_string(
-      str, std::type_identity<attrib_data_type>{}, from_value_tree_t{});
+    return from_string(str, std::type_identity<attrib_data_type>{});
 }
 //------------------------------------------------------------------------------
 auto index_data_type_from(const string_view str) noexcept {
-    return from_string(
-      str, std::type_identity<index_data_type>{}, from_value_tree_t{});
+    return from_string(str, std::type_identity<index_data_type>{});
 }
 //------------------------------------------------------------------------------
 auto value_tree_loader::_attr_mask(const valtree::compound& source) noexcept
   -> vertex_attrib_kinds {
     vertex_attrib_kinds result;
-    for(const auto& info : enumerator_mapping(
-          std::type_identity<vertex_attrib_kind>{}, from_value_tree_t{})) {
+    for(const auto& info : enumerators<vertex_attrib_kind>()) {
         if(source.nested(info.name)) {
             result.set(info.enumerator);
         }

@@ -65,18 +65,18 @@ export [[nodiscard]] constexpr auto operator|(
 }
 //------------------------------------------------------------------------------
 } // namespace shapes
-export template <typename Selector>
-constexpr auto enumerator_mapping(
-  const std::type_identity<shapes::generator_capability>,
-  const Selector) noexcept {
-    using shapes::generator_capability;
-    return enumerator_map_type<generator_capability, 5>{
-      {{"indexed_drawing", generator_capability::indexed_drawing},
-       {"element_strips", generator_capability::element_strips},
-       {"element_fans", generator_capability::element_fans},
-       {"primitive_restart", generator_capability::primitive_restart},
-       {"attrib_divisors", generator_capability::attrib_divisors}}};
-}
+export template <>
+struct enumerator_traits<shapes::generator_capability> {
+    static constexpr auto mapping() noexcept {
+        using shapes::generator_capability;
+        return enumerator_map_type<generator_capability, 5>{
+          {{"indexed_drawing", generator_capability::indexed_drawing},
+           {"element_strips", generator_capability::element_strips},
+           {"element_fans", generator_capability::element_fans},
+           {"primitive_restart", generator_capability::primitive_restart},
+           {"attrib_divisors", generator_capability::attrib_divisors}}};
+    }
+};
 namespace shapes {
 //------------------------------------------------------------------------------
 export struct shape_face_info {

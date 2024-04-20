@@ -406,60 +406,55 @@ public:
 };
 //------------------------------------------------------------------------------
 } // namespace shapes
-export template <typename Selector>
-constexpr auto enumerator_mapping(
-  const std::type_identity<shapes::vertex_attrib_kind>,
-  const Selector) noexcept {
-    using shapes::vertex_attrib_kind;
-    return enumerator_map_type<vertex_attrib_kind, 30>{
-      {{"position", vertex_attrib_kind::position},
-       {"normal", vertex_attrib_kind::normal},
-       {"tangent", vertex_attrib_kind::tangent},
-       {"bitangent", vertex_attrib_kind::bitangent},
-       {"pivot", vertex_attrib_kind::pivot},
-       {"box_coord", vertex_attrib_kind::box_coord},
-       {"wrap_coord", vertex_attrib_kind::wrap_coord},
-       {"face_coord", vertex_attrib_kind::face_coord},
-       {"tile_coord", vertex_attrib_kind::tile_coord},
-       {"vertex_coord", vertex_attrib_kind::vertex_coord},
-       {"color", vertex_attrib_kind::color},
-       {"emission", vertex_attrib_kind::emission},
-       {"weight", vertex_attrib_kind::weight},
-       {"roughness", vertex_attrib_kind::roughness},
-       {"pointiness", vertex_attrib_kind::pointiness},
-       {"occlusion", vertex_attrib_kind::occlusion},
-       {"inner_position", vertex_attrib_kind::inner_position},
-       {"pivot_pivot", vertex_attrib_kind::pivot_pivot},
-       {"vertex_pivot", vertex_attrib_kind::vertex_pivot},
-       {"scalar_field", vertex_attrib_kind::scalar_field},
-       {"vector_field", vertex_attrib_kind::vector_field},
-       {"opposite_length", vertex_attrib_kind::opposite_length},
-       {"edge_length", vertex_attrib_kind::edge_length},
-       {"face_area", vertex_attrib_kind::face_area},
-       {"instance_offset", vertex_attrib_kind::instance_offset},
-       {"instance_scale", vertex_attrib_kind::instance_scale},
-       {"instance_transform", vertex_attrib_kind::instance_transform},
-       {"object_id", vertex_attrib_kind::object_id},
-       {"polygon_id", vertex_attrib_kind::polygon_id},
-       {"material_id", vertex_attrib_kind::material_id}}};
-}
+export template <>
+struct enumerator_traits<shapes::vertex_attrib_kind> {
+    static constexpr auto mapping() noexcept {
+        using shapes::vertex_attrib_kind;
+        return enumerator_map_type<vertex_attrib_kind, 30>{
+          {{"position", vertex_attrib_kind::position},
+           {"normal", vertex_attrib_kind::normal},
+           {"tangent", vertex_attrib_kind::tangent},
+           {"bitangent", vertex_attrib_kind::bitangent},
+           {"pivot", vertex_attrib_kind::pivot},
+           {"box_coord", vertex_attrib_kind::box_coord},
+           {"wrap_coord", vertex_attrib_kind::wrap_coord},
+           {"face_coord", vertex_attrib_kind::face_coord},
+           {"tile_coord", vertex_attrib_kind::tile_coord},
+           {"vertex_coord", vertex_attrib_kind::vertex_coord},
+           {"color", vertex_attrib_kind::color},
+           {"emission", vertex_attrib_kind::emission},
+           {"weight", vertex_attrib_kind::weight},
+           {"roughness", vertex_attrib_kind::roughness},
+           {"pointiness", vertex_attrib_kind::pointiness},
+           {"occlusion", vertex_attrib_kind::occlusion},
+           {"inner_position", vertex_attrib_kind::inner_position},
+           {"pivot_pivot", vertex_attrib_kind::pivot_pivot},
+           {"vertex_pivot", vertex_attrib_kind::vertex_pivot},
+           {"scalar_field", vertex_attrib_kind::scalar_field},
+           {"vector_field", vertex_attrib_kind::vector_field},
+           {"opposite_length", vertex_attrib_kind::opposite_length},
+           {"edge_length", vertex_attrib_kind::edge_length},
+           {"face_area", vertex_attrib_kind::face_area},
+           {"instance_offset", vertex_attrib_kind::instance_offset},
+           {"instance_scale", vertex_attrib_kind::instance_scale},
+           {"instance_transform", vertex_attrib_kind::instance_transform},
+           {"object_id", vertex_attrib_kind::object_id},
+           {"polygon_id", vertex_attrib_kind::polygon_id},
+           {"material_id", vertex_attrib_kind::material_id}}};
+    }
+};
 //------------------------------------------------------------------------------
 namespace shapes {
 /// @brief Returns the count of all vertex attribute kinds.
 /// @ingroup shapes
-export template <typename Sel = default_selector_t>
-[[nodiscard]] constexpr auto vertex_attrib_kind_count(
-  const Sel sel = default_selector) noexcept -> span_size_t {
-    return enumerator_count(
-      std::type_identity<shapes::vertex_attrib_kind>{}, sel);
+export [[nodiscard]] constexpr auto vertex_attrib_kind_count() noexcept
+  -> span_size_t {
+    return enumerator_count<shapes::vertex_attrib_kind>();
 }
 //------------------------------------------------------------------------------
-export template <typename Sel = default_selector_t>
-[[nodiscard]] constexpr auto vertex_attrib_index(
-  vertex_attrib_kind kind,
-  const Sel sel = default_selector) noexcept -> span_size_t {
-    return enumerator_index(
-      kind, std::type_identity<shapes::vertex_attrib_kind>{}, sel);
+export [[nodiscard]] constexpr auto vertex_attrib_index(
+  vertex_attrib_kind kind) noexcept -> span_size_t {
+    return enumerator_index<shapes::vertex_attrib_kind>(kind);
 }
 //------------------------------------------------------------------------------
 /// @brief Gets a zero-based index of a vertex attribute.
@@ -477,25 +472,17 @@ export [[nodiscard]] auto vertex_attrib_index(
     return vertex_attrib_index(vav.attribute(), vav.index());
 }
 //------------------------------------------------------------------------------
-export template <typename Sel = default_selector_t>
-[[nodiscard]] constexpr auto vertex_attrib_by_index(
-  span_size_t index,
-  const Sel sel = default_selector) noexcept -> vertex_attrib_kind {
-    return enumerator_by_index(
-      index % vertex_attrib_kind_count(),
-      std::type_identity<shapes::vertex_attrib_kind>{},
-      sel);
+export [[nodiscard]] constexpr auto vertex_attrib_by_index(
+  span_size_t index) noexcept -> vertex_attrib_kind {
+    return enumerator_by_index<shapes::vertex_attrib_kind>(
+      index % vertex_attrib_kind_count());
 }
 //------------------------------------------------------------------------------
-export template <typename Sel = default_selector_t>
-[[nodiscard]] constexpr auto vertex_attrib_variant_by_index(
-  span_size_t index,
-  const Sel sel = default_selector) noexcept -> vertex_attrib_variant {
+export [[nodiscard]] constexpr auto vertex_attrib_variant_by_index(
+  span_size_t index) noexcept -> vertex_attrib_variant {
     return {
-      enumerator_by_index(
-        index % vertex_attrib_kind_count(),
-        std::type_identity<shapes::vertex_attrib_kind>{},
-        sel),
+      enumerator_by_index<shapes::vertex_attrib_kind>(
+        index % vertex_attrib_kind_count()),
       index / vertex_attrib_kind_count()};
 }
 //------------------------------------------------------------------------------

@@ -51,8 +51,7 @@ auto shape_from(vertex_attrib_kinds attrs, const url& locator, main_ctx& ctx)
   -> shared_holder<generator> {
 
     const auto q{locator.query()};
-    for(const auto& info : enumerator_mapping(
-          std::type_identity<shapes::vertex_attrib_kind>{}, default_selector)) {
+    for(const auto& info : enumerators<shapes::vertex_attrib_kind>()) {
         if(const auto var{q.arg_value_as<int>(info.name)}) {
             attrs.set(info.enumerator);
         } else if(q.arg_has_value(info.name, true)) {

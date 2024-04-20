@@ -18,8 +18,7 @@ namespace eagine::shapes {
 // generator
 //------------------------------------------------------------------------------
 auto generator::find_variant(const string_view name) -> vertex_attrib_variant {
-    for(const auto& info : enumerator_mapping(
-          std::type_identity<vertex_attrib_kind>(), default_selector)) {
+    for(const auto& info : enumerators<vertex_attrib_kind>()) {
         if(auto found{find_variant(info.enumerator, name)}) {
             return found;
         }

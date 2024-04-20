@@ -16,8 +16,7 @@ auto parse_from(const url& locator, generator&, to_json_options& opts) noexcept
   -> bool {
     opts.attrib_variants[vertex_attrib_kind::position][0];
     const auto& q{locator.query()};
-    for(const auto& info : enumerator_mapping(
-          std::type_identity<vertex_attrib_kind>(), default_selector)) {
+    for(const auto& info : enumerators<vertex_attrib_kind>()) {
         if(const auto var{q.arg_value_as<int>(info.name)}) {
             opts.attrib_variants[info.enumerator][*var];
         } else if(q.arg_has_value(info.name, true)) {
@@ -39,8 +38,7 @@ auto parse_from(main_ctx& ctx, generator&, to_json_options& opts) noexcept
                 return false;
             }
         } else {
-            for(const auto& info : enumerator_mapping(
-                  std::type_identity<vertex_attrib_kind>(), default_selector)) {
+            for(const auto& info : enumerators<vertex_attrib_kind>()) {
                 if(arg.is_prefixed_tag("--shape-attrib-", info.name)) {
                     if(arg.next().starts_with("-") or not arg.next()) {
                         opts.attrib_variants[info.enumerator][0];
@@ -80,9 +78,7 @@ auto to_json(std::ostream& out, generator& gen, const to_json_options& opts)
             const auto data_type = gen.attrib_type(vav);
             out << R"(,"type":")"
                 << enumerator_name(
-                     data_type,
-                     std::type_identity<attrib_data_type>(),
-                     from_value_tree_t{})
+                     data_type, std::type_identity<attrib_data_type>())
                 << '"' << '\n';
 
             const auto size = gen.value_count(vav);
