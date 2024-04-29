@@ -12,7 +12,8 @@ import eagine.core.types;
 import eagine.core.identifier;
 import eagine.core.reflection;
 
-namespace eagine::shapes {
+namespace eagine {
+namespace shapes {
 //------------------------------------------------------------------------------
 /// @brief The shape primitive type enumeration.
 /// @ingroup shapes
@@ -41,24 +42,6 @@ export enum class primitive_type : std::uint8_t {
     patches
 };
 //------------------------------------------------------------------------------
-export template <typename Selector>
-constexpr auto enumerator_mapping(
-  const std::type_identity<primitive_type>,
-  const Selector) noexcept {
-    return enumerator_map_type<primitive_type, 11>{
-      {{"points", primitive_type::points},
-       {"lines", primitive_type::lines},
-       {"line_strip", primitive_type::line_strip},
-       {"line_loop", primitive_type::line_loop},
-       {"triangles", primitive_type::triangles},
-       {"triangle_strip", primitive_type::triangle_strip},
-       {"triangle_fan", primitive_type::triangle_fan},
-       {"triangles_adjacency", primitive_type::triangles_adjacency},
-       {"quads", primitive_type::quads},
-       {"tetrahedrons", primitive_type::tetrahedrons},
-       {"patches", primitive_type::patches}}};
-}
-//------------------------------------------------------------------------------
 /// @brief Shape vertex attribute data type enumeration.
 /// @ingroup shapes
 /// @see index_data_type
@@ -79,32 +62,6 @@ export enum class attrib_data_type : std::uint8_t {
     float_
 };
 //------------------------------------------------------------------------------
-export template <typename Selector>
-constexpr auto enumerator_mapping(
-  const std::type_identity<attrib_data_type>,
-  const Selector) noexcept {
-    return enumerator_map_type<attrib_data_type, 7>{
-      {{"none", attrib_data_type::none},
-       {"ubyte", attrib_data_type::ubyte},
-       {"int_16", attrib_data_type::int_16},
-       {"int_32", attrib_data_type::int_32},
-       {"uint_16", attrib_data_type::uint_16},
-       {"uint_32", attrib_data_type::uint_32},
-       {"float_", attrib_data_type::float_}}};
-}
-//------------------------------------------------------------------------------
-export constexpr auto enumerator_mapping(
-  const std::type_identity<attrib_data_type>,
-  const from_value_tree_t) noexcept {
-    return enumerator_map_type<attrib_data_type, 6>{
-      {{"ubyte", attrib_data_type::ubyte},
-       {"int_16", attrib_data_type::int_16},
-       {"int_32", attrib_data_type::int_32},
-       {"uint_16", attrib_data_type::uint_16},
-       {"uint_32", attrib_data_type::uint_32},
-       {"float", attrib_data_type::float_}}};
-}
-//------------------------------------------------------------------------------
 /// @brief Shape element index type enumeration.
 /// @ingroup shapes
 /// @see attrib_data_type
@@ -119,25 +76,25 @@ export enum class index_data_type : std::uint8_t {
     unsigned_32 = 32
 };
 //------------------------------------------------------------------------------
-export template <typename Selector>
-constexpr auto enumerator_mapping(
-  const std::type_identity<index_data_type>,
-  const Selector) noexcept {
-    return enumerator_map_type<index_data_type, 4>{
-      {{"none", index_data_type::none},
-       {"unsigned_8", index_data_type::unsigned_8},
-       {"unsigned_16", index_data_type::unsigned_16},
-       {"unsigned_32", index_data_type::unsigned_32}}};
-}
+} // namespace shapes
+export template <>
+struct enumerator_traits<shapes::primitive_type> {
+    static auto mapping() noexcept
+      -> enumerator_map_type<shapes::primitive_type, 11>;
+};
 //------------------------------------------------------------------------------
-export constexpr auto enumerator_mapping(
-  const std::type_identity<index_data_type>,
-  const from_value_tree_t) noexcept {
-    return enumerator_map_type<index_data_type, 3>{
-      {{"none", index_data_type::none},
-       {"unsigned_16", index_data_type::unsigned_16},
-       {"unsigned_32", index_data_type::unsigned_32}}};
-}
+export template <>
+struct enumerator_traits<shapes::attrib_data_type> {
+    static auto mapping() noexcept
+      -> enumerator_map_type<shapes::attrib_data_type, 7>;
+};
+//------------------------------------------------------------------------------
+export template <>
+struct enumerator_traits<shapes::index_data_type> {
+    static auto mapping() noexcept
+      -> enumerator_map_type<shapes::index_data_type, 4>;
+};
+namespace shapes {
 //------------------------------------------------------------------------------
 export auto operator<(
   const index_data_type l,
@@ -198,5 +155,5 @@ export struct draw_operation {
     bool cw_face_winding : 1 {false};
 };
 //------------------------------------------------------------------------------
-} // namespace eagine::shapes
-
+} // namespace shapes
+} // namespace eagine

@@ -93,6 +93,7 @@ eagine_add_module(
 	SOURCES
 		vertex_attributes
 		generator
+		drawing
 		screen
 		plane
 		cube
