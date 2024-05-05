@@ -199,9 +199,9 @@ void unit_torus_gen::positions(
     const auto s_step = math::tau / _sections;
     const auto r_step = math::tau / _rings;
 
-    auto k = [this](span_size_t s, span_size_t r, span_size_t c) {
+    const auto k{[this](span_size_t s, span_size_t r, span_size_t c) {
         return 3 * (s * (_rings + 1) + r) + c;
-    };
+    }};
 
     for(const auto s : integer_range(_sections)) {
         for(const auto r : integer_range(_rings)) {
@@ -237,9 +237,9 @@ void unit_torus_gen::normals(
     const auto s_step = math::tau / _sections;
     const auto r_step = math::tau / _rings;
 
-    auto k = [this](span_size_t s, span_size_t r, span_size_t c) {
+    const auto k{[this](span_size_t s, span_size_t r, span_size_t c) {
         return 3 * (s * (_rings + 1) + r) + c;
-    };
+    }};
 
     for(const auto s : integer_range(_sections)) {
         for(const auto r : integer_range(_rings)) {
@@ -272,9 +272,9 @@ void unit_torus_gen::tangents(
     assert(has(vertex_attrib_kind::tangent));
     assert(dest.size() >= vertex_count() * 3);
 
-    auto k = [this](span_size_t s, span_size_t r, span_size_t c) {
+    const auto k{[this](span_size_t s, span_size_t r, span_size_t c) {
         return 3 * (s * (_rings + 1) + r) + c;
-    };
+    }};
 
     const auto s_step = math::tau / _sections;
 
@@ -308,9 +308,9 @@ void unit_torus_gen::bitangents(
     assert(has(vertex_attrib_kind::bitangent));
     assert(dest.size() >= vertex_count() * 3);
 
-    auto k = [this](span_size_t s, span_size_t r, span_size_t c) {
+    const auto k{[this](span_size_t s, span_size_t r, span_size_t c) {
         return 3 * (s * (_rings + 1) + r) + c;
-    };
+    }};
 
     const auto s_step = math::tau / _sections;
     const auto r_step = math::tau / _rings;
@@ -369,9 +369,9 @@ void unit_torus_gen::roughness(
 
     const auto r_step = math::pi / _rings;
 
-    auto k = [this](span_size_t s, span_size_t r) {
+    const auto k{[this](span_size_t s, span_size_t r) {
         return (s * (_rings + 1) + r);
-    };
+    }};
 
     const auto blend_fact = float(std::exp(-_radius_ratio * 0.3F));
 
@@ -402,9 +402,9 @@ void unit_torus_gen::occlusions(
 
     const auto r_step = math::pi / _rings;
 
-    auto k = [this](span_size_t s, span_size_t r) {
+    const auto k{[this](span_size_t s, span_size_t r) {
         return (s * (_rings + 1) + r);
-    };
+    }};
 
     const auto blend_fact = float(std::exp(-_radius_ratio * 0.3F));
 
@@ -435,9 +435,9 @@ void unit_torus_gen::opposite_lengths(
     const auto r_step = math::pi / _rings;
     const auto s_step = math::pi / _sections;
 
-    auto k = [this](span_size_t s, span_size_t r) {
+    const auto k{[this](span_size_t s, span_size_t r) {
         return (s * (_rings + 1) + r);
-    };
+    }};
 
     for(const auto s : integer_range(_sections)) {
         for(const auto r : integer_range(_rings)) {
@@ -473,9 +473,9 @@ void unit_torus_gen::face_areas(
     const auto a_mult =
       std::sqrt(std::pow(r_step, 2.F) + std::pow(s_step, 2.F));
 
-    auto k = [this](span_size_t s, span_size_t r) {
+    const auto k{[this](span_size_t s, span_size_t r) {
         return (s * (_rings + 1) + r);
-    };
+    }};
 
     for(const auto s : integer_range(_sections)) {
         for(const auto r : integer_range(_rings)) {
@@ -507,20 +507,20 @@ void unit_torus_gen::make_special_attrib_values(
   const span_size_t variant_index,
   span<float> dest) {
     if(variant_index == 1) {
-        auto get_offs = [rrg{std::mt19937{_r_seed}},
-                         srg{std::mt19937{_s_seed}},
-                         rnd{std::normal_distribution<float>{0.F, 0.15F}},
-                         snd{std::normal_distribution<float>{0.F, 0.15F}}](
-                          span_size_t,
-                          span_size_t) mutable -> std::array<double, 3> {
-            return {{rnd(rrg), snd(srg), 0.0}};
-        };
+        auto get_offs{
+          [rrg{std::mt19937{_r_seed}},
+           srg{std::mt19937{_s_seed}},
+           rnd{std::normal_distribution<float>{0.F, 0.15F}},
+           snd{std::normal_distribution<float>{0.F, 0.15F}}](
+            span_size_t, span_size_t) mutable -> std::array<double, 3> {
+              return {{rnd(rrg), snd(srg), 0.0}};
+          }};
         (this->*function)(dest, {construct_from, get_offs});
     } else if(variant_index == 2) {
-        auto get_offs = [](
-                          span_size_t s, span_size_t) -> std::array<double, 3> {
-            return {{double(s), 0.0, 0.0}};
-        };
+        const auto get_offs{
+          [](span_size_t s, span_size_t) -> std::array<double, 3> {
+              return {{double(s), 0.0, 0.0}};
+          }};
         (this->*function)(dest, {construct_from, get_offs});
     } else if(variant_index == 3) {
         auto get_offs =
