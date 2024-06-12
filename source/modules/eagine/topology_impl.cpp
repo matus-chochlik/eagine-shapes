@@ -189,12 +189,12 @@ void topology::_scan_topology(topology_options opts) {
         const bool indexed = operation.idx_type != index_data_type::none;
         span_size_t i;
 
-        const auto is_pri = [&]() {
+        const auto is_pri{[&]() {
             return indexed and
                    data.indices[i] == operation.primitive_restart_index;
-        };
+        }};
 
-        const auto add_triangle = [&](int a, int b, int c) {
+        const auto add_triangle{[&](int a, int b, int c) {
             if(indexed) {
                 _triangles.emplace_back(
                   _triangles.size(),
@@ -235,7 +235,7 @@ void topology::_scan_topology(topology_options opts) {
                 const auto ic = tri.vertex_index(2);
                 tri.set_weight(wgt[ia * vpv] + wgt[ib * vpv] + wgt[ic * vpv]);
             }
-        };
+        }};
 
         if(operation.mode == primitive_type::triangles) {
             for(i = 0; i < operation.count; i += 3) {

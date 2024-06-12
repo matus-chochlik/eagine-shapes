@@ -55,9 +55,9 @@ auto to_quads_gen::index_count(const drawing_variant var) -> span_size_t {
     idx.resize(integer(delegated_gen::index_count(var)));
     delegated_gen::indices(var, cover(idx));
 
-    const auto num_verts = [](auto n) {
+    const auto num_verts{[](auto n) {
         return n > 0 ? span_size(((n / 2) - 1) * 4) : 0;
-    };
+    }};
 
     for(const auto& op : ops) {
         if(op.mode == primitive_type::triangle_strip) {
@@ -186,9 +186,9 @@ void to_quads_gen::instructions(
 
     const auto it = index_type(var);
 
-    const auto num_verts = [](auto n) {
+    const auto num_verts{[](auto n) {
         return n > 0 ? span_size(((n / 2) - 1) * 4) : 0;
-    };
+    }};
 
     span_size_t offs{0};
 

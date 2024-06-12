@@ -268,7 +268,7 @@ void cached_gen::_get_values(
   const vertex_attrib_variant vav,
   span<T> dest,
   std::map<vertex_attrib_variant, std::vector<T>>& cache) {
-    const auto& src = [this, vav, &cache]() -> const std::vector<T>& {
+    const auto& src{[this, vav, &cache]() -> const std::vector<T>& {
         const auto size = std_size(value_count(vav));
         const std::lock_guard<std::mutex> lock{_mutex};
         auto& cached = cache[vav];
@@ -281,7 +281,7 @@ void cached_gen::_get_values(
               .arg("size", size);
         }
         return cached;
-    }();
+    }()};
     copy(view(src), dest);
 }
 //------------------------------------------------------------------------------
@@ -290,7 +290,7 @@ void cached_gen::_get_indices(
   const drawing_variant var,
   span<T> dest,
   std::map<drawing_variant, std::vector<T>>& cache) {
-    const auto& src = [this, var, &cache]() -> const std::vector<T>& {
+    const auto& src{[this, var, &cache]() -> const std::vector<T>& {
         const auto size = std_size(index_count(var));
         const std::lock_guard<std::mutex> lock{_mutex};
         auto& cached = cache[var];
@@ -302,7 +302,7 @@ void cached_gen::_get_indices(
               .arg("size", size);
         }
         return cached;
-    }();
+    }()};
     copy(view(src), dest);
 }
 //------------------------------------------------------------------------------
