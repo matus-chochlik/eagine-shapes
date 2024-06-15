@@ -23,6 +23,7 @@ file(STRINGS "${EAGINE_CORE_ROOT}/VERSION" EAGINE_VERSION)
 add_subdirectory(submodules)
 
 include(EAGineCoreCommon)
+include(EAGinePackageShapes)
 
 add_subdirectory(source)
 add_subdirectory(example)

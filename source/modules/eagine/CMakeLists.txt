@@ -3,7 +3,9 @@
 # See accompanying file LICENSE_1_0.txt or copy at
 # https://www.boost.org/LICENSE_1_0.txt
 eagine_add_module(
-	eagine.shapes PARTITION vertex_attributes
+	eagine.shapes
+	COMPONENT shapes-dev
+	PARTITION vertex_attributes
 	IMPORTS
 		std
 		eagine.core.types
@@ -14,7 +16,9 @@ eagine_add_module(
 )
 
 eagine_add_module(
-	eagine.shapes PARTITION drawing
+	eagine.shapes
+	COMPONENT shapes-dev
+	PARTITION drawing
 	IMPORTS
 		std
 		eagine.core.types
@@ -23,7 +27,9 @@ eagine_add_module(
 )
 
 eagine_add_module(
-	eagine.shapes PARTITION generator
+	eagine.shapes
+	COMPONENT shapes-dev
+	PARTITION generator
 	IMPORTS
 		std vertex_attributes drawing
 		eagine.core.types
@@ -40,7 +46,9 @@ eagine_add_module(
 )
 
 eagine_add_module(
-	eagine.shapes PARTITION delegated
+	eagine.shapes
+	COMPONENT shapes-dev
+	PARTITION delegated
 	IMPORTS
 		std generator
 		eagine.core.types
@@ -52,7 +60,9 @@ eagine_add_module(
 )
 
 eagine_add_module(
-	eagine.shapes PARTITION primitive_info
+	eagine.shapes
+	COMPONENT shapes-dev
+	PARTITION primitive_info
 	IMPORTS
 		std delegated
 		eagine.core.types
@@ -65,7 +75,9 @@ eagine_add_module(
 )
 
 eagine_add_module(
-	eagine.shapes PARTITION topology
+	eagine.shapes
+	COMPONENT shapes-dev
+	PARTITION topology
 	IMPORTS
 		std generator
 		eagine.core.types
@@ -77,7 +89,9 @@ eagine_add_module(
 )
 
 eagine_add_module(
-	eagine.shapes PARTITION to_json
+	eagine.shapes
+	COMPONENT shapes-dev
+	PARTITION to_json
 	IMPORTS
 		std generator
 		eagine.core.types
@@ -90,6 +104,7 @@ eagine_add_module(
 
 eagine_add_module(
 	eagine.shapes
+	COMPONENT shapes-dev
 	SOURCES
 		vertex_attributes
 		generator
@@ -148,4 +163,7 @@ eagine_embed_target_resources(
 		Cube       "resources/cube.json"
 		SpikHedron "resources/spikosahedron.json"
 	PACKED)
+
+eagine_add_license(shapes-dev)
+eagine_add_debian_changelog(shapes-dev)
 

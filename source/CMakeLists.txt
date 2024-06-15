@@ -7,10 +7,10 @@ add_subdirectory(app)
 
 set(
 	EAGINE_SHAPES_EXPORT_TARGETS
-	eagine-shapes-to_json
-	eagine-shapes-add_occlusion
-	eagine-shapes-add_adjacency
-	eagine-shapes-add_primitive_info
+	eagine-shapes-to-json
+	eagine-shapes-add-occlusion
+	eagine-shapes-add-adjacency
+	eagine-shapes-add-primitive-info
 )
 
 if(TARGET eagine-shapes)

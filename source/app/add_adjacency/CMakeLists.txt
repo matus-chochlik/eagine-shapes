@@ -3,12 +3,17 @@
 # See accompanying file LICENSE_1_0.txt or copy at
 # https://www.boost.org/LICENSE_1_0.txt
 
-add_executable(eagine-shapes-add_adjacency main.cpp)
-eagine_add_exe_analysis(eagine-shapes-add_adjacency)
+add_executable(eagine-shapes-add-adjacency main.cpp)
+eagine_add_exe_analysis(eagine-shapes-add-adjacency)
 eagine_target_modules(
-	eagine-shapes-add_adjacency
+	eagine-shapes-add-adjacency
 	std
 	eagine.core
 	eagine.shapes
 )
+
+install(
+	TARGETS eagine-shapes-add-adjacency
+	COMPONENT shapes-apps
+	RUNTIME DESTINATION bin)
 

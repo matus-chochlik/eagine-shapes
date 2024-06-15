@@ -3,11 +3,17 @@
 # See accompanying file LICENSE_1_0.txt or copy at
 # https://www.boost.org/LICENSE_1_0.txt
 
-add_executable(eagine-shapes-to_json main.cpp)
-eagine_add_exe_analysis(eagine-shapes-to_json)
+add_executable(eagine-shapes-to-json main.cpp)
+eagine_add_exe_analysis(eagine-shapes-to-json)
 eagine_target_modules(
-	eagine-shapes-to_json
+	eagine-shapes-to-json
 	std
 	eagine.core
 	eagine.shapes
 )
+
+install(
+	TARGETS eagine-shapes-to-json
+	COMPONENT shapes-apps
+	RUNTIME DESTINATION bin)
+

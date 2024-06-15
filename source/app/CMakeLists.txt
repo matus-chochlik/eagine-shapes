@@ -7,3 +7,7 @@ add_subdirectory(to_json)
 add_subdirectory(add_occlusion)
 add_subdirectory(add_adjacency)
 add_subdirectory(add_primitive_info)
+
+eagine_add_license(shapes-apps)
+eagine_add_debian_changelog(shapes-apps)
+
