@@ -12,6 +12,7 @@ set_target_properties(
 function(eagine_install_example TARGET_NAME)
 	install(
 		TARGETS ${TARGET_NAME}
+		COMPONENT shapes-examples
 		DESTINATION share/eagine/example/shapes
 	)
 endfunction()
