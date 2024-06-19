@@ -167,3 +167,15 @@ eagine_embed_target_resources(
 eagine_add_license(shapes-dev)
 eagine_add_debian_changelog(shapes-dev)
 
+eagine_add_package_property(
+	shapes-dev
+	GENERATOR DEBIAN
+	VARIABLE PACKAGE_DEPENDS
+	VALUE "eagine-core-dev (>= @EAGINE_VERSION@)")
+
+eagine_add_package_property(
+	shapes-dev
+	GENERATOR DEBIAN
+	VARIABLE DESCRIPTION
+	VALUE "C++ generators of geometric shapes used for rendering.")
+
