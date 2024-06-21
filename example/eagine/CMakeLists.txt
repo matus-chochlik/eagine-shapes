@@ -43,10 +43,10 @@ eagine_example_common(for_each_triangle)
 eagine_example_common(shape_topology)
 eagine_example_common(shape_from_url)
 
-eeagine_add_license(shapes-examples)
+eagine_add_license(shapes-examples)
 eagine_add_debian_changelog(shapes-examples)
 
-agine_add_package_property(
+eagine_add_package_property(
 	shapes-examples
 	GENERATOR DEBIAN
 	VARIABLE PACKAGE_DEPENDS
