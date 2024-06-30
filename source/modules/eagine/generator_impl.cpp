@@ -110,13 +110,13 @@ void generator_base::for_each_triangle(
     idx.resize(integer(gen.index_count(var)));
     gen.indices(var, cover(idx));
 
-    const auto get_index = [&idx](auto vx, bool idxd) -> span_size_t {
+    const auto get_index{[&idx](auto vx, bool idxd) -> span_size_t {
         if(idxd) {
             return integer(idx[integer(vx)]);
         } else {
             return integer(vx);
         }
-    };
+    }};
 
     shape_face_info tri{};
 
@@ -180,24 +180,24 @@ void generator_base::ray_intersections(
     }
 
     if(not ray_idx.empty()) {
-        const auto intersect = [&ray_idx, &rays, &intersections](
-                                 const auto& fce, const bool cw) {
-            for(const auto i : ray_idx) {
-                const auto& ray = rays[i];
-                const auto nparam =
-                  math::line_triangle_intersection_param(ray, fce);
+        const auto intersect{
+          [&ray_idx, &rays, &intersections](const auto& fce, const bool cw) {
+              for(const auto i : ray_idx) {
+                  const auto& ray = rays[i];
+                  const auto nparam =
+                    math::line_triangle_intersection_param(ray, fce);
 
-                if(nparam > 0.0001F) {
-                    const auto fnml = fce.normal(cw);
-                    if(dot(ray.direction(), fnml) < 0.F) {
-                        auto& oparam = intersections[i];
-                        if(not oparam or bool(nparam < oparam)) {
-                            oparam = nparam;
-                        }
-                    }
-                }
-            }
-        };
+                  if(nparam > 0.0001F) {
+                      const auto fnml = fce.normal(cw);
+                      if(dot(ray.direction(), fnml) < 0.F) {
+                          auto& oparam = intersections[i];
+                          if(not oparam or bool(nparam < oparam)) {
+                              oparam = nparam;
+                          }
+                      }
+                  }
+              }
+          }};
 
         const auto find_intersections =
           [&intersect, &pos, vpv](const shape_face_info& info) {

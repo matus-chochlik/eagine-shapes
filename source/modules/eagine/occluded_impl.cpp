@@ -72,7 +72,7 @@ void occluded_gen::occlusions(
         std::atomic<span_size_t> vi{0};
         std::random_device rd;
 
-        const auto make_raytracer = [&](auto progress_update) {
+        const auto make_raytracer{[&](auto progress_update) {
             return [this,
                     &dest,
                     &positions,
@@ -93,7 +93,7 @@ void occluded_gen::occlusions(
                 std::vector<float> weights(rays.size());
                 std::vector<optionally_valid<float>> params(rays.size());
 
-                const auto vertex_occlusion = [&](const auto v) -> float {
+                const auto vertex_occlusion{[&](const auto v) -> float {
                     const auto pk = std_size(v * pvpv);
                     const auto nk = std_size(v * nvpv);
                     const math::tvec<float, 3, true> pos{
@@ -138,7 +138,7 @@ void occluded_gen::occlusions(
                         wght += weights[s];
                     }
                     return occl / wght;
-                };
+                }};
 
                 while(true) {
                     const auto v = vi++;
@@ -153,7 +153,7 @@ void occluded_gen::occlusions(
                 }
                 return true;
             };
-        };
+        }};
 
         const inplace_work_batch raytrace{
           workers(), make_raytracer([](const auto) { return true; })};

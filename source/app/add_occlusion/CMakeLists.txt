@@ -3,12 +3,17 @@
 # See accompanying file LICENSE_1_0.txt or copy at
 # https://www.boost.org/LICENSE_1_0.txt
 
-add_executable(eagine-shapes-add_occlusion main.cpp)
-eagine_add_exe_analysis(eagine-shapes-add_occlusion)
+add_executable(eagine-shapes-add-occlusion main.cpp)
+eagine_add_exe_analysis(eagine-shapes-add-occlusion)
 eagine_target_modules(
-	eagine-shapes-add_occlusion
+	eagine-shapes-add-occlusion
 	std
 	eagine.core
 	eagine.shapes
 )
+
+install(
+	TARGETS eagine-shapes-add-occlusion
+	COMPONENT shapes-apps
+	RUNTIME DESTINATION bin)
 

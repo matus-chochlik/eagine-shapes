@@ -12,6 +12,7 @@ set_target_properties(
 function(eagine_install_example TARGET_NAME)
 	install(
 		TARGETS ${TARGET_NAME}
+		COMPONENT shapes-examples
 		DESTINATION share/eagine/example/shapes
 	)
 endfunction()
@@ -41,4 +42,19 @@ endfunction()
 eagine_example_common(for_each_triangle)
 eagine_example_common(shape_topology)
 eagine_example_common(shape_from_url)
+
+eagine_add_license(shapes-examples)
+eagine_add_debian_changelog(shapes-examples)
+
+eagine_add_package_property(
+	shapes-examples
+	GENERATOR DEBIAN
+	VARIABLE PACKAGE_DEPENDS
+	VALUE "\${CXX_RUNTIME_PKGS},\${EAGINE_CORE_RUNTIME_PKGS}")
+
+eagine_add_package_property(
+	shapes-examples
+	GENERATOR DEBIAN
+	VARIABLE DESCRIPTION
+	VALUE "EAGine shape generator examples.")
 
