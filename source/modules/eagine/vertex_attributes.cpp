@@ -29,36 +29,36 @@ export enum class vertex_attrib_kind : std::uint32_t {
     tangent = 1U << 2U,
     /// @brief Vertex bi-tangential vector.
     bitangent = 1U << 3U,
-    /// @brief Shape pivot point.
-    pivot = 1U << 4U,
-    /// @brief Normalized coordinate within shape bounding box.
-    box_coord = 1U << 5U,
     /// @brief UV-texture wrapping coordinate.
-    wrap_coord = 1U << 6U,
-    /// @brief Generic face coordinate.
-    face_coord = 1U << 7U,
+    wrap_coord = 1U << 4U,
     /// @brief Generic tile coordinate.
-    tile_coord = 1U << 8U,
+    tile_coord = 1U << 5U,
     /// @brief Generic vertex coordinate.
-    vertex_coord = 1U << 9U,
+    vertex_coord = 1U << 6U,
+    /// @brief Vertex pivot point.
+    vertex_pivot = 1U << 7U,
+    /// @brief Pivot of vertex pivot point.
+    pivot_pivot = 1U << 8U,
+    /// @brief Shell inner vertex position.
+    inner_position = 1U << 9U,
     /// @brief Vertex color value.
     color = 1U << 10U,
     /// @brief Vertex light emission value.
     emission = 1U << 11U,
-    /// @brief Generic vertex weight value.
-    weight = 1U << 12U,
     /// @brief Surface roughness value (0 - smooth, 1 - rough)
-    roughness = 1U << 13U,
+    roughness = 1U << 12U,
+    /// @brief Vertex (ambient) light occlusion value (0 - occluded, 1 - exposed).
+    occlusion = 1U << 13U,
     /// @brief Surface pointiness value (0 - inset, 0.5 - flat, 1 - pointy)
     pointiness = 1U << 14U,
-    /// @brief Vertex (ambient) light occlusion value (0 - occluded, 1 - exposed).
-    occlusion = 1U << 15U,
-    /// @brief Shell inner vertex position.
-    inner_position = 1U << 16U,
-    /// @brief Pivot of vertex pivot point.
-    pivot_pivot = 1U << 17U,
-    /// @brief Vertex pivot point.
-    vertex_pivot = 1U << 18U,
+    /// @brief Generic vertex weight value.
+    weight = 1U << 15U,
+    /// @brief Shape pivot point.
+    pivot = 1U << 16U,
+    /// @brief Normalized coordinate within shape bounding box.
+    box_coord = 1U << 17U,
+    /// @brief Generic face coordinate.
+    face_coord = 1U << 18U,
     /// @brief Generic scalar field value.
     scalar_field = 1U << 19U,
     /// @brief Generic vector field value.
@@ -71,7 +71,7 @@ export enum class vertex_attrib_kind : std::uint32_t {
     face_area = 1U << 23U,
     /// @brief Instance offset value
     instance_offset = 1U << 24U,
-    /// @brief Instance scale value
+    /// @brief Instance transformation matrix.
     instance_scale = 1U << 25U,
     /// @brief Instance scale value
     instance_transform = 1U << 26U,
