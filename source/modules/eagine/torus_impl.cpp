@@ -38,6 +38,8 @@ public:
 
     auto vertex_count() -> span_size_t override;
 
+    void pivot_pivots(span<float> dest) noexcept;
+
     void vertex_pivots(span<float> dest) noexcept;
 
     void positions(span<float> dest, const offset_getter) noexcept;
@@ -159,6 +161,13 @@ unit_torus_gen::unit_torus_gen(
 //------------------------------------------------------------------------------
 auto unit_torus_gen::vertex_count() -> span_size_t {
     return (_rings + 1) * (_sections + 1);
+}
+//------------------------------------------------------------------------------
+void unit_torus_gen::pivot_pivots(span<float> dest) noexcept {
+    assert(has(vertex_attrib_kind::position));
+    assert(dest.size() >= vertex_count() * 3);
+
+    fill(dest, 0.F);
 }
 //------------------------------------------------------------------------------
 void unit_torus_gen::vertex_pivots(span<float> dest) noexcept {
@@ -580,6 +589,9 @@ void unit_torus_gen::attrib_values(
   const vertex_attrib_variant vav,
   span<float> dest) {
     switch(vav.attribute()) {
+        case vertex_attrib_kind::pivot_pivot:
+            pivot_pivots(dest);
+            break;
         case vertex_attrib_kind::vertex_pivot:
             vertex_pivots(dest);
             break;
