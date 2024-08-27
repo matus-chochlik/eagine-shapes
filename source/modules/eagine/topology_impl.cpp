@@ -32,7 +32,7 @@ struct topology_data {
     }
 
     auto to_vec(const span<const float> v) const noexcept {
-        return math::tvec<float, 3, true>{v[0], v[1], v[2]};
+        return math::vector<float, 3, true>{v[0], v[1], v[2]};
     }
 
     auto vec_of(const unsigned i) const noexcept {
@@ -218,11 +218,11 @@ void topology::_scan_topology(topology_options opts) {
                 const auto ib = tri.vertex_index(1);
                 const auto ic = tri.vertex_index(2);
                 tri.set_area(math::triangle<float, true>{
-                  math::tvec<float, 3, true>{
+                  math::vector<float, 3, true>{
                     pos[ia * vpv + 0], pos[ia * vpv + 1], pos[ia * vpv + 2]},
-                  math::tvec<float, 3, true>{
+                  math::vector<float, 3, true>{
                     pos[ib * vpv + 0], pos[ib * vpv + 1], pos[ib * vpv + 2]},
-                  math::tvec<float, 3, true>{
+                  math::vector<float, 3, true>{
                     pos[ic * vpv + 0], pos[ic * vpv + 1], pos[ic * vpv + 2]}}
                                .area());
             }

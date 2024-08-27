@@ -219,7 +219,7 @@ auto array_gen::bounding_sphere() -> math::sphere<float, true> {
     using std::pow;
     using std::sqrt;
 
-    const auto v = math::tvec<float, 3, true>{_d[0], _d[1], _d[2]};
+    const auto v = math::vector<float, 3, true>{_d[0], _d[1], _d[2]};
     const auto c = float(_copies);
     const auto l = length(v);
     const auto bs = delegated_gen::bounding_sphere();

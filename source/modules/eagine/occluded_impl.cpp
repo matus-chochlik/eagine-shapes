@@ -96,9 +96,9 @@ void occluded_gen::occlusions(
                 const auto vertex_occlusion{[&](const auto v) -> float {
                     const auto pk = std_size(v * pvpv);
                     const auto nk = std_size(v * nvpv);
-                    const math::tvec<float, 3, true> pos{
+                    const math::vector<float, 3, true> pos{
                       positions[pk + 0], positions[pk + 1], positions[pk + 2]};
-                    const math::tvec<float, 3, true> nml{
+                    const math::vector<float, 3, true> nml{
                       normals[nk + 0], normals[nk + 1], normals[nk + 2]};
 
                     rays[0] = math::line<float, true>{pos, nml};
