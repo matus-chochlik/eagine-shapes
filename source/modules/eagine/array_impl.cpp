@@ -40,7 +40,7 @@ public:
 
     void instructions(const drawing_variant, span<draw_operation> ops) override;
 
-    auto bounding_sphere() -> math::sphere<float, true> override;
+    auto bounding_sphere() -> math::sphere<float> override;
 
 private:
     std::array<float, 3> _d;
@@ -215,11 +215,11 @@ void array_gen::instructions(
     }
 }
 //------------------------------------------------------------------------------
-auto array_gen::bounding_sphere() -> math::sphere<float, true> {
+auto array_gen::bounding_sphere() -> math::sphere<float> {
     using std::pow;
     using std::sqrt;
 
-    const auto v = math::vector<float, 3, true>{_d[0], _d[1], _d[2]};
+    const auto v = math::vector<float, 3>{_d[0], _d[1], _d[2]};
     const auto c = float(_copies);
     const auto l = length(v);
     const auto bs = delegated_gen::bounding_sphere();

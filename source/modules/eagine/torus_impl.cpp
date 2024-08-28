@@ -89,7 +89,7 @@ public:
 
     void instructions(const drawing_variant, span<draw_operation> ops) override;
 
-    auto bounding_sphere() -> math::sphere<float, true> override;
+    auto bounding_sphere() -> math::sphere<float> override;
 
 private:
     using _base = generator_base;
@@ -801,7 +801,7 @@ void unit_torus_gen::instructions(
     }
 }
 //------------------------------------------------------------------------------
-auto unit_torus_gen::bounding_sphere() -> math::sphere<float, true> {
+auto unit_torus_gen::bounding_sphere() -> math::sphere<float> {
     return {{0.0F}, 0.5F};
 }
 //------------------------------------------------------------------------------

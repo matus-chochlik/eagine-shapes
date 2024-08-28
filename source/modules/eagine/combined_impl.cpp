@@ -73,7 +73,7 @@ public:
 
     void instructions(const drawing_variant, span<draw_operation> ops) final;
 
-    auto bounding_sphere() -> math::sphere<float, true> final;
+    auto bounding_sphere() -> math::sphere<float> final;
 
     void for_each_triangle(
       generator& gen,
@@ -85,7 +85,7 @@ public:
     void ray_intersections(
       generator&,
       const drawing_variant,
-      const span<const math::line<float, true>> rays,
+      const span<const math::line<float>> rays,
       span<optionally_valid<float>> intersections) final;
 
 private:
@@ -420,11 +420,11 @@ void combined_gen::instructions(
     }
 }
 //------------------------------------------------------------------------------
-auto combined_gen::bounding_sphere() -> math::sphere<float, true> {
-    math::vector<float, 3, true> center{0.F};
+auto combined_gen::bounding_sphere() -> math::sphere<float> {
+    math::vector<float, 3> center{0.F};
     float radius{0.F};
     if(not _gens.empty()) {
-        std::vector<math::sphere<float, true>> bss;
+        std::vector<math::sphere<float>> bss;
         bss.reserve(_gens.size());
         for(auto& gen : _gens) {
             bss.emplace_back(gen->bounding_sphere());
@@ -459,7 +459,7 @@ void combined_gen::random_surface_values(const random_attribute_values& rav) {
 void combined_gen::ray_intersections(
   generator&,
   const drawing_variant var,
-  const span<const math::line<float, true>> rays,
+  const span<const math::line<float>> rays,
   span<optionally_valid<float>> intersections) {
 
     for(auto& gen : _gens) {

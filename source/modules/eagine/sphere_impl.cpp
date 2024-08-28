@@ -54,12 +54,12 @@ public:
 
     void instructions(const drawing_variant, span<draw_operation> ops) override;
 
-    auto bounding_sphere() -> math::sphere<float, true> override;
+    auto bounding_sphere() -> math::sphere<float> override;
 
     void ray_intersections(
       generator& gen,
       const drawing_variant,
-      const span<const math::line<float, true>> rays,
+      const span<const math::line<float>> rays,
       span<optionally_valid<float>> intersections) override;
 
 private:
@@ -338,14 +338,14 @@ void unit_sphere_gen::instructions(
     }
 }
 //------------------------------------------------------------------------------
-auto unit_sphere_gen::bounding_sphere() -> math::sphere<float, true> {
+auto unit_sphere_gen::bounding_sphere() -> math::sphere<float> {
     return {{0.F, 0.F, 0.F}, 0.5F};
 }
 //------------------------------------------------------------------------------
 void unit_sphere_gen::ray_intersections(
   generator& gen,
   const drawing_variant,
-  const span<const math::line<float, true>> rays,
+  const span<const math::line<float>> rays,
   span<optionally_valid<float>> intersections) {
 
     assert(intersections.size() >= rays.size());

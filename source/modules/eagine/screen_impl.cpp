@@ -38,7 +38,7 @@ public:
 
     void instructions(const drawing_variant, span<draw_operation> ops) override;
 
-    auto bounding_sphere() -> math::sphere<float, true> override;
+    auto bounding_sphere() -> math::sphere<float> override;
 
 private:
     using _base = generator_base;
@@ -229,7 +229,7 @@ void unit_screen_gen::instructions(
     op.cw_face_winding = true;
 }
 //------------------------------------------------------------------------------
-auto unit_screen_gen::bounding_sphere() -> math::sphere<float, true> {
+auto unit_screen_gen::bounding_sphere() -> math::sphere<float> {
     using std::sqrt;
     return {{0.0F}, float(sqrt(2.F))};
 }

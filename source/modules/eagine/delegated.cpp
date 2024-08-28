@@ -96,7 +96,7 @@ public:
     void instructions(const drawing_variant var, span<draw_operation> ops)
       override;
 
-    auto bounding_sphere() -> math::sphere<float, true> override;
+    auto bounding_sphere() -> math::sphere<float> override;
 
     void for_each_triangle(
       generator& gen,
@@ -108,7 +108,7 @@ public:
     void ray_intersections(
       generator&,
       const drawing_variant,
-      const span<const math::line<float, true>> rays,
+      const span<const math::line<float>> rays,
       span<optionally_valid<float>> intersections) override;
 
 protected:
@@ -280,7 +280,7 @@ inline void delegated_gen::instructions(
     _gen->instructions(var, ops);
 }
 //------------------------------------------------------------------------------
-inline auto delegated_gen::bounding_sphere() -> math::sphere<float, true> {
+inline auto delegated_gen::bounding_sphere() -> math::sphere<float> {
     return _gen->bounding_sphere();
 }
 //------------------------------------------------------------------------------
@@ -299,7 +299,7 @@ inline void delegated_gen::random_surface_values(
 inline void delegated_gen::ray_intersections(
   generator& gen,
   const drawing_variant var,
-  const span<const math::line<float, true>> rays,
+  const span<const math::line<float>> rays,
   span<optionally_valid<float>> intersections) {
     _gen->ray_intersections(gen, var, rays, intersections);
 }

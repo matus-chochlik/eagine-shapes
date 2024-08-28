@@ -60,9 +60,9 @@ auto default_attrib_value(const vertex_attrib_kind attr) noexcept
   -> vertex_attrib_value {
     switch(attr) {
         case vertex_attrib_kind::color:
-            return math::vector<float, 4, true>{0.5F, 0.5F, 0.5F, 1.F};
+            return math::vector<float, 4>{0.5F, 0.5F, 0.5F, 1.F};
         case vertex_attrib_kind::emission:
-            return math::vector<float, 4, true>{0.0F, 0.0F, 0.0F, 0.F};
+            return math::vector<float, 4>{0.0F, 0.0F, 0.0F, 0.F};
         case vertex_attrib_kind::position:
         case vertex_attrib_kind::inner_position:
         case vertex_attrib_kind::pivot:
@@ -73,16 +73,16 @@ auto default_attrib_value(const vertex_attrib_kind attr) noexcept
         case vertex_attrib_kind::face_coord:
         case vertex_attrib_kind::instance_offset:
         case vertex_attrib_kind::vector_field:
-            return math::vector<float, 3, true>{};
+            return math::vector<float, 3>{};
         case vertex_attrib_kind::tangent:
-            return math::vector<float, 3, true>{1.F, 0.F, 0.F};
+            return math::vector<float, 3>{1.F, 0.F, 0.F};
         case vertex_attrib_kind::bitangent:
-            return math::vector<float, 3, true>{0.F, 1.F, 0.F};
+            return math::vector<float, 3>{0.F, 1.F, 0.F};
         case vertex_attrib_kind::normal:
-            return math::vector<float, 3, true>{0.F, 0.F, 1.F};
+            return math::vector<float, 3>{0.F, 0.F, 1.F};
         case vertex_attrib_kind::wrap_coord:
         case vertex_attrib_kind::tile_coord:
-            return math::vector<float, 2, true>{};
+            return math::vector<float, 2>{};
         case vertex_attrib_kind::edge_length:
         case vertex_attrib_kind::opposite_length:
         case vertex_attrib_kind::face_area:

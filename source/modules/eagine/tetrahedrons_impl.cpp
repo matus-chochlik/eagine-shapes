@@ -44,7 +44,7 @@ public:
 
     void instructions(const drawing_variant, span<draw_operation> ops) override;
 
-    auto bounding_sphere() -> math::sphere<float, true> override;
+    auto bounding_sphere() -> math::sphere<float> override;
 
 private:
     using _base = generator_base;
@@ -254,7 +254,7 @@ void marching_tetrahedrons_gen::instructions(
     op.cw_face_winding = false;
 }
 //------------------------------------------------------------------------------
-auto marching_tetrahedrons_gen::bounding_sphere() -> math::sphere<float, true> {
+auto marching_tetrahedrons_gen::bounding_sphere() -> math::sphere<float> {
     return {{0.0F}, 0.5F};
 }
 //------------------------------------------------------------------------------

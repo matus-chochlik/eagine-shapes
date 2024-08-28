@@ -341,13 +341,13 @@ private:
 using vertex_attrib_value_variant = std::variant<
   std::monostate,
   int,
-  math::vector<int, 2, true>,
-  math::vector<int, 3, true>,
-  math::vector<int, 4, true>,
+  math::vector<int, 2>,
+  math::vector<int, 3>,
+  math::vector<int, 4>,
   float,
-  math::vector<float, 2, true>,
-  math::vector<float, 3, true>,
-  math::vector<float, 4, true>>;
+  math::vector<float, 2>,
+  math::vector<float, 3>,
+  math::vector<float, 4>>;
 
 /// @brief Type for storing of vertex attribute values.
 /// @ingroup shapes

@@ -20,7 +20,7 @@ namespace eagine::shapes {
 //------------------------------------------------------------------------------
 class unit_round_cube_parameter_cache {
 public:
-    using vec3 = math::vector<float, 3, true>;
+    using vec3 = math::vector<float, 3>;
     unit_round_cube_parameter_cache(int d);
 
     auto interpolate(int x1, int y1, int x2, int y2) noexcept -> vec3;
@@ -109,9 +109,8 @@ public:
     auto values_per_vertex(const vertex_attrib_variant vav)
       -> span_size_t override;
 
-    auto parameters(int x, int y) noexcept -> math::vector<float, 3, true>;
-    auto normal(int face, int x, int y) noexcept
-      -> math::vector<float, 3, true>;
+    auto parameters(int x, int y) noexcept -> math::vector<float, 3>;
+    auto normal(int face, int x, int y) noexcept -> math::vector<float, 3>;
 
     void _directions(span<float> dest, float len) noexcept;
 
@@ -141,7 +140,7 @@ public:
 
     void instructions(const drawing_variant, span<draw_operation> ops) override;
 
-    auto bounding_sphere() -> math::sphere<float, true> override;
+    auto bounding_sphere() -> math::sphere<float> override;
 
 private:
     using _base = generator_base;
@@ -205,7 +204,7 @@ auto unit_round_cube_gen::values_per_vertex(const vertex_attrib_variant vav)
 }
 //------------------------------------------------------------------------------
 auto unit_round_cube_face_normal(const span_size_t f) noexcept {
-    return std::array<math::vector<float, 3, true>, 6>{{
+    return std::array<math::vector<float, 3>, 6>{{
       {-1.F, 0.F, 0.F},
       {+1.F, 0.F, 0.F},
       {0.F, -1.F, 0.F},
@@ -216,7 +215,7 @@ auto unit_round_cube_face_normal(const span_size_t f) noexcept {
 }
 //------------------------------------------------------------------------------
 auto unit_round_cube_face_tangent(const span_size_t f) noexcept {
-    return std::array<math::vector<float, 3, true>, 6>{{
+    return std::array<math::vector<float, 3>, 6>{{
       {0.F, 0.F, +1.F},
       {0.F, 0.F, -1.F},
       {+1.F, 0.F, 0.F},
@@ -227,7 +226,7 @@ auto unit_round_cube_face_tangent(const span_size_t f) noexcept {
 }
 //------------------------------------------------------------------------------
 auto unit_round_cube_face_bitangent(const span_size_t f) noexcept {
-    return std::array<math::vector<float, 3, true>, 6>{{
+    return std::array<math::vector<float, 3>, 6>{{
       {0.F, +1.F, 0.F},
       {0.F, +1.F, 0.F},
       {0.F, 0.F, +1.F},
@@ -238,7 +237,7 @@ auto unit_round_cube_face_bitangent(const span_size_t f) noexcept {
 }
 //------------------------------------------------------------------------------
 auto unit_round_cube_gen::parameters(int x, int y) noexcept
-  -> math::vector<float, 3, true> {
+  -> math::vector<float, 3> {
     return _parameters.get(x, y);
 }
 //------------------------------------------------------------------------------
@@ -471,7 +470,7 @@ void unit_round_cube_gen::instructions(
     }
 }
 //------------------------------------------------------------------------------
-auto unit_round_cube_gen::bounding_sphere() -> math::sphere<float, true> {
+auto unit_round_cube_gen::bounding_sphere() -> math::sphere<float> {
     using std::sqrt;
     return {{0.0F}, 1.F};
 }
