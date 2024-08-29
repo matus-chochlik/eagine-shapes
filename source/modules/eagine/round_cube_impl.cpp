@@ -472,7 +472,7 @@ void unit_round_cube_gen::instructions(
 //------------------------------------------------------------------------------
 auto unit_round_cube_gen::bounding_sphere() -> math::sphere<float> {
     using std::sqrt;
-    return {{0.0F}, 1.F};
+    return {{}, 1.F};
 }
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes

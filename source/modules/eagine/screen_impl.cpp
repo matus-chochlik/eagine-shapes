@@ -231,7 +231,7 @@ void unit_screen_gen::instructions(
 //------------------------------------------------------------------------------
 auto unit_screen_gen::bounding_sphere() -> math::sphere<float> {
     using std::sqrt;
-    return {{0.0F}, float(sqrt(2.F))};
+    return {{}, float(sqrt(2.F))};
 }
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes

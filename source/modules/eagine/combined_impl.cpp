@@ -430,15 +430,15 @@ auto combined_gen::bounding_sphere() -> math::sphere<float> {
             bss.emplace_back(gen->bounding_sphere());
         }
         for(const auto& bs : bss) {
-            center += bs.center();
+            center += bs.direction();
         }
         center = center / float(_gens.size());
         for(const auto& bs : bss) {
             radius = math::maximum(
-              radius, math::distance(center, bs.center()) + bs.radius());
+              radius, math::distance(center, bs.direction()) + bs.radius());
         }
     }
-    return {center, radius};
+    return {math::point<float, 3>{center}, radius};
 }
 //------------------------------------------------------------------------------
 void combined_gen::for_each_triangle(

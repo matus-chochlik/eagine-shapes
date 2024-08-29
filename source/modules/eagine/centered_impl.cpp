@@ -87,7 +87,7 @@ auto center(shared_holder<generator> gen) noexcept -> shared_holder<generator> {
 //------------------------------------------------------------------------------
 auto centered_gen::bounding_sphere() -> math::sphere<float> {
     const auto bs = delegated_gen::bounding_sphere();
-    return {{0.F}, bs.radius()};
+    return {{}, bs.radius()};
 }
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes

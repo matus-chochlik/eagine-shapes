@@ -96,7 +96,7 @@ void occluded_gen::occlusions(
                 const auto vertex_occlusion{[&](const auto v) -> float {
                     const auto pk = std_size(v * pvpv);
                     const auto nk = std_size(v * nvpv);
-                    const math::vector<float, 3> pos{
+                    const math::point<float, 3> pos{
                       positions[pk + 0], positions[pk + 1], positions[pk + 2]};
                     const math::vector<float, 3> nml{
                       normals[nk + 0], normals[nk + 1], normals[nk + 2]};

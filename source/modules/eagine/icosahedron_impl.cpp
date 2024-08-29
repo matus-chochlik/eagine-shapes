@@ -325,7 +325,7 @@ void unit_icosahedron_gen::instructions(
 }
 //------------------------------------------------------------------------------
 auto unit_icosahedron_gen::bounding_sphere() -> math::sphere<float> {
-    return {{0.0F}, 1.F};
+    return {{}, 1.F};
 }
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes

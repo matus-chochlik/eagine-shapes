@@ -82,7 +82,7 @@ auto generator_base::bounding_sphere() -> math::sphere<float> {
         }
     }
 
-    math::vector<float, 3> center{
+    math::point<float, 3> center{
       (min[0] + max[0]) * 0.5F,
       (min[1] + max[1]) * 0.5F,
       (min[2] + max[2]) * 0.5F};

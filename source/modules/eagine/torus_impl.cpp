@@ -802,7 +802,7 @@ void unit_torus_gen::instructions(
 }
 //------------------------------------------------------------------------------
 auto unit_torus_gen::bounding_sphere() -> math::sphere<float> {
-    return {{0.0F}, 0.5F};
+    return {{}, 0.5F};
 }
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes

@@ -344,7 +344,7 @@ void unit_twisted_torus_gen::instructions(
 }
 //------------------------------------------------------------------------------
 auto unit_twisted_torus_gen::bounding_sphere() -> math::sphere<float> {
-    return {{0.F, 0.F, 0.F}, 0.5F};
+    return {{}, 0.5F};
 }
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes
