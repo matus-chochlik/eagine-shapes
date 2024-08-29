@@ -218,11 +218,11 @@ void topology::_scan_topology(topology_options opts) {
                 const auto ib = tri.vertex_index(1);
                 const auto ic = tri.vertex_index(2);
                 tri.set_area(math::triangle<float>{
-                  math::vector<float, 3>{
+                  math::point<float, 3>{
                     pos[ia * vpv + 0], pos[ia * vpv + 1], pos[ia * vpv + 2]},
-                  math::vector<float, 3>{
+                  math::point<float, 3>{
                     pos[ib * vpv + 0], pos[ib * vpv + 1], pos[ib * vpv + 2]},
-                  math::vector<float, 3>{
+                  math::point<float, 3>{
                     pos[ic * vpv + 0], pos[ic * vpv + 1], pos[ic * vpv + 2]}}
                                .area());
             }
