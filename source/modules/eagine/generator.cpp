@@ -331,7 +331,7 @@ export struct generator : abstract<generator> {
     }
 
     /// @brief Returns the bounding sphere for the generated shape.
-    virtual auto bounding_sphere() -> math::sphere<float, true> = 0;
+    virtual auto bounding_sphere() -> math::sphere<float> = 0;
 
     /// @brief Calls a callback for each triangle in specified drawing variant.
     virtual void for_each_triangle(
@@ -365,12 +365,12 @@ export struct generator : abstract<generator> {
     virtual void ray_intersections(
       generator&,
       const drawing_variant,
-      const span<const math::line<float, true>> rays,
+      const span<const math::line<float>> rays,
       span<optionally_valid<float>> intersections) = 0;
 
     /// @brief Calculates the intersections of the shape geometry with a ray.
     void ray_intersections(
-      const span<const math::line<float, true>> rays,
+      const span<const math::line<float>> rays,
       span<optionally_valid<float>> intersections) {
         return ray_intersections(*this, 0, rays, intersections);
     }
@@ -378,14 +378,14 @@ export struct generator : abstract<generator> {
     /// @brief Returns the parameter for the nearest intersection with a ray.
     [[nodiscard]] auto ray_intersection(
       const drawing_variant var,
-      const math::line<float, true>& ray) -> optionally_valid<float> {
+      const math::line<float>& ray) -> optionally_valid<float> {
         optionally_valid<float> result{};
         ray_intersections(*this, var, view_one(ray), cover_one(result));
         return result;
     }
 
     /// @brief Returns the parameter for the nearest intersection with a ray.
-    [[nodiscard]] auto ray_intersection(const math::line<float, true>& ray)
+    [[nodiscard]] auto ray_intersection(const math::line<float>& ray)
       -> optionally_valid<float> {
         optionally_valid<float> result{};
         ray_intersections(*this, 0, view_one(ray), cover_one(result));
@@ -452,7 +452,7 @@ public:
 
     void indices(const drawing_variant, span<std::uint32_t> dest) override;
 
-    auto bounding_sphere() -> math::sphere<float, true> override;
+    auto bounding_sphere() -> math::sphere<float> override;
 
     void for_each_triangle(
       generator& gen,
@@ -464,7 +464,7 @@ public:
     void ray_intersections(
       generator&,
       const drawing_variant,
-      const span<const math::line<float, true>> rays,
+      const span<const math::line<float>> rays,
       span<optionally_valid<float>> intersections) override;
 
 protected:

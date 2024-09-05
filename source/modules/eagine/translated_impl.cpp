@@ -22,7 +22,7 @@ public:
 
     void attrib_values(const vertex_attrib_variant, span<float>) override;
 
-    auto bounding_sphere() -> math::sphere<float, true> override;
+    auto bounding_sphere() -> math::sphere<float> override;
 
 private:
     std::array<float, 3> _d;
@@ -56,9 +56,9 @@ void translated_gen::attrib_values(
     }
 }
 //------------------------------------------------------------------------------
-auto translated_gen::bounding_sphere() -> math::sphere<float, true> {
+auto translated_gen::bounding_sphere() -> math::sphere<float> {
     const auto bs = delegated_gen::bounding_sphere();
-    using V = math::tvec<float, 3, true>;
+    using V = math::vector<float, 3>;
     return {bs.center() + V{_d[0], _d[1], _d[2]}, bs.radius()};
 }
 //------------------------------------------------------------------------------

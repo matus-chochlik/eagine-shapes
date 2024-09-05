@@ -75,7 +75,7 @@ public:
 
     void instructions(const drawing_variant, span<draw_operation> dest) final;
 
-    auto bounding_sphere() -> math::sphere<float, true> final {
+    auto bounding_sphere() -> math::sphere<float> final {
         return _bounding_sphere;
     }
 
@@ -89,7 +89,7 @@ public:
     void ray_intersections(
       generator&,
       const drawing_variant,
-      const span<const math::line<float, true>> rays,
+      const span<const math::line<float>> rays,
       span<optionally_valid<float>> intersections) final;
 
 private:
@@ -97,7 +97,7 @@ private:
     const span_size_t _instance_count;
     const span_size_t _vertex_count;
     const span_size_t _draw_variant_count;
-    const math::sphere<float, true> _bounding_sphere;
+    const math::sphere<float> _bounding_sphere;
 
     std::mutex _mutex;
     std::map<vertex_attrib_kind, span_size_t> _attrib_variants;
@@ -395,7 +395,7 @@ void cached_gen::random_surface_values(const random_attribute_values& rav) {
 void cached_gen::ray_intersections(
   generator& gen,
   const drawing_variant var,
-  const span<const math::line<float, true>> rays,
+  const span<const math::line<float>> rays,
   span<optionally_valid<float>> intersections) {
     _gen->ray_intersections(gen, var, rays, intersections);
 }

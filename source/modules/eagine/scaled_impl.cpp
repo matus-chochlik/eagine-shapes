@@ -23,7 +23,7 @@ public:
 
     void attrib_values(const vertex_attrib_variant, span<float>) override;
 
-    auto bounding_sphere() -> math::sphere<float, true> override;
+    auto bounding_sphere() -> math::sphere<float> override;
 
 private:
     std::array<float, 3> _s;
@@ -59,7 +59,7 @@ void scaled_gen::attrib_values(
     }
 }
 //------------------------------------------------------------------------------
-auto scaled_gen::bounding_sphere() -> math::sphere<float, true> {
+auto scaled_gen::bounding_sphere() -> math::sphere<float> {
     const auto bs = delegated_gen::bounding_sphere();
     const auto ms = math::maximum(_s[0], math::maximum(_s[1], _s[2]));
     return {bs.center(), bs.radius() * ms};

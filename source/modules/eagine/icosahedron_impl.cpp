@@ -45,7 +45,7 @@ public:
 
     void instructions(const drawing_variant, span<draw_operation> ops) override;
 
-    auto bounding_sphere() -> math::sphere<float, true> override;
+    auto bounding_sphere() -> math::sphere<float> override;
 
 private:
     using _base = generator_base;
@@ -324,8 +324,8 @@ void unit_icosahedron_gen::instructions(
     op.cw_face_winding = false;
 }
 //------------------------------------------------------------------------------
-auto unit_icosahedron_gen::bounding_sphere() -> math::sphere<float, true> {
-    return {{0.0F}, 1.F};
+auto unit_icosahedron_gen::bounding_sphere() -> math::sphere<float> {
+    return {{}, 1.F};
 }
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes

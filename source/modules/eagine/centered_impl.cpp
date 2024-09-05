@@ -21,7 +21,7 @@ public:
     using delegated_gen::attrib_values;
     void attrib_values(const vertex_attrib_variant, span<float>) override;
 
-    auto bounding_sphere() -> math::sphere<float, true> override;
+    auto bounding_sphere() -> math::sphere<float> override;
 };
 //------------------------------------------------------------------------------
 void centered_gen::attrib_values(
@@ -85,9 +85,9 @@ auto center(shared_holder<generator> gen) noexcept -> shared_holder<generator> {
     return {hold<centered_gen>, std::move(gen)};
 }
 //------------------------------------------------------------------------------
-auto centered_gen::bounding_sphere() -> math::sphere<float, true> {
+auto centered_gen::bounding_sphere() -> math::sphere<float> {
     const auto bs = delegated_gen::bounding_sphere();
-    return {{0.F}, bs.radius()};
+    return {{}, bs.radius()};
 }
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes

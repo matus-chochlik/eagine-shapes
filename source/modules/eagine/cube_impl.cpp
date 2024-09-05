@@ -53,7 +53,7 @@ public:
 
     void instructions(const drawing_variant, span<draw_operation> ops) override;
 
-    auto bounding_sphere() -> math::sphere<float, true> override;
+    auto bounding_sphere() -> math::sphere<float> override;
 
 private:
     using _base = generator_base;
@@ -539,9 +539,9 @@ void unit_cube_gen::instructions(
     }
 }
 //------------------------------------------------------------------------------
-auto unit_cube_gen::bounding_sphere() -> math::sphere<float, true> {
+auto unit_cube_gen::bounding_sphere() -> math::sphere<float> {
     using std::sqrt;
-    return {{0.0F}, float(sqrt(2.F))};
+    return {{}, float(sqrt(2.F))};
 }
 //------------------------------------------------------------------------------
 } // namespace eagine::shapes

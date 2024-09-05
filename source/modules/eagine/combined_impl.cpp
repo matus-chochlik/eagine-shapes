@@ -73,7 +73,7 @@ public:
 
     void instructions(const drawing_variant, span<draw_operation> ops) final;
 
-    auto bounding_sphere() -> math::sphere<float, true> final;
+    auto bounding_sphere() -> math::sphere<float> final;
 
     void for_each_triangle(
       generator& gen,
@@ -85,7 +85,7 @@ public:
     void ray_intersections(
       generator&,
       const drawing_variant,
-      const span<const math::line<float, true>> rays,
+      const span<const math::line<float>> rays,
       span<optionally_valid<float>> intersections) final;
 
 private:
@@ -420,25 +420,25 @@ void combined_gen::instructions(
     }
 }
 //------------------------------------------------------------------------------
-auto combined_gen::bounding_sphere() -> math::sphere<float, true> {
-    math::vector<float, 3, true> center{0.F};
+auto combined_gen::bounding_sphere() -> math::sphere<float> {
+    math::vector<float, 3> center{0.F};
     float radius{0.F};
     if(not _gens.empty()) {
-        std::vector<math::sphere<float, true>> bss;
+        std::vector<math::sphere<float>> bss;
         bss.reserve(_gens.size());
         for(auto& gen : _gens) {
             bss.emplace_back(gen->bounding_sphere());
         }
         for(const auto& bs : bss) {
-            center += bs.center();
+            center += bs.direction();
         }
         center = center / float(_gens.size());
         for(const auto& bs : bss) {
             radius = math::maximum(
-              radius, math::distance(center, bs.center()) + bs.radius());
+              radius, math::distance(center, bs.direction()) + bs.radius());
         }
     }
-    return {center, radius};
+    return {math::point<float, 3>{center}, radius};
 }
 //------------------------------------------------------------------------------
 void combined_gen::for_each_triangle(
@@ -459,7 +459,7 @@ void combined_gen::random_surface_values(const random_attribute_values& rav) {
 void combined_gen::ray_intersections(
   generator&,
   const drawing_variant var,
-  const span<const math::line<float, true>> rays,
+  const span<const math::line<float>> rays,
   span<optionally_valid<float>> intersections) {
 
     for(auto& gen : _gens) {

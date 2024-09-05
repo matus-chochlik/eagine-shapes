@@ -53,7 +53,7 @@ void generator_base::attrib_values(
     }
 }
 //------------------------------------------------------------------------------
-auto generator_base::bounding_sphere() -> math::sphere<float, true> {
+auto generator_base::bounding_sphere() -> math::sphere<float> {
     std::array<float, 3> min{
       std::numeric_limits<float>::max(),
       std::numeric_limits<float>::max(),
@@ -82,7 +82,7 @@ auto generator_base::bounding_sphere() -> math::sphere<float, true> {
         }
     }
 
-    math::tvec<float, 3, true> center{
+    math::point<float, 3> center{
       (min[0] + max[0]) * 0.5F,
       (min[1] + max[1]) * 0.5F,
       (min[2] + max[2]) * 0.5F};
@@ -156,7 +156,7 @@ void generator_base::for_each_triangle(
 void generator_base::ray_intersections(
   generator& gen,
   const drawing_variant var,
-  const span<const math::line<float, true>> rays,
+  const span<const math::line<float>> rays,
   span<optionally_valid<float>> intersections) {
 
     assert(intersections.size() >= rays.size());
@@ -202,7 +202,7 @@ void generator_base::ray_intersections(
 
         const auto find_intersections =
           [&intersect, &pos, vpv](const shape_face_info& info) {
-              const math::triangle<float, true> face{
+              const math::triangle<float> face{
                 {pos[info.indices[0] * vpv + 0],
                  pos[info.indices[0] * vpv + 1],
                  pos[info.indices[0] * vpv + 2]},

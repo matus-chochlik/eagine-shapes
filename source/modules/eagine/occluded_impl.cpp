@@ -89,23 +89,23 @@ void occluded_gen::occlusions(
                 std::default_random_engine phi_re{phi_rs};
                 std::uniform_real_distribution<double> dis{0.0, 1.0};
 
-                std::vector<math::line<float, true>> rays(std_size(ns));
+                std::vector<math::line<float>> rays(std_size(ns));
                 std::vector<float> weights(rays.size());
                 std::vector<optionally_valid<float>> params(rays.size());
 
                 const auto vertex_occlusion{[&](const auto v) -> float {
                     const auto pk = std_size(v * pvpv);
                     const auto nk = std_size(v * nvpv);
-                    const math::tvec<float, 3, true> pos{
+                    const math::point<float, 3> pos{
                       positions[pk + 0], positions[pk + 1], positions[pk + 2]};
-                    const math::tvec<float, 3, true> nml{
+                    const math::vector<float, 3> nml{
                       normals[nk + 0], normals[nk + 1], normals[nk + 2]};
 
-                    rays[0] = math::line<float, true>{pos, nml};
+                    rays[0] = math::line<float>{pos, nml};
                     weights[0] = 1.F;
 
                     for(const auto s : integer_range(1, ns)) {
-                        const math::unit_spherical_coordinate<float, true> usc{
+                        const math::unit_spherical_coordinate<float> usc{
                           turns_(float(dis(rho_re))),
                           radians_(float(std::acos(2 * dis(phi_re) - 1)))};
 
@@ -117,7 +117,7 @@ void occluded_gen::occlusions(
                             wght = -wght;
                         }
 
-                        rays[s] = math::line<float, true>{pos, dir};
+                        rays[s] = math::line<float>{pos, dir};
                         weights[s] = wght;
                     }
                     fill(cover(params), optionally_valid<float>{});
