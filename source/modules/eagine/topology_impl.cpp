@@ -124,6 +124,15 @@ auto mesh_triangle::setup_adjacent(
     return {false, 0U, 0U, 0U, 0U};
 }
 //------------------------------------------------------------------------------
+topology::topology(
+  shared_holder<generator> gen,
+  const topology_options& opts,
+  main_ctx_parent parent)
+  : main_ctx_object{"ShpTopolgy", parent}
+  , _gen{std::move(gen)} {
+    _scan_topology(opts);
+}
+//------------------------------------------------------------------------------
 auto topology::print_dot(std::ostream& out) const -> std::ostream& {
     out << "graph MeshTopology {\n";
     out << "overlap=voronoi;\n";
