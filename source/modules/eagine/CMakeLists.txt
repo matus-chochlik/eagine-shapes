@@ -12,8 +12,7 @@ eagine_add_module(
 		eagine.core.memory
 		eagine.core.math
 		eagine.core.container
-		eagine.core.reflection
-)
+		eagine.core.reflection)
 
 eagine_add_module(
 	eagine.shapes
@@ -23,8 +22,7 @@ eagine_add_module(
 		std
 		eagine.core.types
 		eagine.core.identifier
-		eagine.core.reflection
-)
+		eagine.core.reflection)
 
 eagine_add_module(
 	eagine.shapes
@@ -42,8 +40,7 @@ eagine_add_module(
 		eagine.core.valid_if
 		eagine.core.value_tree
 		eagine.core.main_ctx
-		eagine.core.resource
-)
+		eagine.core.resource)
 
 eagine_add_module(
 	eagine.shapes
@@ -56,8 +53,7 @@ eagine_add_module(
 		eagine.core.identifier
 		eagine.core.utility
 		eagine.core.valid_if
-		eagine.core.math
-)
+		eagine.core.math)
 
 eagine_add_module(
 	eagine.shapes
@@ -71,8 +67,7 @@ eagine_add_module(
 		eagine.core.units
 		eagine.core.math
 		eagine.core.runtime
-		eagine.core.main_ctx
-)
+		eagine.core.main_ctx)
 
 eagine_add_module(
 	eagine.shapes
@@ -85,8 +80,7 @@ eagine_add_module(
 		eagine.core.identifier
 		eagine.core.container
 		eagine.core.math
-		eagine.core.main_ctx
-)
+		eagine.core.main_ctx)
 
 eagine_add_module(
 	eagine.shapes
@@ -99,8 +93,7 @@ eagine_add_module(
 		eagine.core.runtime
 		eagine.core.math
 		eagine.core.identifier
-		eagine.core.main_ctx
-)
+		eagine.core.main_ctx)
 
 eagine_add_module(
 	eagine.shapes
@@ -140,8 +133,7 @@ eagine_add_module(
 		shapes
 	IMPORTS
 		std
-		eagine.core
-)
+		eagine.core)
 
 eagine_add_module_tests(
 	eagine.shapes
@@ -154,8 +146,7 @@ eagine_add_module_tests(
 	IMPORTS
 		std
 		eagine.core
-		eagine.core.main_ctx
-)
+		eagine.core.main_ctx)
 
 eagine_embed_target_resources(
 	TARGET eagine.shapes
