@@ -225,11 +225,7 @@ public:
     topology(
       shared_holder<generator> gen,
       const topology_options& opts,
-      main_ctx_parent parent)
-      : main_ctx_object{"ShpTopolgy", parent}
-      , _gen{std::move(gen)} {
-        _scan_topology(opts);
-    }
+      main_ctx_parent parent);
 
     /// @brief Returns the number of triangles in the mesh.
     auto triangle_count() const noexcept -> span_size_t {
