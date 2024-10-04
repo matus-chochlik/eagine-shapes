@@ -50,7 +50,7 @@ auto has_shape_from(const url& locator) noexcept -> bool {
 auto shape_from(vertex_attrib_kinds attrs, const url& locator, main_ctx& ctx)
   -> shared_holder<generator> {
 
-    const auto q{locator.query()};
+    const auto& q{locator.query()};
     for(const auto& info : enumerators<shapes::vertex_attrib_kind>()) {
         if(const auto var{q.arg_value_as<int>(info.name)}) {
             attrs.set(info.enumerator);
